@@ -6,7 +6,7 @@
 
 ## Context
 
-The MCP bridge grew to 331+ tools from multiple backends (ruvector, ruflo, agentic-flow, Claude Code, Gemini, Codex). Exposing all tools simultaneously caused:
+The MCP bridge grew to 331+ tools from multiple backends (ruvector, ruflo, agentic-flow, Cursor (legacy — removed in Cursor-native fork), Gemini, Codex). Exposing all tools simultaneously caused:
 
 1. **Context flooding** — AI models struggle to select the right tool from 300+ options
 2. **Startup overhead** — loading all backends when only a subset is needed

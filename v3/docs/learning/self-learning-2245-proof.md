@@ -1,12 +1,12 @@
-# Self-Learning Wiring — Proof + Reproduction Guide (#2245)
+# Self-Learning Wiring â€” Proof + Reproduction Guide (#2245)
 
-> Companion to [ADR-074](../adr/ADR-074-self-learning-wiring-2245.md) and [#2245](https://github.com/ruvnet/ruflo/issues/2245).
+> Companion to [ADR-074](../adr/ADR-074-self-learning-wiring-2245.md) and [#2245](https://github.com/pwnapplehat/ruflo/issues/2245).
 >
 > This document gives anyone the copy-paste commands needed to *verify the
 > learning system actually persists what it claims*, plus the multi-path map of
 > which entry point goes where.
 
-## The system has multiple paths — pick the right one
+## The system has multiple paths â€” pick the right one
 
 > The single biggest cause of "self-learning reports success but persists
 > nothing" is reaching for the wrong entry point. Three paths exist; each
@@ -14,15 +14,15 @@
 
 | Goal | Entry point | What persists | Where to query it |
 |---|---|---|---|
-| **Single completion → train** | `hooks_task-completed {trainPatterns:true}` | one-step trajectory → SONA + EWC++ + globalStats.{trajectories,patterns}Learned | `hooks_intelligence_stats` |
-| **Multi-step learning loop** | `hooks_intelligence_trajectory-start` → `-step*` → `-end {success}` | full trajectory → SONA + ReasoningBank → memory-bridge `trajectories` namespace | `hooks_intelligence_stats` + `memory_bridge_status` |
+| **Single completion â†’ train** | `hooks_task-completed {trainPatterns:true}` | one-step trajectory â†’ SONA + EWC++ + globalStats.{trajectories,patterns}Learned | `hooks_intelligence_stats` |
+| **Multi-step learning loop** | `hooks_intelligence_trajectory-start` â†’ `-step*` â†’ `-end {success}` | full trajectory â†’ SONA + ReasoningBank â†’ memory-bridge `trajectories` namespace | `hooks_intelligence_stats` + `memory_bridge_status` |
 | **Just remember this** | `memory_store` / `memory_store_episode` | row in memory-bridge default namespace | `memory_search_unified` |
 | **Bootstrap from a repo** | `hooks_pretrain` | (1) summary bundle in `pretrain` namespace **+** (2) per-pattern rows in the neural store | `neural_patterns list` + `memory_search_unified` |
 | **Activity counter (any write)** | any of the above | `globalStats.signalsProcessed` | `.claude-flow/neural/stats.json` |
 
 If you call `hooks_task-completed` *without* `trainPatterns:true`, the response
 explicitly says `"learningPath":"recorded-only"` and tells you what to set if
-you wanted learning to fire. That's intentional — the surface is honest about
+you wanted learning to fire. That's intentional â€” the surface is honest about
 what it did and didn't do.
 
 ## Reproducing the proof
@@ -30,7 +30,7 @@ what it did and didn't do.
 ### One-shot benchmark
 
 ```bash
-git clone https://github.com/ruvnet/ruflo
+git clone https://github.com/pwnapplehat/ruflo
 cd ruflo && npm install
 ( cd v3/@claude-flow/cli && npx tsc -b )
 
@@ -45,18 +45,18 @@ BENCH_NO_WRITE=1 node v3/@claude-flow/cli/scripts/benchmark-self-learning.mjs
 Expected output (with `N=10`):
 
 ```
-# Self-learning benchmark (#2245) — N=10
+# Self-learning benchmark (#2245) â€” N=10
 
 | Section | Calls | Delta | Passed | Latency (ms) |
 |---|---:|---:|:---:|---:|
-| A recordSignalProcessed       | 10 | +10                                        | ✅ | ~0.5    |
-| B task-completed (train)      | 10 | trained=10, trajectories+10                | ✅ | ~180 (~18/call) |
-| C task-completed (record-only)| 10 | trajectories+0 (negative control)          | ✅ | ~0.05   |
-| D pretrain → neural_patterns  | 10 | stored=10, listed=10                       | ✅ | ~5      |
-| E multi-step trajectory       |  5 | persisted=5, sonaUpdate=5 (when available) | ✅ | ~25     |
+| A recordSignalProcessed       | 10 | +10                                        | âœ… | ~0.5    |
+| B task-completed (train)      | 10 | trained=10, trajectories+10                | âœ… | ~180 (~18/call) |
+| C task-completed (record-only)| 10 | trajectories+0 (negative control)          | âœ… | ~0.05   |
+| D pretrain â†’ neural_patterns  | 10 | stored=10, listed=10                       | âœ… | ~5      |
+| E multi-step trajectory       |  5 | persisted=5, sonaUpdate=5 (when available) | âœ… | ~25     |
 
 Final state: signalsProcessed=10, trajectoriesRecorded=10, patternsLearned=11
-Overall: ✅ ALL PASSED
+Overall: âœ… ALL PASSED
 Wrote .../docs/benchmarks/runs/self-learning-<ts>.json
 ```
 
@@ -69,11 +69,11 @@ three #2245 wirings regresses.
 Each section in the benchmark output corresponds to one of the broken behaviours
 in the reporter's trace:
 
-- **§A** — `recordSignalProcessed` increments the previously-dead counter. Repro of "signalsProcessed never changes from 0".
-- **§B** — `hooks_task-completed {trainPatterns:true}` invokes the SONA + EWC++ trajectory pipeline. Repro of "task-completed is a stub that returns patternsLearned:0".
-- **§C** — Negative control: without `trainPatterns:true`, trajectories do NOT increment. Confirms we didn't accidentally make the surface lie in the other direction.
-- **§D** — `pretrain` writes per-pattern rows into the neural store; `neural_patterns list` reflects them. Repro of "neural_patterns list returns [] after pretrain succeeds with 47 patterns extracted".
-- **§E** — Multi-step trajectory pipeline persists each cycle; SONA updates when the runtime model is loaded. Confirms the "one path that worked" still works.
+- **Â§A** â€” `recordSignalProcessed` increments the previously-dead counter. Repro of "signalsProcessed never changes from 0".
+- **Â§B** â€” `hooks_task-completed {trainPatterns:true}` invokes the SONA + EWC++ trajectory pipeline. Repro of "task-completed is a stub that returns patternsLearned:0".
+- **Â§C** â€” Negative control: without `trainPatterns:true`, trajectories do NOT increment. Confirms we didn't accidentally make the surface lie in the other direction.
+- **Â§D** â€” `pretrain` writes per-pattern rows into the neural store; `neural_patterns list` reflects them. Repro of "neural_patterns list returns [] after pretrain succeeds with 47 patterns extracted".
+- **Â§E** â€” Multi-step trajectory pipeline persists each cycle; SONA updates when the runtime model is loaded. Confirms the "one path that worked" still works.
 
 ### Reproducing the unit-test gate
 
@@ -82,7 +82,7 @@ cd v3/@claude-flow/cli
 npx vitest run __tests__/self-learning-2245.test.ts
 ```
 
-Expected: **9 tests pass** across three describe blocks — EASY (primitives),
+Expected: **9 tests pass** across three describe blocks â€” EASY (primitives),
 MEDIUM (MCP surfaces), COMPLEX (batch + persistence + multi-step). Each test
 maps to one of the three wirings, so a regression in any of them breaks CI.
 
@@ -130,7 +130,7 @@ The handler's return value tells you exactly what happened:
 }
 ```
 
-Note `learningPath: "trajectory-pipeline"` — that's the explicit "I actually
+Note `learningPath: "trajectory-pipeline"` â€” that's the explicit "I actually
 did the learning work" signal. If the pipeline had failed (e.g. SONA not
 available), the handler would return `learningPath: "recorded-only"` plus a
 `learningError` field, instead of silently lying about success.

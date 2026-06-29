@@ -1,23 +1,23 @@
 #!/usr/bin/env node
 /**
- * Static guard for ruvnet/ruflo#2219 — keep the `better-sqlite3` override
+ * Static guard for pwnapplehat/ruflo#2219 â€” keep the `better-sqlite3` override
  * pinned to a version that ships Node 24/25/26 prebuilds.
  *
  * Why: `agentdb` declares `better-sqlite3` as an OPTIONAL dependency at
  * `^11.8.1`. better-sqlite3 11.8.1 has no prebuilt binary for Node 24/25/26,
  * so on those runtimes the optional native build fails *silently* (optional
- * deps never error) and AgentDB falls back to a non-persistent backend —
+ * deps never error) and AgentDB falls back to a non-persistent backend â€”
  * users on Node 24/26 saw stores succeed but never persist (silent write
- * loss). better-sqlite3 >=12.8.0 ships prebuilds for Node 20–26.
+ * loss). better-sqlite3 >=12.8.0 ships prebuilds for Node 20â€“26.
  *
  * Per the #2112 lesson, root overrides do NOT propagate to the published
- * `ruflo` wrapper — the override MUST be present in BOTH the root umbrella
+ * `ruflo` wrapper â€” the override MUST be present in BOTH the root umbrella
  * (`package.json`) and the wrapper (`ruflo/package.json`). This guard asserts
  * both carry `better-sqlite3 >= 12.8.0`. Wired into v3-ci.yml.
  *
  * Exit codes:
- *   0 — both overrides present and satisfy >=12.8.0
- *   1 — missing override, or a range that admits a Node-24/26-broken version
+ *   0 â€” both overrides present and satisfy >=12.8.0
+ *   1 â€” missing override, or a range that admits a Node-24/26-broken version
  */
 
 import { readFileSync, existsSync } from 'node:fs';
@@ -42,7 +42,7 @@ let failed = false;
 for (const { label, path: rel } of TARGETS) {
   const p = join(REPO_ROOT, rel);
   if (!existsSync(p)) {
-    console.error(`✗ ${label}: ${rel} not found`);
+    console.error(`âœ— ${label}: ${rel} not found`);
     failed = true;
     continue;
   }
@@ -50,7 +50,7 @@ for (const { label, path: rel } of TARGETS) {
   try {
     pkg = JSON.parse(readFileSync(p, 'utf8'));
   } catch (e) {
-    console.error(`✗ ${label}: ${rel} is not valid JSON — ${e.message}`);
+    console.error(`âœ— ${label}: ${rel} is not valid JSON â€” ${e.message}`);
     failed = true;
     continue;
   }
@@ -58,7 +58,7 @@ for (const { label, path: rel } of TARGETS) {
   const range = pkg.overrides?.['better-sqlite3'];
   if (!range) {
     console.error(
-      `✗ ${label}: missing overrides["better-sqlite3"]. ` +
+      `âœ— ${label}: missing overrides["better-sqlite3"]. ` +
         `Add "better-sqlite3": ">=${MIN_SAFE}" so agentdb's optional native ` +
         `dep resolves to a version with Node 24/25/26 prebuilds (#2219).`,
     );
@@ -71,7 +71,7 @@ for (const { label, path: rel } of TARGETS) {
   const minOfRange = semver.minVersion(range);
   if (!minOfRange || semver.lt(minOfRange, MIN_SAFE)) {
     console.error(
-      `✗ ${label}: overrides["better-sqlite3"] = "${range}" can resolve below ` +
+      `âœ— ${label}: overrides["better-sqlite3"] = "${range}" can resolve below ` +
         `${MIN_SAFE} (min ${minOfRange ?? 'unparseable'}). Node 24/25/26 need ` +
         `>=${MIN_SAFE} prebuilds (#2219).`,
     );
@@ -79,12 +79,12 @@ for (const { label, path: rel } of TARGETS) {
     continue;
   }
 
-  console.log(`✓ ${label}: better-sqlite3 override "${range}" (min ${minOfRange}) ≥ ${MIN_SAFE}`);
+  console.log(`âœ“ ${label}: better-sqlite3 override "${range}" (min ${minOfRange}) â‰¥ ${MIN_SAFE}`);
 }
 
 if (failed) {
   console.error('\nbetter-sqlite3 override guard FAILED (#2219). See messages above.');
   process.exit(1);
 }
-console.log('\n✓ better-sqlite3 override guard passed — Node 24/25/26 persistence protected.');
+console.log('\nâœ“ better-sqlite3 override guard passed â€” Node 24/25/26 persistence protected.');
 process.exit(0);

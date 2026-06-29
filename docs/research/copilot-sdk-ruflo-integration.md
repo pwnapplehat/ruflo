@@ -1,4 +1,4 @@
-# Copilot SDK x RuFlo Integration — Research & Design
+# Copilot SDK x RuFlo Integration â€” Research & Design
 
 > Branch: research/copilot-sdk-ruflo-integration
 > Date: 2026-06-03
@@ -9,11 +9,11 @@
 
 ## 1. Executive Summary
 
-- **The GitHub Copilot SDK** (`@github/copilot-sdk`, GA 2026-06-02) is a multi-language client library that exposes the same agentic runtime powering the GitHub Copilot app — planning, tool invocation, streaming, multi-turn sessions, MCP server registration, and custom tool calling — directly to any application or CLI without requiring a separate orchestration layer. [1][2]
+- **The GitHub Copilot SDK** (`@github/copilot-sdk`, GA 2026-06-02) is a multi-language client library that exposes the same agentic runtime powering the GitHub Copilot app â€” planning, tool invocation, streaming, multi-turn sessions, MCP server registration, and custom tool calling â€” directly to any application or CLI without requiring a separate orchestration layer. [1][2]
 - **Why it matters for RuFlo:** Copilot SDK gives RuFlo a third programming-agent platform alongside Claude (`claude -p`) and OpenAI Codex (`codex exec`). GPT-5.3-Codex is the current LTS base model for Copilot Business/Enterprise; GPT-5.5 is the frontier model. Adding a `copilot:` worker prefix to the existing `DualModeOrchestrator` creates tri-mode collaboration with no breaking changes. [3][4]
 - **The new package** `@claude-flow/copilot` will mirror `@claude-flow/codex` exactly: same exports shape, same `/loop` runner, same `initializer` pattern, same generators/validators/migrations. Net-new subfolders are `client/` (wraps `@github/copilot-sdk`) and `mcp/` (bidirectional MCP bridge). [5]
 - **Model story:** GPT-5.3-Codex (1x multiplier, LTS through 2027-02-04) is the recommended Tier 3 coding model. GPT-5.4 mini (0.33x) is the Tier 2 fast model. GPT-5.5 (7.5x) is available for Tier 3 reasoning on Pro+/Business/Enterprise. [3][4][6]
-- **Governance story:** Every Copilot call is wrapped by `@claude-flow/guidance` compile/enforce/prove/evolve, and all three hook entry points (`pre-task` → `route` → Copilot → `post-task`) fire so that cost tracking and neural learning work identically to the Claude and Codex adapters. [7][8]
+- **Governance story:** Every Copilot call is wrapped by `@claude-flow/guidance` compile/enforce/prove/evolve, and all three hook entry points (`pre-task` â†’ `route` â†’ Copilot â†’ `post-task`) fire so that cost tracking and neural learning work identically to the Claude and Codex adapters. [7][8]
 
 ---
 
@@ -33,7 +33,7 @@
 | [10] | https://github.com/github/copilot-sdk | 2026-06-03 | A | GitHub repo; MIT license, 6-language support, auth env vars |
 | [11] | https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing | 2026-06-03 | B | Pricing table; multipliers partially confirmed from changelogs |
 | [12] | https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/use-byok-models | 2026-06-03 | A | BYOK env vars, supported providers, tool-call + streaming requirement |
-| [13] | https://www.npmjs.com/package/@github/copilot-sdk | 2026-06-03 | C | npm 403 — version confirmed via search as 1.0.0-beta.12, not from registry directly |
+| [13] | https://www.npmjs.com/package/@github/copilot-sdk | 2026-06-03 | C | npm 403 â€” version confirmed via search as 1.0.0-beta.12, not from registry directly |
 | [14] | https://github.blog/changelog/2026-05-20-updates-to-available-models-in-copilot-on-web/ | 2026-06-03 | B | Web model removals; GPT-5.2-Codex, GPT-5.4 nano removed from web |
 | [15] | https://docs.github.com/en/copilot/reference/ai-models/model-comparison | 2026-06-03 | B | Model comparison table accessed; SDK model ID strings not exposed in page |
 
@@ -43,7 +43,7 @@
 
 ---
 
-## 3. The Copilot SDK — Technical Profile
+## 3. The Copilot SDK â€” Technical Profile
 
 ### 3.1 Architecture
 
@@ -51,11 +51,11 @@ The SDK follows a **client-session model** operating via JSON-RPC between the SD
 
 ```
 Your App (SDK client)
-  │  JSON-RPC over stdio
-  ▼
+  â”‚  JSON-RPC over stdio
+  â–¼
 Copilot CLI server (auto-spawned or external)
-  │  HTTPS
-  ▼
+  â”‚  HTTPS
+  â–¼
 GitHub Copilot backend (model routing, tool execution, AI credits)
 ```
 
@@ -79,13 +79,13 @@ GitHub Copilot backend (model routing, tool execution, AI credits)
 | Attribute | Value | Source |
 |-----------|-------|--------|
 | npm package | `@github/copilot-sdk` | [1][2] |
-| npm version | `1.0.0-beta.12` (latest as of 2026-06-02) | [13] — [unverified-exact, registry blocked] |
+| npm version | `1.0.0-beta.12` (latest as of 2026-06-02) | [13] â€” [unverified-exact, registry blocked] |
 | License | MIT | [10] |
 | Runtime requirement | Node.js 20+ | [1] |
 | Copilot CLI bundled | Yes (auto-bundled for Node.js, Python, .NET) | [10] |
 | Peer dependencies | Optional: `@opentelemetry/api` for tracing | [1] |
 | Install | `npm install @github/copilot-sdk tsx` | [1] |
-| Install footprint | [unverified — registry blocked] | [13] |
+| Install footprint | [unverified â€” registry blocked] | [13] |
 
 Additional language packages (not needed for RuFlo's Node.js surface): `github-copilot-sdk` (Python), `github.com/github/copilot-sdk/go`, `GitHub.Copilot.SDK` (.NET), `github-copilot-sdk` (Rust), `com.github:copilot-sdk-java` (Maven).
 
@@ -110,7 +110,7 @@ Additional language packages (not needed for RuFlo's Node.js surface): `github-c
 
 From the `/features/mcp` documentation [9]:
 
-**Architecture (CRITICAL for design):** MCP servers run **client-side** — they are separate processes spawned by the SDK, communicating via stdin/stdout for local servers or via HTTP for remote servers. The Copilot backend (github.com) does NOT host or execute MCP servers. This means RuFlo's MCP server (`npx ruflo mcp start`) runs on the user's machine and the SDK wires it in.
+**Architecture (CRITICAL for design):** MCP servers run **client-side** â€” they are separate processes spawned by the SDK, communicating via stdin/stdout for local servers or via HTTP for remote servers. The Copilot backend (github.com) does NOT host or execute MCP servers. This means RuFlo's MCP server (`npx ruflo mcp start`) runs on the user's machine and the SDK wires it in.
 
 **Tool registration shape:**
 ```typescript
@@ -141,13 +141,13 @@ mcpServers: {
 ```
 
 **Tools field semantics:**
-- `["*"]` — all tools from the MCP server are available
-- `["tool-name1", "tool-name2"]` — explicit whitelist
-- `[]` — all tools disabled
+- `["*"]` â€” all tools from the MCP server are available
+- `["tool-name1", "tool-name2"]` â€” explicit whitelist
+- `[]` â€” all tools disabled
 
-**MCP spec revision:** The GitHub documentation does not cite a specific MCP spec revision number. It references modelcontextprotocol.io generally. **[unverified — cannot confirm spec version without a versioned citation.]** The transport (stdio + HTTP) matches MCP 2024-11-05 and later drafts.
+**MCP spec revision:** The GitHub documentation does not cite a specific MCP spec revision number. It references modelcontextprotocol.io generally. **[unverified â€” cannot confirm spec version without a versioned citation.]** The transport (stdio + HTTP) matches MCP 2024-11-05 and later drafts.
 
-**Streaming tool calls:** Not mentioned in the MCP documentation. **[unverified — treat as unsupported until confirmed.]**
+**Streaming tool calls:** Not mentioned in the MCP documentation. **[unverified â€” treat as unsupported until confirmed.]**
 
 ### 3.5 Limits, Quotas, Pricing Implications
 
@@ -157,7 +157,7 @@ mcpServers: {
 | GPT-5.4 mini multiplier | 0.33x | [6] via Claude Haiku 4.5 comparable pricing |
 | GPT-5.5 multiplier | 7.5x (promotional) | [4] |
 | Claude Haiku 4.5 multiplier | 0.33x | [6][11] |
-| Rate limit headers | [unverified — not documented in SDK or CLI docs] | — |
+| Rate limit headers | [unverified â€” not documented in SDK or CLI docs] | â€” |
 | Per-seat vs per-request | Both: per-seat subscription + AI credits for premium models | [11] |
 | Free tier | Copilot Free includes base model access (GPT-5.3-Codex base) | [2] |
 | BYOK pricing | $0 AI credits (user's own API key billed by provider) | [12] |
@@ -168,7 +168,7 @@ Usage headers (for cost tracking integration) are **not documented** in the SDK.
 
 | Constraint | Finding | Source |
 |------------|---------|--------|
-| License | MIT — permissive, no redistribution restriction | [10] |
+| License | MIT â€” permissive, no redistribution restriction | [10] |
 | Terms of Service | Standard GitHub ToS applies; no explicit prohibition on 3rd-party CLI embedding found | [2] |
 | Attribution | None specified | [2][10] |
 | Telemetry | Optional OpenTelemetry only; no mandatory telemetry found | [1] |
@@ -186,10 +186,10 @@ The table below covers OpenAI GPT-family models only, as the user specifically a
 
 | Model ID (display name) | SDK model string [unverified-exact] | Provider | Status | Agent | Ask | Edit | CLI | Context Window | Tool Use | Streaming | Multiplier | RuFlo Tier |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| GPT-4.1 | `gpt-4.1` | OpenAI | Retiring 2026-06-01 | Y | Y | Y | N | [unverified] | Y | Y | 0x (deprecated) | — |
+| GPT-4.1 | `gpt-4.1` | OpenAI | Retiring 2026-06-01 | Y | Y | Y | N | [unverified] | Y | Y | 0x (deprecated) | â€” |
 | GPT-5 mini | `gpt-5-mini` [unverified] | OpenAI | GA | Y | Y | Y | Y | [unverified] | Y | Y | [unverified] | Tier 2 |
-| GPT-5.2 | `gpt-5.2` [unverified] | OpenAI | Retiring 2026-06-01 | Y | Y | Y | N | [unverified] | Y | Y | — | — |
-| GPT-5.2-Codex | `gpt-5.2-codex` [unverified] | OpenAI | Retiring 2026-06-01 | Y | Y | Y | N | [unverified] | Y | Y | — | — |
+| GPT-5.2 | `gpt-5.2` [unverified] | OpenAI | Retiring 2026-06-01 | Y | Y | Y | N | [unverified] | Y | Y | â€” | â€” |
+| GPT-5.2-Codex | `gpt-5.2-codex` [unverified] | OpenAI | Retiring 2026-06-01 | Y | Y | Y | N | [unverified] | Y | Y | â€” | â€” |
 | **GPT-5.3-Codex** | `gpt-5.3-codex` | OpenAI | **GA / LTS** (until 2027-02-04) | Y | Y | Y | Y | [unverified, 1M+ per catalog] | Y | Y | **1x** | **Tier 3 (default coder)** |
 | GPT-5.4 | `gpt-5.4` [unverified] | OpenAI | GA | Y | Y | Y | Y | [unverified] | Y | Y | [unverified] | Tier 3 |
 | GPT-5.4 mini | `gpt-5.4-mini` [unverified] | OpenAI | GA | Y | Y | Y | Y | [unverified] | Y | Y | **0.33x** | **Tier 2 (fast)** |
@@ -197,7 +197,7 @@ The table below covers OpenAI GPT-family models only, as the user specifically a
 | **GPT-5.5** | `gpt-5.5` [unverified] | OpenAI | **GA** | Y | Y | Y | Y | [unverified] | Y | Y | **7.5x** (promo) | **Tier 3 (reasoning/frontier)** |
 
 **Notes:**
-- SDK model ID strings: the string `gpt-5.3-codex` is confirmed callable via `copilot --model gpt-5.3-codex` in the CLI [3]; the pattern suggests `gpt-5.4-mini`, `gpt-5.5` etc. follow the same lowercased hyphen convention. All except `gpt-5.3-codex` are marked `[unverified-exact]` — confirm via `client.listModels()` at runtime.
+- SDK model ID strings: the string `gpt-5.3-codex` is confirmed callable via `copilot --model gpt-5.3-codex` in the CLI [3]; the pattern suggests `gpt-5.4-mini`, `gpt-5.5` etc. follow the same lowercased hyphen convention. All except `gpt-5.3-codex` are marked `[unverified-exact]` â€” confirm via `client.listModels()` at runtime.
 - GPT-5.3-Codex is the **default base model** for all Copilot Business and Enterprise since 2026-05-17, replacing GPT-4.1. It is the first Copilot LTS model, guaranteed available until 2027-02-04. [3]
 - GPT-5.5 is the frontier model (April 2026 GA), optimized for "complex, multi-step agentic coding tasks." It requires explicit admin enablement for Business/Enterprise. [4]
 - GPT-5.4 nano has no agent/ask/edit mode support in the catalog; it is excluded from the Copilot Chat UI on web as of May 2026. [6][14]
@@ -210,17 +210,17 @@ The table below covers OpenAI GPT-family models only, as the user specifically a
 RuFlo is a **governed software factory** built as a multi-package v3 monorepo under `/Users/cohen/Projects/ruflo/v3/@claude-flow/`.
 
 **Codex adapter pattern** (`/Users/cohen/Projects/ruflo/v3/@claude-flow/codex/`):
-- `package.json` — exports map with `.`, `./generators`, `./templates`, `./migrations`, `./dual-mode`, `./loop`; bin `claude-flow-codex`; peer dep on `@claude-flow/cli` (optional)
-- `src/initializer.ts` — `CodexInitializer.initialize()` creates `.agents/config.toml`, `AGENTS.md`, `.codex/`, skill files, registers MCP server via `codex mcp add ruflo`
-- `src/dual-mode/orchestrator.ts` — `DualModeOrchestrator` dispatches headless workers as `platform: 'claude' | 'codex'` via `spawn()`; shared memory via `npx ruflo@alpha memory store/search`; dependency-level parallel execution
-- `src/loop/index.ts` — `runCodexLoop()` runs iterative autonomous loops with state persistence in `.codex/loop/`
-- `src/generators/` — `generateAgentsMd()`, `generateSkillMd()`, `generateConfigToml()`
-- `src/migrations/index.ts` — `migrateFromClaudeCode()`, `analyzeClaudeMd()`, `convertSkillSyntax()` (/skill-name → $skill-name)
-- `src/validators/index.ts` — `validateAgentsMd()`, `validateSkillMd()`, `validateConfigToml()`
+- `package.json` â€” exports map with `.`, `./generators`, `./templates`, `./migrations`, `./dual-mode`, `./loop`; bin `claude-flow-codex`; peer dep on `@claude-flow/cli` (optional)
+- `src/initializer.ts` â€” `CodexInitializer.initialize()` creates `.agents/config.toml`, `AGENTS.md`, `.codex/`, skill files, registers MCP server via `codex mcp add ruflo`
+- `src/dual-mode/orchestrator.ts` â€” `DualModeOrchestrator` dispatches headless workers as `platform: 'claude' | 'codex'` via `spawn()`; shared memory via `npx ruflo@alpha memory store/search`; dependency-level parallel execution
+- `src/loop/index.ts` â€” `runCodexLoop()` runs iterative autonomous loops with state persistence in `.codex/loop/`
+- `src/generators/` â€” `generateAgentsMd()`, `generateSkillMd()`, `generateConfigToml()`
+- `src/migrations/index.ts` â€” `migrateFromClaudeCode()`, `analyzeClaudeMd()`, `convertSkillSyntax()` (/skill-name â†’ $skill-name)
+- `src/validators/index.ts` â€” `validateAgentsMd()`, `validateSkillMd()`, `validateConfigToml()`
 
 **Governance control plane** (`/Users/cohen/Projects/ruflo/v3/@claude-flow/guidance/src/index.ts`):
-- `GuidanceControlPlane` orchestrates: `GuidanceCompiler` (CLAUDE.md → `PolicyBundle`), `ShardRetriever` (HNSW shard lookup), `EnforcementGates` (hook gates: destructive ops, tool allowlist, diff size, secrets), `RunLedger` (run logging + evaluators), `OptimizerLoop` (rule evolution via A/B), `HeadlessRunner` (automated testing)
-- The four verbs are: **compile** (CLAUDE.md → constitution + shards), **enforce** (gate every tool call), **prove** (ledger + proof chain), **evolve** (optimizer promotes local rules to root)
+- `GuidanceControlPlane` orchestrates: `GuidanceCompiler` (CLAUDE.md â†’ `PolicyBundle`), `ShardRetriever` (HNSW shard lookup), `EnforcementGates` (hook gates: destructive ops, tool allowlist, diff size, secrets), `RunLedger` (run logging + evaluators), `OptimizerLoop` (rule evolution via A/B), `HeadlessRunner` (automated testing)
+- The four verbs are: **compile** (CLAUDE.md â†’ constitution + shards), **enforce** (gate every tool call), **prove** (ledger + proof chain), **evolve** (optimizer promotes local rules to root)
 
 **Dual-mode orchestrator** (`DualModeOrchestrator`): spawns headless `claude -p` and `codex exec` workers in dependency-level groups, coordinates via shared AgentDB memory namespace `collaboration`.
 
@@ -236,59 +236,59 @@ RuFlo is a **governed software factory** built as a multi-package v3 monorepo un
 
 ```
 v3/@claude-flow/copilot/
-├── package.json                  # mirrors codex exactly (see 6.2)
-├── tsconfig.json                 # same as codex tsconfig
-├── vitest.config.ts              # same as codex
-├── README.md                     # (only if user requests)
-├── AGENTS.md                     # Copilot-flavored AGENTS.md for the package itself
-├── src/
-│   ├── index.ts                  # mirrors codex/src/index.ts re-export shape
-│   ├── types.ts                  # all Copilot-specific types (mirrors codex types.ts)
-│   ├── initializer.ts            # CopilotInitializer + initializeCopilotProject
-│   ├── cli.ts                    # claude-flow-copilot bin entry (mirrors codex cli.ts)
-│   │
-│   ├── client/                   # NEW vs codex — wraps @github/copilot-sdk
-│   │   ├── auth.ts               # credential resolution + token cache
-│   │   ├── chat.ts               # chat completion with streaming
-│   │   ├── tools.ts              # tool/function calling adapter
-│   │   └── models.ts             # model catalog + tier mapping + getOptimalModel()
-│   │
-│   ├── mcp/                      # NEW vs codex — bidirectional MCP bridge
-│   │   ├── register.ts           # registers ruflo MCP server WITH Copilot SDK session
-│   │   └── bridge.ts             # bridges Copilot MCP tool calls → ruflo MCP tools
-│   │
-│   ├── dual-mode/                # extends DualModeOrchestrator to tri-mode
-│   │   ├── index.ts              # re-exports + MultiModeWorkerConfig
-│   │   └── cli.ts                # `claude-flow-copilot dual` subcommand
-│   │
-│   ├── loop/                     # /loop runner for Copilot platform
-│   │   ├── index.ts              # runCopilotLoop() — mirrors runCodexLoop()
-│   │   └── cli.ts                # loop subcommand
-│   │
-│   ├── generators/
-│   │   ├── agents-md.ts          # Copilot-flavored AGENTS.md (no $skill syntax needed)
-│   │   ├── config-toml.ts        # Copilot config (model defaults, permission handler)
-│   │   └── skill-md.ts           # mirrors codex skill-md.ts
-│   │
-│   ├── templates/
-│   │   └── index.ts              # mirrors codex templates/index.ts
-│   │
-│   ├── migrations/
-│   │   └── index.ts              # migrateFromClaudeCode + migrateFromCodex (new)
-│   │
-│   └── validators/
-│       └── index.ts              # validateAgentsMd, validateSkillMd, validateConfig
-│
-└── tests/
-    ├── client/                   # mock @github/copilot-sdk
-    ├── mcp/                      # mock ruflo MCP server
-    ├── dual-mode/                # multi-mode orchestrator integration
-    └── e2e/                      # gated behind COPILOT_E2E=1
+â”œâ”€â”€ package.json                  # mirrors codex exactly (see 6.2)
+â”œâ”€â”€ tsconfig.json                 # same as codex tsconfig
+â”œâ”€â”€ vitest.config.ts              # same as codex
+â”œâ”€â”€ README.md                     # (only if user requests)
+â”œâ”€â”€ AGENTS.md                     # Copilot-flavored AGENTS.md for the package itself
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ index.ts                  # mirrors codex/src/index.ts re-export shape
+â”‚   â”œâ”€â”€ types.ts                  # all Copilot-specific types (mirrors codex types.ts)
+â”‚   â”œâ”€â”€ initializer.ts            # CopilotInitializer + initializeCopilotProject
+â”‚   â”œâ”€â”€ cli.ts                    # claude-flow-copilot bin entry (mirrors codex cli.ts)
+â”‚   â”‚
+â”‚   â”œâ”€â”€ client/                   # NEW vs codex â€” wraps @github/copilot-sdk
+â”‚   â”‚   â”œâ”€â”€ auth.ts               # credential resolution + token cache
+â”‚   â”‚   â”œâ”€â”€ chat.ts               # chat completion with streaming
+â”‚   â”‚   â”œâ”€â”€ tools.ts              # tool/function calling adapter
+â”‚   â”‚   â””â”€â”€ models.ts             # model catalog + tier mapping + getOptimalModel()
+â”‚   â”‚
+â”‚   â”œâ”€â”€ mcp/                      # NEW vs codex â€” bidirectional MCP bridge
+â”‚   â”‚   â”œâ”€â”€ register.ts           # registers ruflo MCP server WITH Copilot SDK session
+â”‚   â”‚   â””â”€â”€ bridge.ts             # bridges Copilot MCP tool calls â†’ ruflo MCP tools
+â”‚   â”‚
+â”‚   â”œâ”€â”€ dual-mode/                # extends DualModeOrchestrator to tri-mode
+â”‚   â”‚   â”œâ”€â”€ index.ts              # re-exports + MultiModeWorkerConfig
+â”‚   â”‚   â””â”€â”€ cli.ts                # `claude-flow-copilot dual` subcommand
+â”‚   â”‚
+â”‚   â”œâ”€â”€ loop/                     # /loop runner for Copilot platform
+â”‚   â”‚   â”œâ”€â”€ index.ts              # runCopilotLoop() â€” mirrors runCodexLoop()
+â”‚   â”‚   â””â”€â”€ cli.ts                # loop subcommand
+â”‚   â”‚
+â”‚   â”œâ”€â”€ generators/
+â”‚   â”‚   â”œâ”€â”€ agents-md.ts          # Copilot-flavored AGENTS.md (no $skill syntax needed)
+â”‚   â”‚   â”œâ”€â”€ config-toml.ts        # Copilot config (model defaults, permission handler)
+â”‚   â”‚   â””â”€â”€ skill-md.ts           # mirrors codex skill-md.ts
+â”‚   â”‚
+â”‚   â”œâ”€â”€ templates/
+â”‚   â”‚   â””â”€â”€ index.ts              # mirrors codex templates/index.ts
+â”‚   â”‚
+â”‚   â”œâ”€â”€ migrations/
+â”‚   â”‚   â””â”€â”€ index.ts              # migrateFromClaudeCode + migrateFromCodex (new)
+â”‚   â”‚
+â”‚   â””â”€â”€ validators/
+â”‚       â””â”€â”€ index.ts              # validateAgentsMd, validateSkillMd, validateConfig
+â”‚
+â””â”€â”€ tests/
+    â”œâ”€â”€ client/                   # mock @github/copilot-sdk
+    â”œâ”€â”€ mcp/                      # mock ruflo MCP server
+    â”œâ”€â”€ dual-mode/                # multi-mode orchestrator integration
+    â””â”€â”€ e2e/                      # gated behind COPILOT_E2E=1
 ```
 
 **Justification for net-new subfolders:**
-- `client/` — codex has no equivalent because Codex CLI is invoked as a subprocess with no JS SDK. Copilot SDK provides a proper TypeScript client library that must be wrapped for RuFlo's governance and hook wiring.
-- `mcp/` — codex's MCP registration is a single `execSync('codex mcp add ruflo ...')` call inside `initializer.ts`. Copilot SDK has a richer bidirectional MCP model (SDK exposes tools TO Copilot; Copilot calls them during sessions) requiring a dedicated bridge module.
+- `client/` â€” codex has no equivalent because Codex CLI is invoked as a subprocess with no JS SDK. Copilot SDK provides a proper TypeScript client library that must be wrapped for RuFlo's governance and hook wiring.
+- `mcp/` â€” codex's MCP registration is a single `execSync('codex mcp add ruflo ...')` call inside `initializer.ts`. Copilot SDK has a richer bidirectional MCP model (SDK exposes tools TO Copilot; Copilot calls them during sessions) requiring a dedicated bridge module.
 - Everything else (`dual-mode/`, `loop/`, `generators/`, `templates/`, `migrations/`, `validators/`) mirrors codex exactly for structural consistency.
 
 ### 6.2 package.json Shape
@@ -297,7 +297,7 @@ v3/@claude-flow/copilot/
 {
   "name": "@claude-flow/copilot",
   "version": "3.8.0",
-  "description": "GitHub Copilot SDK integration for RuFlo (claude-flow) — Copilot platform adapter",
+  "description": "GitHub Copilot SDK integration for RuFlo (claude-flow) â€” Copilot platform adapter",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -360,11 +360,11 @@ v3/@claude-flow/copilot/
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ruvnet/ruflo.git",
+    "url": "https://github.com/pwnapplehat/ruflo.git",
     "directory": "v3/@claude-flow/copilot"
   },
-  "homepage": "https://github.com/ruvnet/ruflo#readme",
-  "bugs": { "url": "https://github.com/ruvnet/ruflo/issues" },
+  "homepage": "https://github.com/pwnapplehat/ruflo#readme",
+  "bugs": { "url": "https://github.com/pwnapplehat/ruflo/issues" },
   "engines": { "node": ">=20" },
   "dependencies": {
     "@github/copilot-sdk": "^1.0.0",
@@ -511,7 +511,7 @@ export const PACKAGE_INFO = {
   version: VERSION,
   description: 'GitHub Copilot SDK integration for Claude Flow / RuFlo',
   platform: 'copilot',
-  repository: 'https://github.com/ruvnet/ruflo',
+  repository: 'https://github.com/pwnapplehat/ruflo',
 } as const;
 
 export default { VERSION, PACKAGE_INFO };
@@ -528,7 +528,7 @@ export default { VERSION, PACKAGE_INFO };
  export interface WorkerConfig {
    id: string;
 -  platform: 'claude' | 'codex';
-+  platform: 'claude' | 'codex' | 'copilot';  // ← ADD copilot
++  platform: 'claude' | 'codex' | 'copilot';  // â† ADD copilot
    role: string;
    prompt: string;
    model?: string;
@@ -597,14 +597,14 @@ export const TriModeCollaborationTemplates = {
   featureDevelopment: (feature: string): MultiModeWorkerConfig[] => [
     {
       id: 'architect',
-      platform: 'claude',          // 🔵 Claude: architecture reasoning
+      platform: 'claude',          // ðŸ”µ Claude: architecture reasoning
       role: 'architect',
       prompt: `Design the architecture for: ${feature}. Define components, interfaces, data flow.`,
       maxTurns: 10,
     },
     {
       id: 'coder',
-      platform: 'codex',           // 🟢 Codex: bulk implementation
+      platform: 'codex',           // ðŸŸ¢ Codex: bulk implementation
       role: 'coder',
       prompt: `Implement the feature based on the architecture. Write clean, typed code.`,
       dependsOn: ['architect'],
@@ -612,7 +612,7 @@ export const TriModeCollaborationTemplates = {
     },
     {
       id: 'reviewer',
-      platform: 'copilot',         // 🟠 Copilot (GPT-5.3-Codex): code review
+      platform: 'copilot',         // ðŸŸ  Copilot (GPT-5.3-Codex): code review
       role: 'reviewer',
       prompt: `Review the code and tests for quality, security, and best practices.`,
       dependsOn: ['coder'],
@@ -620,7 +620,7 @@ export const TriModeCollaborationTemplates = {
     },
     {
       id: 'tester',
-      platform: 'claude',          // 🔵 Claude: test strategy
+      platform: 'claude',          // ðŸ”µ Claude: test strategy
       role: 'tester',
       prompt: `Write comprehensive tests. Target 80% coverage.`,
       dependsOn: ['reviewer'],
@@ -631,7 +631,7 @@ export const TriModeCollaborationTemplates = {
   securityAudit: (target: string): MultiModeWorkerConfig[] => [
     {
       id: 'scanner',
-      platform: 'copilot',         // 🟠 Copilot GPT-5.5: deep security analysis
+      platform: 'copilot',         // ðŸŸ  Copilot GPT-5.5: deep security analysis
       role: 'security-scanner',
       prompt: `Scan ${target} for security vulnerabilities. Check OWASP Top 10.`,
       copilotModel: 'gpt-5.5',    // frontier model for security reasoning
@@ -639,7 +639,7 @@ export const TriModeCollaborationTemplates = {
     },
     {
       id: 'fixer',
-      platform: 'codex',           // 🟢 Codex: generate fixes
+      platform: 'codex',           // ðŸŸ¢ Codex: generate fixes
       role: 'security-fixer',
       prompt: `Generate fixes for identified vulnerabilities.`,
       dependsOn: ['scanner'],
@@ -661,7 +661,7 @@ Every Copilot call in `@claude-flow/copilot` goes through the four governance ve
 
 **Evolve:** After enough run events accumulate, `OptimizerLoop.runCycle()` proposes rule changes (A/B tested) and promotes winning rules from `CLAUDE.local.md` to `CLAUDE.md`. [7]
 
-**Hook wiring — the pre/post lifecycle:**
+**Hook wiring â€” the pre/post lifecycle:**
 
 ```typescript
 // In CopilotClient.runGoverned() (src/client/chat.ts):
@@ -670,7 +670,7 @@ async runGoverned(prompt: string, taskId: string): Promise<string> {
   await execa('npx', ['@claude-flow/cli@latest', 'hooks', 'pre-task',
     '--description', prompt, '--coordinate-swarm']);
 
-  // 2. route hook — get model recommendation
+  // 2. route hook â€” get model recommendation
   const routeResult = await execa('npx', ['@claude-flow/cli@latest', 'hooks', 'route',
     '--task', prompt, '--context', 'copilot']);
   const model = extractModelFromRoute(routeResult.stdout) ?? TIER_DEFAULTS.tier3;
@@ -709,7 +709,7 @@ The 3-tier routing table updated for the Copilot adapter:
 | **3a** | Copilot GPT-5.3-Codex | 2-5s | 1x credits | `gpt-5.3-codex` | Architecture, code generation, security (>30%) |
 | **3b** | Copilot GPT-5.5 | 5-15s | 7.5x credits | `gpt-5.5` | Complex reasoning, frontier tasks (explicit opt-in) |
 
-**`src/client/models.ts` — `getOptimalModel()`:**
+**`src/client/models.ts` â€” `getOptimalModel()`:**
 
 ```typescript
 export const COPILOT_MODEL_CATALOG = {
@@ -755,14 +755,14 @@ export function getOptimalModel(
 import { TokenCache } from '@claude-flow/security';  // existing module
 
 export async function resolveCredential(): Promise<string | null> {
-  // 1. Check environment (COPILOT_GITHUB_TOKEN, GH_TOKEN, GITHUB_TOKEN) — SDK picks these up natively
+  // 1. Check environment (COPILOT_GITHUB_TOKEN, GH_TOKEN, GITHUB_TOKEN) â€” SDK picks these up natively
   // 2. Verify CLI is authenticated
   const { execa } = await import('execa');
   try {
     await execa('gh', ['auth', 'status'], { stdio: 'pipe' });
     return 'gh-auth';  // CLI is authenticated; SDK will use stored credential
   } catch {
-    return null;  // Not authenticated — surface error to user
+    return null;  // Not authenticated â€” surface error to user
   }
 }
 
@@ -778,11 +778,11 @@ export async function clearCachedToken(): Promise<void> {
 }
 ```
 
-**Note on `@claude-flow/security` TokenCache:** The module exists at `/Users/cohen/Projects/ruflo/v3/@claude-flow/security/` [5]. Whether it exports a `TokenCache` class is [unverified — not read in this session]. If it does not exist, this becomes a follow-up: implement token handle storage using the existing `InputValidator` + `PathValidator` primitives, or use Node's keychain via `keytar`. The constraint from user memory is absolute: never print or persist the raw credential value. [8]
+**Note on `@claude-flow/security` TokenCache:** The module exists at `/Users/cohen/Projects/ruflo/v3/@claude-flow/security/` [5]. Whether it exports a `TokenCache` class is [unverified â€” not read in this session]. If it does not exist, this becomes a follow-up: implement token handle storage using the existing `InputValidator` + `PathValidator` primitives, or use Node's keychain via `keytar`. The constraint from user memory is absolute: never print or persist the raw credential value. [8]
 
 ### 6.8 MCP Wiring (Both Directions)
 
-**Direction A — Copilot calls INTO RuFlo MCP (tools available to Copilot agents):**
+**Direction A â€” Copilot calls INTO RuFlo MCP (tools available to Copilot agents):**
 
 This is the primary direction. When a Copilot session is created, RuFlo's MCP server is registered so that Copilot agents can call `memory_store`, `memory_search`, `swarm_init`, `hooks_route`, etc. directly.
 
@@ -822,7 +822,7 @@ const session = await client.createSession({
 });
 ```
 
-**Direction B — RuFlo calls Copilot SDK from within governed workflows:**
+**Direction B â€” RuFlo calls Copilot SDK from within governed workflows:**
 
 This is the `CopilotClient.runGoverned()` path shown in Section 6.5. The SDK spawns the Copilot CLI, sends the compiled prompt, and returns the response. All governance hooks fire. The call is synchronous from RuFlo's perspective.
 
@@ -836,28 +836,28 @@ This is the `CopilotClient.runGoverned()` path shown in Section 6.5. The SDK spa
 
 ```
 tests/
-├── client/
-│   ├── auth.test.ts          # mock gh CLI + env vars; test resolveCredential()
-│   ├── chat.test.ts          # mock @github/copilot-sdk CopilotClient; test streaming + non-streaming
-│   ├── models.test.ts        # unit test getOptimalModel() at complexity boundaries
-│   └── tools.test.ts         # test tool registration shape against SDK contract
-│
-├── mcp/
-│   ├── register.test.ts      # verify RufloMcpServerConfig shape is valid SDK input
-│   └── bridge.test.ts        # mock ruflo MCP server; test tool call routing
-│
-├── dual-mode/
-│   └── orchestrator.test.ts  # mock claude + codex + copilot workers; test dependency levels
-│
-├── generators/
-│   ├── agents-md.test.ts     # snapshot tests for generated AGENTS.md
-│   └── config-toml.test.ts   # snapshot tests for generated config
-│
-├── migrations/
-│   └── migration.test.ts     # test migrateFromClaudeCode + migrateFromCodex
-│
-└── e2e/
-    └── copilot-session.test.ts  # COPILOT_E2E=1 required; real SDK call; costs AI credits
+â”œâ”€â”€ client/
+â”‚   â”œâ”€â”€ auth.test.ts          # mock gh CLI + env vars; test resolveCredential()
+â”‚   â”œâ”€â”€ chat.test.ts          # mock @github/copilot-sdk CopilotClient; test streaming + non-streaming
+â”‚   â”œâ”€â”€ models.test.ts        # unit test getOptimalModel() at complexity boundaries
+â”‚   â””â”€â”€ tools.test.ts         # test tool registration shape against SDK contract
+â”‚
+â”œâ”€â”€ mcp/
+â”‚   â”œâ”€â”€ register.test.ts      # verify RufloMcpServerConfig shape is valid SDK input
+â”‚   â””â”€â”€ bridge.test.ts        # mock ruflo MCP server; test tool call routing
+â”‚
+â”œâ”€â”€ dual-mode/
+â”‚   â””â”€â”€ orchestrator.test.ts  # mock claude + codex + copilot workers; test dependency levels
+â”‚
+â”œâ”€â”€ generators/
+â”‚   â”œâ”€â”€ agents-md.test.ts     # snapshot tests for generated AGENTS.md
+â”‚   â””â”€â”€ config-toml.test.ts   # snapshot tests for generated config
+â”‚
+â”œâ”€â”€ migrations/
+â”‚   â””â”€â”€ migration.test.ts     # test migrateFromClaudeCode + migrateFromCodex
+â”‚
+â””â”€â”€ e2e/
+    â””â”€â”€ copilot-session.test.ts  # COPILOT_E2E=1 required; real SDK call; costs AI credits
 ```
 
 **Mock pattern for `@github/copilot-sdk`** (mirrors codex mock of `claude` subprocess):
@@ -932,7 +932,7 @@ done
 ```bash
 git tag v3.8.0 main
 git push origin v3.8.0
-gh release create v3.8.0 --title "v3.8.0 — @claude-flow/copilot: GitHub Copilot SDK integration + tri-mode collaboration"
+gh release create v3.8.0 --title "v3.8.0 â€” @claude-flow/copilot: GitHub Copilot SDK integration + tri-mode collaboration"
 ```
 
 ---
@@ -945,7 +945,7 @@ gh release create v3.8.0 --title "v3.8.0 — @claude-flow/copilot: GitHub Copilo
 |---------------------|-------------------|-----------------|
 | `CLAUDE.md` | `AGENTS.md` | Content is portable; no skill-syntax change needed (Copilot doesn't use `$` or `/` skill syntax) |
 | `CLAUDE.local.md` | `.copilot/AGENTS.override.md` | Direct copy |
-| `settings.json` | `.copilot/config.json` | JSON → JSON; model field changes to `gpt-5.3-codex` |
+| `settings.json` | `.copilot/config.json` | JSON â†’ JSON; model field changes to `gpt-5.3-codex` |
 | `/skill-name` | No direct equivalent | Skills are MCP tools in Copilot; generate a tool registration for each |
 | `hooks system` | MCP tools + session events | Hook-equivalent behavior via `session.on('session.idle', ...)` |
 | MCP servers | `mcpServers` in session config | Configuration format changes; same underlying functionality |
@@ -953,15 +953,15 @@ gh release create v3.8.0 --title "v3.8.0 — @claude-flow/copilot: GitHub Copilo
 
 **`migrateFromClaudeCode()` in `src/migrations/index.ts`** follows the same structure as the codex migration: parse CLAUDE.md, extract sections/skills/MCP servers/settings, generate AGENTS.md + config.json + MCP tool stubs.
 
-### 8.2 From Codex to Copilot (new — not in codex package)
+### 8.2 From Codex to Copilot (new â€” not in codex package)
 
 | Codex artifact | Copilot equivalent | Delta |
 |---|---|---|
 | `AGENTS.md` | `AGENTS.md` | Content compatible; no change needed |
-| `.agents/config.toml` | `.copilot/config.json` | TOML → JSON; `model = "gpt-5.3-codex"`, `approval_policy` → custom `permissionHandler` |
+| `.agents/config.toml` | `.copilot/config.json` | TOML â†’ JSON; `model = "gpt-5.3-codex"`, `approval_policy` â†’ custom `permissionHandler` |
 | `$skill-name` | MCP tool call | Each skill becomes a registered MCP tool; `defineCopilotTool(skillName, ...)` |
 | `[mcp_servers.ruflo]` | `mcpServers.ruflo` in session config | Same underlying ruflo MCP server; config syntax changes from TOML table to JS object |
-| `.codex/loop/` state dir | `.copilot/loop/` state dir | Same state schema; `mode: 'codex'` → `mode: 'copilot'` |
+| `.codex/loop/` state dir | `.copilot/loop/` state dir | Same state schema; `mode: 'codex'` â†’ `mode: 'copilot'` |
 | `codex exec` subprocess | SDK `session.sendAndWait()` | No subprocess; direct SDK call (latency improvement expected) |
 | `approval_policy: "never"` | `permissionHandler: 'approve-all'` | Semantic equivalent; implementation differs |
 | `sandbox_mode: "workspace-write"` | No direct SDK equivalent | Copilot CLI sandbox controls via CLI flags, not SDK session config |
@@ -991,7 +991,7 @@ export async function migrateFromCodex(options: MigrationOptions): Promise<Migra
 
 | # | Risk / Question | Severity | What Resolves It |
 |---|----------------|----------|-----------------|
-| 1 | **Copilot ToS on programmatic 3rd-party CLI access** | High | The GA announcement explicitly lists 3rd-party tool embedding as an intended use case. MIT license confirmed. No ToS prohibition found. **Risk is LOW** — but read the full GitHub ToS (`github.com/site/terms`) before shipping. |
+| 1 | **Copilot ToS on programmatic 3rd-party CLI access** | High | The GA announcement explicitly lists 3rd-party tool embedding as an intended use case. MIT license confirmed. No ToS prohibition found. **Risk is LOW** â€” but read the full GitHub ToS (`github.com/site/terms`) before shipping. |
 | 2 | **Streaming tool calls** | Medium | Not mentioned in MCP docs. The `session.on('assistant.message_delta')` event streams text, but whether tool-call invocations are streamed (delta events per tool call) is undocumented. If not supported, all tool calls are synchronous which impacts latency. Test against real SDK. |
 | 3 | **Model picker: per-request or per-session?** | Medium | The `model` field is set at session creation (`createSession({ model: '...' })`). This implies per-session, not per-request. If a workflow needs to switch models mid-session (e.g., Tier 2 for simple subtasks, Tier 3 for complex ones), a new session must be created per tier switch. |
 | 4 | **Client-side vs server-side MCP (ANSWERED)** | Resolved | MCP servers run client-side as local subprocesses or remote HTTP. The Copilot backend does NOT execute MCP tools. RuFlo's MCP server safely accesses local AgentDB and hooks. [9] |
@@ -1009,7 +1009,7 @@ export async function migrateFromCodex(options: MigrationOptions): Promise<Migra
 
 2. **Confirm npm package version:** Run `npm view @github/copilot-sdk` in a clean environment to get exact version, install size, and full dependency list. Pin `@github/copilot-sdk` to exact major in `package.json` (`"@github/copilot-sdk": "^1.0.0"`).
 
-3. **Scaffold `v3/@claude-flow/copilot/` skeleton:** Create `package.json`, `tsconfig.json`, `vitest.config.ts` from codex counterparts. Create empty `src/` subdirectory tree. No implementation yet — just structure so `npm run build` succeeds with empty stubs.
+3. **Scaffold `v3/@claude-flow/copilot/` skeleton:** Create `package.json`, `tsconfig.json`, `vitest.config.ts` from codex counterparts. Create empty `src/` subdirectory tree. No implementation yet â€” just structure so `npm run build` succeeds with empty stubs.
 
 4. **Implement `src/client/models.ts`** first (no external dependencies, pure logic). Write unit tests for `getOptimalModel()`. Confirm model ID strings (`gpt-5.3-codex`, `gpt-5.4-mini`, `gpt-5.5`) against a live `client.listModels()` call once the SDK is installed.
 
@@ -1023,7 +1023,7 @@ export async function migrateFromCodex(options: MigrationOptions): Promise<Migra
 
 9. **Implement `src/initializer.ts` (CopilotInitializer)**. Mirror `CodexInitializer` exactly, replacing `codex mcp add` with the SDK session registration. Add `--copilot` flag to `@claude-flow/cli` `init` command.
 
-10. **Publish `@claude-flow/copilot@3.8.0`** following the three-package publishing protocol (cli → claude-flow → ruflo). Update all dist-tags. Create GitHub release `v3.8.0`. Verify with `npx ruflo init --copilot` in a fresh directory.
+10. **Publish `@claude-flow/copilot@3.8.0`** following the three-package publishing protocol (cli â†’ claude-flow â†’ ruflo). Update all dist-tags. Create GitHub release `v3.8.0`. Verify with `npx ruflo init --copilot` in a fresh directory.
 
 ---
 

@@ -1,12 +1,12 @@
 {
   "name": "ruflo-core",
-  "description": "Foundation plugin — registers the ruflo MCP server (300+ tools across memory/agentdb/embeddings/hooks/aidefence/neural/autopilot/browser/agent/swarm), provides 4 generalist agents (coder/researcher/reviewer/witness-curator), 4 first-run skills (discover-plugins/init-project/ruflo-doctor/witness), and a curated plugin-discovery catalog",
+  "description": "Foundation plugin â€” registers the ruflo MCP server (300+ tools across memory/agentdb/embeddings/hooks/aidefence/neural/autopilot/browser/agent/swarm), provides 4 generalist agents (coder/researcher/reviewer/witness-curator), 4 first-run skills (discover-plugins/init-project/ruflo-doctor/witness), and a curated plugin-discovery catalog",
   "version": "0.2.2",
   "author": {
     "name": "ruvnet",
     "url": "https://github.com/ruvnet"
   },
-  "homepage": "https://github.com/ruvnet/ruflo",
+  "homepage": "https://github.com/pwnapplehat/ruflo",
   "license": "MIT",
   "keywords": [
     "ruflo",

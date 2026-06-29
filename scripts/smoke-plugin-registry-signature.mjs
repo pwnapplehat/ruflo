@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * CWE-347 regression smoke — plugin registry Ed25519 verification.
+ * CWE-347 regression smoke â€” plugin registry Ed25519 verification.
  *
- * Reference: ruvnet/ruflo PR #1922 / aaronjmars's disclosure.
+ * Reference: pwnapplehat/ruflo PR #1922 / aaronjmars's disclosure.
  *
  * The historical bug: `verifyRegistrySignature` in
  * v3/@claude-flow/cli/src/plugins/store/discovery.ts was a stub that
@@ -11,12 +11,12 @@
  * on failure and continued to use the unverified registry. With
  * `requireVerification: true` (the default), a network adversary on
  * the path to an IPFS gateway could swap the served registry and
- * still pass verification → user installs attacker-controlled
+ * still pass verification â†’ user installs attacker-controlled
  * plugin tarballs with filesystem+network+hooks permissions.
  *
  * This smoke locks in the fix on two axes:
  *
- *   [1/3] STATIC CONTRACT — the source file must:
+ *   [1/3] STATIC CONTRACT â€” the source file must:
  *         - import `verifyEd25519Signature` from `transfer/ipfs/client.ts`
  *         - call it from the `verifyRegistrySignature` private method
  *         - strip BOTH `registrySignature` AND `registryPublicKey` from
@@ -26,18 +26,18 @@
  *         - the call site must `await` the verifier AND fail-closed
  *           (return demo registry / not just `console.warn`)
  *
- *   [2/3] CRYPTO ROUND-TRIP — using the exact same Ed25519 scheme as
+ *   [2/3] CRYPTO ROUND-TRIP â€” using the exact same Ed25519 scheme as
  *         `signRegistry()` in
  *         v3/@claude-flow/cli/scripts/publish-registry.ts:127-151:
  *         - signed fixture verifies
  *         - mutated registry body fails
  *         - empty signature fails
  *         - empty pubkey fails
- *         - served `registryPublicKey` ≠ trusted pubkey → still pinned
+ *         - served `registryPublicKey` â‰  trusted pubkey â†’ still pinned
  *           to trusted pubkey (this is the "swap the served key too"
  *           scenario the original report calls out)
  *
- *   [3/3] CALL-SITE BYTE — the call site must contain `requireVerification`
+ *   [3/3] CALL-SITE BYTE â€” the call site must contain `requireVerification`
  *         AND `await this.verifyRegistrySignature` AND a `return` (the
  *         fail-closed branch). A future regression that drops `await`
  *         or that reverts to plain `console.warn` will be caught here.
@@ -59,12 +59,12 @@ let passed = 0;
 let failed = 0;
 
 function ok(msg) {
-  console.log(`  ✓ ${msg}`);
+  console.log(`  âœ“ ${msg}`);
   passed++;
 }
 
 function fail(msg, detail) {
-  console.error(`  ✗ ${msg}`);
+  console.error(`  âœ— ${msg}`);
   if (detail) console.error(`    ${detail}`);
   failed++;
 }
@@ -119,7 +119,7 @@ if (body) {
   } else {
     fail(
       'verifyRegistrySignature must JSON.stringify the stripped registry',
-      'the signer uses plain JSON.stringify (no whitespace, no sort) — the verifier must match',
+      'the signer uses plain JSON.stringify (no whitespace, no sort) â€” the verifier must match',
     );
   }
   // Verifier must call verifyEd25519Signature with `expectedPublicKey` as the
@@ -131,7 +131,7 @@ if (body) {
   } else {
     fail(
       'verifier must pin to expectedPublicKey (caller arg) not registry.registryPublicKey',
-      'pinning to the served field defeats the whole verification — attacker can swap it',
+      'pinning to the served field defeats the whole verification â€” attacker can swap it',
     );
   }
 } else {
@@ -143,7 +143,7 @@ if (body) {
 if (/registry\.registryPublicKey\.startsWith\s*\(/.test(src)) {
   fail(
     'old stub pattern still present (.startsWith on registryPublicKey)',
-    'the prefix-match stub returned true for any "ed25519:*" served key — CWE-347',
+    'the prefix-match stub returned true for any "ed25519:*" served key â€” CWE-347',
   );
 } else {
   ok('old prefix-match stub is gone');
@@ -156,7 +156,7 @@ try {
   ed = await import('@noble/ed25519');
 } catch (err) {
   fail(
-    '@noble/ed25519 not installed — run `npm install` at repo root',
+    '@noble/ed25519 not installed â€” run `npm install` at repo root',
     err.message,
   );
   process.exit(1);
@@ -234,7 +234,7 @@ tampered.plugins[0].id = '@evil/swapped-plugin';
 if (!(await verifyFixture(tampered, trustedPubKeyHex))) {
   ok('tampered registry body fails verification');
 } else {
-  fail('tampered body verified — canonicalization is broken');
+  fail('tampered body verified â€” canonicalization is broken');
 }
 
 // (c) empty signature fails
@@ -266,13 +266,13 @@ if (await verifyFixture(swappedServedKey, trustedPubKeyHex)) {
   fail('verifier should pin to trusted pubkey regardless of served field');
 }
 
-// (f) flipping the trusted pubkey to a different one fails — proves we're
+// (f) flipping the trusted pubkey to a different one fails â€” proves we're
 //     actually using the pin, not accepting any key.
 const wrongTrusted = `ed25519:0000000000000000000000000000000000000000000000000000000000000000`;
 if (!(await verifyFixture(signed, wrongTrusted))) {
   ok('wrong trusted pubkey fails (pin is real, not a no-op)');
 } else {
-  fail('wrong trusted pubkey verified — pin is being ignored');
+  fail('wrong trusted pubkey verified â€” pin is being ignored');
 }
 
 console.log('\n[3/3] Call-site byte check on discovery.ts');
@@ -307,4 +307,4 @@ if (failed > 0) {
   console.error(`FAIL: ${passed} passed, ${failed} failed`);
   process.exit(1);
 }
-console.log(`OK: ${passed} checks passed — CWE-347 fix is locked in`);
+console.log(`OK: ${passed} checks passed â€” CWE-347 fix is locked in`);

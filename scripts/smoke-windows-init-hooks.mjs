@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Smoke test for ruvnet/ruflo#2132 â€” Windows-compatible init hook generation.
+ * Smoke test for pwnapplehat/ruflo#2132 Ã¢â‚¬â€ Windows-compatible init hook generation.
  *
  * Verifies that `ruflo init` generates a .cursor/hooks.json containing
  * node-based hook commands (no /bin/bash, no POSIX pipelines), and that the
@@ -59,12 +59,12 @@ const result = spawnSync(
       FORCE_COLOR: '0',
     },
     encoding: 'utf8',
-    // iter 123 â†’ 131 â€” bumped from 180s to 300s. macos-latest observed
+    // iter 123 Ã¢â€ â€™ 131 Ã¢â‚¬â€ bumped from 180s to 300s. macos-latest observed
     // running exactly 180s before the timer fired (CI cold ONNX download
     // + agentic-flow init + MCP server spawn). 300s leaves room for the
     // smoke's assertion phase under the job's 10-min cap.
     timeout: 300_000,
-    // Don't fail if the command exits non-zero â€” init may partially succeed
+    // Don't fail if the command exits non-zero Ã¢â‚¬â€ init may partially succeed
   }
 );
 

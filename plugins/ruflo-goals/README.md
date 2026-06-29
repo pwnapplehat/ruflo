@@ -5,7 +5,7 @@ Long-horizon goal planning, deep research orchestration, and adaptive replanning
 ## Install
 
 ```
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 /plugin install ruflo-goals@ruflo
 ```
 
@@ -56,7 +56,7 @@ This plugin uses six AgentDB namespaces. They predate the namespace convention f
 
 | Legacy (current) | Canonical (forward) | Status |
 |------------------|---------------------|--------|
-| `adr` | `adr-patterns` (owned by ruflo-adr) | Defer to canonical owner — don't write here from this plugin |
+| `adr` | `adr-patterns` (owned by ruflo-adr) | Defer to canonical owner â€” don't write here from this plugin |
 | `dossier` | `dossier` | Documented base-name exception (cf. `federation`) |
 | `research` | `goals-research` | Legacy reads + new writes pending data-portability ADR |
 | `research-sources` | `goals-research-sources` | Legacy reads + new writes pending |
@@ -69,7 +69,7 @@ Reserved namespaces (`pattern`, `claude-memories`, `default`) MUST NOT be shadow
 
 ## Dossier-investigator (ADR-099)
 
-The `dossier-investigator` agent + `dossier-collect` skill implement [ADR-099](../../v3/docs/adr/ADR-099-dossier-investigator-recursive-parallel-research.md) — recursive parallel multi-source investigation that fans out across web, memory, knowledge-graph, codebase, and ADR index, building a graph-structured dossier with budget caps, de-duplication, and provenance per claim.
+The `dossier-investigator` agent + `dossier-collect` skill implement [ADR-099](../../v3/docs/adr/ADR-099-dossier-investigator-recursive-parallel-research.md) â€” recursive parallel multi-source investigation that fans out across web, memory, knowledge-graph, codebase, and ADR index, building a graph-structured dossier with budget caps, de-duplication, and provenance per claim.
 
 Key invariants per ADR-099:
 - **Seed-driven** (entity, not question)
@@ -86,4 +86,4 @@ bash plugins/ruflo-goals/scripts/smoke.sh
 
 ## Architecture Decisions
 
-- [`ADR-0001` — ruflo-goals plugin contract (legacy-vs-canonical namespaces, GOAP/dossier workflow contract)](./docs/adrs/0001-goals-contract.md)
+- [`ADR-0001` â€” ruflo-goals plugin contract (legacy-vs-canonical namespaces, GOAP/dossier workflow contract)](./docs/adrs/0001-goals-contract.md)

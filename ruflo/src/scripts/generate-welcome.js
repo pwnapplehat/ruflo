@@ -10,7 +10,7 @@
  * Reads brand colors from config.json and generates a dark-themed
  * animated GIF with rotating wireframe geometry and brand name text.
  *
- * Output: chat-ui/static/chatui/omni-welcome.gif
+ * Output: ruvocal/static/chatui/omni-welcome.gif
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
@@ -177,7 +177,7 @@ for (let frame = 0; frame < FRAMES; frame++) {
 
 encoder.finish();
 
-const outDir = resolve(ROOT, "src/chat-ui/static/chatui");
+const outDir = resolve(ROOT, "src/ruvocal/static/chatui");
 mkdirSync(outDir, { recursive: true });
 const outPath = resolve(outDir, "omni-welcome.gif");
 writeFileSync(outPath, encoder.out.getData());

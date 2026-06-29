@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Regression guard for ruvnet/ruflo#2015.
+ * Regression guard for pwnapplehat/ruflo#2015.
  *
  * `ruvector@0.2.25 rvf create` accepts only:
  *   -d, --dimension <n>    (required)
  *   -m, --metric <metric>  (optional, default cosine)
  *
- * It does NOT accept `--kind <value>` — commander's required-option
+ * It does NOT accept `--kind <value>` â€” commander's required-option
  * check fires before its unknown-option check, so the original bug
  * report only showed the dimension error. Stripping the bogus
  * `--kind browser-session` was round 2 of the fix; this guard now
@@ -24,7 +24,7 @@ import { resolve } from 'node:path';
 
 const REPO_ROOT = resolve(process.cwd());
 
-// We police every `rvf create` call we control across the repo —
+// We police every `rvf create` call we control across the repo â€”
 // the original anchor (`--kind browser-session`) is gone post-fix, so
 // we have to identify call sites by path, not by content.
 const PATHS_IN_SCOPE = [
@@ -41,11 +41,11 @@ const checked = [];
 for (const rel of PATHS_IN_SCOPE) {
   const path = resolve(REPO_ROOT, rel);
   if (!existsSync(path)) {
-    // Dist artifacts are derivable from source — missing dist is not a
+    // Dist artifacts are derivable from source â€” missing dist is not a
     // regression in `rvf create` callsites; the matching `src/` file will
     // still be scanned. Source files MUST exist.
     if (rel.includes('/dist/')) {
-      checked.push(`${rel}  (skipped — dist artifact not built; src form is scanned instead)`);
+      checked.push(`${rel}  (skipped â€” dist artifact not built; src form is scanned instead)`);
       continue;
     }
     failures.push(`${rel}  expected call-site file missing from checkout`);
@@ -95,7 +95,7 @@ for (const rel of PATHS_IN_SCOPE) {
 }
 
 if (checked.length === 0) {
-  console.error('smoke-browser-rvf-create-flags: no call sites matched — pattern broken?');
+  console.error('smoke-browser-rvf-create-flags: no call sites matched â€” pattern broken?');
   process.exit(1);
 }
 
@@ -106,7 +106,7 @@ if (failures.length > 0) {
   console.error(`\n${failures.length} call site(s) missing --dimension:`);
   for (const f of failures) console.error(`  ${f}`);
   console.error(`\nFix: append "--dimension 384" (or your project's vector dim)`);
-  console.error(`to the rvf create invocation. See ruvnet/ruflo#2015.`);
+  console.error(`to the rvf create invocation. See pwnapplehat/ruflo#2015.`);
   process.exit(1);
 }
 

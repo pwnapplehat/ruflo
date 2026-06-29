@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Static scan guard for ruvnet/ruflo#2089 — ADR-127 Phase 1.
+ * Static scan guard for pwnapplehat/ruflo#2089 â€” ADR-127 Phase 1.
  *
  * Scans every `uses:` line in:
  *   - .claude/agents/github/*.md
@@ -8,14 +8,14 @@
  *   - v3/@claude-flow/cli/.claude/commands/github/[name].md
  *
  * For each ref, asserts it is either:
- *   (a) SHA-pinned  — `owner/repo@<40-hex-chars>`
+ *   (a) SHA-pinned  â€” `owner/repo@<40-hex-chars>`
  *   (b) Listed in .github/supply-chain/allowed-deps.json `actions.allowed[]`
  *
  * The `minimumVersion` sub-field is advisory (logged, not enforced by this
  * smoke).  Enforcement of the minimum version is the job of Phase 3's
  * smoke-deprecated-actions.mjs which fails on @v3 refs directly.
  *
- * Zero runtime dependencies — pure readFileSync + regex.
+ * Zero runtime dependencies â€” pure readFileSync + regex.
  *
  * Exit 0: all refs are pinned or on the allow-list.
  * Exit 1: one or more violations found (file + line reported for each).

@@ -15,26 +15,26 @@ When starting a new project, exploring ruflo capabilities, or wondering which pl
 
 ## Steps
 
-1. **Check installed** — run `ls plugins/` to see what's already installed
-2. **Browse marketplace** — call `mcp__claude-flow__transfer_plugin-featured` for recommended plugins
-3. **Search by need** — call `mcp__claude-flow__transfer_plugin-search` with keywords matching your task
-4. **Get recommendations** — call `mcp__claude-flow__guidance_recommend` with your current task description for personalized suggestions
-5. **Check capabilities** — call `mcp__claude-flow__guidance_capabilities` to see what each plugin enables
-6. **Show details** — call `mcp__claude-flow__transfer_plugin-info` for full plugin details
+1. **Check installed** â€” run `ls plugins/` to see what's already installed
+2. **Browse marketplace** â€” call `mcp__claude-flow__transfer_plugin-featured` for recommended plugins
+3. **Search by need** â€” call `mcp__claude-flow__transfer_plugin-search` with keywords matching your task
+4. **Get recommendations** â€” call `mcp__claude-flow__guidance_recommend` with your current task description for personalized suggestions
+5. **Check capabilities** â€” call `mcp__claude-flow__guidance_capabilities` to see what each plugin enables
+6. **Show details** â€” call `mcp__claude-flow__transfer_plugin-info` for full plugin details
 
 ## Plugin Catalog (32 plugins)
 
-### Core & Coordination — Start here
+### Core & Coordination â€” Start here
 
 | Plugin | When to use | What it adds |
 |--------|-------------|-------------|
-| **ruflo-core** | Always — base layer for all Ruflo work | MCP server, status, doctor, coder/researcher/reviewer agents |
+| **ruflo-core** | Always â€” base layer for all Ruflo work | MCP server, status, doctor, coder/researcher/reviewer agents |
 | **ruflo-swarm** | Multi-agent tasks (3+ files, features, refactors) | Swarm topologies (hierarchical, mesh), Monitor streaming, worktree isolation |
 | **ruflo-autopilot** | Autonomous task completion without manual steering | /loop-based autonomous execution, progress prediction, learning |
 | **ruflo-loop-workers** | Recurring background work (audits, optimization, mapping) | 12 background workers via /loop or CronCreate scheduling |
 | **ruflo-workflows** | Repeatable multi-step processes | Workflow templates, parallel execution, conditional branching |
 
-### Memory & Intelligence — Cross-session learning
+### Memory & Intelligence â€” Cross-session learning
 
 | Plugin | When to use | What it adds |
 |--------|-------------|-------------|
@@ -46,7 +46,7 @@ When starting a new project, exploring ruflo capabilities, or wondering which pl
 | **ruflo-intelligence** | Task routing optimization, learning from outcomes | SONA neural patterns, trajectory learning, model routing with confidence |
 | **ruflo-daa** | Self-adapting agents that evolve behavior | Dynamic Agentic Architecture, cognitive patterns, knowledge sharing |
 
-### Architecture & Methodology — Build right
+### Architecture & Methodology â€” Build right
 
 | Plugin | When to use | What it adds |
 |--------|-------------|-------------|
@@ -54,16 +54,16 @@ When starting a new project, exploring ruflo capabilities, or wondering which pl
 | **ruflo-ddd** | Domain modeling, bounded context scaffolding | Context wizard, aggregate roots, domain events, anti-corruption layers, boundary validation |
 | **ruflo-sparc** | Structured development methodology | Specification-Pseudocode-Architecture-Refinement-Completion with quality gates |
 
-### Quality & Security — Ship safely
+### Quality & Security â€” Ship safely
 
 | Plugin | When to use | What it adds |
 |--------|-------------|-------------|
 | **ruflo-security-audit** | Before merging, after dependency changes | CVE scanning, dependency vulnerability checks, security reports |
 | **ruflo-aidefence** | Processing user input, handling untrusted data | Prompt injection detection, PII scanning, adversarial defense |
 | **ruflo-testgen** | After implementing features, during refactors | Test gap detection, TDD London School workflow, coverage routing |
-| **ruflo-browser** | UI testing, web scraping, visual validation | Playwright automation — navigate, click, screenshot, validate |
+| **ruflo-browser** | UI testing, web scraping, visual validation | Playwright automation â€” navigate, click, screenshot, validate |
 
-### Development Tools — Build faster
+### Development Tools â€” Build faster
 
 | Plugin | When to use | What it adds |
 |--------|-------------|-------------|
@@ -76,7 +76,7 @@ When starting a new project, exploring ruflo capabilities, or wondering which pl
 | **ruflo-observability** | Logging, tracing, metrics correlation | Structured JSON logging, distributed tracing, agent-to-app telemetry correlation |
 | **ruflo-cost-tracker** | Token budget management | Per-agent cost attribution, model pricing, budget alerts, optimization recommendations |
 
-### Domain-Specific — Specialized workloads
+### Domain-Specific â€” Specialized workloads
 
 | Plugin | When to use | What it adds |
 |--------|-------------|-------------|
@@ -88,32 +88,32 @@ When starting a new project, exploring ruflo capabilities, or wondering which pl
 
 ## Decision Guide
 
-**"I need to..."** → Use this plugin:
+**"I need to..."** â†’ Use this plugin:
 
-- Build a feature → `ruflo-core` + `ruflo-swarm` + `ruflo-testgen`
-- Fix a bug → `ruflo-core` + `ruflo-jujutsu` (for diff analysis)
-- Audit security → `ruflo-security-audit` + `ruflo-aidefence`
-- Run background tasks → `ruflo-loop-workers` + `ruflo-autopilot`
-- Search past decisions → `ruflo-agentdb` + `ruflo-rag-memory`
-- Plan a multi-week effort → `ruflo-goals` (horizon tracking)
-- Manage IoT devices → `ruflo-iot-cognitum`
-- Coordinate remote agents → `ruflo-federation`
-- Test UI changes → `ruflo-browser`
-- Generate docs → `ruflo-docs`
-- Create a new plugin → `ruflo-plugin-creator`
-- Document architecture decisions → `ruflo-adr`
-- Scaffold domain models → `ruflo-ddd`
-- Follow SPARC methodology → `ruflo-sparc`
-- Develop trading strategies → `ruflo-neural-trader` + `ruflo-market-data`
-- Work with vector embeddings → `ruflo-ruvector`
-- Build knowledge graphs → `ruflo-knowledge-graph`
-- Manage database migrations → `ruflo-migrations`
-- Add observability → `ruflo-observability`
-- Track token costs → `ruflo-cost-tracker`
+- Build a feature â†’ `ruflo-core` + `ruflo-swarm` + `ruflo-testgen`
+- Fix a bug â†’ `ruflo-core` + `ruflo-jujutsu` (for diff analysis)
+- Audit security â†’ `ruflo-security-audit` + `ruflo-aidefence`
+- Run background tasks â†’ `ruflo-loop-workers` + `ruflo-autopilot`
+- Search past decisions â†’ `ruflo-agentdb` + `ruflo-rag-memory`
+- Plan a multi-week effort â†’ `ruflo-goals` (horizon tracking)
+- Manage IoT devices â†’ `ruflo-iot-cognitum`
+- Coordinate remote agents â†’ `ruflo-federation`
+- Test UI changes â†’ `ruflo-browser`
+- Generate docs â†’ `ruflo-docs`
+- Create a new plugin â†’ `ruflo-plugin-creator`
+- Document architecture decisions â†’ `ruflo-adr`
+- Scaffold domain models â†’ `ruflo-ddd`
+- Follow SPARC methodology â†’ `ruflo-sparc`
+- Develop trading strategies â†’ `ruflo-neural-trader` + `ruflo-market-data`
+- Work with vector embeddings â†’ `ruflo-ruvector`
+- Build knowledge graphs â†’ `ruflo-knowledge-graph`
+- Manage database migrations â†’ `ruflo-migrations`
+- Add observability â†’ `ruflo-observability`
+- Track token costs â†’ `ruflo-cost-tracker`
 
 ## Install any plugin
 
 ```
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 /plugin install <plugin-name>@ruflo
 ```

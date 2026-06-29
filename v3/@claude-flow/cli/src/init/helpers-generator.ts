@@ -6,19 +6,19 @@
 import type { InitOptions } from './types.js';
 import { generateStatuslineScript, generateStatuslineHook } from './statusline-generator.js';
 
-// ADR-127 Phase 4 â€” attribution is opt-in (#1670 / #2089).
+// ADR-127 Phase 4 Ã¢â‚¬â€ attribution is opt-in (#1670 / #2089).
 // When the user passes --attribution (options.attribution === true),
 // this footer is available for injection into generated content such as
 // PR body templates and release notes.  It is NEVER hard-wired into the
-// static command-file templates â€” those are user-owned content.
+// static command-file templates Ã¢â‚¬â€ those are user-owned content.
 export const ATTRIBUTION_FOOTER =
-  'ðŸ¤– Generated with [RuFlo](https://github.com/ruvnet/ruflo)';
+  'Ã°Å¸Â¤â€“ Generated with [RuFlo](https://github.com/pwnapplehat/ruflo)';
 
 /**
  * Generate pre-commit hook script. On Windows, emit a PowerShell script
  * (.ps1); on POSIX, emit a bash script. Both are written to
  * .cursor-flow/helpers/ (Cursor-fork) and are NOT invoked by Cursor's hook
- * system (hooks use .cursor/hooks/*.cjs) â€” they're for manual `git hook` use.
+ * system (hooks use .cursor/hooks/*.cjs) Ã¢â‚¬â€ they're for manual `git hook` use.
  */
 export function generatePreCommitHook(): string {
   if (process.platform === 'win32') {
@@ -271,8 +271,8 @@ const AGENT_CAPABILITIES = {
   devops: ['ci-cd', 'docker', 'deployment', 'infrastructure'],
 };
 
-// Each entry has a token list. Single tokens get \\bâ€¦\\b boundaries so 'cd'
-// won't match inside 'decide'. Phrases (whitespace or '/') match literally â€”
+// Each entry has a token list. Single tokens get \\bÃ¢â‚¬Â¦\\b boundaries so 'cd'
+// won't match inside 'decide'. Phrases (whitespace or '/') match literally Ã¢â‚¬â€
 // the whitespace acts as a natural boundary.
 const TASK_PATTERNS = [
   { tokens: ['implement', 'create', 'build', 'add', 'write code', 'refactor', 'debug'], agent: 'coder' },
@@ -474,7 +474,7 @@ export function generateHookHandler(): string {
     '',
     'const [,, command, ...args] = process.argv;',
     '',
-    '// Read stdin with timeout â€” Claude Code sends hook data as JSON via stdin.',
+    '// Read stdin with timeout Ã¢â‚¬â€ Claude Code sends hook data as JSON via stdin.',
     '// Timeout prevents hanging when stdin is in an ambiguous state (not TTY, not pipe).',
     'async function readStdin() {',
     '  if (process.stdin.isTTY) return "";',
@@ -676,7 +676,7 @@ export function generateIntelligenceStub(): string {
     '#!/usr/bin/env node',
     '/**',
     ' * Intelligence Layer Stub (ADR-050)',
-    ' * Minimal fallback â€” full version is copied from package source.',
+    ' * Minimal fallback Ã¢â‚¬â€ full version is copied from package source.',
     ' * Provides: init, getContext, recordEdit, feedback, consolidate',
     ' */',
     "'use strict';",
@@ -892,7 +892,7 @@ export function generateIntelligenceStub(): string {
 export function generateAutoMemoryHook(): string {
   return `#!/usr/bin/env node
 /**
- * Auto Memory Bridge Hook (ADR-048/049) â€” Minimal Fallback
+ * Auto Memory Bridge Hook (ADR-048/049) Ã¢â‚¬â€ Minimal Fallback
  * Full version is copied from package source when available.
  *
  * Usage:
@@ -948,12 +948,12 @@ async function doImport() {
   const memPkg = await loadMemoryPackage();
 
   if (!memPkg || !memPkg.AutoMemoryBridge) {
-    dim('Memory package not available â€” auto memory import skipped (non-critical)');
+    dim('Memory package not available Ã¢â‚¬â€ auto memory import skipped (non-critical)');
     return;
   }
 
   // Full implementation deferred to copied version
-  dim('Auto memory import available â€” run init --upgrade for full support');
+  dim('Auto memory import available Ã¢â‚¬â€ run init --upgrade for full support');
 }
 
 async function doSync() {
@@ -965,11 +965,11 @@ async function doSync() {
   const memPkg = await loadMemoryPackage();
 
   if (!memPkg || !memPkg.AutoMemoryBridge) {
-    dim('Memory package not available â€” sync skipped (non-critical)');
+    dim('Memory package not available Ã¢â‚¬â€ sync skipped (non-critical)');
     return;
   }
 
-  dim('Auto memory sync available â€” run init --upgrade for full support');
+  dim('Auto memory sync available Ã¢â‚¬â€ run init --upgrade for full support');
 }
 
 function doStatus() {
@@ -1261,7 +1261,7 @@ export function generateHelpers(options: InitOptions): Record<string, string> {
     helpers['daemon-manager.ps1'] = generateWindowsDaemonManager();
     helpers['daemon-manager.cmd'] = generateWindowsBatchWrapper();
 
-    // ADR-127 Phase 4 â€” expose the attribution footer as a helper file only
+    // ADR-127 Phase 4 Ã¢â‚¬â€ expose the attribution footer as a helper file only
     // when the user explicitly opts in. The file content is the single-line
     // string so init-generated PR templates can `cat .claude/helpers/attribution`
     // and append it conditionally without hard-wiring the string everywhere.
@@ -1290,13 +1290,13 @@ export function generateHelpers(options: InitOptions): Record<string, string> {
 export function generateRufloHookCjs(): string {
   return `#!/usr/bin/env node
 /**
- * ruflo-hook.cjs â€” cross-platform Node.js port of ruflo-hook.sh (#2132)
+ * ruflo-hook.cjs Ã¢â‚¬â€ cross-platform Node.js port of ruflo-hook.sh (#2132)
  *
  * Deployed to .claude/helpers/ during ruflo init. On Windows, the
  * generated .claude/settings.json hooks point here instead of the
  * plugin's bash-only ruflo-hook.sh.
  *
- * Always exits 0 â€” hook subcommands are best-effort telemetry and must
+ * Always exits 0 Ã¢â‚¬â€ hook subcommands are best-effort telemetry and must
  * never block a Claude Code turn.
  */
 

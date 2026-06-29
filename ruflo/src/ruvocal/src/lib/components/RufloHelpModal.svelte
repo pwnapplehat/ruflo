@@ -63,7 +63,7 @@
 		{
 			id: "memory",
 			title: "Memory & Knowledge",
-			emoji: "🧠",
+			emoji: "ðŸ§ ",
 			intro: "Persistent cross-session memory backed by AgentDB (sql.js + HNSW vector index). Store anything by key, search by meaning, or list a namespace.",
 			tools: [
 				{ name: "ruflo__memory_store", desc: "Save a key/value into a namespace." },
@@ -77,10 +77,10 @@
 		{
 			id: "agents",
 			title: "Agents & Orchestration",
-			emoji: "🤖",
+			emoji: "ðŸ¤–",
 			intro: "Spawn specialized agents, coordinate swarms with hierarchical / mesh / adaptive topologies, and run hive-mind consensus for fault-tolerant work.",
 			tools: [
-				{ name: "ruflo__agent_spawn", desc: "Create a new specialized agent (coder, tester, reviewer, security-auditor, …)." },
+				{ name: "ruflo__agent_spawn", desc: "Create a new specialized agent (coder, tester, reviewer, security-auditor, â€¦)." },
 				{ name: "ruflo__swarm_init", desc: "Initialize a swarm with topology + strategy + max agents." },
 				{ name: "ruflo__hive-mind_*", desc: "Queen-led Byzantine fault-tolerant collective." },
 				{ name: "ruflo__task_create / task_assign / task_status", desc: "Full task lifecycle." },
@@ -90,7 +90,7 @@
 		{
 			id: "intelligence",
 			title: "Intelligence & Learning",
-			emoji: "✨",
+			emoji: "âœ¨",
 			intro: "Pattern learning, model routing, code analysis, and trajectory tracking via RuVector. Tools here improve future task execution by recording what worked.",
 			tools: [
 				{ name: "ruvector__hooks_route", desc: "Pick the optimal agent type for a task." },
@@ -104,7 +104,7 @@
 		{
 			id: "devtools",
 			title: "Dev Tools & Analysis",
-			emoji: "🛠️",
+			emoji: "ðŸ› ï¸",
 			intro: "System health, performance profiling, GitHub integration, code-review primitives, and shell access. The widest group at 73 tools.",
 			tools: [
 				{ name: "ruflo__system_status", desc: "Overall system health overview." },
@@ -118,7 +118,7 @@
 		{
 			id: "core",
 			title: "Core Tools",
-			emoji: "⚡",
+			emoji: "âš¡",
 			intro: "Built-in tools always available regardless of MCP configuration. These three cover most knowledge questions before any specialized tool is needed.",
 			tools: [
 				{ name: "search", desc: "Search the local knowledge base for documents and how-tos." },
@@ -129,32 +129,32 @@
 		{
 			id: "wasm",
 			title: "WASM Gallery (Browser-side)",
-			emoji: "🧩",
-			intro: "In-browser MCP server (rvagent-wasm, ~588 KB) with persistent IndexedDB storage. Tools run locally — no server roundtrip, works offline. Available as MCP (1) in the chat input.",
+			emoji: "ðŸ§©",
+			intro: "In-browser MCP server (rvagent-wasm, ~588 KB) with persistent IndexedDB storage. Tools run locally â€” no server roundtrip, works offline. Available as MCP (1) in the chat input.",
 			tools: [
 				{ name: "WASM gallery", desc: "18 prebuilt templates exposed via the local WASM MCP server." },
-				{ name: "Custom templates", desc: "Add your own via the MCP Servers panel → Add Server." },
+				{ name: "Custom templates", desc: "Add your own via the MCP Servers panel â†’ Add Server." },
 				{ name: "Web Worker (opt-in)", desc: "Append ?worker=1 to the URL to run WASM MCP off the main thread." },
 			],
 		},
 	];
 
 	const tips = [
-		"**MCP (n) pill** above the message box opens the server manager — toggle individual servers, add custom MCP endpoints, run health checks.",
+		"**MCP (n) pill** above the message box opens the server manager â€” toggle individual servers, add custom MCP endpoints, run health checks.",
 		'**AUTO toggle**: green/lit means tool chains continue automatically. Gray means RuFlo stops after each tool result so you can inspect before continuing.',
-		'**Parallel tool calls** — when your prompt implies multiple steps ("get system status AND list memory namespaces AND check performance"), the model emits all `tool_calls` in one response and they run via `Promise.all`. Watch for the "Step N — M tools completed" cards.',
-		'**Memory just works** — say "remember my favorite color is indigo" and later "what color do I like?" — no explicit tool name needed.',
-		'**Trajectory mode** — for long multi-step work, prefix with "Use `ruvector__hooks_trajectory_begin`" so the system learns from the run for future routing.',
-		'**Tool name prefixes** — `ruflo__` is the agent/memory backend, `ruvector__` is the intelligence layer. Always use the full prefixed name when invoking explicitly.',
+		'**Parallel tool calls** â€” when your prompt implies multiple steps ("get system status AND list memory namespaces AND check performance"), the model emits all `tool_calls` in one response and they run via `Promise.all`. Watch for the "Step N â€” M tools completed" cards.',
+		'**Memory just works** â€” say "remember my favorite color is indigo" and later "what color do I like?" â€” no explicit tool name needed.',
+		'**Trajectory mode** â€” for long multi-step work, prefix with "Use `ruvector__hooks_trajectory_begin`" so the system learns from the run for future routing.',
+		'**Tool name prefixes** â€” `ruflo__` is the agent/memory backend, `ruvector__` is the intelligence layer. Always use the full prefixed name when invoking explicitly.',
 	];
 
 	const examplePrompts = [
 		'"Use ruflo__memory_store namespace=prefs key=editor value=vim then ruflo__memory_retrieve to confirm."',
 		'"Run ruflo__system_status, ruflo__performance_metrics, and ruflo__memory_list in parallel and summarize."',
-		'"Spawn a 5-agent hierarchical swarm (architect, coder, tester, reviewer, security-auditor) for a Python→TypeScript refactor."',
+		'"Spawn a 5-agent hierarchical swarm (architect, coder, tester, reviewer, security-auditor) for a Pythonâ†’TypeScript refactor."',
 		'"Use ruvector__hooks_route on the task: add OAuth to a SvelteKit API. Then spawn the recommended agent."',
 		'"Search RuFlo memory for prior decisions about authentication, then web_research recent OAuth2 best practices, in parallel."',
-		'"Analyze the diff at github.com/ruvnet/ruflo/pull/1687 — risk score, classify, and suggest reviewers."',
+		'"Analyze the diff at github.com/pwnapplehat/ruflo/pull/1687 â€” risk score, classify, and suggest reviewers."',
 	];
 
 	const stack: { name: string; role: string }[] = [
@@ -162,17 +162,17 @@
 		{ name: "OpenRouter", role: "Single OAI-compatible endpoint, 6 models, smart fail-over" },
 		{ name: "ruflo backend (npx ruflo mcp start)", role: "Agents, memory, swarm, devtools (~158 tools)" },
 		{ name: "ruvector backend (npx ruvector mcp start)", role: "Intelligence, routing, trajectories (~49 tools)" },
-		{ name: "AgentDB (sql.js + HNSW)", role: "Persistent memory, 384-dim ONNX embeddings, 150x–12 500x search speedup" },
+		{ name: "AgentDB (sql.js + HNSW)", role: "Persistent memory, 384-dim ONNX embeddings, 150xâ€“12 500x search speedup" },
 		{ name: "rvagent-wasm (in-browser, ~588 KB)", role: "18-tool gallery with IndexedDB persistence, optional Web Worker" },
-		{ name: "MongoDB (embedded)", role: "Conversation + session storage (ephemeral on Cloud Run cold starts today)" },
-		{ name: "Cloud Run (us-central1)", role: "Both ruvocal chat-ui and mcp-bridge services with min-instance=1 warm" },
+		{ name: "MongoDB (embedded)", role: "Conversation + session storage (ephemeral on container cold starts)" },
+		{ name: "Self-hosted deployment", role: "Docker, Google Cloud Run, or any Node host — bring your own domain" },
 	];
 
 	const domains: { url: string; note: string }[] = [
-		{ url: "flo.ruv.io", note: "Primary — shortest URL, recommended" },
-		{ url: "ruflo.ruv.io", note: "Brand alias" },
-		{ url: "ruvocal.ruv.io", note: "Original alias (matches the upstream chat-ui fork name)" },
-		{ url: "ruvocal-875130704813.us-central1.run.app", note: "Raw Cloud Run URL — always available, no DNS dependency" },
+		{ url: "localhost:5173", note: "Local dev server (npm run dev)" },
+		{ url: "localhost:3000", note: "Default production port (npm run build + preview)" },
+		{ url: "your-domain.example", note: "Self-hosted — bring your own domain/DNS" },
+		{ url: "ruvocal-<your-project>.run.app", note: "Optional Google Cloud Run deployment" },
 	];
 
 	const shortcuts: { keys: string; action: string }[] = [
@@ -183,11 +183,11 @@
 	];
 
 	const cardLegend: { mark: string; meaning: string }[] = [
-		{ mark: "✓ Called tool", meaning: "Tool returned successfully — click the row to expand the JSON result" },
-		{ mark: "Step N — M tools completed", meaning: "Parallel batch indicator. M tools fired in one model turn via Promise.all" },
+		{ mark: "âœ“ Called tool", meaning: "Tool returned successfully â€” click the row to expand the JSON result" },
+		{ mark: "Step N â€” M tools completed", meaning: "Parallel batch indicator. M tools fired in one model turn via Promise.all" },
 		{ mark: "Retry", meaning: "Last response had no content. Click to re-run with the same prompt and model" },
-		{ mark: "AUTO (green)", meaning: "Autopilot ON — model auto-continues after each tool result" },
-		{ mark: "AUTO (gray)", meaning: "Autopilot OFF — model stops after each tool result so you can inspect" },
+		{ mark: "AUTO (green)", meaning: "Autopilot ON â€” model auto-continues after each tool result" },
+		{ mark: "AUTO (gray)", meaning: "Autopilot OFF â€” model stops after each tool result so you can inspect" },
 	];
 
 	let openGroup = $state<string | null>("memory");
@@ -197,10 +197,10 @@
 	<div class="flex max-h-[88vh] w-full flex-col overflow-hidden rounded-2xl bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
 		<header class="flex items-start justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
 			<div class="flex items-start gap-3">
-				<span class="text-3xl leading-none">📘</span>
+				<span class="text-3xl leading-none">ðŸ“˜</span>
 				<div>
 					<h2 class="text-lg font-semibold">RuFlo Capabilities</h2>
-					<p class="text-xs text-gray-500 dark:text-gray-400">~210 MCP tools · 5 server groups · 18 in-browser WASM tools · 6 frontier models · parallel tool calling</p>
+					<p class="text-xs text-gray-500 dark:text-gray-400">~210 MCP tools Â· 5 server groups Â· 18 in-browser WASM tools Â· 6 frontier models Â· parallel tool calling</p>
 				</div>
 			</div>
 			<button
@@ -219,9 +219,9 @@
 				<ol class="list-decimal space-y-1.5 pl-5 text-sm">
 					<li>Pick a model below (default: <code class="rounded bg-gray-100 px-1 dark:bg-gray-800">Claude Haiku 4.5</code>).</li>
 					<li>Click an example prompt below the chat box, or type your own.</li>
-					<li>RuFlo decides which tools to call. Watch the streaming tool-call cards below your message — multiple cards = parallel execution.</li>
+					<li>RuFlo decides which tools to call. Watch the streaming tool-call cards below your message â€” multiple cards = parallel execution.</li>
 					<li>Use <strong>AUTO</strong> on the chat box to chain tool calls automatically.</li>
-					<li>Need to add a custom MCP server? Click the <strong>MCP (n)</strong> pill → Add Server.</li>
+					<li>Need to add a custom MCP server? Click the <strong>MCP (n)</strong> pill â†’ Add Server.</li>
 				</ol>
 			</section>
 
@@ -255,10 +255,10 @@
 						</tbody>
 					</table>
 				</div>
-				<p class="mt-2 text-[11px] text-gray-500 dark:text-gray-400">Cloud models route through OpenRouter — switch any time via <strong>Models</strong> in the sidebar.</p>
+				<p class="mt-2 text-[11px] text-gray-500 dark:text-gray-400">Cloud models route through OpenRouter â€” switch any time via <strong>Models</strong> in the sidebar.</p>
 				<div class="mt-3 rounded-lg border border-emerald-300/40 bg-emerald-50/50 px-3 py-2 text-xs dark:border-emerald-700/40 dark:bg-emerald-900/10">
-					<p class="font-semibold text-emerald-900 dark:text-emerald-200">🦾 Any model — including local + self-learning</p>
-					<p class="mt-1 text-emerald-900/80 dark:text-emerald-200/80">RuFlo speaks any OpenAI-compatible endpoint: vLLM, Ollama, LM Studio, Together, Groq, or self-hosted. Native support for <a href="https://github.com/ruvnet/RuVector/tree/main/examples/ruvLLM" target="_blank" rel="noopener" class="underline">ruvLLM</a> (lives in <code>ruvnet/RuVector/examples/ruvLLM</code>) — RuFlo's self-improving local model layer with MicroLoRA adapters that learn from your trajectories via SONA. Pair cloud + local, or run fully offline.</p>
+					<p class="font-semibold text-emerald-900 dark:text-emerald-200">ðŸ¦¾ Any model â€” including local + self-learning</p>
+					<p class="mt-1 text-emerald-900/80 dark:text-emerald-200/80">RuFlo speaks any OpenAI-compatible endpoint: vLLM, Ollama, LM Studio, Together, Groq, or self-hosted. Pair cloud + local, or run fully offline.</p>
 				</div>
 			</section>
 
@@ -309,7 +309,7 @@
 			</section>
 
 			<section class="mb-6">
-				<h3 class="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">Tool-call cards — what the icons mean</h3>
+				<h3 class="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">Tool-call cards â€” what the icons mean</h3>
 				<ul class="space-y-1 text-xs">
 					{#each cardLegend as legend}
 						<li class="flex gap-2">
@@ -322,7 +322,7 @@
 
 			<section class="mb-6">
 				<h3 class="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">Under the hood</h3>
-				<p class="mb-2 text-xs text-gray-600 dark:text-gray-400">RuFlo's web UI is a fork of the open-source HuggingFace chat-ui (SvelteKit) wired to a custom MCP bridge that fans out to two backend kernels. Everything runs on Google Cloud Run.</p>
+				<p class="mb-2 text-xs text-gray-600 dark:text-gray-400">RuFlo's web UI is a fork of the open-source HuggingFace chat-ui (SvelteKit) wired to a custom MCP bridge that fans out to two backend kernels. Self-hostable on Docker or Google Cloud Run.</p>
 				<div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
 					<table class="w-full text-xs">
 						<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -338,7 +338,7 @@
 			</section>
 
 			<section class="mb-6">
-				<h3 class="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">Domain aliases — pick one, they all work</h3>
+				<h3 class="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">Where to run it â€” pick one, they all work</h3>
 				<ul class="space-y-1 text-xs">
 					{#each domains as d}
 						<li class="flex flex-wrap gap-2">
@@ -347,7 +347,7 @@
 						</li>
 					{/each}
 				</ul>
-				<p class="mt-2 text-[11px] text-gray-500 dark:text-gray-400">Custom domains DNS through Cloudflare unproxied so Google issues + auto-renews the TLS certificate. All four endpoints serve the same Cloud Run revision.</p>
+				<p class="mt-2 text-[11px] text-gray-500 dark:text-gray-400">Self-hostable: run locally with npm, in Docker, or deploy to Google Cloud Run / any Node host with your own domain. No upstream-hosted endpoint â€” bring your own.</p>
 			</section>
 
 			<section class="mb-6">
@@ -375,23 +375,18 @@
 				<h3 class="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">Resources</h3>
 				<ul class="space-y-1 text-sm">
 					<li>
-						<a href="https://github.com/ruvnet/ruflo" target="_blank" rel="noopener" class="text-blue-600 hover:underline dark:text-blue-400">
-							github.com/ruvnet/ruflo →
+						<a href="https://github.com/pwnapplehat/ruflo" target="_blank" rel="noopener" class="text-blue-600 hover:underline dark:text-blue-400">
+							github.com/pwnapplehat/ruflo â†’
 						</a>
 					</li>
 					<li>
-						<a href="https://github.com/ruvnet/ruflo/blob/main/ruflo/docs/adr/ADR-033-RUVOCAL-WASM-MCP-INTEGRATION.md" target="_blank" rel="noopener" class="text-blue-600 hover:underline dark:text-blue-400">
-							ADR-033 — Web UI architecture →
+						<a href="https://github.com/pwnapplehat/ruflo/blob/main/ruflo/docs/adr/ADR-033-RUVOCAL-WASM-MCP-INTEGRATION.md" target="_blank" rel="noopener" class="text-blue-600 hover:underline dark:text-blue-400">
+							ADR-033 â€” Web UI architecture â†’
 						</a>
 					</li>
 					<li>
-						<a href="https://github.com/ruvnet/ruflo/issues/1689" target="_blank" rel="noopener" class="text-blue-600 hover:underline dark:text-blue-400">
-							Issue #1689 — UI capabilities & roadmap →
-						</a>
-					</li>
-					<li>
-						<a href="https://github.com/ruvnet/ruvector" target="_blank" rel="noopener" class="text-blue-600 hover:underline dark:text-blue-400">
-							ruvnet/ruvector — intelligence layer →
+						<a href="https://github.com/pwnapplehat/ruflo/issues/1689" target="_blank" rel="noopener" class="text-blue-600 hover:underline dark:text-blue-400">
+							Issue #1689 â€” UI capabilities & roadmap â†’
 						</a>
 					</li>
 				</ul>

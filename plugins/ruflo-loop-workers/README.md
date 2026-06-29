@@ -5,7 +5,7 @@ Cache-aware /loop workers and CronCreate background automation. Substrate plugin
 ## Install
 
 ```
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 /plugin install ruflo-loop-workers@ruflo
 ```
 
@@ -38,7 +38,7 @@ All defined at `v3/@claude-flow/cli/src/mcp-tools/hooks-tools.ts`:
 | `hooks_worker-detect` | Detect which workers should fire based on context |
 | `hooks_worker-cancel` | Cancel a running worker |
 
-## 12 worker triggers → consumer plugins
+## 12 worker triggers â†’ consumer plugins
 
 | Trigger | Consumer plugin | Purpose |
 |---------|-----------------|---------|
@@ -67,13 +67,13 @@ mcp tool call hooks_worker-dispatch --json -- '{"trigger": "document", "scope": 
 
 ## Cache-aware /loop integration
 
-This plugin pairs with [ruflo-autopilot ADR-0001](../ruflo-autopilot/docs/adrs/0001-autopilot-contract.md) which **owns the 270s cache-aware ScheduleWakeup heartbeat contract**. Recommended fallback heartbeat is **270 seconds** — under the 5-minute prompt-cache TTL so the next wake-up reads conversation context cached. Going past 300s pays a cache-miss; rounding to 5 minutes is the worst-of-both case.
+This plugin pairs with [ruflo-autopilot ADR-0001](../ruflo-autopilot/docs/adrs/0001-autopilot-contract.md) which **owns the 270s cache-aware ScheduleWakeup heartbeat contract**. Recommended fallback heartbeat is **270 seconds** â€” under the 5-minute prompt-cache TTL so the next wake-up reads conversation context cached. Going past 300s pays a cache-miss; rounding to 5 minutes is the worst-of-both case.
 
 For event-driven loops, arm a `Monitor` and let the 270s wake be the safety net.
 
 ## Namespace coordination
 
-This plugin owns the `worker-history` AgentDB namespace (kebab-case, follows the convention from [ruflo-agentdb ADR-0001 §"Namespace convention"](../ruflo-agentdb/docs/adrs/0001-agentdb-optimization.md)). Reserved namespaces (`pattern`, `claude-memories`, `default`) MUST NOT be shadowed.
+This plugin owns the `worker-history` AgentDB namespace (kebab-case, follows the convention from [ruflo-agentdb ADR-0001 Â§"Namespace convention"](../ruflo-agentdb/docs/adrs/0001-agentdb-optimization.md)). Reserved namespaces (`pattern`, `claude-memories`, `default`) MUST NOT be shadowed.
 
 `worker-history` records dispatch events, durations, success/failure verdicts. Accessed via `memory_*` tools (namespace-routed).
 
@@ -86,10 +86,10 @@ bash plugins/ruflo-loop-workers/scripts/smoke.sh
 
 ## Architecture Decisions
 
-- [`ADR-0001` — ruflo-loop-workers plugin contract (12-worker trigger map, autopilot 270s cross-reference, smoke as contract)](./docs/adrs/0001-loop-workers-contract.md)
+- [`ADR-0001` â€” ruflo-loop-workers plugin contract (12-worker trigger map, autopilot 270s cross-reference, smoke as contract)](./docs/adrs/0001-loop-workers-contract.md)
 
 ## Related Plugins
 
-- `ruflo-autopilot` — owns the 270s cache-aware /loop heartbeat contract
-- `ruflo-docs`, `ruflo-security-audit`, `ruflo-testgen`, `ruflo-knowledge-graph`, etc. — worker-trigger consumers per the table above
-- `ruflo-agentdb` — namespace convention owner; backing store for worker-history
+- `ruflo-autopilot` â€” owns the 270s cache-aware /loop heartbeat contract
+- `ruflo-docs`, `ruflo-security-audit`, `ruflo-testgen`, `ruflo-knowledge-graph`, etc. â€” worker-trigger consumers per the table above
+- `ruflo-agentdb` â€” namespace convention owner; backing store for worker-history

@@ -65,12 +65,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ruvnet/ruflo.git",
+    "url": "https://github.com/pwnapplehat/ruflo.git",
     "directory": "v3/@claude-flow/codex"
   },
-  "homepage": "https://github.com/ruvnet/ruflo#readme",
+  "homepage": "https://github.com/pwnapplehat/ruflo#readme",
   "bugs": {
-    "url": "https://github.com/ruvnet/ruflo/issues"
+    "url": "https://github.com/pwnapplehat/ruflo/issues"
   },
   "engines": {
     "node": ">=18"

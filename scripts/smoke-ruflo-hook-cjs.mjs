@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Smoke test for ruvnet/ruflo#2132 — ruflo-hook.cjs cross-platform shim.
+ * Smoke test for pwnapplehat/ruflo#2132 â€” ruflo-hook.cjs cross-platform shim.
  *
  * Verifies that plugins/ruflo-core/scripts/ruflo-hook.cjs:
  *   1. Can be invoked via `node ruflo-hook.cjs <subcommand>`
@@ -41,7 +41,7 @@ function runShim(subcommand, extraArgs = [], stdinInput = '') {
       encoding: 'utf8',
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 15_000,
-      // Skip the npx fallback — we're testing the shim's control flow, not the
+      // Skip the npx fallback â€” we're testing the shim's control flow, not the
       // CLI dispatch. npx --prefer-offline can take 30+s on a cold CI runner
       // (no warm cache, registry resolve), which exceeds our timeout above.
       // The CLI dispatch path is covered by the agent-execute smoke separately.
@@ -53,7 +53,7 @@ function runShim(subcommand, extraArgs = [], stdinInput = '') {
 console.log(`Testing ruflo-hook.cjs on ${process.platform}`);
 console.log(`Shim path: ${SHIM_PATH}\n`);
 
-// Test 1: No arguments → exit 0
+// Test 1: No arguments â†’ exit 0
 {
   const r = spawnSync(process.execPath, [SHIM_PATH], {
     encoding: 'utf8', stdio: 'pipe', timeout: 10_000,
@@ -95,13 +95,13 @@ console.log(`Shim path: ${SHIM_PATH}\n`);
   assert(r.status === 0, 'route subcommand exits 0');
 }
 
-// Test 7: Invalid JSON stdin → still exits 0 (graceful degradation)
+// Test 7: Invalid JSON stdin â†’ still exits 0 (graceful degradation)
 {
   const r = runShim('post-edit', ['--file', 'x.ts'], 'not-valid-json');
   assert(r.status === 0, 'Invalid stdin JSON does not crash (exits 0)');
 }
 
-// Test 8: Empty stdin → still exits 0
+// Test 8: Empty stdin â†’ still exits 0
 {
   const r = runShim('post-edit', ['--file', 'x.ts'], '');
   assert(r.status === 0, 'Empty stdin does not crash (exits 0)');
@@ -111,7 +111,7 @@ console.log(`Shim path: ${SHIM_PATH}\n`);
 {
   const r = runShim('post-edit', ['--file', 'nonexistent.ts'], '{}');
   assert(r.status === 0, 'Non-existent file arg still exits 0');
-  // stderr may contain npx fallback output — but must not be a Node.js Error
+  // stderr may contain npx fallback output â€” but must not be a Node.js Error
   const hasNodeError = r.stderr && /^Error:/m.test(r.stderr);
   assert(!hasNodeError, 'No unhandled Node.js error on stderr');
 }

@@ -1,19 +1,19 @@
 ---
 name: harness-security-bench
-description: Run `@metaharness/darwin security bench` (upstream "Darwin Shield" / ADR-155) — evolves a champion security-detection harness against a 10-vuln / 9-decoy corpus and grades it on TPR/FPR/patch-pass/repro/unsafe vs four baselines (B0 static, B1 LLM-single-pass, B2 fixed-agent, B3 Darwin-champion). Closest reference implementation for ruflo's own ADR-155 nightly self-learning security harness (PR #2417). Degrades gracefully when @metaharness/darwin is absent.
+description: Run `@metaharness/darwin security bench` (upstream "Darwin Shield" / ADR-155) â€” evolves a champion security-detection harness against a 10-vuln / 9-decoy corpus and grades it on TPR/FPR/patch-pass/repro/unsafe vs four baselines (B0 static, B1 LLM-single-pass, B2 fixed-agent, B3 Darwin-champion). Closest reference implementation for ruflo's own ADR-155 nightly self-learning security harness (PR #2417). Degrades gracefully when @metaharness/darwin is absent.
 argument-hint: "[--population 2] [--cycles 1] [--seed N] [--alert-on-fail]"
 allowed-tools: Bash
 ---
 
 Surfaces the upstream `metaharness-darwin security bench` command. **This is
-the upstream's own ADR-155 — Darwin Shield — and is the closest reference
-implementation for ruflo's nightly self-learning security harness ([#2417](https://github.com/ruvnet/ruflo/pull/2417)).**
+the upstream's own ADR-155 â€” Darwin Shield â€” and is the closest reference
+implementation for ruflo's nightly self-learning security harness ([#2417](https://github.com/pwnapplehat/ruflo/pull/2417)).**
 
 ## Why this matters for ruflo's ADR-155
 
 ruflo's ADR-155 proposes three learning loops (per-dimension confidence,
 severity calibration, auto-fix bid). Loop A trains on accumulated
-`(finding, dimension, human_outcome)` tuples — but the gradient signal is
+`(finding, dimension, human_outcome)` tuples â€” but the gradient signal is
 only sound if the underlying detection mechanism converges on a known-good
 corpus. Darwin Shield evolves exactly that mechanism on a 10-vuln/9-decoy
 ground-truth set. Running this nightly gives us:
@@ -22,7 +22,7 @@ ground-truth set. Running this nightly gives us:
   TPR=1/FPR=0 on the bench corpus, our Loop A's reward signal is noise.
 - **Drift detection:** week-over-week champion fitness deltas surface
   when the security landscape (or our mutator policy) shifts.
-- **Baseline diversity:** the 4 baselines (B0–B3) give us 4 anchor
+- **Baseline diversity:** the 4 baselines (B0â€“B3) give us 4 anchor
   points to weight per-dimension confidence against.
 
 ## Algorithm
@@ -30,14 +30,14 @@ ground-truth set. Running this nightly gives us:
 Implementation: [`scripts/security-bench.mjs`](../../scripts/security-bench.mjs).
 
 1. Shell to `npx -y @metaharness/darwin@~0.3.1 metaharness-darwin security bench --population N --cycles N [--seed S]`.
-2. Default timeout = `3s × 19 evaluations × population × cycles + 30s overhead`.
-   At default `--population 2 --cycles 1` ≈ 144s; at `--population 4 --cycles 3` ≈ 12 min.
-3. Parse the markdown report — overall PASS/FAIL plus per-gate
-   pass/fail rows (gate examples: "TPR improvement ≥ 25% vs fixed",
-   "FPR reduction ≥ 40%", "Patch-test pass rate ≥ 80%", "Reproduction
-   success ≥ 90%", "Unsafe outputs = 0", "Cost increase ≤ 2× fixed",
+2. Default timeout = `3s Ã— 19 evaluations Ã— population Ã— cycles + 30s overhead`.
+   At default `--population 2 --cycles 1` â‰ˆ 144s; at `--population 4 --cycles 3` â‰ˆ 12 min.
+3. Parse the markdown report â€” overall PASS/FAIL plus per-gate
+   pass/fail rows (gate examples: "TPR improvement â‰¥ 25% vs fixed",
+   "FPR reduction â‰¥ 40%", "Patch-test pass rate â‰¥ 80%", "Reproduction
+   success â‰¥ 90%", "Unsafe outputs = 0", "Cost increase â‰¤ 2Ã— fixed",
    "Beyond SOTA: champion statistically beats previous champion",
-   "Compounding: false-positive repeat-rate drop ≥ 35%").
+   "Compounding: false-positive repeat-rate drop â‰¥ 35%").
 4. Parse the baselines-vs-champion table (4 rows: fitness/TPR/FPR/patchPass/
    repro/unsafe/cost per harness).
 5. Emit structured JSON. With `--alert-on-fail`, exit 1 when overall = FAIL.
@@ -48,12 +48,12 @@ Implementation: [`scripts/security-bench.mjs`](../../scripts/security-bench.mjs)
 {
   "success": true,
   "data": {
-    "overall": { "ok": true, "icon": "✅" },
+    "overall": { "ok": true, "icon": "âœ…" },
     "gates": {
       "total": 11,
       "passed": 11,
       "failed": 0,
-      "details": [{ "ok": true, "criterion": "TPR improvement ≥ 25% vs fixed harness", "measured": "+150% (B2 0.4 → B3 1)" }, ...]
+      "details": [{ "ok": true, "criterion": "TPR improvement â‰¥ 25% vs fixed harness", "measured": "+150% (B2 0.4 â†’ B3 1)" }, ...]
     },
     "baselines": [
       { "harness": "static-only", "fitness": 0.5665, "tpr": 0.3, "fpr": 1, "unsafe": 0, ... },
@@ -71,7 +71,7 @@ Implementation: [`scripts/security-bench.mjs`](../../scripts/security-bench.mjs)
 ## Wiring into ADR-155 nightly harness
 
 The ADR-155 nightly workflow (per #2418 task `W1.5`) will spawn this as
-one of the active-pentest dimension's calls — its results become a
+one of the active-pentest dimension's calls â€” its results become a
 trajectory record:
 
 ```jsonc
@@ -92,7 +92,7 @@ corpus, weight findings caught only by `mcp-pentest` higher.
 
 | Code | Meaning |
 |---|---|
-| 0 | Bench ran (overall PASS or FAIL — distinguish via JSON `overall.ok`), or degraded |
+| 0 | Bench ran (overall PASS or FAIL â€” distinguish via JSON `overall.ok`), or degraded |
 | 1 | `--alert-on-fail` and `overall.ok === false` |
 | 2 | Config error or upstream infrastructure failure |
 

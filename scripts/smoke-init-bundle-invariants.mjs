@@ -1,25 +1,25 @@
 #!/usr/bin/env node
 /**
- * Init-bundle invariants smoke — ADR-128 Phase 5 (#2095).
+ * Init-bundle invariants smoke â€” ADR-128 Phase 5 (#2095).
  *
  * Statically asserts three properties of the @claude-flow/cli init bundle:
  *
- *   1. NO ORPHANED DIRECTORIES — every subdirectory under
+ *   1. NO ORPHANED DIRECTORIES â€” every subdirectory under
  *      v3/@claude-flow/cli/.claude/{commands,agents}/ is reachable from
  *      COMMANDS_MAP or AGENTS_MAP in executor.ts. An "orphaned" directory is
  *      one that ships in the tarball but is never copied by any init path.
  *
- *   2. SKILLS_MAP COMPLETENESS — every skill name in SKILLS_MAP (all arrays)
+ *   2. SKILLS_MAP COMPLETENESS â€” every skill name in SKILLS_MAP (all arrays)
  *      has a corresponding SKILL.md at
  *      v3/@claude-flow/cli/.claude/skills/{name}/SKILL.md. Catches Phase 1
  *      regressions where a skill dir disappears from the package.
  *
- *   3. NO INIT–PLUGIN AGENT BASENAME COLLISION — no .md file in
+ *   3. NO INITâ€“PLUGIN AGENT BASENAME COLLISION â€” no .md file in
  *      v3/@claude-flow/cli/.claude/agents/(any path) shares a basename with any
  *      .md file in plugins/(any plugin)/agents/. Enforces the "plugin is canonical"
  *      dedup rule from ADR-128 Phase 2.
  *
- * Zero runtime dependencies — pure readFileSync + regex + readdirSync.
+ * Zero runtime dependencies â€” pure readFileSync + regex + readdirSync.
  * Exit 0: all assertions pass.
  * Exit 1: one or more assertions fail (file + details reported).
  */
@@ -196,9 +196,9 @@ for (const v of allViolations) {
     console.error(`  [COLLISION] ${v.message}`);
     console.error(`    init:   ${v.init}`);
     console.error(`    plugin: ${v.plugin}`);
-    console.error(`    Fix: delete the init-template copy; the plugin version is canonical (ADR-128 §Phase 2).`);
+    console.error(`    Fix: delete the init-template copy; the plugin version is canonical (ADR-128 Â§Phase 2).`);
   }
 }
 
-console.error('\nADR-128: https://github.com/ruvnet/ruflo/blob/main/v3/docs/adr/ADR-128-init-bundle-reduce-refactor.md\n');
+console.error('\nADR-128: https://github.com/pwnapplehat/ruflo/blob/main/v3/docs/adr/ADR-128-init-bundle-reduce-refactor.md\n');
 process.exit(1);

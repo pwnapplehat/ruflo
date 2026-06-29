@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * @claude-flow/cli-core entry point — alpha.1 surface.
+ * @claude-flow/cli-core entry point â€” alpha.1 surface.
  *
  * Status: alpha (ADR-100). alpha.1 lands the MemoryBackend abstraction +
  * a working `memory` command surface backed by JsonMemoryBackend.
@@ -20,9 +20,9 @@
  *   memory delete <key>        [--namespace] [--format=json]
  *   memory stats               [--format=json]
  *
- * Coming in alpha.2 (ADR-100 §Discovery):
+ * Coming in alpha.2 (ADR-100 Â§Discovery):
  *   - mcp-tools/memory: memory_* MCPTool definitions wired to the backend
- *   - mcp-tools/hooks:  hooks_* MCPTool definitions (def-only — handlers
+ *   - mcp-tools/hooks:  hooks_* MCPTool definitions (def-only â€” handlers
  *                       stay in @claude-flow/cli, dynamic-imported)
  *   - hooks command surface (the second half of the lite path)
  */
@@ -37,12 +37,12 @@ export type { MCPTool, MCPToolInputSchema, MCPToolResult } from './mcp-tools/typ
 export type { MCPToolDef } from './mcp-tools/memory-defs.js';
 export * as validateInput from './mcp-tools/validate-input.js';
 
-// MCP tool *definitions* (alpha.2) — pure data, no handlers.
+// MCP tool *definitions* (alpha.2) â€” pure data, no handlers.
 export { memoryToolDefs } from './mcp-tools/memory-defs.js';
 export { hooksToolDefs } from './mcp-tools/hooks-defs.js';
 export { allToolDefs } from './mcp-tools/index.js';
 
-// Memory abstraction — alpha.1
+// Memory abstraction â€” alpha.1
 export type {
   MemoryBackend,
   MemoryEntry,
@@ -55,7 +55,7 @@ export type {
 export { JsonMemoryBackend } from './memory/json-backend.js';
 export { runMemoryCommand } from './commands/memory.js';
 
-// Bin entry — runs when invoked as `claude-flow-core <command>`.
+// Bin entry â€” runs when invoked as `claude-flow-core <command>`.
 // Standard ESM main detection: realpath the script path and compare.
 // Earlier alpha tags used a fragile endsWith check that failed when
 // invoked via the npm bin shim (process.argv[1] points at the .bin
@@ -75,7 +75,7 @@ const isMain = (() => {
     const moduleReal = realpathSync(fileURLToPath(import.meta.url));
     return argvReal === moduleReal;
   } catch {
-    // Fallback heuristic — if argv[1] mentions claude-flow-core or our
+    // Fallback heuristic â€” if argv[1] mentions claude-flow-core or our
     // dist path, assume we're the binary. Better to over-trigger and
     // serve a usage screen than under-trigger and silently no-op.
     return /claude-flow-core|cli-core\/dist\//.test(process.argv[1]);
@@ -99,7 +99,7 @@ if (isMain) {
   }
 
   if (args[0] === '--help' || args[0] === '-h' || args.length === 0) {
-    console.log(`@claude-flow/cli-core — alpha.1 (ADR-100)
+    console.log(`@claude-flow/cli-core â€” alpha.1 (ADR-100)
 
 Lite core surface: <250 KB packed, <1s cold-cache. Memory + (coming) hooks only.
 
@@ -115,13 +115,13 @@ Working subcommands:
 
 Storage:
   JsonMemoryBackend writes to .swarm/memory.json by default. Override with
-  CLAUDE_FLOW_MEMORY_PATH or --path. Search is substring-only — for semantic
+  CLAUDE_FLOW_MEMORY_PATH or --path. Search is substring-only â€” for semantic
   vector search, install the heavy @claude-flow/cli@alpha.
 
 Programmatic use:
   import { JsonMemoryBackend, runMemoryCommand } from '@claude-flow/cli-core';
 
-Track progress: https://github.com/ruvnet/ruflo/issues/1760`);
+Track progress: https://github.com/pwnapplehat/ruflo/issues/1760`);
     process.exit(0);
   }
 

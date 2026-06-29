@@ -1,19 +1,19 @@
-# ADR-150 — MetaHarness Integration Surfaces in `npx ruflo`
+# ADR-150 â€” MetaHarness Integration Surfaces in `npx ruflo`
 
-**Status**: Implemented (Phase 1 ✅ iters 1–3 · Phase 2 ✅ iters 4–32 · Phase 3 §3.1 ✅ iters 33–99 · KRR retrain pending production data · Phase 3 §3.2-§3.5 scoped in [ADR-151](ADR-151-harness-intelligence-layer.md))
-**Date**: 2026-06-16 (revised 2026-06-17 — **100 iterations of /loop**)
+**Status**: Implemented (Phase 1 âœ… iters 1â€“3 Â· Phase 2 âœ… iters 4â€“32 Â· Phase 3 Â§3.1 âœ… iters 33â€“99 Â· KRR retrain pending production data Â· Phase 3 Â§3.2-Â§3.5 scoped in [ADR-151](ADR-151-harness-intelligence-layer.md))
+**Date**: 2026-06-16 (revised 2026-06-17 â€” **100 iterations of /loop**)
 **Related**: ADR-148 (cost-optimal router lifecycle via `@metaharness/router`), ADR-149 (per-model cost-optimal routing), ADR-026 (3-tier model routing), ADR-097 (federation budget circuit breaker), ADR-124 (optional native dependencies), ADR-144 (agent-authorization-propagation)
-**External reference**: [`ruvnet/agent-harness-generator`](https://github.com/ruvnet/agent-harness-generator) — the upstream that publishes `metaharness` + `@metaharness/*`. Same author (rUv), explicitly designed around ruflo primitives.
+**External reference**: [`ruvnet/agent-harness-generator`](https://github.com/ruvnet/agent-harness-generator) â€” the upstream that publishes `metaharness` + `@metaharness/*`. Same author (rUv), explicitly designed around ruflo primitives.
 **Research dossier**: published as a gist (linked from the tracking issue) with full graded-evidence sourcing.
 
 ## Context
 
-We just shipped `ruflo@3.11.0` (also `@claude-flow/cli@3.11.0`, `claude-flow@3.11.0`). ADR-148/149 already wired `@metaharness/router` as an `optionalDependency` for cost-optimal model routing behind a triple gate. The remaining MetaHarness surface — twenty-plus `@metaharness/*` packages: kernel, host adapters (9), verticals (13), scaffold/eject CLI — is unused by ruflo despite being authored by the same maintainer specifically around ruflo's architecture.
+We just shipped `ruflo@3.11.0` (also `@claude-flow/cli@3.11.0`, `claude-flow@3.11.0`). ADR-148/149 already wired `@metaharness/router` as an `optionalDependency` for cost-optimal model routing behind a triple gate. The remaining MetaHarness surface â€” twenty-plus `@metaharness/*` packages: kernel, host adapters (9), verticals (13), scaffold/eject CLI â€” is unused by ruflo despite being authored by the same maintainer specifically around ruflo's architecture.
 
 Three signals make this the right time to commit a broader integration:
 
-1. **MetaHarness is first-party.** Same author (`ruv@ruv.net`), same ADR numbering convention (kernel docs reference ADR-011/022/033/036/040/041/043), explicit framing: *"Scaffold your own focused AI agent harness — like ruflo, uniquely yours."* The `buildRegistryEntry()` doc comment says: *"Mirrors the ruflo plugin registry shape so the same UI can browse it."* The `@metaharness/host-claude-code` adapter emits `.claude/settings.json` in exactly ruflo's format.
-2. **The router integration is already live but underutilized.** `@metaharness/router@^0.3.2` is in `optionalDependencies`; `neural-router.ts` imports it behind `CLAUDE_FLOW_ROUTER_NEURAL=1`. The bundled KRR is trained on hand-coded seed scores rather than measured routing outcomes — leaving the DRACO Pareto win unrealized.
+1. **MetaHarness is first-party.** Same author (`ruv@ruv.net`), same ADR numbering convention (kernel docs reference ADR-011/022/033/036/040/041/043), explicit framing: *"Scaffold your own focused AI agent harness â€” like ruflo, uniquely yours."* The `buildRegistryEntry()` doc comment says: *"Mirrors the ruflo plugin registry shape so the same UI can browse it."* The `@metaharness/host-claude-code` adapter emits `.claude/settings.json` in exactly ruflo's format.
+2. **The router integration is already live but underutilized.** `@metaharness/router@^0.3.2` is in `optionalDependencies`; `neural-router.ts` imports it behind `CLAUDE_FLOW_ROUTER_NEURAL=1`. The bundled KRR is trained on hand-coded seed scores rather than measured routing outcomes â€” leaving the DRACO Pareto win unrealized.
 3. **No ruflo skill exposes scaffolding/score/genome/threat-model to Claude Code today.** Users discover MetaHarness independently and are confused about the relationship.
 
 ### Evidence baseline (measured 2026-06-16)
@@ -24,8 +24,8 @@ Three signals make this the right time to commit a broader integration:
 | 20+ `@metaharness/*` packages published; full ecosystem (kernel + 5 host adapters + 13 verticals + 5 platform NAPI binaries) | `npm search @metaharness` | HIGH |
 | `@metaharness/router@0.3.2` exports `Router` (k-NN), `TrainedRouter` (KRR), `NativeRouter` (FastGRNN via tiny-dancer), zero runtime deps, 53 kB unpacked | `dist/*.d.ts`, npm registry | HIGH |
 | `@metaharness/kernel@0.1.0` exports `loadKernel`, `ToolDispatcher` (claims-checked), `SelfEvolvingRouter`, `TrajectoryStore`, `rankWithDecay` | `kernel-pkg/package/dist/*.d.ts` | HIGH |
-| `metaharness` factory exports `buildRepoScorecard()`, `buildGenomeReport()`, `buildScorecard()`, `buildThreatModel()`, `scanMcp()`, `buildOiaManifest()`, `buildRegistryEntry()` — all pure reads, well-typed | `dist/repo-scorecard.d.ts` etc. | HIGH |
-| Velocity: `metaharness` 0.1.0 → 0.1.11 in ~23h; `@metaharness/router` 0.1.0 → 0.3.2 in 2.7h on 2026-06-15 | npm `time` field | HIGH |
+| `metaharness` factory exports `buildRepoScorecard()`, `buildGenomeReport()`, `buildScorecard()`, `buildThreatModel()`, `scanMcp()`, `buildOiaManifest()`, `buildRegistryEntry()` â€” all pure reads, well-typed | `dist/repo-scorecard.d.ts` etc. | HIGH |
+| Velocity: `metaharness` 0.1.0 â†’ 0.1.11 in ~23h; `@metaharness/router` 0.1.0 â†’ 0.3.2 in 2.7h on 2026-06-15 | npm `time` field | HIGH |
 | Both packages MIT-licensed, same maintainer as ruflo | npm registry | HIGH |
 | Existing benchmark proves `@metaharness/router` native backend loads on the test host: `mh_native_available: true` | `docs/benchmarks/runs/router-4way-seed99-2026-06-15T14-12-40Z.json` | HIGH |
 
@@ -40,15 +40,15 @@ Every integration in this ADR, and every future ADR that extends it, must satisf
 3. **Graceful degradation**: every code path that imports a `@metaharness/*` symbol must catch `MODULE_NOT_FOUND` and fall back to a built-in path (or a clearly-degraded but functional state).
 4. **CI coverage of the absent path**: at least one CI job must run `--ignore-optional` (or equivalent) and assert ruflo still passes its smoke contract. This is the only structural defense against accidentally promoting an optional dep to required.
 
-The intent of this constraint is to prevent ruflo from becoming a hidden second orchestration framework wrapped around its sibling's runtime. Reviewer's framing: *"Ruflo remains operational if every MetaHarness package is removed."* That sentence is now part of the API surface contract — any PR that breaks it is a breaking change requiring its own ADR.
+The intent of this constraint is to prevent ruflo from becoming a hidden second orchestration framework wrapped around its sibling's runtime. Reviewer's framing: *"Ruflo remains operational if every MetaHarness package is removed."* That sentence is now part of the API surface contract â€” any PR that breaks it is a breaking change requiring its own ADR.
 
 ## Decision
 
 Adopt MetaHarness as ruflo's downstream sibling tool, surfaced through three integration channels that match its three distinct contributions:
 
-1. **Static-analysis MCP tools** — `harness-score`, `harness-genome`, `harness-threat-model`, `harness-mcp-scan` as a new `plugins/ruflo-metaharness/` plugin. Subprocess invocation of the `metaharness` / `harness` CLI binaries; no static library dependency added to ruflo's boot path. Read-only operations only.
-2. **Live router data pipeline** — replace the hand-coded seed corpus for the bundled KRR with measured routing trajectories collected via the existing `CLAUDE_FLOW_ROUTER_TRAJECTORY=1` recorder; retrain `train-bundled-krr.mjs` against real data. This unlocks the Pareto win ADR-149 forecast but never measured.
-3. **CI security gates** — add `harness mcp scan .` and `metaharness score . --json` to `v3-ci.yml`. Both are static, fast, and machine-readable. Asserts no HIGH MCP findings and a non-zero readiness score on every PR.
+1. **Static-analysis MCP tools** â€” `harness-score`, `harness-genome`, `harness-threat-model`, `harness-mcp-scan` as a new `plugins/ruflo-metaharness/` plugin. Subprocess invocation of the `metaharness` / `harness` CLI binaries; no static library dependency added to ruflo's boot path. Read-only operations only.
+2. **Live router data pipeline** â€” replace the hand-coded seed corpus for the bundled KRR with measured routing trajectories collected via the existing `CLAUDE_FLOW_ROUTER_TRAJECTORY=1` recorder; retrain `train-bundled-krr.mjs` against real data. This unlocks the Pareto win ADR-149 forecast but never measured.
+3. **CI security gates** â€” add `harness mcp scan .` and `metaharness score . --json` to `v3-ci.yml`. Both are static, fast, and machine-readable. Asserts no HIGH MCP findings and a non-zero readiness score on every PR.
 
 Three concrete things we ARE NOT doing in this ADR (deferred to Phase 2+):
 
@@ -58,63 +58,63 @@ Three concrete things we ARE NOT doing in this ADR (deferred to Phase 2+):
 
 ### Phased rollout
 
-**Phase 0 — Measurement spike (1–3 days, no code shipped to npm).**
+**Phase 0 â€” Measurement spike (1â€“3 days, no code shipped to npm).**
 - Run `npx metaharness score .` and `npx metaharness genome .` against the ruflo repo to establish baseline scorecards.
-- Enable `CLAUDE_FLOW_ROUTER_TRAJECTORY=1` for ≥50 routing decisions; verify the `.swarm/model-router-trajectories.jsonl` shape matches what `train-bundled-krr.mjs` expects.
+- Enable `CLAUDE_FLOW_ROUTER_TRAJECTORY=1` for â‰¥50 routing decisions; verify the `.swarm/model-router-trajectories.jsonl` shape matches what `train-bundled-krr.mjs` expects.
 - Confirm `import('@metaharness/router')` succeeds from `v3/@claude-flow/cli` and exercise `Router.fromExamples(...)` with the existing benchmark corpus.
 - Run `harness mcp scan .` to baseline ruflo's own MCP threat-model score.
 
 Exit criteria: baseline numbers in hand; no surprises in trajectory format or `mcp scan` output.
 
-**Phase 1 — MVP (3–7 days, one MINOR release: 3.12.0).**
-1. **`plugins/ruflo-metaharness/`** with three skills (`harness-score`, `harness-genome`, `harness-mint`), conventional structure (`plugin.json`, `skills/*/SKILL.md` with `allowed-tools: Bash`, `scripts/smoke.sh`). Skills shell out to `npx metaharness` / `npx harness` — no library imports. Covered by the fleet meta-smoke and the three existing audits (exit-bypass, frontmatter, manifest).
+**Phase 1 â€” MVP (3â€“7 days, one MINOR release: 3.12.0).**
+1. **`plugins/ruflo-metaharness/`** with three skills (`harness-score`, `harness-genome`, `harness-mint`), conventional structure (`plugin.json`, `skills/*/SKILL.md` with `allowed-tools: Bash`, `scripts/smoke.sh`). Skills shell out to `npx metaharness` / `npx harness` â€” no library imports. Covered by the fleet meta-smoke and the three existing audits (exit-bypass, frontmatter, manifest).
 2. **CI gates** in `v3-ci.yml`: `npx metaharness score . --json` (assert `exitCode === 0`) and `npx harness mcp scan .` (assert no HIGH findings). Both are additive jobs on the existing matrix.
 3. **Real seed corpus**: collect trajectory data over Phase-0's recorder runs + a CI pass, retrain via `scripts/train-bundled-krr.mjs`, regenerate the bundled artifact. Validate `routedBy: 'metaharness-krr'` activates on real decisions in the next bench run.
 
-Exit criteria: `plugins/ruflo-metaharness/scripts/smoke.sh` passes; meta-smoke shows 33/33 plugins green; CI score + mcp-scan jobs green on main; new bench run shows `routedBy: 'metaharness-krr'` for ≥ 1 routing decision driven by measured-seed KRR.
+Exit criteria: `plugins/ruflo-metaharness/scripts/smoke.sh` passes; meta-smoke shows 33/33 plugins green; CI score + mcp-scan jobs green on main; new bench run shows `routedBy: 'metaharness-krr'` for â‰¥ 1 routing decision driven by measured-seed KRR.
 
-Semver: MINOR — additive plugin, additive CI gates, additive MCP tools. No breaking changes.
+Semver: MINOR â€” additive plugin, additive CI gates, additive MCP tools. No breaking changes.
 
-**Phase 2 — Expansion (1–4 weeks, one or two MINOR releases).**
+**Phase 2 â€” Expansion (1â€“4 weeks, one or two MINOR releases).**
 - `npx ruflo eject` command wrapping `metaharness --from-existing ./` for one-shot harness extraction (attribution preserved via the `<!-- ruflo-attribution-block -->` convention).
-- `SelfEvolvingRouter` (from `@metaharness/kernel`) parallel-logged alongside the Thompson bandit in `model-router.ts` for two weeks. **Promotion criteria (AND, not OR — must satisfy all three):**
+- `SelfEvolvingRouter` (from `@metaharness/kernel`) parallel-logged alongside the Thompson bandit in `model-router.ts` for two weeks. **Promotion criteria (AND, not OR â€” must satisfy all three):**
   1. **Quality**: `qualityScore` improvement > 2% (where `qualityScore` is the existing per-task verdict-weighted reward used by the bandit)
   2. **Cost**: `usdPerDecision` increase < 1% (no expensive regressions hiding behind quality wins)
   3. **Latency**: p95 routing-decision latency increase < 5%
-  Each metric measured over an identical workload between bandit-only and SelfEvolvingRouter-only periods, separated by a 24h washout window. Failing any one criterion blocks promotion; the bandit stays primary. This tightening is deliberate — the "OR" form would let quality gains mask cost or latency regressions, which is the exact failure mode ADR-149's Pareto framing was built to prevent.
-- Harness entries in the ruflo plugin registry — accept `type: 'harness'` in `discovery.ts`; surface via `npx ruflo plugins list --type harness`.
+  Each metric measured over an identical workload between bandit-only and SelfEvolvingRouter-only periods, separated by a 24h washout window. Failing any one criterion blocks promotion; the bandit stays primary. This tightening is deliberate â€” the "OR" form would let quality gains mask cost or latency regressions, which is the exact failure mode ADR-149's Pareto framing was built to prevent.
+- Harness entries in the ruflo plugin registry â€” accept `type: 'harness'` in `discovery.ts`; surface via `npx ruflo plugins list --type harness`.
 - 13th background worker `oia-audit` that runs `buildOiaManifest()` + `buildThreatModel()` + `scanMcp()` on a schedule and stores results in the `metaharness-audit` memory namespace.
 
 Each Phase-2 item is independently scoped and can ship as separate MINOR releases.
 
-**Phase 3 — Harness Intelligence Layer (future, scope-only — separate ADR per item).**
+**Phase 3 â€” Harness Intelligence Layer (future, scope-only â€” separate ADR per item).**
 
 A class of capability that exists nowhere else in the agent-framework space, made possible by `buildGenomeReport()` + `buildRepoScorecard()` + `buildRegistryEntry()`'s shared schema:
 
-- **Genome similarity search** — given two harnesses (or one harness + a candidate repo), compute a similarity vector across the 7 genome sections + scorecard dimensions; surface the closest match in the registry.
-- **Harness recommendation engine** — given a repo + a user description, recommend (a) the closest existing harness in the registry, (b) the closest template, and (c) the minimum delta to fork from either.
-- **Fleet-wide architecture drift detection** — for organisations running multiple harnesses, track genome-section drift over time; alert when a harness diverges from its template lineage beyond a threshold.
-- **Cross-harness capability graph** — `compare <a> <b>` already exists in `harness` CLI; lift it into a fleet-aware diff that answers "which harness in our fleet has the closest capability set to this task?".
-- **Plugin compatibility analysis** — given a `plugins/X/` and a target harness, predict whether the plugin's `allowed-tools` requirements are satisfied by the harness's MCP server declarations.
+- **Genome similarity search** â€” given two harnesses (or one harness + a candidate repo), compute a similarity vector across the 7 genome sections + scorecard dimensions; surface the closest match in the registry.
+- **Harness recommendation engine** â€” given a repo + a user description, recommend (a) the closest existing harness in the registry, (b) the closest template, and (c) the minimum delta to fork from either.
+- **Fleet-wide architecture drift detection** â€” for organisations running multiple harnesses, track genome-section drift over time; alert when a harness diverges from its template lineage beyond a threshold.
+- **Cross-harness capability graph** â€” `compare <a> <b>` already exists in `harness` CLI; lift it into a fleet-aware diff that answers "which harness in our fleet has the closest capability set to this task?".
+- **Plugin compatibility analysis** â€” given a `plugins/X/` and a target harness, predict whether the plugin's `allowed-tools` requirements are satisfied by the harness's MCP server declarations.
 
-These are scope-only in this ADR. Each item gets its own ADR before implementation. They are listed here so the architectural constraint (above) covers them up front — the Harness Intelligence Layer must also satisfy the four removable/optional/graceful/CI-coverage rules.
+These are scope-only in this ADR. Each item gets its own ADR before implementation. They are listed here so the architectural constraint (above) covers them up front â€” the Harness Intelligence Layer must also satisfy the four removable/optional/graceful/CI-coverage rules.
 
 ## Consequences
 
 ### Positive
 
 - Closes the "what is the relationship between ruflo and MetaHarness?" question by answering it in the UX rather than the docs.
-- Ruflo gains a continuous, machine-readable readiness score and MCP threat-model on every PR — the same primitives we use to score third-party repos for harness viability.
+- Ruflo gains a continuous, machine-readable readiness score and MCP threat-model on every PR â€” the same primitives we use to score third-party repos for harness viability.
 - The ADR-149 Pareto win (per-model cost-optimal routing) becomes measured rather than theoretical, because the KRR is finally trained on real trajectories.
 - Phase 1 is entirely additive: no `model-router.ts` dispatch logic changes, no top-level command surface change, no IPFS registry change. Backward-compatible MINOR bump.
-- Three integration channels match MetaHarness's three contributions — analysis, routing, hosts — without forcing the kernel's full surface into a position where its 0.x stability would block ruflo releases.
+- Three integration channels match MetaHarness's three contributions â€” analysis, routing, hosts â€” without forcing the kernel's full surface into a position where its 0.x stability would block ruflo releases.
 
 ### Negative / risks
 
 - **API stability**: both `metaharness` and `@metaharness/router` are 0.x and ship rapid patch releases. A breaking change in `@metaharness/router@0.4.x` would require immediate `neural-router.ts` updates. Mitigation: pin to `~0.3.2` in `optionalDependencies`; add `scripts/check-metaharness-compat.mjs` to CI exercising the `Router` constructor with a trivial example to catch runtime breakage before publishing.
 - **Bus factor**: same maintainer as ruflo, MetaHarness, and ruvector. No change from today, but the dependency edge is now explicit.
 - **Sandboxing**: `harness from-repo <url>` clones arbitrary Git URLs. Phase-1 skills NEVER expose this to Claude Code; only `analyze`/`score`/`genome` (pure reads) and `harness-mint` (writes to user-specified target dir, never project root).
-- **GCP dependency**: `harness validate` uses GCP Secret Manager via `gcloud`. Ruflo CI must skip those subcommands (or mock them) — explicit `--skip-gcp` flag from the `harness validate` command surface handles this.
+- **GCP dependency**: `harness validate` uses GCP Secret Manager via `gcloud`. Ruflo CI must skip those subcommands (or mock them) â€” explicit `--skip-gcp` flag from the `harness validate` command surface handles this.
 - **Phase-1 MCP plugin spawns subprocesses**: subprocess crashes, timeouts, and stdout-parsing edge cases are now in ruflo's failure surface. Mitigation: hard timeout (60s) per invocation, captured stderr in error responses, structured-JSON output enforced via `--json` flag everywhere.
 
 ### Neutral / accepted trade-offs
@@ -128,7 +128,7 @@ These are scope-only in this ADR. Each item gets its own ADR before implementati
 Rejected. `buildRepoScorecard()`, `buildGenomeReport()`, `scanMcp()`, `buildThreatModel()` are already-tested implementations exposing clean TypeScript APIs. Reimplementing them in ruflo is pure duplication cost with no advantage. The eject path's `rewriteContent()` with attribution-block preservation is subtle.
 
 **Alternative B: Use MetaHarness only as a CLI subprocess everywhere, never as a library import.**
-Partially adopted (this is the Phase-1 plugin posture). Wrong for `@metaharness/router` — sub-ms routing latency demands a library import, which ADR-148/149 already accepted.
+Partially adopted (this is the Phase-1 plugin posture). Wrong for `@metaharness/router` â€” sub-ms routing latency demands a library import, which ADR-148/149 already accepted.
 
 **Alternative C: Promote `@metaharness/router` from `optionalDependency` to `dependency`.**
 Rejected for now. The triple gate (`CLAUDE_FLOW_ROUTER_NEURAL=1` + artifact + import success) is the right posture until the API stabilizes at 1.0.
@@ -141,7 +141,7 @@ Rejected. Touching the MCP dispatch core affects all 314 tools and is too high-b
 
 ## Open Questions
 
-- Should the Phase-1 plugin's `harness-mint` skill require explicit user confirmation in the Claude Code UI before writing any files? Lean yes — destructive-action-confirmation matches ruflo's "executing actions with care" principle.
+- Should the Phase-1 plugin's `harness-mint` skill require explicit user confirmation in the Claude Code UI before writing any files? Lean yes â€” destructive-action-confirmation matches ruflo's "executing actions with care" principle.
 - Should the seed-corpus retraining cadence be ad-hoc (Phase-1) or scheduled (e.g., monthly cron in a Phase-2 follow-up)? Defer to Phase-2 once we see the trajectory volume.
 - Does the `oia-audit` background worker (Phase 2) belong in `ruflo-loop-workers` or in `ruflo-metaharness`? Probably the latter, since the audit output is MetaHarness-specific.
 - How does the architectural constraint's CI gate (the `--ignore-optional` smoke run) interact with the existing `all-plugins-smoke.yml` workflow? Probably a new sibling workflow `no-metaharness-smoke.yml` that re-runs the same matrix with `--ignore-optional`; lighter than adding a second axis to the existing matrix.
@@ -151,56 +151,56 @@ Rejected. Touching the MCP dispatch core affects all 314 tools and is too high-b
 The integration shipped across eight `/loop` iterations on branch
 `feat/metaharness-integration-research`. Status of each Phase milestone:
 
-### Phase 0 — Measurement spike ✅ DONE (iter 1)
+### Phase 0 â€” Measurement spike âœ… DONE (iter 1)
 - Ruflo baseline scorecard captured: harnessFit 82/100, compileConfidence
-  100, taskCoverage 79, toolSafety 100, memoryUsefulness 40 (weakest —
+  100, taskCoverage 79, toolSafety 100, memoryUsefulness 40 (weakest â€”
   track), estCostPerRunUsd $0.048, archetype `typescript-sdk-harness`,
   template recommendation `vertical:coding`, scaffoldReady true.
 - Ruflo genome: repo_type `node_mcp_ci`, risk_score 0.27 (low),
   publish_readiness 0.9, mcp_surface `remote`.
 
-### Phase 1 — MVP ✅ DONE (iters 1–3)
+### Phase 1 â€” MVP âœ… DONE (iters 1â€“3)
 - `plugins/ruflo-metaharness/` with 6 skills (one more than ADR-150
-  originally proposed — `harness-oia-audit` was lifted forward from
+  originally proposed â€” `harness-oia-audit` was lifted forward from
   Phase 2 in iter 7): `harness-score`, `harness-genome`,
   `harness-mcp-scan`, `harness-threat-model`, `harness-oia-audit`,
   `harness-mint`.
-- Shared `scripts/_harness.mjs` bridge — single subprocess
+- Shared `scripts/_harness.mjs` bridge â€” single subprocess
   invocation point, 60s hard timeout, JSON-mode default, graceful
   degradation via `emitDegradedJsonAndExit`.
 - `npx ruflo metaharness <subcommand>` top-level dispatcher in
   `v3/@claude-flow/cli/src/commands/metaharness.ts` (iter 3).
 - `metaharness@~0.1.11` and `@metaharness/router@~0.3.2` in
   optionalDependencies of BOTH `@claude-flow/cli/package.json` and
-  `ruflo/package.json` (iter 3). Tilde pin, not caret — per
+  `ruflo/package.json` (iter 3). Tilde pin, not caret â€” per
   review-round-1 (upstream had 5 releases in 2.7h).
 - CI workflows (iter 2):
-  - `metaharness-ci.yml` — score, mcp-scan, router-compat jobs
-  - `no-metaharness-smoke.yml` — enforces architectural constraint rule
+  - `metaharness-ci.yml` â€” score, mcp-scan, router-compat jobs
+  - `no-metaharness-smoke.yml` â€” enforces architectural constraint rule
     #4 by greping every package.json for non-optional metaharness deps
     AND drilling each skill with an unresolvable npm registry
-  - `scripts/check-metaharness-compat.mjs` — API-stability tripwire,
+  - `scripts/check-metaharness-compat.mjs` â€” API-stability tripwire,
     9/9 against current @metaharness/router@0.3.2
 
-### Phase 2 — Expansion (3 of 4 shipped)
-- ✅ `npx ruflo eject` (iters 4–5) — Phase-2 differentiator wrapping
+### Phase 2 â€” Expansion (3 of 4 shipped)
+- âœ… `npx ruflo eject` (iters 4â€“5) â€” Phase-2 differentiator wrapping
   `metaharness --from-existing`. Dry-run default; refuses in-repo
   target + existing-target overwrites. CI dry-run job in
   metaharness-ci.yml validates BOTH the plan output AND the safety
   refusal.
-- ✅ `'harness'` PluginType in plugin registry (iter 6) — schema
+- âœ… `'harness'` PluginType in plugin registry (iter 6) â€” schema
   extension only, zero runtime overhead. `npx ruflo plugins list
   --type harness` filter works by construction.
-- ✅ `harness-oia-audit` composite worker (iter 7–8) — bundles
+- âœ… `harness-oia-audit` composite worker (iter 7â€“8) â€” bundles
   oia-manifest + threat-model + mcp-scan into one timestamped record;
   persistence to `metaharness-audit` memory namespace; weekly cron
   workflow `.github/workflows/oia-audit-weekly.yml` at Sundays 04:17 UTC.
-- ✅ `SelfEvolvingRouter` parallel-logging — BOTH HALVES LANDED:
+- âœ… `SelfEvolvingRouter` parallel-logging â€” BOTH HALVES LANDED:
   - **Analyzer** (iter 10):
   `plugins/ruflo-metaharness/scripts/router-parallel-analyze.mjs` reads
   paired routing decisions from a JSONL trajectory file and computes
   the 3-criteria AND-gate from review-round-1. Verified end-to-end with
-  synthetic fixtures (✓ PROMOTABLE / ⚠ NOT promotable paths both work,
+  synthetic fixtures (âœ“ PROMOTABLE / âš  NOT promotable paths both work,
   insufficient-data path exits cleanly at n<30). `@metaharness/kernel`
   added to `optionalDependencies` of `@claude-flow/cli` AND
   `ruflo/package.json` so the future Recording side can dynamic-import
@@ -209,22 +209,22 @@ The integration shipped across eight `/loop` iterations on branch
     `v3/@claude-flow/cli/src/ruvector/router-parallel-recorder.ts`
     exports `recordPair(task, bandit, ser)` + `recordPairOutcome(task,
     outcome)` + `parallelRecorderStatus()`. Env-gated via
-    `CLAUDE_FLOW_ROUTER_PARALLEL_LOG=1` — no-op when unset (default).
+    `CLAUDE_FLOW_ROUTER_PARALLEL_LOG=1` â€” no-op when unset (default).
     Every `appendFileSync` wrapped in try/catch with debug-only stderr
     logging; ADR-150 rule #3 satisfied (never throws from the routing
     path). 10MB rotation. Default output path
     `.swarm/router-parallel.jsonl` matches the iter-10 analyzer's
     default `--input`.
 
-  - **Dispatch wiring** (iter 12 — LAST MILE):
+  - **Dispatch wiring** (iter 12 â€” LAST MILE):
     The one-line edit in `model-router.ts` route() shipped in iter 12.
     Fire-and-forget `recordPair({task, bandit, ser})` inside the
-    existing `if (abEnabled)` block — same place the A/B disagreement
+    existing `if (abEnabled)` block â€” same place the A/B disagreement
     counter already lives. Env-gated by
     `CLAUDE_FLOW_ROUTER_PARALLEL_LOG === '1'`; no-op when unset, which
     means ZERO overhead on the default routing path. The dynamic-import
     is lazy (one Promise per process); the recordPair call is wrapped
-    in try/catch with `.catch(() => {})` on the import promise — the
+    in try/catch with `.catch(() => {})` on the import promise â€” the
     routing path NEVER throws, even when the optional kernel is
     completely absent.
 
@@ -233,15 +233,15 @@ The integration shipped across eight `/loop` iterations on branch
       ser.backend    = neuralPrior ? 'metaharness-router-hybrid' : 'bandit-only'
 
     The pipeline is now end-to-end:
-      route() → recordPair() → .swarm/router-parallel.jsonl
-                              → router-parallel-analyze.mjs
-                              → 3-criteria AND-gate verdict
+      route() â†’ recordPair() â†’ .swarm/router-parallel.jsonl
+                              â†’ router-parallel-analyze.mjs
+                              â†’ 3-criteria AND-gate verdict
 
-### Phase-1 item #3 — Real seed corpus retraining 🔄 PENDING
+### Phase-1 item #3 â€” Real seed corpus retraining ðŸ”„ PENDING
 Requires production trajectory data. The pipeline is wired:
 `CLAUDE_FLOW_ROUTER_TRAJECTORY=1` writes JSONL;
 `scripts/train-bundled-krr.mjs` rebuilds the artifact. The blocker is
-data collection — needs a 50+ decision production sample. Plan: enable
+data collection â€” needs a 50+ decision production sample. Plan: enable
 the recorder on the next merged-to-main release; collect a week of
 real routing data; retrain in a follow-up PR.
 
@@ -251,35 +251,35 @@ real routing data; retrain in a follow-up PR.
 - 19 structural invariants in `plugins/ruflo-metaharness/scripts/smoke.sh`
 - Three fleet audits green (exit-bypass / SKILL.md frontmatter /
   plugin.json manifest)
-- 117 SKILL.md files across 34 plugins (was 117/32 — adding
+- 117 SKILL.md files across 34 plugins (was 117/32 â€” adding
   6 new SKILL.md files from this plugin pushed the count)
 
-### Phase 2 continued (iters 13–32)
+### Phase 2 continued (iters 13â€“32)
 Additional Phase-2 surface landed over iters 13-32, all on the same
 `feat/metaharness-integration-research` branch:
 
-- **iter 15** `audit-trend.mjs` — diff two `oia-audit` records (drift
+- **iter 15** `audit-trend.mjs` â€” diff two `oia-audit` records (drift
   detection). Pulls baseline + current snapshots from
   `metaharness-audit` namespace; reports composite severity delta +
   per-component status + introduced/cleared findings.
-- **iter 16** `audit-list.mjs` — enumerate timestamped records in
+- **iter 16** `audit-list.mjs` â€” enumerate timestamped records in
   `metaharness-audit` namespace, with `--since 30d`-style filtering.
-- **iter 20-23** `metaharness-tools.ts` MCP surface — 7 tools registered:
+- **iter 20-23** `metaharness-tools.ts` MCP surface â€” 7 tools registered:
   score, genome, mcp-scan, threat-model, oia-audit, audit-list,
   audit-trend. Each backed by subprocess invocation through the same
   `_harness.mjs` bridge. `test-mcp-tools.mjs` enforces the runtime
   contract: `{success, data, degraded, exitCode}` shape, never-throws
   invariant.
-- **iter 27-29** mint hardening — explicit npx argv (was a single
+- **iter 27-29** mint hardening â€” explicit npx argv (was a single
   string token), `cwd: dirname(target)` + `basename(target)` as cliName
   workaround for upstream `--target` bug (now fixed at metaharness@0.1.13).
-- **iter 30-32** `.harness/mcp-policy.json` + manifest.json — security
+- **iter 30-32** `.harness/mcp-policy.json` + manifest.json â€” security
   posture: default-deny, allow shell/network/file-write: false,
   audit-log on; iter-31 exact-pins close LOW severity vector; iter-32
   manifest documents witness-key gap.
 
-### Phase 3 §3.1 — Genome Similarity Search (iters 33–59)
-Phase-3 §3.1 from [ADR-152](ADR-152-genome-similarity-search.md) shipped
+### Phase 3 Â§3.1 â€” Genome Similarity Search (iters 33â€“59)
+Phase-3 Â§3.1 from [ADR-152](ADR-152-genome-similarity-search.md) shipped
 across 27 iterations. The implementation is now deeply integrated across
 **14 distinct surfaces**:
 
@@ -290,7 +290,7 @@ across 27 iterations. The implementation is now deeply integrated across
 | 3 | CLI skill `similarity.mjs` (file + memory inputs) | 36 |
 | 4 | MCP tool `metaharness_similarity` | 36 |
 | 5 | CLI dispatcher entry | 36 |
-| 6 | MCP runtime contract test (74→115 assertions) | 37, 43, 52 |
+| 6 | MCP runtime contract test (74â†’115 assertions) | 37, 43, 52 |
 | 7 | Pipeline consumers (oia-audit fingerprint + audit-trend) | 38 |
 | 8 | 53 unit-test assertions over 8 phases | 39 |
 | 9 | Dedicated CI job `similarity-tests` | 40 |
@@ -303,38 +303,38 @@ across 27 iterations. The implementation is now deeply integrated across
 #### Real-data bug-discovery arc (iters 47-51)
 End-to-end roundtrip caught FOUR latent bugs that synthetic-fixture
 tests had missed for 9+ iterations each:
-- **iter 47** — schema mismatch: oia-audit captured fingerprint via
+- **iter 47** â€” schema mismatch: oia-audit captured fingerprint via
   the wrong CLI binary (harness vs metaharness; different schemas).
   Fingerprint silently fed wrong shape to `_similarity.mjs`. Fixed by
   routing score+genome through `runMetaharness`.
-- **iter 49** — mcp-scan dead-code: `audit-trend` read `json.findings`
+- **iter 49** â€” mcp-scan dead-code: `audit-trend` read `json.findings`
   expecting an array, but mcp-scan emitted text-only. Flagged.
-- **iter 50** — closed (b) via shared `parseMcpScanText` parser in
+- **iter 50** â€” closed (b) via shared `parseMcpScanText` parser in
   `_harness.mjs`, wired into both mcp-scan.mjs and oia-audit.mjs.
-- **iter 51** — proved drift detection actually fires on mutated
+- **iter 51** â€” proved drift detection actually fires on mutated
   audits, not just confirms self-match. Stage 7 mutates all 3
   similarity components; verdict flips from near-identical to
   moderate-drift; alert at 0.95 fires.
 
 #### Anti-regression locks (iters 42-44)
-- **iter 42** — fixed dispatcher's flag-drop bug (silent for 6 iters).
+- **iter 42** â€” fixed dispatcher's flag-drop bug (silent for 6 iters).
   Iter-36 wired SUBCOMMANDS but only `context.args` (positionals) were
   forwarded to subprocess. Now reads `context.flags` and re-kebabs
-  camelCase→kebab. Affects ALL metaharness subcommands.
-- **iter 43** — generalized iter-42's catch into 16 structural
+  camelCaseâ†’kebab. Affects ALL metaharness subcommands.
+- **iter 43** â€” generalized iter-42's catch into 16 structural
   positive-case assertions on the MCP runtime test.
-- **iter 44** — MCP wrapper `success = (exitCode === 0)` (was
+- **iter 44** â€” MCP wrapper `success = (exitCode === 0)` (was
   `!degraded`). Affects all 9 metaharness MCP tools. Documented 3
   observable cases.
 
 #### Parallelization sweep (iters 56-59)
 Composite operations now use Promise.all where dependency graph allows:
-- **iter 56** — oia-audit's 5 subprocess calls parallelize → 4.59x
+- **iter 56** â€” oia-audit's 5 subprocess calls parallelize â†’ 4.59x
   measured speedup on Apple Silicon / Node 22 (close to theoretical 5x).
-- **iter 58** — drift-from-history's audit-list + oia-audit
-  parallelize → ~30% reduction. Folded the iter-57 probe into the same
+- **iter 58** â€” drift-from-history's audit-list + oia-audit
+  parallelize â†’ ~30% reduction. Folded the iter-57 probe into the same
   batch.
-- **iter 59** — `timing.{wallMs, sumComponentMs, parallelSpeedup}`
+- **iter 59** â€” `timing.{wallMs, sumComponentMs, parallelSpeedup}`
   field in oia-audit output. Smoke gate asserts speedup > 2.0 to catch
   silent serialization regression.
 
@@ -346,21 +346,21 @@ code), all closed in iters 56-57.
 
 #### Upstream contribution
 Two issues filed at `ruvnet/agent-harness-generator`:
-- [#15](https://github.com/ruvnet/agent-harness-generator/issues/15) —
+- [#15](https://github.com/ruvnet/agent-harness-generator/issues/15) â€”
   harness vs metaharness CLI schema confusion (iter 47 discovery)
-- [#16](https://github.com/ruvnet/agent-harness-generator/issues/16) —
+- [#16](https://github.com/ruvnet/agent-harness-generator/issues/16) â€”
   harness mcp-scan plain text instead of JSON (iter 50 discovery)
 Both still OPEN as of iter 59. Downstream workarounds remain in place.
 
 ### Fleet status (post-iter-59)
-- Smoke step count: 19 → 62 (43 new structural invariants since iter 8)
+- Smoke step count: 19 â†’ 62 (43 new structural invariants since iter 8)
 - MCP tool runtime contract: 115 assertions across 9 tools
 - Real-data roundtrip: 31 pipeline assertions
 - Unit tests: 53 similarity-module assertions
 - Total ruflo-metaharness smoke surface: ~260 assertions
 - 33/33 plugin fleet still green
 
-### Iters 60–82 — performance / observability / contract hardening
+### Iters 60â€“82 â€” performance / observability / contract hardening
 
 A second wave of work after iter 59 focused on three orthogonal
 hardening axes: parallelization, anti-regression infrastructure, and
@@ -368,16 +368,16 @@ upstream-contract tripwires.
 
 #### Parallelization sweep (iters 56-59 + 65 + 67)
 - **iter 56** oia-audit's 5 subprocess calls race via Promise.all
-  → 4.59x measured speedup (close to theoretical 5x).
+  â†’ 4.59x measured speedup (close to theoretical 5x).
 - **iter 58** drift-from-history's audit-list + oia-audit race
-  → 1.02-1.03x (audit-list's ONNX warmup dominates; race still
+  â†’ 1.02-1.03x (audit-list's ONNX warmup dominates; race still
   proves no serial regression).
 - **iter 59** oia-audit emits `timing.{wallMs, sumComponentMs,
   parallelSpeedup}` so the speedup is observable and gated against
   silent serial regression.
 - **iter 65** drift-from-history surfaces the same timing fields.
 - **iter 67** `--baseline-file` fast-path: skips audit-list AND
-  audit-trend memory roundtrip → ~19x speedup (1.4s wall on Apple
+  audit-trend memory roundtrip â†’ ~19x speedup (1.4s wall on Apple
   Silicon vs ~26s slow path). Iter 66's `--baseline-key` was the
   intermediate ~14x step.
 
@@ -389,13 +389,13 @@ upstream-contract tripwires.
 | `check-fingerprint-schema.mjs` | `metaharness score`/`genome` JSON fields | 81 |
 
 Each tripwire runs in CI `metaharness-real-data` job BEFORE the
-roundtrip — upstream drift fails with a SPECIFIC error pointing at
+roundtrip â€” upstream drift fails with a SPECIFIC error pointing at
 which surface broke, instead of cascading to downstream symptoms.
 
 #### Anti-regression infrastructure
-- **iter 64** rankSeverity + rollup unit tests (22 assertions) —
+- **iter 64** rankSeverity + rollup unit tests (22 assertions) â€”
   iter-63's shared severity util now anchored at primitive level.
-- **iter 72** parseMcpScanText edge cases (19 assertions) —
+- **iter 72** parseMcpScanText edge cases (19 assertions) â€”
   iter-50's parser now anchored against silent regex drift.
 - **iter 73** negative-grep guard: anti-mint-as-MCP enforcement.
 - **iter 74** generalized negative guards: from-repo never wrapped;
@@ -404,35 +404,35 @@ which surface broke, instead of cascading to downstream symptoms.
 #### Bug-discovery + fix arc (iters 47-77)
 The roundtrip test surfaced 4 latent bugs that hand-built-fixture
 testing had missed:
-- **iter 47** — score/genome schema mismatch (28 iters silent)
-- **iter 49** — audit-trend introduced/cleared was dead code
-- **iter 50** — fixed via shared parseMcpScanText util
-- **iter 51** — proved drift detection fires on mutation, not just
+- **iter 47** â€” score/genome schema mismatch (28 iters silent)
+- **iter 49** â€” audit-trend introduced/cleared was dead code
+- **iter 50** â€” fixed via shared parseMcpScanText util
+- **iter 51** â€” proved drift detection fires on mutation, not just
   self-match
-- **iter 62** — extended SEVERITY_RANK; iter-50 parser unlocked
+- **iter 62** â€” extended SEVERITY_RANK; iter-50 parser unlocked
   warn/critical findings that the rollup ignored
-- **iter 63** — consolidated SEVERITY_RANK + safe rankSeverity()
+- **iter 63** â€” consolidated SEVERITY_RANK + safe rankSeverity()
   across all 3 consumers
-- **iters 76-77** — mutation-tested introduced/cleared at all four
+- **iters 76-77** â€” mutation-tested introduced/cleared at all four
   corners: clear, introduce, swap, dedup.
 
 #### Drift-detection autonomous arc (iters 53-79)
-- **iter 53** — drift-from-history one-command primitive
+- **iter 53** â€” drift-from-history one-command primitive
   composing audit-list + oia-audit + audit-trend
-- **iter 58** — parallel batch
-- **iter 65** — observable timing
-- **iter 66** — `--baseline-key` fast-path (~14x)
-- **iter 67** — `--baseline-file` fastest-path (~19x)
-- **iter 68** — roundtrip Stage 8 exercises wrapper end-to-end
-- **iter 69** — weekly cron AUTO-runs drift detection every Sunday;
+- **iter 58** â€” parallel batch
+- **iter 65** â€” observable timing
+- **iter 66** â€” `--baseline-key` fast-path (~14x)
+- **iter 67** â€” `--baseline-file` fastest-path (~19x)
+- **iter 68** â€” roundtrip Stage 8 exercises wrapper end-to-end
+- **iter 69** â€” weekly cron AUTO-runs drift detection every Sunday;
   downloads prior artifact via `gh run download`
-- **iter 70** — drift steps use `if: always() && has_prior` so
+- **iter 70** â€” drift steps use `if: always() && has_prior` so
   failure-path artifacts (the most valuable) still get uploaded
-- **iter 75** — Stage 9 proves the fastpath catches drift, not just
+- **iter 75** â€” Stage 9 proves the fastpath catches drift, not just
   self-match
-- **iter 78** — `--alert-on-new-severity` orthogonal alert gate
+- **iter 78** â€” `--alert-on-new-severity` orthogonal alert gate
   (catches "new CRITICAL finding with similarity intact")
-- **iter 79** — weekly cron passes `--alert-on-new-severity high`,
+- **iter 79** â€” weekly cron passes `--alert-on-new-severity high`,
   closing the production wiring
 
 #### Doctor expansion (iters 45 + 52 + 61)
@@ -440,14 +440,14 @@ testing had missed:
   presence (different remediation paths)
 - iter 52 verifies parseMcpScanText export
 - iter 61 verifies iter-56 async exports (runHarnessAsync /
-  runMetaharnessAsync) — missing = oia-audit parallelization breaks
+  runMetaharnessAsync) â€” missing = oia-audit parallelization breaks
 
-#### MCP-CLI parity (iters 53 → 71)
+#### MCP-CLI parity (iters 53 â†’ 71)
 All 9 MCP tools have CLI-level flag parity. Iter 71 specifically
 fixed drift-from-history (iter-66/67 flags were CLI-only until then).
 Iter 73's anti-mint negative guard enforces the deliberate
 asymmetry: 10 CLI subcommands, 9 MCP tools (mint cli-only per
-§Sandboxing).
+Â§Sandboxing).
 
 #### Artifact-tracking family (iters 7 + 69 + 82)
 | Artifact | Workflow | Iter |
@@ -459,7 +459,7 @@ asymmetry: 10 CLI subcommands, 9 MCP tools (mint cli-only per
 All 90-day retention for cross-artifact comparability.
 
 ### Fleet status (post-iter-82)
-- Smoke step count: 19 → 85 (+66 invariants since iter 8)
+- Smoke step count: 19 â†’ 85 (+66 invariants since iter 8)
 - MCP tool runtime contract: 117 assertions across 9 tools
 - Real-data roundtrip: 66 pipeline assertions across 12 stages
 - Unit tests: 94 similarity + severity + parser assertions
@@ -468,7 +468,7 @@ All 90-day retention for cross-artifact comparability.
 - 4 CI workflows (metaharness-ci, no-metaharness-smoke, oia-audit-weekly,
   metaharness-real-data sub-job)
 
-### Iters 83-99 — cross-reference integrity + observability
+### Iters 83-99 â€” cross-reference integrity + observability
 
 Eighteen more iters of hardening after iter 82's ADR refresh. Two
 coherent arcs: cross-reference integrity matrix and fast-path
@@ -501,11 +501,11 @@ iter-66/67 added the `--baseline-key` (~14x) and `--baseline-file`
 (~19x) fast-paths. iter-95-99 made them observable at every consumption
 layer:
 
-- **iter 95** — derived `timing.path` field in JSON payload
-- **iter 96** — CLI table mode shows `Path: file (wall N ms)`
-- **iter 97** — Weekly cron `GITHUB_STEP_SUMMARY` shows the same
-- **iter 98** — CI dispatcher round-trip asserts JSON shape contract
-- **iter 99** — CI dispatcher round-trip ALSO asserts wall < 30s
+- **iter 95** â€” derived `timing.path` field in JSON payload
+- **iter 96** â€” CLI table mode shows `Path: file (wall N ms)`
+- **iter 97** â€” Weekly cron `GITHUB_STEP_SUMMARY` shows the same
+- **iter 98** â€” CI dispatcher round-trip asserts JSON shape contract
+- **iter 99** â€” CI dispatcher round-trip ALSO asserts wall < 30s
 
 A creeping regression (e.g., fastpath quietly degrading from 1.4s to
 15s over weeks) is now visible in the Actions UI's wall annotation
@@ -513,21 +513,21 @@ before it breaches the 30s ceiling.
 
 #### Anti-regression pattern reinforcement (iters 83-92)
 
-- **iter 84** — positive-presence guards for all 3 compat tripwires
-- **iter 86** — bench-parse-mcp-scan perf characterization
-- **iter 87** — fixed bench-scripts JSON-output contamination (iter-82
+- **iter 84** â€” positive-presence guards for all 3 compat tripwires
+- **iter 86** â€” bench-parse-mcp-scan perf characterization
+- **iter 87** â€” fixed bench-scripts JSON-output contamination (iter-82
   CI step was silently broken; iter-87 caught it during iter-87's
   own dry-run; both bench scripts patched, runtime parse-roundtrip
   smoke assertion added)
-- **iter 88** — family-wide JSON-output contract gate (8 scripts
-  × parse-roundtrip)
-- **iter 92** — MCP enum aligned with SEVERITY_RANK (subset+complement
+- **iter 88** â€” family-wide JSON-output contract gate (8 scripts
+  Ã— parse-roundtrip)
+- **iter 92** â€” MCP enum aligned with SEVERITY_RANK (subset+complement
   check)
 
 ### Fleet status (post-iter-99 / 100-iter milestone)
 
-- Smoke step count: 85 → 102 (+17 since iter 82)
-- MCP tool runtime contract: 117 → 120 assertions
+- Smoke step count: 85 â†’ 102 (+17 since iter 82)
+- MCP tool runtime contract: 117 â†’ 120 assertions
 - Real-data roundtrip: 66 (12 stages, unchanged since iter 79)
 - Unit tests: 94 (similarity + severity + parser)
 - Compat tripwires: 3 (router API / mcp-scan text / fingerprint schema)
@@ -545,7 +545,7 @@ before it breaches the 30s ceiling.
 The integration shipped across 100 /loop iterations spanning the major
 arcs documented above. Two patterns emerged that are worth naming:
 
-1. **Bug-discovery via end-to-end tests** (iters 47-51, 87) — every
+1. **Bug-discovery via end-to-end tests** (iters 47-51, 87) â€” every
    significant latent bug surfaced when a test exercised the REAL
    CLI/MCP chain end-to-end, not when smoke greps verified source
    markers. iter-47's schema bug hid for 9 iters; iter-50's parser
@@ -553,7 +553,7 @@ arcs documented above. Two patterns emerged that are worth naming:
    The lesson: smoke-grep on source is a complement to, not a
    substitute for, real-output verification.
 
-2. **Cross-reference integrity** (iters 73, 84, 89-94) — when one
+2. **Cross-reference integrity** (iters 73, 84, 89-94) â€” when one
    source file references another by name, drift is the default
    without an explicit gate. Eight surfaces are now gated; each
    produces a specific named failure when the reference rots.
@@ -564,13 +564,13 @@ tests, 8 cross-reference gates, 3 negative-guard invariants, 3 compat
 tripwires, 4 CI workflows, weekly autonomous drift detection, two
 upstream issues filed (#15, #16, both still open).
 
-### Quote architecture invariant — no static metaharness imports
+### Quote architecture invariant â€” no static metaharness imports
 
 The single non-test ruflo source file that statically imports a
 `@metaharness/*` package is:
 
 ```
-v3/@claude-flow/cli/src/ruvector/neural-router.ts  ← @metaharness/router
+v3/@claude-flow/cli/src/ruvector/neural-router.ts  â† @metaharness/router
                                                      (dynamic import,
                                                       triple-gated)
 ```
@@ -583,11 +583,11 @@ npm registry, asserting graceful degradation).
 
 ## References
 
-- [Research dossier (gist)](https://gist.github.com/ruvnet/19d166ff9acf368c9da4172d91ac9113) — full graded-evidence sourcing.
-- [Tracking issue #2399](https://github.com/ruvnet/ruflo/issues/2399) — phase checklist.
-- ADR-148 — Cost-optimal router lifecycle via `@metaharness/router`.
-- ADR-149 — Per-model cost-optimal routing (Pareto framing).
-- ADR-097 — Federation budget circuit breaker (cost-spend telemetry pattern reused by metaharness plugin).
+- [Research dossier (gist)](https://gist.github.com/ruvnet/19d166ff9acf368c9da4172d91ac9113) â€” full graded-evidence sourcing.
+- [Tracking issue #2399](https://github.com/pwnapplehat/ruflo/issues/2399) â€” phase checklist.
+- ADR-148 â€” Cost-optimal router lifecycle via `@metaharness/router`.
+- ADR-149 â€” Per-model cost-optimal routing (Pareto framing).
+- ADR-097 â€” Federation budget circuit breaker (cost-spend telemetry pattern reused by metaharness plugin).
 - `metaharness@0.1.11` on npm: <https://www.npmjs.com/package/metaharness>
 - `@metaharness/router@0.3.2` on npm: <https://www.npmjs.com/package/@metaharness/router>
 - `@metaharness/kernel@0.1.0` on npm: <https://www.npmjs.com/package/@metaharness/kernel>

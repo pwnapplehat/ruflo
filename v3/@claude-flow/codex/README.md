@@ -8,7 +8,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/@claude-flow/codex"><img src="https://img.shields.io/npm/v/@claude-flow/codex?label=npm&color=blue" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/@claude-flow/codex"><img src="https://img.shields.io/npm/dm/@claude-flow/codex?label=downloads&color=cb3837" alt="npm downloads"></a>
-  <a href="https://github.com/ruvnet/ruflo"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
+  <a href="https://github.com/pwnapplehat/ruflo"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
   <a href="https://agentics.org"><img src="https://img.shields.io/badge/standard-Agentics-purple" alt="Agentics Standard"></a>
 </p>
 
@@ -29,10 +29,10 @@ Transform OpenAI Codex CLI into a **self-improving AI development system**. Whil
 ## Key Concept: Execution Model
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│  CLAUDE-FLOW = ORCHESTRATOR (tracks state, stores memory)       │
-│  CODEX = EXECUTOR (writes code, runs commands, implements)      │
-└─────────────────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  CLAUDE-FLOW = ORCHESTRATOR (tracks state, stores memory)       â”‚
+â”‚  CODEX = EXECUTOR (writes code, runs commands, implements)      â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 **Codex does the work. Claude-flow coordinates and learns.**
@@ -40,25 +40,25 @@ Transform OpenAI Codex CLI into a **self-improving AI development system**. Whil
 ### The Self-Learning Loop
 
 ```
-    ┌──────────────┐
-    │   SEARCH     │ ──→ Find relevant patterns from past successes
-    │   memory     │
-    └──────┬───────┘
-           │
-    ┌──────▼───────┐
-    │  COORDINATE  │ ──→ Initialize swarm, spawn specialized agents
-    │   swarm      │
-    └──────┬───────┘
-           │
-    ┌──────▼───────┐
-    │   EXECUTE    │ ──→ Codex writes code, runs commands
-    │   codex      │
-    └──────┬───────┘
-           │
-    ┌──────▼───────┐
-    │    STORE     │ ──→ Save successful patterns for future use
-    │   memory     │
-    └──────────────┘
+    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+    â”‚   SEARCH     â”‚ â”€â”€â†’ Find relevant patterns from past successes
+    â”‚   memory     â”‚
+    â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”˜
+           â”‚
+    â”Œâ”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”
+    â”‚  COORDINATE  â”‚ â”€â”€â†’ Initialize swarm, spawn specialized agents
+    â”‚   swarm      â”‚
+    â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”˜
+           â”‚
+    â”Œâ”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”
+    â”‚   EXECUTE    â”‚ â”€â”€â†’ Codex writes code, runs commands
+    â”‚   codex      â”‚
+    â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”˜
+           â”‚
+    â”Œâ”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”
+    â”‚    STORE     â”‚ â”€â”€â†’ Save successful patterns for future use
+    â”‚   memory     â”‚
+    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ## Quick Start
@@ -172,10 +172,10 @@ codex mcp add claude-flow -- npx claude-flow mcp start
 ### The 4-Step Pattern
 
 ```
-1. LEARN:    memory_search(query="task keywords") → Find similar patterns
-2. COORD:    swarm_init(topology="hierarchical") → Set up coordination
-3. EXECUTE:  YOU write code, run commands        → Codex does real work
-4. REMEMBER: memory_store(key, value, upsert=true) → Save for future
+1. LEARN:    memory_search(query="task keywords") â†’ Find similar patterns
+2. COORD:    swarm_init(topology="hierarchical") â†’ Set up coordination
+3. EXECUTE:  YOU write code, run commands        â†’ Codex does real work
+4. REMEMBER: memory_store(key, value, upsert=true) â†’ Save for future
 ```
 
 ### Complete Example Prompt
@@ -225,26 +225,26 @@ YOU execute all code. MCP tools are for learning only.
 
 ```
 project/
-├── AGENTS.md                    # Main project instructions (Codex format)
-├── .agents/
-│   ├── config.toml              # Project configuration
-│   ├── skills/                  # 137+ skills
-│   │   ├── swarm-orchestration/
-│   │   │   └── SKILL.md
-│   │   ├── memory-management/
-│   │   │   └── SKILL.md
-│   │   ├── sparc-methodology/
-│   │   │   └── SKILL.md
-│   │   └── ...
-│   └── README.md                # Directory documentation
-├── .codex/                      # Local overrides (gitignored)
-│   ├── config.toml              # Local development settings
-│   └── AGENTS.override.md       # Local instruction overrides
-└── .claude-flow/                # Runtime data
-    ├── config.yaml              # Runtime configuration
-    ├── data/                    # Memory and cache
-    │   └── memory.db            # SQLite with vector embeddings
-    └── logs/                    # Log files
+â”œâ”€â”€ AGENTS.md                    # Main project instructions (Codex format)
+â”œâ”€â”€ .agents/
+â”‚   â”œâ”€â”€ config.toml              # Project configuration
+â”‚   â”œâ”€â”€ skills/                  # 137+ skills
+â”‚   â”‚   â”œâ”€â”€ swarm-orchestration/
+â”‚   â”‚   â”‚   â””â”€â”€ SKILL.md
+â”‚   â”‚   â”œâ”€â”€ memory-management/
+â”‚   â”‚   â”‚   â””â”€â”€ SKILL.md
+â”‚   â”‚   â”œâ”€â”€ sparc-methodology/
+â”‚   â”‚   â”‚   â””â”€â”€ SKILL.md
+â”‚   â”‚   â””â”€â”€ ...
+â”‚   â””â”€â”€ README.md                # Directory documentation
+â”œâ”€â”€ .codex/                      # Local overrides (gitignored)
+â”‚   â”œâ”€â”€ config.toml              # Local development settings
+â”‚   â””â”€â”€ AGENTS.override.md       # Local instruction overrides
+â””â”€â”€ .claude-flow/                # Runtime data
+    â”œâ”€â”€ config.yaml              # Runtime configuration
+    â”œâ”€â”€ data/                    # Memory and cache
+    â”‚   â””â”€â”€ memory.db            # SQLite with vector embeddings
+    â””â”€â”€ logs/                    # Log files
 ```
 
 ### Key Files
@@ -512,7 +512,7 @@ Create custom skills in `.agents/skills/`:
 
 ```
 .agents/skills/my-skill/
-└── SKILL.md
+â””â”€â”€ SKILL.md
 ```
 
 **SKILL.md format:**
@@ -537,13 +537,13 @@ Invoke with `$my-skill`
 Run Claude Code for interactive development and spawn headless Codex workers for parallel background tasks:
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│  CLAUDE CODE (interactive)  ←→  CODEX WORKERS (headless)        │
-│  - Main conversation         - Parallel background execution    │
-│  - Complex reasoning         - Bulk code generation            │
-│  - Architecture decisions    - Test execution                   │
-│  - Final integration         - File processing                  │
-└─────────────────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  CLAUDE CODE (interactive)  â†â†’  CODEX WORKERS (headless)        â”‚
+â”‚  - Main conversation         - Parallel background execution    â”‚
+â”‚  - Complex reasoning         - Bulk code generation            â”‚
+â”‚  - Architecture decisions    - Test execution                   â”‚
+â”‚  - Final integration         - File processing                  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ### Setup
@@ -617,10 +617,10 @@ Both platforms share the same `.claude-flow/` runtime:
 
 ```
 .claude-flow/
-├── data/
-│   └── memory.db      # Shared vector memory
-├── config.yaml        # Shared configuration
-└── sessions/          # Cross-platform sessions
+â”œâ”€â”€ data/
+â”‚   â””â”€â”€ memory.db      # Shared vector memory
+â”œâ”€â”€ config.yaml        # Shared configuration
+â””â”€â”€ sessions/          # Cross-platform sessions
 ```
 
 ### Benefits
@@ -677,9 +677,9 @@ Loop state is stored in `.codex/loop/<name>.json`; `loop stop` writes `.codex/lo
 
 | Template | Pipeline | Platforms |
 |----------|----------|-----------|
-| **feature** | architect → coder → tester → reviewer | Claude (architect, reviewer) + Codex (coder, tester) |
-| **security** | scanner → analyzer → fixer | Codex (scanner, fixer) + Claude (analyzer) |
-| **refactor** | analyzer → planner → refactorer → validator | Claude (analyzer, planner) + Codex (refactorer, validator) |
+| **feature** | architect â†’ coder â†’ tester â†’ reviewer | Claude (architect, reviewer) + Codex (coder, tester) |
+| **security** | scanner â†’ analyzer â†’ fixer | Codex (scanner, fixer) + Claude (analyzer) |
+| **refactor** | analyzer â†’ planner â†’ refactorer â†’ validator | Claude (analyzer, planner) + Codex (refactorer, validator) |
 
 ### Programmatic API
 
@@ -948,10 +948,10 @@ console.log(`Skills generated: ${result.skillsGenerated.length}`);
 
 ### Manual Migration Checklist
 
-1. **Rename config file**: `CLAUDE.md` → `AGENTS.md`
-2. **Move skills**: `.claude/skills/` → `.agents/skills/`
-3. **Update syntax**: `/skill-name` → `$skill-name`
-4. **Convert settings**: `settings.json` → `config.toml`
+1. **Rename config file**: `CLAUDE.md` â†’ `AGENTS.md`
+2. **Move skills**: `.claude/skills/` â†’ `.agents/skills/`
+3. **Update syntax**: `/skill-name` â†’ `$skill-name`
+4. **Convert settings**: `settings.json` â†’ `config.toml`
 5. **Register MCP**: `codex mcp add claude-flow -- npx claude-flow mcp start`
 
 ### Dual Mode Alternative
@@ -1040,5 +1040,5 @@ MIT
 
 ## Support
 
-- Documentation: https://github.com/ruvnet/ruflo
-- Issues: https://github.com/ruvnet/ruflo/issues
+- Documentation: https://github.com/pwnapplehat/ruflo
+- Issues: https://github.com/pwnapplehat/ruflo/issues

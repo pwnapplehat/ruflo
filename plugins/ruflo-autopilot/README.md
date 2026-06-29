@@ -7,7 +7,7 @@ Combines Ruflo's 10 autopilot MCP tools with Claude Code's native `/loop` + `Sch
 ## Install
 
 ```
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 /plugin install ruflo-autopilot@ruflo
 ```
 
@@ -54,15 +54,15 @@ All 10 are wired in `v3/@claude-flow/cli/src/mcp-tools/autopilot-tools.ts`.
 
 ## Cache-aware /loop integration
 
-Autopilot pairs with Claude Code's native `/loop` + `ScheduleWakeup` skills. The recommended fallback heartbeat is **270 seconds** — under the 5-minute prompt-cache TTL so the next wake-up reads conversation context cached. Going past 300s pays a cache-miss; rounding to 5 minutes is the worst-of-both case.
+Autopilot pairs with Claude Code's native `/loop` + `ScheduleWakeup` skills. The recommended fallback heartbeat is **270 seconds** â€” under the 5-minute prompt-cache TTL so the next wake-up reads conversation context cached. Going past 300s pays a cache-miss; rounding to 5 minutes is the worst-of-both case.
 
 For event-driven loops, arm a `Monitor` and let the 270s wake be the safety net.
 
 ## Namespace coordination
 
-This plugin owns the `autopilot-patterns` AgentDB namespace (kebab-case, follows the convention from [ruflo-agentdb ADR-0001 §"Namespace convention"](../ruflo-agentdb/docs/adrs/0001-agentdb-optimization.md)). Reserved namespaces (`pattern`, `claude-memories`, `default`) MUST NOT be shadowed.
+This plugin owns the `autopilot-patterns` AgentDB namespace (kebab-case, follows the convention from [ruflo-agentdb ADR-0001 Â§"Namespace convention"](../ruflo-agentdb/docs/adrs/0001-agentdb-optimization.md)). Reserved namespaces (`pattern`, `claude-memories`, `default`) MUST NOT be shadowed.
 
-`autopilot_learn` writes to this namespace via `agentdb_pattern-store` semantics — see [ruflo-intelligence ADR-0001](../ruflo-intelligence/docs/adrs/0001-intelligence-surface-completeness.md) for the 4-step pipeline this feeds (RETRIEVE → JUDGE → DISTILL → CONSOLIDATE).
+`autopilot_learn` writes to this namespace via `agentdb_pattern-store` semantics â€” see [ruflo-intelligence ADR-0001](../ruflo-intelligence/docs/adrs/0001-intelligence-surface-completeness.md) for the 4-step pipeline this feeds (RETRIEVE â†’ JUDGE â†’ DISTILL â†’ CONSOLIDATE).
 
 ## Verification
 
@@ -73,4 +73,4 @@ bash plugins/ruflo-autopilot/scripts/smoke.sh
 
 ## Architecture Decisions
 
-- [`ADR-0001` — ruflo-autopilot plugin contract](./docs/adrs/0001-autopilot-contract.md)
+- [`ADR-0001` â€” ruflo-autopilot plugin contract](./docs/adrs/0001-autopilot-contract.md)

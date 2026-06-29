@@ -1,4 +1,4 @@
-# Self-Learning — Usage Guide
+# Self-Learning â€” Usage Guide
 
 > Copy-paste examples for the three paths ruflo's self-learning system actually
 > supports, plus how to pretrain it from a repo's GitHub history and verify
@@ -7,9 +7,9 @@
 > Companion to ADR-074 (wiring), ADR-075 (unified stats), ADR-076
 > (Structured Distillation), and ADR-077 (pretrain from history).
 
-## TL;DR — pick the path that matches your goal
+## TL;DR â€” pick the path that matches your goal
 
-| You want to… | Use | Persists where |
+| You want toâ€¦ | Use | Persists where |
 |---|---|---|
 | Train on a single task completion | `hooks_task-completed {trainPatterns:true}` | `globalStats` + memory-bridge |
 | Train on a multi-step workflow | `hooks_intelligence_trajectory-{start,step,end}` | `globalStats` + memory-bridge + sonaCoordinator |
@@ -26,7 +26,7 @@ naming exactly what fired and what didn't.
 ## 1) Train on a single task completion
 
 ```bash
-# Via the MCP tool (most common — Claude Code agents use this)
+# Via the MCP tool (most common â€” Claude Code agents use this)
 mcp__ruflo__hooks_task-completed {
   taskId: 'fix-2245-stub',
   success: true,
@@ -40,7 +40,7 @@ mcp__ruflo__hooks_task-completed {
 #   learningPath: 'trajectory-pipeline',
 #   patternsLearned: 1,
 #   trajectoriesRecorded: 1,
-#   note: 'Trained via SONA + EWC++ trajectory pipeline …'
+#   note: 'Trained via SONA + EWC++ trajectory pipeline â€¦'
 # }
 ```
 
@@ -128,7 +128,7 @@ before embedding, so high-signal tokens (file paths, action verbs) lead.
 
 The script writes a run JSON with measured before/after counters to
 `docs/benchmarks/runs/pretrain-from-github-latest.json`. The script exits
-non-zero if any counter didn't move — usable as a CI gate.
+non-zero if any counter didn't move â€” usable as a CI gate.
 
 ---
 
@@ -165,10 +165,10 @@ that's a real cross-store drift you should look at:
 
 ```jsonc
 "consistency": {
-  "sonaTracksGlobal": true,                  // SONA matches globalStats within ±1
+  "sonaTracksGlobal": true,                  // SONA matches globalStats within Â±1
   "sonaTracksGlobalDelta": 0,
   "notes": [
-    "globalStats reports 47 patterns learned but neural_patterns store is empty — pretrain has not written here, or trajectory-end isn't promoting patterns to the neural store yet"
+    "globalStats reports 47 patterns learned but neural_patterns store is empty â€” pretrain has not written here, or trajectory-end isn't promoting patterns to the neural store yet"
   ]
 }
 ```
@@ -183,19 +183,19 @@ catches future regressions.
 ## Reproduce all the proofs in this repo
 
 ```bash
-git clone https://github.com/ruvnet/ruflo && cd ruflo
+git clone https://github.com/pwnapplehat/ruflo && cd ruflo
 npm install && ( cd v3/@claude-flow/cli && npx tsc -b )
 
-# ⓐ Self-learning wiring (5 sections — primitives → MCP surfaces → multi-step)
+# â“ Self-learning wiring (5 sections â€” primitives â†’ MCP surfaces â†’ multi-step)
 node v3/@claude-flow/cli/scripts/benchmark-self-learning.mjs
 
-# ⓑ Structured Distillation MRR (raw vs distilled retrieval)
+# â“‘ Structured Distillation MRR (raw vs distilled retrieval)
 node v3/@claude-flow/cli/scripts/benchmark-trajectory-mrr.mjs
 
-# ⓒ Pretrain from this repo's git+issues history
+# â“’ Pretrain from this repo's git+issues history
 node v3/@claude-flow/cli/scripts/pretrain-from-github.mjs
 
-# ⓓ Retrieval after pretrain (10 sample queries)
+# â““ Retrieval after pretrain (10 sample queries)
 node v3/@claude-flow/cli/scripts/benchmark-pretrained-retrieval.mjs
 ```
 
@@ -206,17 +206,17 @@ non-zero on failure, so they double as CI gates.
 
 ## Common gotchas
 
-- **"My dashboard shows 0 after I called `post-edit`"** — read the
+- **"My dashboard shows 0 after I called `post-edit`"** â€” read the
   `learningPath` field. If it's `'recorded-only'`, the trajectory pipeline
   wasn't reachable in the calling process. Run from inside ruflo's CLI
   process or set up the bridge explicitly.
-- **"`neural_patterns list` is empty after `pretrain`"** — fixed in 3.10.14
+- **"`neural_patterns list` is empty after `pretrain`"** â€” fixed in 3.10.14
   (ADR-074). Make sure you're on `npx ruflo@3.10.14` or later.
 - **"`hooks_intelligence_stats` shows different numbers than
-  `memory_bridge_status`"** — that's by design (they measure different
+  `memory_bridge_status`"** â€” that's by design (they measure different
   layers). Use `hooks_intelligence_unified-stats` for one coherent view,
   per ADR-075.
-- **"My recall@10 dropped"** — run `node
+- **"My recall@10 dropped"** â€” run `node
   v3/@claude-flow/cli/scripts/benchmark-codemods.mjs` and
   `benchmark-recall.mjs`. Both are CI gates that fail if recall regresses
   below the documented floor (0.90).

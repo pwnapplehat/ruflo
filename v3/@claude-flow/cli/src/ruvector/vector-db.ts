@@ -8,7 +8,7 @@
  *
  * Gracefully degrades when ruvector is not installed.
  *
- * Created with love by ruv.io
+ * Maintained by the pwnapplehat/ruflo fork.
  */
 
 import os from 'node:os';

@@ -1,11 +1,11 @@
 /**
- * Regression guard for ruvnet/ruflo#1916.
+ * Regression guard for pwnapplehat/ruflo#1916.
  *
- *  (a) `agent_logs` MCP tool must be registered — the `ruflo agent logs <id>`
- *      CLI subcommand called `callMCPTool('agent_logs', …)` against a tool
- *      that didn't exist → `MCP tool not found: agent_logs`.
+ *  (a) `agent_logs` MCP tool must be registered â€” the `ruflo agent logs <id>`
+ *      CLI subcommand called `callMCPTool('agent_logs', â€¦)` against a tool
+ *      that didn't exist â†’ `MCP tool not found: agent_logs`.
  *  (b) `agent_status` / `agent_list` / `agent_logs` must resolve hive-mind-
- *      spawned workers — `hive-mind_spawn` writes workers to
+ *      spawned workers â€” `hive-mind_spawn` writes workers to
  *      `.claude-flow/agents.json`, a *different* file from the canonical
  *      `.claude-flow/agents/store.json` the agent tools read, so
  *      `agent status <hive-worker-id>` returned `not_found`.
@@ -22,7 +22,7 @@ const tool = (name: string) => {
   return t;
 };
 
-describe('#1916 — agent_logs registered + hive-worker resolution', () => {
+describe('#1916 â€” agent_logs registered + hive-worker resolution', () => {
   let dir: string;
   let prevCwd: string | undefined;
 

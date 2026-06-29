@@ -1,5 +1,5 @@
 /**
- * Tests for PluginIntegrityVerifier (ADR-145 P1, ruvnet/ruflo#2254).
+ * Tests for PluginIntegrityVerifier (ADR-145 P1, pwnapplehat/ruflo#2254).
  *
  * Covers:
  *  - canonicalize is deterministic (key order doesn't change the digest)
@@ -8,7 +8,7 @@
  *  - verify reports `signature-missing` for unsigned manifests
  *  - verify reports `manifest-hash-mismatch` when the manifest is tampered
  *  - verify reports `unknown-signer` when the key isn't in trust anchors
- *  - verify reports `pass` on a valid round-trip sign → verify
+ *  - verify reports `pass` on a valid round-trip sign â†’ verify
  *  - verify reports `signature-invalid` on a flipped signature byte
  */
 
@@ -25,7 +25,7 @@ import {
   type TrustAnchors,
 } from '../src/plugins/integrity-verifier.js';
 
-// ─── helpers ────────────────────────────────────────────────────────────
+// â”€â”€â”€ helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 let ed: typeof import('@noble/ed25519') | null = null;
 beforeAll(async () => {
@@ -78,9 +78,9 @@ function anchorsFor(pub: string, scope = '*'): TrustAnchors {
   };
 }
 
-// ─── canonicalize ──────────────────────────────────────────────────────
+// â”€â”€â”€ canonicalize â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-describe('canonicalize — deterministic JSON for hashing', () => {
+describe('canonicalize â€” deterministic JSON for hashing', () => {
   it('orders keys deterministically at every level', () => {
     const a = canonicalize({ b: 1, a: 2, c: { y: 1, x: 2 } });
     const b = canonicalize({ a: 2, c: { x: 2, y: 1 }, b: 1 });
@@ -96,9 +96,9 @@ describe('canonicalize — deterministic JSON for hashing', () => {
   });
 });
 
-// ─── findAnchor ────────────────────────────────────────────────────────
+// â”€â”€â”€ findAnchor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-describe('findAnchor — trust resolution', () => {
+describe('findAnchor â€” trust resolution', () => {
   const NOW = Date.now();
 
   it('matches by exact key + matching exact scope', () => {
@@ -133,10 +133,10 @@ describe('findAnchor — trust resolution', () => {
   });
 });
 
-// ─── verify ────────────────────────────────────────────────────────────
+// â”€â”€â”€ verify â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 describe('PluginIntegrityVerifier.verify', () => {
-  const skipMsg = '@noble/ed25519 unavailable — skipping signature round-trip tests';
+  const skipMsg = '@noble/ed25519 unavailable â€” skipping signature round-trip tests';
 
   it('returns signature-missing when signature is empty', async () => {
     const v = new PluginIntegrityVerifier({ trustAnchors: anchorsFor('PK') });
@@ -175,7 +175,7 @@ describe('PluginIntegrityVerifier.verify', () => {
     expect(r.status).toBe('unknown-signer');
   });
 
-  it('passes a valid round-trip sign → verify', async () => {
+  it('passes a valid round-trip sign â†’ verify', async () => {
     if (!ed) { console.warn(skipMsg); return; }
     const { priv, pub } = await makeSigner();
     const signed = await sign({ id: 'p', version: '1.0.0' }, priv, pub);

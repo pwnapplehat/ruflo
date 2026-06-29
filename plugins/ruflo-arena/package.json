@@ -1,7 +1,7 @@
 {
   "name": "ruflo-arena",
   "version": "0.1.0-alpha.1",
-  "description": "Competitive ruliology for Ruflo swarms â€” arenas, tournaments, and adaptive co-evolution of program strategies (ADR-147/148).",
+  "description": "Competitive ruliology for Ruflo swarms Ã¢â‚¬â€ arenas, tournaments, and adaptive co-evolution of program strategies (ADR-147/148).",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,7 +38,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ruvnet/ruflo.git",
+    "url": "https://github.com/pwnapplehat/ruflo.git",
     "directory": "plugins/ruflo-arena"
   },
   "engines": {

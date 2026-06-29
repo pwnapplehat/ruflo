@@ -19,7 +19,7 @@ This has two fundamental problems:
 
 Multi-step agentic workflows (research → plan → implement → test → report) require the user to manually prompt "continue" after every tool call. For complex tasks, this creates 5-15 unnecessary round-trips.
 
-**Claude Code** solves this with a bypass permissions toggle that lets the agent run autonomously.
+**Cursor (legacy — removed in Cursor-native fork)** solves this with a bypass permissions toggle that lets the agent run autonomously.
 
 ### Problem 2: No Parallel Task Visibility
 
@@ -30,7 +30,7 @@ When the AI spawns multiple agents or runs concurrent tool calls, the UI shows t
 - Lazy-load task details only when the user expands them (memory efficiency)
 - Manage agent swarms with browser-native performance
 
-**Claude Code** shows parallel tool calls as collapsible cards — each with a header (tool name + status), expandable detail area, and real-time streaming. The collapsed state shows just the header; expanded shows full output. Multiple cards run simultaneously.
+**Cursor (legacy — removed in Cursor-native fork)** shows parallel tool calls as collapsible cards — each with a header (tool name + status), expandable detail area, and real-time streaming. The collapsed state shows just the header; expanded shows full output. Multiple cards run simultaneously.
 
 ### Problem 3: No In-Browser Agent Intelligence
 
@@ -43,7 +43,7 @@ All agent coordination runs server-side. The browser is a dumb terminal. With Ru
 Add three integrated capabilities to HF Chat UI:
 
 1. **Autopilot Mode** — auto-continue toggle (server-side loop in MCP bridge)
-2. **Parallel Task UI** — Claude Code-style collapsible task cards with lazy rendering
+2. **Parallel Task UI** — Cursor (legacy — removed in Cursor-native fork)-style collapsible task cards with lazy rendering
 3. **WASM Agent Runtime** — RuVector WASM + Web Workers for in-browser agent coordination
 
 ---
@@ -172,7 +172,7 @@ This keeps the SSE stream lightweight (summaries only) and avoids wasting browse
 
 ---
 
-## Part 2: Parallel Task UI (Claude Code-Style)
+## Part 2: Parallel Task UI (Cursor (legacy — removed in Cursor-native fork)-Style)
 
 ### Visual Design
 
@@ -1388,7 +1388,7 @@ Parallel execution patterns:
 
 ## Part 8: Use Cases
 
-The parallel task UI + autopilot + WASM runtime enables Claude Code-style workflows in the browser:
+The parallel task UI + autopilot + WASM runtime enables Cursor (legacy — removed in Cursor-native fork)-style workflows in the browser:
 
 ### 1. Codebase Analysis
 ```
@@ -1460,7 +1460,7 @@ User: "Monitor all our Cloud Run services"
 
 ### Positive
 
-- **Claude Code UX in browser** — parallel tasks, collapsible details, real-time progress
+- **Cursor (legacy — removed in Cursor-native fork) UX in browser** — parallel tasks, collapsible details, real-time progress
 - **Zero memory waste** — collapsed cards use ~200 bytes; details load on demand
 - **Non-blocking UI** — all heavy processing in Web Workers, main thread stays responsive
 - **In-browser intelligence** — WASM agent routing/search in ~2ms vs ~200ms server-side
@@ -1497,4 +1497,4 @@ User: "Monitor all our Cloud Run services"
 - [ADR-036: Servo Browser MCP](ADR-036-SERVO-RUST-BROWSER-MCP.md) — Rust/WASM browser engine
 - [agentic-flow](https://www.npmjs.com/package/agentic-flow) — autonomous agent backend
 - [ruvector](https://www.npmjs.com/package/ruvector) — WASM-compiled intelligence runtime
-- Claude Code — UX inspiration for parallel tool cards and bypass mode
+- Cursor (legacy — removed in Cursor-native fork) — UX inspiration for parallel tool cards and bypass mode

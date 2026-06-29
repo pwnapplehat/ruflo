@@ -6,9 +6,9 @@
  *   node scripts/generate-config.js [config-path]
  *
  * Outputs:
- *   - chat-ui/dotenv-local.txt    (baked into Docker image)
+ *   - ruvocal/dotenv-local.txt    (baked into Docker image)
  *   - mcp-bridge/index.js         (updated with custom tools/endpoints)
- *   - chat-ui/cloudbuild.yaml     (with project-specific values)
+ *   - ruvocal/cloudbuild.yaml     (with project-specific values)
  *   - mcp-bridge/cloudbuild.yaml  (with project-specific values)
  */
 
@@ -69,7 +69,7 @@ const models = (config.models || []).map((m) => {
 });
 
 // ---- Generate dotenv-local.txt ----
-const chatService = config.gcp.serviceName?.chatUi || "chat-ui";
+const chatService = config.gcp.serviceName?.chatUi || "ruvocal";
 
 let dotenv = `MONGODB_URL=mongodb://localhost:27017
 MONGODB_DB_NAME=${chatService}-db
@@ -128,18 +128,18 @@ COOKIE_MAX_AGE=604800`;
 // Models
 dotenv += `\nMODELS=\`${JSON.stringify(models)}\``;
 
-writeFileSync(resolve(ROOT, "chat-ui/dotenv-local.txt"), dotenv);
-console.log("Generated: chat-ui/dotenv-local.txt");
+writeFileSync(resolve(ROOT, "ruvocal/dotenv-local.txt"), dotenv);
+console.log("Generated: ruvocal/dotenv-local.txt");
 
-// ---- Generate chat-ui/cloudbuild.yaml ----
+// ---- Generate ruvocal/cloudbuild.yaml ----
 const chatCloudbuild = `steps:
   # Build custom image with branded assets
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
       '-t', 'gcr.io/\${PROJECT_ID}/${chatService}:\${_VERSION}',
-      '-f', 'chat-ui/Dockerfile',
-      'chat-ui'
+      '-f', 'ruvocal/Dockerfile',
+      'ruvocal'
     ]
 
   # Push versioned tag
@@ -182,8 +182,8 @@ options:
 timeout: 1200s
 `;
 
-writeFileSync(resolve(ROOT, "chat-ui/cloudbuild.yaml"), chatCloudbuild);
-console.log("Generated: chat-ui/cloudbuild.yaml");
+writeFileSync(resolve(ROOT, "ruvocal/cloudbuild.yaml"), chatCloudbuild);
+console.log("Generated: ruvocal/cloudbuild.yaml");
 
 // ---- Generate mcp-bridge/cloudbuild.yaml ----
 const bridgeCloudbuild = `steps:

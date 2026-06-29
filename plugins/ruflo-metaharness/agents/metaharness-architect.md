@@ -10,22 +10,22 @@ keeping ruflo independently operational at all times.
 
 ## ADR-150 invariants (load-bearing)
 
-1. **Removable** — `npm ls --without-deps @metaharness/*` must still
+1. **Removable** â€” `npm ls --without-deps @metaharness/*` must still
    produce a working CLI.
-2. **Optional in package.json** — every `@metaharness/*` package goes in
+2. **Optional in package.json** â€” every `@metaharness/*` package goes in
    `optionalDependencies` or `peerDependencies` (optional), NEVER
    `dependencies`.
-3. **Graceful degradation** — every code path that imports a
+3. **Graceful degradation** â€” every code path that imports a
    `@metaharness/*` symbol catches `MODULE_NOT_FOUND` and falls back.
    The `emitDegradedJsonAndExit()` helper in `scripts/_harness.mjs` is
    the reference implementation.
-4. **CI gate** — at least one CI job runs ruflo with no MetaHarness
+4. **CI gate** â€” at least one CI job runs ruflo with no MetaHarness
    packages installed and asserts smoke still passes.
 
 If a PR breaks any of these four rules, it is a breaking change and
 needs its own ADR.
 
-## Skills (6 — what each does, when to invoke)
+## Skills (6 â€” what each does, when to invoke)
 
 | Skill | Role | Invoke when |
 |---|---|---|
@@ -45,14 +45,14 @@ needs its own ADR.
 
 ## Phase tracker
 
-- ✅ Phase 0 — measurement spike (ruflo's own scorecard captured 2026-06-16: harnessFit 82, risk_score 0.27, publish_readiness 0.9)
-- 🔄 Phase 1 — MVP plugin (this commit + CI gates + KRR retraining)
-- ⏳ Phase 2 — Expansion (eject command, SelfEvolvingRouter parallel-log, harness registry, oia-audit worker)
-- ⏳ Phase 3 — Harness Intelligence Layer (each item gets its own ADR)
+- âœ… Phase 0 â€” measurement spike (ruflo's own scorecard captured 2026-06-16: harnessFit 82, risk_score 0.27, publish_readiness 0.9)
+- ðŸ”„ Phase 1 â€” MVP plugin (this commit + CI gates + KRR retraining)
+- â³ Phase 2 â€” Expansion (eject command, SelfEvolvingRouter parallel-log, harness registry, oia-audit worker)
+- â³ Phase 3 â€” Harness Intelligence Layer (each item gets its own ADR)
 
 ## Cross-links
 
-- [ADR-150](../../../v3/docs/adr/ADR-150-metaharness-integration-surfaces.md) — decision
-- [Issue #2399](https://github.com/ruvnet/ruflo/issues/2399) — phase tracker
-- [Research dossier](https://gist.github.com/ruvnet/19d166ff9acf368c9da4172d91ac9113) — graded evidence
-- [Upstream](https://github.com/ruvnet/agent-harness-generator) — `metaharness` source
+- [ADR-150](../../../v3/docs/adr/ADR-150-metaharness-integration-surfaces.md) â€” decision
+- [Issue #2399](https://github.com/pwnapplehat/ruflo/issues/2399) â€” phase tracker
+- [Research dossier](https://gist.github.com/ruvnet/19d166ff9acf368c9da4172d91ac9113) â€” graded evidence
+- [Upstream](https://github.com/ruvnet/agent-harness-generator) â€” `metaharness` source

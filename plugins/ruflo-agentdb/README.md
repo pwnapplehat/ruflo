@@ -1,27 +1,27 @@
 # ruflo-agentdb
 
-The substrate plugin for Ruflo memory. Wraps three CLI MCP families — `agentdb_*` (controller bridge, 15 tools), `embeddings_*` (RuVector ONNX engine, 10 tools), and `ruvllm_hnsw_*` (WASM-backed pattern router, 3 tools) — into discoverable skills and commands. Other plugins (`ruflo-browser`, `ruflo-rag-memory`, `ruflo-intelligence`) compose this substrate; this plugin owns the namespace convention and the smoke contract for the substrate as a whole.
+The substrate plugin for Ruflo memory. Wraps three CLI MCP families â€” `agentdb_*` (controller bridge, 15 tools), `embeddings_*` (RuVector ONNX engine, 10 tools), and `ruvllm_hnsw_*` (WASM-backed pattern router, 3 tools) â€” into discoverable skills and commands. Other plugins (`ruflo-browser`, `ruflo-rag-memory`, `ruflo-intelligence`) compose this substrate; this plugin owns the namespace convention and the smoke contract for the substrate as a whole.
 
-> **Status:** ADR-0001 implemented. Plugin v0.3.0 targets `@claude-flow/cli` v3.6.x with bundled `agentdb@^3.0.0-alpha.11`. The smoke contract (13 numbered checks + 3 documentation invariants) is the verification mechanism — see [docs/adrs/0001-agentdb-optimization.md](./docs/adrs/0001-agentdb-optimization.md).
+> **Status:** ADR-0001 implemented. Plugin v0.3.0 targets `@claude-flow/cli` v3.6.x with bundled `agentdb@^3.0.0-alpha.11`. The smoke contract (13 numbered checks + 3 documentation invariants) is the verification mechanism â€” see [docs/adrs/0001-agentdb-optimization.md](./docs/adrs/0001-agentdb-optimization.md).
 
 ## Install
 
 ```
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 /plugin install ruflo-agentdb@ruflo
 ```
 
 ## Compatibility
 
 - **CLI:** pinned to `@claude-flow/cli` v3.6 major+minor. Patch bumps within v3.6 are expected to be no-op.
-- **AgentDB:** the CLI bundles `agentdb@^3.0.0-alpha.11`. The plugin does **not** pin the npm package — internals (alpha.11 → alpha.12 etc.) are not the plugin's contract.
+- **AgentDB:** the CLI bundles `agentdb@^3.0.0-alpha.11`. The plugin does **not** pin the npm package â€” internals (alpha.11 â†’ alpha.12 etc.) are not the plugin's contract.
 - **Verification:** the bundled smoke script is the source of truth (`bash plugins/ruflo-agentdb/scripts/smoke.sh`). If smoke passes against your CLI version, the plugin's contract holds.
 
 ## Features
 
 - **Controller bridge**: 15 `agentdb_*` MCP tools (hierarchical store/recall, semantic routing, pattern store/search, causal edges, context synthesis, batch ops, consolidation, feedback, sessions).
-- **RuVector embeddings**: 10 `embeddings_*` MCP tools — 384-dim ONNX (all-MiniLM-L6-v2), HNSW search, hyperbolic (Poincare), neural substrate, and **RaBitQ 1-bit quantization (32× memory reduction)**.
-- **HNSW pattern router**: 3 `ruvllm_hnsw_*` tools (WASM-backed, ≤11 high-priority patterns — distinct from the large-scale embeddings HNSW path).
+- **RuVector embeddings**: 10 `embeddings_*` MCP tools â€” 384-dim ONNX (all-MiniLM-L6-v2), HNSW search, hyperbolic (Poincare), neural substrate, and **RaBitQ 1-bit quantization (32Ã— memory reduction)**.
+- **HNSW pattern router**: 3 `ruvllm_hnsw_*` tools (WASM-backed, â‰¤11 high-priority patterns â€” distinct from the large-scale embeddings HNSW path).
 - **Causal knowledge graphs**: `agentdb_causal-edge` (graph-node backend with bridge fallback per ADR-087).
 
 ## Controllers (real registry, grouped by INIT_LEVELS)
@@ -53,20 +53,20 @@ Initialization order per ADR-053 (`controller-registry.ts:160-174`):
 | Controller | Role | Source |
 |---|---|---|
 | `gnnService` | Graph Neural Network embeddings + relational scoring over the AgentDB causal graph. No-arg construction. | `agentdb/dist/src/services/GNNService.js` |
-| `rvfOptimizer` | RuVector format compaction — quantizes + dedupes vector blocks before persistence. | `agentdb/dist/src/optimizations/RVFOptimizer.js` |
+| `rvfOptimizer` | RuVector format compaction â€” quantizes + dedupes vector blocks before persistence. | `agentdb/dist/src/optimizations/RVFOptimizer.js` |
 | `mutationGuard` | WASM-backed proof generation for state mutations (ADR-060). | `agentdb/dist/src/security/MutationGuard.js` |
 | `attestationLog` | Hash-chained audit log of mutations. Backed by a dedicated `.swarm/attestation.db`. | `agentdb/dist/src/security/AttestationLog.js` |
 | `GuardedVectorBackend` | Wraps the existing vectorBackend with `mutationGuard` + `attestationLog`. | `agentdb/dist/src/backends/ruvector/GuardedVectorBackend.js` |
 
 ## Commands
 
-- `/agentdb` — AgentDB health, controller status, session management
-- `/embeddings` — RuVector embedding engine status and operations
+- `/agentdb` â€” AgentDB health, controller status, session management
+- `/embeddings` â€” RuVector embedding engine status and operations
 
 ## Skills
 
-- `agentdb-query` — Query AgentDB with semantic routing and hierarchical recall
-- `vector-search` — HNSW vector search + RaBitQ quantization + 3 tuning profiles
+- `agentdb-query` â€” Query AgentDB with semantic routing and hierarchical recall
+- `vector-search` â€” HNSW vector search + RaBitQ quantization + 3 tuning profiles
 
 ## Namespace convention
 
@@ -94,10 +94,10 @@ This plugin owns the namespace convention that downstream plugins consume. Follo
 
 Namespace is **not** a universal parameter. Read the routing carefully:
 
-- `memory_*` and `embeddings_search` route by namespace — pass it.
-- `agentdb_hierarchical-*` routes by `tier` (`working|episodic|semantic`) — namespace argument is ignored.
-- `agentdb_pattern-*` routes through the ReasoningBank controller — namespace argument is ignored.
-- `agentdb_causal-edge` routes through the causal graph — namespace argument is ignored.
+- `memory_*` and `embeddings_search` route by namespace â€” pass it.
+- `agentdb_hierarchical-*` routes by `tier` (`working|episodic|semantic`) â€” namespace argument is ignored.
+- `agentdb_pattern-*` routes through the ReasoningBank controller â€” namespace argument is ignored.
+- `agentdb_causal-edge` routes through the causal graph â€” namespace argument is ignored.
 
 Don't pass `namespace: 'browser-cookies'` to `agentdb_pattern-store` and expect filtering. It will be silently dropped.
 
@@ -107,7 +107,7 @@ This plugin **does not** GC namespaces. Consumer plugins that want lifecycle (e.
 
 ### Naming guardrails
 
-A namespace SHOULD NOT contain `:` (collides with key-internal delimiters used in the bridge), MUST be ≤200 chars, and MUST pass `validateIdentifier` (the same validator already used in `agentdb-tools.ts:122`).
+A namespace SHOULD NOT contain `:` (collides with key-internal delimiters used in the bridge), MUST be â‰¤200 chars, and MUST pass `validateIdentifier` (the same validator already used in `agentdb-tools.ts:122`).
 
 ## How Claude Code populates AgentDB
 
@@ -116,7 +116,7 @@ The `claude-memories` reserved namespace is filled by Claude Code's own auto-mem
 | Mechanism | Trigger | What it writes |
 |---|---|---|
 | `memory_import_claude` MCP tool | Manual or hook-driven | Reads `~/.claude/projects/*/memory/*.md`, parses YAML frontmatter, splits sections, stores with 384-dim embeddings. `allProjects: true` imports from ALL Claude projects. |
-| `.claude/helpers/auto-memory-hook.mjs` | `SessionStart` (import) and `SessionEnd` (sync) — wired in `.claude/settings.json` | `import` → calls into the bridge for the current project; `sync` → flows AgentDB insights back to `~/.claude/projects/*/memory/MEMORY.md` |
+| `.claude/helpers/auto-memory-hook.mjs` | `SessionStart` (import) and `SessionEnd` (sync) â€” wired in `.claude/settings.json` | `import` â†’ calls into the bridge for the current project; `sync` â†’ flows AgentDB insights back to `~/.claude/projects/*/memory/MEMORY.md` |
 
 To inspect or refresh:
 
@@ -131,7 +131,7 @@ mcp tool call memory_import_claude --json -- '{"allProjects": true}'
 mcp tool call memory_search_unified --json -- '{"query": "your query"}'
 ```
 
-`memory_search_unified` defaults to searching `['default', 'claude-memories', 'auto-memory', 'patterns', 'tasks', 'feedback']` — these are the namespaces the bridge actually populates. The `default` namespace is the catch-all; `auto-memory` is distinct from `claude-memories` (auto-memory holds bridge-internal cache, claude-memories holds parsed `*.md` sections).
+`memory_search_unified` defaults to searching `['default', 'claude-memories', 'auto-memory', 'patterns', 'tasks', 'feedback']` â€” these are the namespaces the bridge actually populates. The `default` namespace is the catch-all; `auto-memory` is distinct from `claude-memories` (auto-memory holds bridge-internal cache, claude-memories holds parsed `*.md` sections).
 
 > **Pluralization gotcha:** the ReasoningBank fallback writes to `pattern` (singular). Other hooks (`hooks pretrain`, neural training paths) write to `patterns` (plural). They are different namespaces. When in doubt, `memory_list --namespace pattern` and `memory_list --namespace patterns` will tell you which one your data is in. Don't refactor your downstream code to "fix" the pluralization until you've confirmed which namespace was actually written.
 
@@ -142,7 +142,7 @@ Several Claude Code hooks fire writes into AgentDB. Consumer plugins should know
 | Hook | Tool invoked | Target namespace | Notes |
 |------|--------------|------------------|-------|
 | `SessionStart` | `memory_import_claude` (via auto-memory-hook.mjs) | `claude-memories` | Imports `~/.claude/projects/*/memory/*.md` into AgentDB on every session start |
-| `SessionEnd` | `auto-memory-hook.mjs sync` | bridge → `MEMORY.md` | Flows AgentDB insights back to Claude Code's MEMORY.md |
+| `SessionEnd` | `auto-memory-hook.mjs sync` | bridge â†’ `MEMORY.md` | Flows AgentDB insights back to Claude Code's MEMORY.md |
 | `post-task --train-neural` | `agentdb_pattern-store` (ReasoningBank) | `pattern` (with `memory-store-fallback` if registry unavailable) | Stores task-completion patterns for SONA distillation |
 | `pretrain` (one-shot) | `memory_store` | `patterns` (plural) | Bootstrap learning corpus |
 | `trajectory-begin/step/end` (ruvector hooks) | ruvector substrate (separate plugin) | sona/agentdb namespaces handled by `ruflo-ruvector` | See `plugins/ruflo-ruvector/docs/adrs/0001-pin-ruvector-0.2.25.md` |
@@ -151,7 +151,7 @@ Implication for consumer plugins:
 
 - **Don't double-write.** If you're already calling `hooks post-task --train-neural`, you don't also need to manually `memory_store --namespace pattern`. Pick one path.
 - **Don't refresh `claude-memories` yourself.** It auto-imports on every SessionStart. Manual `memory_import_claude` is for force-refresh, not steady-state.
-- **Surface fallback responses.** When `controller: 'memory-store-fallback'` comes back from `agentdb_pattern-store`, the data still landed — see "Pattern-store fallback" below.
+- **Surface fallback responses.** When `controller: 'memory-store-fallback'` comes back from `agentdb_pattern-store`, the data still landed â€” see "Pattern-store fallback" below.
 
 ## Operational fallbacks
 
@@ -170,7 +170,7 @@ When the ReasoningBank controller registry returns null, `agentdb_pattern-store`
 }
 ```
 
-A `controller: 'memory-store-fallback'` response is a pattern that **was persisted** — not an error. Source: `agentdb-tools.ts:138-161`.
+A `controller: 'memory-store-fallback'` response is a pattern that **was persisted** â€” not an error. Source: `agentdb-tools.ts:138-161`.
 
 ### Causal-edge graph-node backend (ADR-087)
 
@@ -183,7 +183,7 @@ When `bridgeHealthCheck()` returns null (the `@claude-flow/memory` package is no
 ```json
 {
   "success": false,
-  "error": "AgentDB bridge not available — @claude-flow/memory not installed... Use memory_store/memory_search tools instead."
+  "error": "AgentDB bridge not available â€” @claude-flow/memory not installed... Use memory_store/memory_search tools instead."
 }
 ```
 
@@ -207,14 +207,14 @@ The smoke script is the contract. It calls each documented MCP tool, exercises t
 
 ## Architecture Decisions
 
-- [`ADR-0001` — Optimize ruflo-agentdb (accurate surface, RaBitQ, namespacing, smoke contract)](./docs/adrs/0001-agentdb-optimization.md)
+- [`ADR-0001` â€” Optimize ruflo-agentdb (accurate surface, RaBitQ, namespacing, smoke contract)](./docs/adrs/0001-agentdb-optimization.md)
 
 ## Related Plugins
 
-- `ruflo-rag-memory` — simple store/search/recall interface; consumes the `claude-memories` reserved namespace
-- `ruflo-intelligence` — SONA neural patterns; consumes the `pattern` reserved namespace via ReasoningBank
-- `ruflo-browser` — composes the namespace convention for `browser-sessions/-selectors/-templates/-cookies` (ADR-0001 §3 there)
-- `ruflo-ruvector` — pinned ruvector CLI; sibling substrate plugin
+- `ruflo-rag-memory` â€” simple store/search/recall interface; consumes the `claude-memories` reserved namespace
+- `ruflo-intelligence` â€” SONA neural patterns; consumes the `pattern` reserved namespace via ReasoningBank
+- `ruflo-browser` â€” composes the namespace convention for `browser-sessions/-selectors/-templates/-cookies` (ADR-0001 Â§3 there)
+- `ruflo-ruvector` â€” pinned ruvector CLI; sibling substrate plugin
 
 ## License
 

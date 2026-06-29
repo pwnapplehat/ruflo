@@ -51,15 +51,15 @@ export const mcpExamples: RouterExample[] = [
 	{
 		title: "Analyze a diff",
 		prompt:
-			"Use ruflo__analyze_diff to assess risk and ruflo__analyze_diff-reviewers to suggest reviewers for the PR at github.com/ruvnet/ruflo/pull/1687.",
+			"Use ruflo__analyze_diff to assess risk and ruflo__analyze_diff-reviewers to suggest reviewers for the PR at github.com/pwnapplehat/ruflo/pull/1687.",
 		followUps: [
 			{
 				title: "Repo metrics",
-				prompt: "Get repository metrics with ruflo__github_repo_analyze for ruvnet/ruflo.",
+				prompt: "Get repository metrics with ruflo__github_repo_analyze for pwnapplehat/ruflo.",
 			},
 			{
 				title: "Open issues",
-				prompt: "List recent issues with ruflo__github_issue_track for ruvnet/ruflo.",
+				prompt: "List recent issues with ruflo__github_issue_track for pwnapplehat/ruflo.",
 			},
 		],
 	},

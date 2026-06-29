@@ -1,9 +1,9 @@
-# ADR-144 — Agent Authorization Propagation and MCP Authentication Enforcement
+# ADR-144 â€” Agent Authorization Propagation and MCP Authentication Enforcement
 
 **Status**: Proposed
 **Date**: 2026-06-02
-**Issue**: [ruvnet/ruflo#2248](https://github.com/ruvnet/ruflo/issues/2248)
-**Related**: ADR-012 (MCP Security Features), ADR-013 (Core Security Module), ADR-131 (ToolOutputGuardrail — content layer), ADR-145 (Plugin supply-chain — install layer)
+**Issue**: [pwnapplehat/ruflo#2248](https://github.com/pwnapplehat/ruflo/issues/2248)
+**Related**: ADR-012 (MCP Security Features), ADR-013 (Core Security Module), ADR-131 (ToolOutputGuardrail â€” content layer), ADR-145 (Plugin supply-chain â€” install layer)
 
 ## Context
 
@@ -19,11 +19,11 @@ The distinction matters:
 
 ### Evidence
 
-1. **MCP Authentication Measurement** (arXiv:2605.22333, May 2026, Grade A — empirical): First survey of 7,973 live MCP servers. **40.55% expose tools with zero authentication; 96.6% of OAuth-enabled servers contain ≥1 exploitable flaw** (most common: improper scope validation). Ruflo registers MCP tools but performs no runtime authentication check on server identity before accepting tool responses, so any agent that calls a federated MCP tool today has a >40% chance of trusting an unauthenticated source.
+1. **MCP Authentication Measurement** (arXiv:2605.22333, May 2026, Grade A â€” empirical): First survey of 7,973 live MCP servers. **40.55% expose tools with zero authentication; 96.6% of OAuth-enabled servers contain â‰¥1 exploitable flaw** (most common: improper scope validation). Ruflo registers MCP tools but performs no runtime authentication check on server identity before accepting tool responses, so any agent that calls a federated MCP tool today has a >40% chance of trusting an unauthenticated source.
 
-2. **AIRGuard** (arXiv:2605.28914, May 2026, Grade A — controlled benchmark): Runtime authority control at the action execution layer reduces agent attack success **from 36.3% to 5.5% (−85%)**. The load-bearing primitive is least-privilege authorization checked **per action**, not per session.
+2. **AIRGuard** (arXiv:2605.28914, May 2026, Grade A â€” controlled benchmark): Runtime authority control at the action execution layer reduces agent attack success **from 36.3% to 5.5% (âˆ’85%)**. The load-bearing primitive is least-privilege authorization checked **per action**, not per session.
 
-3. **Authorization Propagation** (arXiv:2605.05440, Apr 2026, Grade A — formal analysis): Multi-agent delegation creates an authorization-propagation problem with seven structural requirements not solvable by RBAC, ABAC, or ReBAC alone. When agent A delegates to agent B via SendMessage, B can escalate the granted scope by calling tools A was never authorized to invoke. Scope must travel **with** the delegation message and be enforced at every hop.
+3. **Authorization Propagation** (arXiv:2605.05440, Apr 2026, Grade A â€” formal analysis): Multi-agent delegation creates an authorization-propagation problem with seven structural requirements not solvable by RBAC, ABAC, or ReBAC alone. When agent A delegates to agent B via SendMessage, B can escalate the granted scope by calling tools A was never authorized to invoke. Scope must travel **with** the delegation message and be enforced at every hop.
 
 4. **Dual-Graph Provenance Defense** (arXiv:2605.26497, May 2026, Grade A): Comparing an *execution* provenance graph against an *authorization-intent* graph reduces indirect prompt injection success **from 40% to 1%**. Provenance is the audit trail required for any post-incident investigation.
 
@@ -49,14 +49,14 @@ interface AuthScope {
 }
 
 interface SendMessageEnvelope<T = unknown> {
-  scope: AuthScope;            // NEW — attached to every SendMessage
+  scope: AuthScope;            // NEW â€” attached to every SendMessage
   payload: T;
 }
 
 class AgentAuthorizationPropagator {
   // Attach a reduced scope to an outbound SendMessage.
   // Newly granted tools MUST be a subset of currentScope.grantedTools;
-  // delegationDepth MUST decrement by ≥ 1.
+  // delegationDepth MUST decrement by â‰¥ 1.
   wrapOutbound<T>(payload: T, currentScope: AuthScope, requestedTools: string[]): SendMessageEnvelope<T>;
 
   // Validate an inbound tool call against the current delegation scope.
@@ -71,7 +71,7 @@ class AgentAuthorizationPropagator {
 }
 ```
 
-Scope is **monotonically reducing**: each delegation hop can drop tools/servers but never add them. Adding requires the requesting agent to talk to the original principal out-of-band — the same shape as OAuth scope reduction.
+Scope is **monotonically reducing**: each delegation hop can drop tools/servers but never add them. Adding requires the requesting agent to talk to the original principal out-of-band â€” the same shape as OAuth scope reduction.
 
 ### MCP Authentication Validator
 
@@ -81,9 +81,9 @@ Before any tool response from an MCP server enters agent reasoning:
 
 1. The server MUST be in the registered allowlist *or* in `unauthenticated-allowed.json` (an explicit, audit-logged opt-out for known-public servers like a local read-only documentation server).
 2. If the server declared OAuth support in its tool registration, the validator verifies token freshness and scope.
-3. Otherwise, the response is rejected with `UNAUTHENTICATED_MCP_SERVER` and the rejection is surfaced to the agent — never silently dropped (same rule as ADR-131 reject findings).
+3. Otherwise, the response is rejected with `UNAUTHENTICATED_MCP_SERVER` and the rejection is surfaced to the agent â€” never silently dropped (same rule as ADR-131 reject findings).
 
-### Integration plan (phased — P1 is the first PR)
+### Integration plan (phased â€” P1 is the first PR)
 
 | Phase | Scope | Where |
 |---|---|---|
@@ -93,7 +93,7 @@ Before any tool response from an MCP server enters agent reasoning:
 | P4 | MCP auth validator wired before tool result processing | `@claude-flow/cli/src/mcp/auth-validator.ts` |
 | P5 | Provenance log + dual-graph audit CLI | `@claude-flow/cli/src/commands/audit.ts` |
 
-P2–P5 ship behind `CLAUDE_FLOW_STRICT_AUTH=true` so existing pipelines continue to work in legacy permissive mode until v4.0.
+P2â€“P5 ship behind `CLAUDE_FLOW_STRICT_AUTH=true` so existing pipelines continue to work in legacy permissive mode until v4.0.
 
 ### Backwards compatibility
 
@@ -103,11 +103,11 @@ P2–P5 ship behind `CLAUDE_FLOW_STRICT_AUTH=true` so existing pipelines continu
 
 ## Alternatives considered
 
-**Extend ADR-131 ToolOutputGuardrail.** Different layer. ADR-131 screens content before it enters reasoning; this ADR controls *who* is authorized to take actions. They must coexist — neither subsumes the other.
+**Extend ADR-131 ToolOutputGuardrail.** Different layer. ADR-131 screens content before it enters reasoning; this ADR controls *who* is authorized to take actions. They must coexist â€” neither subsumes the other.
 
 **RBAC on agent roles.** The formal analysis (arXiv:2605.05440) demonstrates RBAC cannot maintain authorization invariants across dynamic LLM delegation chains: roles don't compose under delegation. Scope-based propagation is the minimum viable solution.
 
-**OAuth scope on every cross-agent call.** Closer to the right shape, but requires per-tool OAuth servers — operationally heavy and only solves the MCP-server identity half. Scope-envelope on SendMessage covers both agent-to-agent and agent-to-MCP-server in one mechanism.
+**OAuth scope on every cross-agent call.** Closer to the right shape, but requires per-tool OAuth servers â€” operationally heavy and only solves the MCP-server identity half. Scope-envelope on SendMessage covers both agent-to-agent and agent-to-MCP-server in one mechanism.
 
 ## Consequences
 
@@ -119,17 +119,17 @@ P2–P5 ship behind `CLAUDE_FLOW_STRICT_AUTH=true` so existing pipelines continu
 
 **Negative / risks**:
 - The `scope` envelope adds ~100 bytes to every SendMessage (negligible vs payload).
-- Strict mode breaks existing pipelines that rely on implicit cross-agent tool access — every agent spawn site must declare its scope explicitly.
+- Strict mode breaks existing pipelines that rely on implicit cross-agent tool access â€” every agent spawn site must declare its scope explicitly.
 - A misconfigured `unauthenticated-allowed.json` becomes a confused-deputy risk; treat it as security-sensitive and gate edits on CODEOWNERS review.
 
 **Deferred**:
-- Full dual-graph provenance comparison engine (expensive at runtime — Phase 2 of P5).
-- Cross-organization delegation (MCP-I / DIF standard) — deferred pending spec maturity.
+- Full dual-graph provenance comparison engine (expensive at runtime â€” Phase 2 of P5).
+- Cross-organization delegation (MCP-I / DIF standard) â€” deferred pending spec maturity.
 
 ## Validation
 
 P1 lands with:
 - Unit tests for `wrapOutbound` scope-reduction invariants (cannot grant more than holder, cannot increase delegationDepth).
 - Property tests for `checkToolCall` (every reachable scope chain remains a subset of the principal's original grant).
-- Integration test demonstrating that a chain `principal → A → B → tool` denies a tool the principal never granted to A, even when B requests it.
+- Integration test demonstrating that a chain `principal â†’ A â†’ B â†’ tool` denies a tool the principal never granted to A, even when B requests it.
 - Benchmark: `wrapOutbound` + `checkToolCall` must add < 1 ms p99 to a SendMessage roundtrip.

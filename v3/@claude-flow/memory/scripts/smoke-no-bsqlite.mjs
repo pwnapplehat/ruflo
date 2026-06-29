@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Regression guard for ruvnet/ruflo#1867.
+ * Regression guard for pwnapplehat/ruflo#1867.
  *
  * Reproduces the user-visible failure mode of "native better-sqlite3 build failed"
  * (e.g. `npm install` on Node 26 without prebuilds) by installing this package
@@ -11,7 +11,7 @@
  *   3. Round-trip store/get works on the fallback
  *   4. Direct `SQLiteBackend.initialize()` throws a clean error (not MODULE_NOT_FOUND)
  *
- * Run via the smoke-install-no-bsqlite CI job — see .github/workflows/v3-ci.yml.
+ * Run via the smoke-install-no-bsqlite CI job â€” see .github/workflows/v3-ci.yml.
  */
 
 import { mkdtempSync, rmSync } from 'node:fs';
@@ -34,7 +34,7 @@ try {
   let bsqlitePresent = false;
   try { await import('better-sqlite3'); bsqlitePresent = true; } catch { /* expected */ }
   if (bsqlitePresent) {
-    fail('better-sqlite3 unexpectedly resolvable — smoke test setup is wrong, not testing the regression');
+    fail('better-sqlite3 unexpectedly resolvable â€” smoke test setup is wrong, not testing the regression');
     process.exit(1);
   }
   pass('better-sqlite3 absent (regression scenario active)');

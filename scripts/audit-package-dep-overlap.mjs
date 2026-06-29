@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 /**
- * Package dependency overlap audit (regression guard for ruvnet/ruflo#1147 and #2018).
+ * Package dependency overlap audit (regression guard for pwnapplehat/ruflo#1147 and #2018).
  *
  * Both issues are the same failure shape:
  *   `npm error Invalid Version: ` (empty) thrown by `new SemVer('')` inside
- *   `@npmcli/arborist`'s `PlaceDep.pruneDedupable → Node.canDedupe → semver.eq`.
+ *   `@npmcli/arborist`'s `PlaceDep.pruneDedupable â†’ Node.canDedupe â†’ semver.eq`.
  *
  * Root cause: a package declares the SAME dependency name in both
  * `optionalDependencies` and `peerDependencies` (typically with
  * `peerDependenciesMeta[name].optional: true`). Newer npm (>=11) trips on
  * this overlap during the dedupe pass when the dep itself has a "-dev." /
- * prerelease tagged transitive (`onnxruntime-web@1.26.0-dev.…`), producing
+ * prerelease tagged transitive (`onnxruntime-web@1.26.0-dev.â€¦`), producing
  * the user-facing empty-version crash.
  *
  * Fix: any name should appear in EITHER `optionalDependencies` OR as an
- * optional peer — never both. This script scans every package.json under
+ * optional peer â€” never both. This script scans every package.json under
  * `v3/@claude-flow/*` and `v3/plugins/*` and fails on the overlap.
  *
  * Usage:
@@ -59,11 +59,11 @@ for (const root of SCAN_DIRS) {
 
     // --- Overlap check: same name in optionalDependencies AND peerDependencies.
     // npm 11.x arborist dedupe pass crashes with "Invalid Version: " on this
-    // pattern when any transitive carries a prerelease tag — that's #1147 / #2018.
+    // pattern when any transitive carries a prerelease tag â€” that's #1147 / #2018.
     for (const name of Object.keys(opt)) {
       if (peers[name] !== undefined) {
         note(label, 'OVERLAP',
-          `"${name}" is in BOTH optionalDependencies and peerDependencies — ` +
+          `"${name}" is in BOTH optionalDependencies and peerDependencies â€” ` +
           `npm 11.x arborist crashes with "Invalid Version: " on dedupe. ` +
           `Remove it from optionalDependencies and keep only the optional peer.`);
       }
@@ -80,14 +80,14 @@ const report = {
 if (JSON_OUT) {
   console.log(JSON.stringify(report, null, 2));
 } else {
-  console.log(`package dep-overlap audit — scanned ${scanned} package(s)`);
+  console.log(`package dep-overlap audit â€” scanned ${scanned} package(s)`);
   if (issues.length === 0) {
     console.log('  ok: no optionalDependencies/peerDependencies overlaps');
   } else {
     for (const i of issues) {
       console.log(`  fail [${i.code}] ${i.pkg}: ${i.message}`);
     }
-    console.log(`\n${issues.length} issue(s) — see ruvnet/ruflo#1147 and #2018 for context`);
+    console.log(`\n${issues.length} issue(s) â€” see pwnapplehat/ruflo#1147 and #2018 for context`);
   }
 }
 

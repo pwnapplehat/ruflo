@@ -1635,16 +1635,17 @@ const Index = () => {
       <footer className="border-t mt-16 py-6" style={{ borderColor: `${widgetConfig.primaryColor}20` }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-sm" style={{ color: widgetConfig.secondaryTextColor }}>
-            Created with <span style={{ color: widgetConfig.accentColor }}>❤️</span> by{" "}
-            <a 
-              href="https://ruv.io" 
-              target="_blank" 
+            Part of{" "}
+            <a
+              href="https://github.com/pwnapplehat/ruflo"
+              target="_blank"
               rel="noopener noreferrer"
               className="font-medium hover:underline transition-colors"
               style={{ color: widgetConfig.primaryColor }}
             >
-              rUv.io
+              ruflo
             </a>
+            {" "}- Cursor-native agent meta-harness
           </p>
         </div>
       </footer>

@@ -4,7 +4,7 @@
 # Creates a self-contained .rvf archive with manifest and all deployment files.
 #
 # Usage: bash scripts/package-rvf.sh [version]
-# Output: dist/chat-ui-mcp-v{VERSION}.rvf
+# Output: dist/ruvocal-mcp-v{VERSION}.rvf
 # =============================================================================
 set -e
 
@@ -16,7 +16,7 @@ VERSION="${1:-2.0.0}"
 RVF_UUID=$(python3 -c "import uuid; print(uuid.uuid4())" 2>/dev/null || cat /proc/sys/kernel/random/uuid)
 RVF_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-echo "Packaging chat-ui-mcp v${VERSION} as RVF..."
+echo "Packaging ruvocal-mcp v${VERSION} as RVF..."
 
 # --- Security check: ensure no secrets are embedded ---
 echo "Checking for embedded secrets..."
@@ -56,19 +56,19 @@ MANIFEST=$(cat rvf.manifest.json | \
 echo "$MANIFEST" > dist/rvf.manifest.json
 
 # --- Create archive ---
-OUTPUT="dist/chat-ui-mcp-v${VERSION}.rvf"
+OUTPUT="dist/ruvocal-mcp-v${VERSION}.rvf"
 
 tar czf "$OUTPUT" \
   --exclude='node_modules' \
   --exclude='.env' \
   --exclude='config/config.json' \
-  --exclude='chat-ui/dotenv-local.txt' \
-  --exclude='chat-ui/cloudbuild.yaml' \
+  --exclude='ruvocal/dotenv-local.txt' \
+  --exclude='ruvocal/cloudbuild.yaml' \
   --exclude='mcp-bridge/cloudbuild.yaml' \
   --exclude='mcp-bridge/package-lock.json' \
   --exclude='dist' \
   --exclude='.git' \
-  --transform="s|^|chat-ui-mcp/|" \
+  --transform="s|^|ruvocal-mcp/|" \
   -C "$ROOT_DIR" \
   rvf.manifest.json \
   README.md \
@@ -79,9 +79,9 @@ tar czf "$OUTPUT" \
   mcp-bridge/index.js \
   mcp-bridge/package.json \
   mcp-bridge/Dockerfile \
-  chat-ui/Dockerfile \
-  chat-ui/patch-mcp-url-safety.sh \
-  chat-ui/static/ \
+  ruvocal/Dockerfile \
+  ruvocal/patch-mcp-url-safety.sh \
+  ruvocal/static/ \
   mcp-bridge/mcp-stdio-kernel.js \
   mcp-bridge/test-harness.js \
   scripts/deploy.sh \
@@ -93,7 +93,7 @@ tar czf "$OUTPUT" \
 # --- Append manifest as RVF header ---
 # RVF files are tar.gz with a JSON manifest prepended for introspection
 MANIFEST_SIZE=$(wc -c < dist/rvf.manifest.json)
-FINAL_OUTPUT="dist/chat-ui-mcp-v${VERSION}.rvf"
+FINAL_OUTPUT="dist/ruvocal-mcp-v${VERSION}.rvf"
 
 echo ""
 echo "============================================"
@@ -107,7 +107,7 @@ echo "  Created:  $RVF_TIMESTAMP"
 echo ""
 echo "To deploy:"
 echo "  tar xzf $FINAL_OUTPUT"
-echo "  cd chat-ui-mcp"
+echo "  cd ruvocal-mcp"
 echo "  cp config/config.example.json config/config.json"
 echo "  cp .env.example .env"
 echo "  # Edit config.json and .env with your values"

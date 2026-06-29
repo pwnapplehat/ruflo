@@ -1,12 +1,12 @@
 {
   "name": "ruflo-workflows",
-  "description": "Workflow automation across two surfaces: the 10 workflow_* MCP tools (create/run/execute/status/list/pause/resume/cancel/delete/template) with full state-machine lifecycle (created → running ↔ paused → completed/cancelled), and native Claude Code Workflow JS orchestration (.claude/workflows/*.js — agent/parallel/pipeline/phase fan-out). Includes GAIA benchmark component for Princeton HAL leaderboard submissions.",
+  "description": "Workflow automation across two surfaces: the 10 workflow_* MCP tools (create/run/execute/status/list/pause/resume/cancel/delete/template) with full state-machine lifecycle (created â†’ running â†” paused â†’ completed/cancelled), and native Claude Code Workflow JS orchestration (.claude/workflows/*.js â€” agent/parallel/pipeline/phase fan-out). Includes GAIA benchmark component for Princeton HAL leaderboard submissions.",
   "version": "0.4.0",
   "author": {
     "name": "ruvnet",
     "url": "https://github.com/ruvnet"
   },
-  "homepage": "https://github.com/ruvnet/ruflo",
+  "homepage": "https://github.com/pwnapplehat/ruflo",
   "license": "MIT",
   "keywords": [
     "ruflo",
@@ -30,7 +30,7 @@
   ],
   "components": {
     "gaia": {
-      "description": "GAIA benchmark component — run, submit, validate, and track Princeton HAL leaderboard scores",
+      "description": "GAIA benchmark component â€” run, submit, validate, and track Princeton HAL leaderboard scores",
       "commands": [
         "gaia",
         "gaia-run",
@@ -59,10 +59,10 @@
       ]
     },
     "native_workflows": {
-      "description": "Native Claude Code Workflow JS orchestration — deterministic subagent fan-out via agent/parallel/pipeline/phase, authored as .claude/workflows/*.js named workflows",
+      "description": "Native Claude Code Workflow JS orchestration â€” deterministic subagent fan-out via agent/parallel/pipeline/phase, authored as .claude/workflows/*.js named workflows",
       "location": ".claude/workflows/*.js",
       "api": ["agent", "parallel", "pipeline", "phase", "log"],
-      "invocation": "Workflow tool — Workflow({ name }) | Workflow({ scriptPath }) | Workflow({ resumeFromRunId })",
+      "invocation": "Workflow tool â€” Workflow({ name }) | Workflow({ scriptPath }) | Workflow({ resumeFromRunId })",
       "reference_workflow": ".claude/workflows/plugin-contract-audit.js",
       "adrs": ["ADR-0002"]
     }

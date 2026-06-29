@@ -5,7 +5,7 @@ Scaffold, validate, and publish new Claude Code plugins with proper structure, M
 ## Install
 
 ```
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 /plugin install ruflo-plugin-creator@ruflo
 ```
 
@@ -36,24 +36,24 @@ Every plugin scaffolded by this plugin inherits the same shape every other plugi
 
 ```
 plugins/<name>/
-├── .claude-plugin/plugin.json     # version, keywords, mcp keyword
-├── skills/<skill>/SKILL.md         # name + description + allowed-tools (no wildcards)
-├── commands/<command>.md           # name + description + dispatch logic
-├── agents/<agent>.md               # name + description + model
-├── docs/adrs/0001-<name>-contract.md   # ADR (Proposed) — pinning, namespace, smoke scope
-├── scripts/smoke.sh                # Structural contract, ≥8 checks
-└── README.md                       # Compatibility + Namespace coordination + Verification + ADR
+â”œâ”€â”€ .claude-plugin/plugin.json     # version, keywords, mcp keyword
+â”œâ”€â”€ skills/<skill>/SKILL.md         # name + description + allowed-tools (no wildcards)
+â”œâ”€â”€ commands/<command>.md           # name + description + dispatch logic
+â”œâ”€â”€ agents/<agent>.md               # name + description + model
+â”œâ”€â”€ docs/adrs/0001-<name>-contract.md   # ADR (Proposed) â€” pinning, namespace, smoke scope
+â”œâ”€â”€ scripts/smoke.sh                # Structural contract, â‰¥8 checks
+â””â”€â”€ README.md                       # Compatibility + Namespace coordination + Verification + ADR
 ```
 
 ## MCP-tool drift to avoid
 
-Lessons learned from sibling-ADR fixes — the scaffolder warns about these:
+Lessons learned from sibling-ADR fixes â€” the scaffolder warns about these:
 
 | Bug | Real tool / pattern |
 |-----|---------------------|
 | `embeddings_embed` referenced as a tool | Use `embeddings_generate` (the `_embed` name does not exist) |
 | `namespace` arg passed to `agentdb_hierarchical-*` | Use `tier` (working/episodic/semantic), or use `memory_*` for namespaced reads/writes |
-| `namespace` arg passed to `agentdb_pattern-*` | Don't pass it — ReasoningBank routes; fallback writes to `pattern` reserved |
+| `namespace` arg passed to `agentdb_pattern-*` | Don't pass it â€” ReasoningBank routes; fallback writes to `pattern` reserved |
 | `pattern` and `patterns` confused | They are **different** reserved namespaces |
 | Hard-coded "19 AgentDB controllers" | Defer to `agentdb_controllers` runtime; real count varies (~15 MCP tools, 29 controller names) |
 
@@ -66,10 +66,10 @@ bash plugins/ruflo-plugin-creator/scripts/smoke.sh
 
 ## Architecture Decisions
 
-- [`ADR-0001` — ruflo-plugin-creator plugin contract (scaffold-the-canonical-contract, MCP-drift warnings, smoke as contract)](./docs/adrs/0001-plugin-creator-contract.md)
+- [`ADR-0001` â€” ruflo-plugin-creator plugin contract (scaffold-the-canonical-contract, MCP-drift warnings, smoke as contract)](./docs/adrs/0001-plugin-creator-contract.md)
 
 ## Related Plugins
 
-- `ruflo-agentdb` — namespace convention owner; `agentdb_controllers` runtime is the canonical controller list
-- `ruflo-cost-tracker`, `ruflo-market-data`, `ruflo-migrations`, `ruflo-observability` — each fixed namespace-routing bugs the scaffolder now warns about
-- `ruflo-knowledge-graph`, `ruflo-market-data` — each fixed `embeddings_embed` references the scaffolder now warns about
+- `ruflo-agentdb` â€” namespace convention owner; `agentdb_controllers` runtime is the canonical controller list
+- `ruflo-cost-tracker`, `ruflo-market-data`, `ruflo-migrations`, `ruflo-observability` â€” each fixed namespace-routing bugs the scaffolder now warns about
+- `ruflo-knowledge-graph`, `ruflo-market-data` â€” each fixed `embeddings_embed` references the scaffolder now warns about

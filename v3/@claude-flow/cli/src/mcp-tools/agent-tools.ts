@@ -35,11 +35,11 @@ interface AgentRecord {
   domain?: string;
   model?: ClaudeModel;  // Tier label assigned to this agent
   modelRoutedBy?: 'explicit' | 'router' | 'codemod' | 'default' | 'hybrid';  // ADR-026/143/149
-  /** ADR-149 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â concrete picked model id (e.g. inclusionai/ling-2.6-flash). */
+  /** ADR-149 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â concrete picked model id (e.g. inclusionai/ling-2.6-flash). */
   modelId?: string;
-  /** ADR-148 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â execution provider hint. */
+  /** ADR-148 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â execution provider hint. */
   provider?: 'anthropic' | 'openrouter';
-  /** ADR-148 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â concrete OpenRouter slug when provider='openrouter'. */
+  /** ADR-148 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â concrete OpenRouter slug when provider='openrouter'. */
   openrouterModel?: string;
   lastResult?: Record<string, unknown>;
 }
@@ -97,13 +97,13 @@ function loadHiveAgents(): Record<string, AgentRecord> {
       }
     }
   } catch {
-    // Ignore ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â hive store is optional/best-effort.
+    // Ignore ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â hive store is optional/best-effort.
   }
   return {};
 }
 
 /**
- * #1916: merged view of every tracked agent ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â the canonical agent store
+ * #1916: merged view of every tracked agent ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â the canonical agent store
  * plus hive-mind-spawned workers. On an id collision the canonical record
  * wins (it carries model-routing + lastResult that the hive store omits).
  */
@@ -113,18 +113,18 @@ function loadAllAgents(): Record<string, AgentRecord> {
 
 // Default model mappings for agent types (can be overridden)
 const AGENT_TYPE_MODEL_DEFAULTS: Record<string, ClaudeModel> = {
-  // Complex agents ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ opus
+  // Complex agents ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ opus
   'architect': 'opus',
   'security-architect': 'opus',
   'system-architect': 'opus',
   'core-architect': 'opus',
-  // Medium complexity ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ sonnet
+  // Medium complexity ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ sonnet
   'coder': 'sonnet',
   'reviewer': 'sonnet',
   'researcher': 'sonnet',
   'tester': 'sonnet',
   'analyst': 'sonnet',
-  // Simple/fast agents ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ haiku
+  // Simple/fast agents ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ haiku
   'formatter': 'haiku',
   'linter': 'haiku',
   'documenter': 'haiku',
@@ -146,7 +146,7 @@ async function getModelRouter() {
   return modelRouterInstance;
 }
 
-// ADR-149 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â the cost-optimal neural router fires only when
+// ADR-149 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â the cost-optimal neural router fires only when
 // `routeToModelFull(task, embedding)` is called with a real embedding. We
 // delegate to the shared task-embedder module (ADR-149 iter 9) so the
 // @xenova/transformers MiniLM pipeline + LRU cache are shared across
@@ -173,11 +173,11 @@ async function determineAgentModel(
   canSkipLLM?: boolean;
   codemodIntent?: string;
   tier?: 1 | 2 | 3;
-  /** ADR-149 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â concrete picked model id when the neural backend fired. */
+  /** ADR-149 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â concrete picked model id when the neural backend fired. */
   modelId?: string;
-  /** ADR-148 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â execution provider hint. */
+  /** ADR-148 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â execution provider hint. */
   provider?: 'anthropic' | 'openrouter';
-  /** ADR-148 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â concrete OpenRouter slug when provider='openrouter'. */
+  /** ADR-148 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â concrete OpenRouter slug when provider='openrouter'. */
   openrouterModel?: string;
 }> {
   // 1. Explicit model in config
@@ -191,7 +191,7 @@ async function determineAgentModel(
       // Try enhanced router first (includes codemod-intent detection)
       const { getEnhancedModelRouter } = await import('../ruvector/enhanced-model-router.js');
       const enhancedRouter = getEnhancedModelRouter();
-      // ADR-149 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â embed the task so the cost-optimal neural backend fires.
+      // ADR-149 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â embed the task so the cost-optimal neural backend fires.
       // We probe the embedder lazily; if it can't load (no @xenova/transformers
       // available), the enhanced router falls back to heuristic+bandit and
       // the existing behaviour is preserved.
@@ -209,7 +209,7 @@ async function determineAgentModel(
         };
       }
 
-      // ADR-149 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â forward the per-model fields. When the neural backend
+      // ADR-149 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â forward the per-model fields. When the neural backend
       // fired, modelId carries the cost-optimal pick (e.g. Ling); when
       // it didn't, these are undefined and downstream behaviour is unchanged.
       const routedBy: 'router' | 'hybrid' =
@@ -227,7 +227,7 @@ async function determineAgentModel(
       const router = await getModelRouter();
       if (router) {
         try {
-          // ADR-149 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â embed the task so the cost-optimal neural backend
+          // ADR-149 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â embed the task so the cost-optimal neural backend
           // fires (it's gated on `embedding && embedding.length > 0`).
           // Without the embedding, route() falls back to heuristic+bandit
           // and every per-model Pareto win the v2 measurement landed is
@@ -274,7 +274,7 @@ export const agentTools: MCPTool[] = [
       properties: {
         agentType: { type: 'string', description: 'Type of agent to spawn' },
         agentId: { type: 'string', description: 'Optional custom agent ID' },
-        // #2085 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â accept swarmId so spawned agents register in the
+        // #2085 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â accept swarmId so spawned agents register in the
         // swarm.agents array that swarm_status reports. Omit to register
         // with the most-recently-created swarm.
         swarmId: { type: 'string', description: 'Optional swarm to register the agent with (defaults to most-recent swarm)' },
@@ -335,10 +335,10 @@ export const agentTools: MCPTool[] = [
       store.agents[agentId] = agent;
       saveAgentStore(store);
 
-      // #2085 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â also push to the swarm store's agents array so that
+      // #2085 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â also push to the swarm store's agents array so that
       // swarm_status reports the new agent. Without this, agent_spawn
       // and swarm_status read/write separate stores and agents added
-      // post-init never show up in swarm_status.agents ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â confirmed for
+      // post-init never show up in swarm_status.agents ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â confirmed for
       // all topologies (hierarchical, mesh, etc.).
       try {
         const { loadSwarmStore: _loadSwarmStore, saveSwarmStore: _saveSwarmStore } =
@@ -356,13 +356,13 @@ export const agentTools: MCPTool[] = [
         if (targetSwarmId && swarmStore.swarms[targetSwarmId]) {
           const swarm = swarmStore.swarms[targetSwarmId];
           if (!Array.isArray(swarm.agents)) swarm.agents = [];
-          // Idempotent ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â don't duplicate if agent_spawn is retried.
+          // Idempotent ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â don't duplicate if agent_spawn is retried.
           if (!swarm.agents.includes(agentId)) {
             swarm.agents.push(agentId);
             _saveSwarmStore(swarmStore);
           }
         }
-      } catch { /* swarm store unavailable ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â agent still registered globally */ }
+      } catch { /* swarm store unavailable ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â agent still registered globally */ }
 
       // Record agent in graph database (ADR-087, best-effort)
       try {
@@ -383,9 +383,9 @@ export const agentTools: MCPTool[] = [
         status: 'registered',
         createdAt: agent.createdAt,
         note: 'Agent registered for coordination. Three execution paths: ' +
-          '(1) call agent_execute(agentId, prompt) ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â direct LLM call via Anthropic Messages API (requires an API key (ANTHROPIC_API_KEY or CURSOR_API_KEY)); ' +
-          '(2) Claude Code Task tool ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â spawns a real subagent; ' +
-          '(3) claude -p ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â headless background instance.',
+          '(1) call agent_execute(agentId, prompt) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â direct LLM call via Anthropic Messages API (requires an API key (ANTHROPIC_API_KEY or CURSOR_API_KEY)); ' +
+          '(2) Claude Code Task tool ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â spawns a real subagent; ' +
+          '(3) claude -p ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â headless background instance.',
       };
 
       // Add codemod info if task can skip LLM (deterministic Tier-1, ADR-143)
@@ -393,7 +393,7 @@ export const agentTools: MCPTool[] = [
         response.canSkipLLM = true;
         response.codemodIntent = routingResult.codemodIntent;
         response.tier = routingResult.tier;
-        response.note = `Deterministic codemod can apply "${routingResult.codemodIntent}" ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â call the hooks_codemod MCP tool (intent="${routingResult.codemodIntent}"), $0, no LLM`;
+        response.note = `Deterministic codemod can apply "${routingResult.codemodIntent}" ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â call the hooks_codemod MCP tool (intent="${routingResult.codemodIntent}"), $0, no LLM`;
       } else if (routingResult.tier) {
         response.tier = routingResult.tier;
       }
@@ -404,12 +404,12 @@ export const agentTools: MCPTool[] = [
   {
     // ADR-095 G1: real LLM execution via the agent registry. Previously
     // agent_spawn registered metadata but nothing dispatched work to a
-    // provider ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â the wire between AnthropicProvider and the agent
+    // provider ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â the wire between AnthropicProvider and the agent
     // registry was missing, as the April audit (@roman-rr) called out.
     // agent_execute closes that wire by reading the agent's configured
     // model, calling the Anthropic Messages API directly via fetch, and
     // updating the agent record with lastResult / taskCount / status.
-    // No mock ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â actual HTTP request to api.anthropic.com.
+    // No mock ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â actual HTTP request to api.anthropic.com.
     name: 'agent_execute',
     description: 'Run a task on a previously-spawned agent_spawn record via the Anthropic Messages API with that agent\'s configured model. Use when you need multi-agent coordination because (a) you need the spawned agent\'s persistent config (model, instructions, cost-tracking attribution) to apply to this turn, (b) the result needs to feed back into the agent\'s lifecycle (taskCount, lastResult, swarm-coordinated state), or (c) you want explicit model routing via the spawn record\'s `model` field instead of inheriting. For one-shot Claude prompts without a tracked agent, native Task is fine. requires an API key (ANTHROPIC_API_KEY or CURSOR_API_KEY) in env.',
     category: 'agent',
@@ -744,7 +744,7 @@ export const agentTools: MCPTool[] = [
             health: a.health >= threshold ? 'healthy' : (a.health >= 0.3 ? 'degraded' : 'unhealthy'),
             uptime,
             tasks: { active: a.taskCount > 0 ? 1 : 0, queued: 0, completed: a.taskCount, failed: 0 },
-            _note: 'Per-agent OS metrics not available ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â use system_metrics for real CPU/memory',
+            _note: 'Per-agent OS metrics not available ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â use system_metrics for real CPU/memory',
           };
         }),
         overall: {
@@ -753,7 +753,7 @@ export const agentTools: MCPTool[] = [
           unhealthy: unhealthyAgents.length,
           cpu: null,
           memory: null,
-          _note: 'Per-agent CPU/memory not available ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â use system_metrics for real OS-level stats',
+          _note: 'Per-agent CPU/memory not available ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â use system_metrics for real OS-level stats',
           score: Math.round(avgHealth * 100),
           issues: unhealthyAgents.length,
         },
@@ -773,7 +773,7 @@ export const agentTools: MCPTool[] = [
   },
   {
     name: 'agent_update',
-    description: 'Mutate a tracked agent\'s config (model, instructions, status, health) without re-spawning. Use when you need multi-agent coordination because the agent already has accumulated state (taskCount, swarm membership, cost-tracking attribution) and you only need to tweak one field ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â for example, promoting an idle agent to running on a new task, or rotating its model from haiku to sonnet mid-loop. For a brand-new subagent, agent_spawn (or native Task) is the right call.',
+    description: 'Mutate a tracked agent\'s config (model, instructions, status, health) without re-spawning. Use when you need multi-agent coordination because the agent already has accumulated state (taskCount, swarm membership, cost-tracking attribution) and you only need to tweak one field ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â for example, promoting an idle agent to running on a new task, or rotating its model from haiku to sonnet mid-loop. For a brand-new subagent, agent_spawn (or native Task) is the right call.',
     category: 'agent',
     inputSchema: {
       type: 'object',
@@ -828,24 +828,24 @@ export const agentTools: MCPTool[] = [
     },
   },
   {
-    // #1916 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â the `ruflo agent logs <id>` CLI subcommand and the guidance
+    // #1916 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â the `ruflo agent logs <id>` CLI subcommand and the guidance
     // surface both reference an `agent_logs` MCP tool that was never
     // registered, so it errored with `MCP tool not found: agent_logs`.
     // This is the registered handler. Note: agents don't yet keep a
     // structured per-agent activity log (that lands with hive worker
-    // execution wiring ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â see #1916), so for now we surface the agent's
+    // execution wiring ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â see #1916), so for now we surface the agent's
     // last task result as a single synthetic entry, or an explicit empty
     // response. The shape matches what the CLI `logs` subcommand expects:
     // `{ agentId, entries: [{timestamp,level,message,context?}], total }`.
     name: 'agent_logs',
-    description: 'Return recorded activity-log entries for a tracked agent (idle/running history, last task result). Use when you need multi-agent coordination because you need the agent\'s log across turns (what it did, last error/result, swarm context) rather than a one-shot Task transcript. For a Task you just ran, native Task output is fine. Pair with agent_list to find the agentId. (Hive-mind-spawned workers are resolved here too.) Today this returns the last task result as a synthetic entry ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â full per-agent activity logs land with hive worker execution wiring (ruvnet/ruflo#1916).',
+    description: 'Return recorded activity-log entries for a tracked agent (idle/running history, last task result). Use when you need multi-agent coordination because you need the agent\'s log across turns (what it did, last error/result, swarm context) rather than a one-shot Task transcript. For a Task you just ran, native Task output is fine. Pair with agent_list to find the agentId. (Hive-mind-spawned workers are resolved here too.) Today this returns the last task result as a synthetic entry ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â full per-agent activity logs land with hive worker execution wiring (pwnapplehat/ruflo#1916).',
     category: 'agent',
     inputSchema: {
       type: 'object',
       properties: {
         agentId: { type: 'string', description: 'ID of agent' },
         tail: { type: 'number', description: 'Max recent entries to return (default 50)' },
-        level: { type: 'string', enum: ['debug', 'info', 'warn', 'error'], description: 'Minimum log level (currently advisory ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â entries are synthetic)' },
+        level: { type: 'string', enum: ['debug', 'info', 'warn', 'error'], description: 'Minimum log level (currently advisory ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â entries are synthetic)' },
         since: { type: 'string', description: 'Show logs since, e.g. "1h" / "30m" (currently advisory)' },
       },
       required: ['agentId'],
@@ -872,7 +872,7 @@ export const agentTools: MCPTool[] = [
         agentId: agent.agentId,
         entries: sliced,
         total: entries.length,
-        note: 'per-agent activity logging is not yet wired; entries are synthetic (ruvnet/ruflo#1916)',
+        note: 'per-agent activity logging is not yet wired; entries are synthetic (pwnapplehat/ruflo#1916)',
       };
     },
   },

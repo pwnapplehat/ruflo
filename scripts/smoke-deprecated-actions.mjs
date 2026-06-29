@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * Deprecated-action regression guard for ruvnet/ruflo#2089 — ADR-127 Phase 3.
+ * Deprecated-action regression guard for pwnapplehat/ruflo#2089 â€” ADR-127 Phase 3.
  *
  * Fails if any file in scope references:
  *   - actions/checkout@v3   (replaced by @v4 in Phase 3)
  *   - actions/setup-node@v3 (replaced by @v4 in Phase 3)
- *   - actions/create-release@*  (archived action — use `gh release create`)
- *   - actions/upload-release-asset@*  (archived action — use `gh release upload`)
- *   - softprops/action-gh-release@v1  (mutable floating ref — use SHA pin or @v2+)
+ *   - actions/create-release@*  (archived action â€” use `gh release create`)
+ *   - actions/upload-release-asset@*  (archived action â€” use `gh release upload`)
+ *   - softprops/action-gh-release@v1  (mutable floating ref â€” use SHA pin or @v2+)
  *
  * The archived actions (create-release, upload-release-asset) are the same
  * ones replaced in ruvnet/neural-trader's release workflow. Catching them
@@ -18,7 +18,7 @@
  *   .claude/skills/github-[name]/SKILL.md
  *   v3/@claude-flow/cli/.claude/commands/github/[name].md
  *
- * Zero runtime dependencies — pure readFileSync + regex.
+ * Zero runtime dependencies â€” pure readFileSync + regex.
  * Exit 0: no deprecated refs found.
  * Exit 1: one or more deprecated refs found (file + line reported).
  */
@@ -28,7 +28,7 @@ import { join } from 'node:path';
 
 const REPO_ROOT = process.cwd();
 
-// #2089 — initial Phase 3 commit only scanned 3 of the 6 in-scope trees
+// #2089 â€” initial Phase 3 commit only scanned 3 of the 6 in-scope trees
 // (dogfood agents + dogfood skills + init-template commands). It missed
 // the init-template agents and the dogfood commands, both of which still
 // shipped `actions/checkout@v3` after the Phase 3 merge. Post-publish

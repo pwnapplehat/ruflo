@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 /**
- * Static guard for ruvnet/ruflo ADR-125 / ADR-130 env-var precedence pattern.
+ * Static guard for pwnapplehat/ruflo ADR-125 / ADR-130 env-var precedence pattern.
  *
  * Context
  * -------
  * ADR-125 (rvagent integration) and ADR-130 (graph intelligence backend)
  * introduced several new env vars that configure runtime behaviour:
  *
- *   CLAUDE_FLOW_MEMORY_PATH        — override memory root directory
- *   CLAUDE_FLOW_DISABLE_BRIDGE     — bypass AgentDB v3 bridge
- *   CLAUDE_FLOW_GRAPH_BACKEND      — select graph backend (sqlite | agentdb)
- *   CLAUDE_FLOW_GRAPH_DECAY_RATE   — default temporal decay rate
- *   CLAUDE_FLOW_EMBED_DIMS         — embedding dimension override
+ *   CLAUDE_FLOW_MEMORY_PATH        â€” override memory root directory
+ *   CLAUDE_FLOW_DISABLE_BRIDGE     â€” bypass AgentDB v3 bridge
+ *   CLAUDE_FLOW_GRAPH_BACKEND      â€” select graph backend (sqlite | agentdb)
+ *   CLAUDE_FLOW_GRAPH_DECAY_RATE   â€” default temporal decay rate
+ *   CLAUDE_FLOW_EMBED_DIMS         â€” embedding dimension override
  *
  * The project's documented resolution order for every config value is:
  *
@@ -28,12 +28,12 @@
  *       fallback), OR
  *   (b) has a comment containing "cli.*flag" / "argv" / "precedence" / "flag"
  *       documenting that a CLI flag takes precedence, OR
- *   (c) is a known opt-out env var (DISABLE_BRIDGE, SKIP_NPX — intentionally
+ *   (c) is a known opt-out env var (DISABLE_BRIDGE, SKIP_NPX â€” intentionally
  *       env-only because they are CI/test escape hatches, not user config).
  *
  * A violation means: a future contributor adds an env var and forgets to wire
  * a CLI flag, silently making the CLI flag have no effect when the env var is
- * set. That's the class of bug ADR-125 §"CLI flag wins" was written to prevent.
+ * set. That's the class of bug ADR-125 Â§"CLI flag wins" was written to prevent.
  *
  * Failure exits 1 with remediation instructions.
  * CI wiring: .github/workflows/v3-ci.yml `env-var-precedence-audit` step in
@@ -47,81 +47,81 @@ import { dirname, join, resolve, relative } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..');
 
-// ── Knob-controlled env vars that are intentionally env-only ─────────────────
+// â”€â”€ Knob-controlled env vars that are intentionally env-only â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // These are CI/test escape hatches or cross-process signals, not user config.
 // They are explicitly exempt from the "CLI flag must win" requirement.
 const KNOWN_ESCAPE_HATCHES = new Set([
-  // ── CI / test escape hatches ────────────────────────────────────────────────
-  'CLAUDE_FLOW_DISABLE_BRIDGE',   // CI/test: force raw sql.js path — intentionally no CLI flag
+  // â”€â”€ CI / test escape hatches â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  'CLAUDE_FLOW_DISABLE_BRIDGE',   // CI/test: force raw sql.js path â€” intentionally no CLI flag
   'RUFLO_HOOK_SKIP_NPX',          // CI: suppress cold-install latency in smoke tests
-  'RUFLO_SUBLINEAR_NATIVE',       // Manual override for native vs WASM sublinear — CI/perf knob
+  'RUFLO_SUBLINEAR_NATIVE',       // Manual override for native vs WASM sublinear â€” CI/perf knob
 
-  // ── Feature flags (set by init into settings.json, not user-typed CLI) ──────
+  // â”€â”€ Feature flags (set by init into settings.json, not user-typed CLI) â”€â”€â”€â”€â”€â”€
   'CLAUDE_FLOW_V3_ENABLED',
   'CLAUDE_FLOW_HOOKS_ENABLED',
   'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS',
 
-  // ── Process-internal / inter-process signalling ─────────────────────────────
+  // â”€â”€ Process-internal / inter-process signalling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   'CLAUDE_FLOW_HEADLESS',         // Set/read within same process invocation lifecycle
-  'CLAUDE_FLOW_FORCE_UPDATE',     // Set by --force flag internally, then cleared — not external
-  'CLAUDE_FLOW_AUTO_UPDATE',      // Auto-update cadence — env-only documented design
+  'CLAUDE_FLOW_FORCE_UPDATE',     // Set by --force flag internally, then cleared â€” not external
+  'CLAUDE_FLOW_AUTO_UPDATE',      // Auto-update cadence â€” env-only documented design
 
-  // ── Logging / diagnostics ───────────────────────────────────────────────────
+  // â”€â”€ Logging / diagnostics â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   'CLAUDE_FLOW_LOG_LEVEL',
   'DEBUG',
   'CLAUDE_FLOW_DEBUG',
 
-  // ── Provider credentials ─────────────────────────────────────────────────────
+  // â”€â”€ Provider credentials â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   'ANTHROPIC_API_KEY',
   'OPENAI_API_KEY',
   'GOOGLE_API_KEY',
-  'CLAUDE_FLOW_ENCRYPTION_KEY',   // Encryption key — credential, never a CLI flag
-  'RUFLO_GRAPH_INTELLIGENCE_WITNESS_KEY', // Ed25519 witness signing key — credential
+  'CLAUDE_FLOW_ENCRYPTION_KEY',   // Encryption key â€” credential, never a CLI flag
+  'RUFLO_GRAPH_INTELLIGENCE_WITNESS_KEY', // Ed25519 witness signing key â€” credential
   'RUFLO_PROVIDER',               // Provider selection in headless agent context
   'PINATA_API_KEY',
   'PINATA_API_SECRET',
   'PINATA_API_JWT',
 
-  // ── Bootstrap / process-level bindings (can't chicken-egg with CLI parsing) ──
+  // â”€â”€ Bootstrap / process-level bindings (can't chicken-egg with CLI parsing) â”€â”€
   'CLAUDE_FLOW_CONFIG',
   'CLAUDE_FLOW_MEMORY_BACKEND',
   'CLAUDE_FLOW_MCP_PORT',
   'CLAUDE_FLOW_MCP_HOST',
   'CLAUDE_FLOW_MCP_TRANSPORT',
 
-  // ── CLI-flag-dominated env vars: documented precedence, large context window ─
+  // â”€â”€ CLI-flag-dominated env vars: documented precedence, large context window â”€
   // These have explicit precedence docs that appear >10 lines before the read.
   // The audit's 10-line context window misses them; they are tracked here to
   // prevent noisy false positives. Each must have the precedence documented
   // in the source file (checked manually and confirmed below).
-  //   CLAUDE_FLOW_MEMORY_PATH — memory-initializer.ts lines 19-28 doc
-  //     "Precedence (highest → lowest): 1. CLAUDE_FLOW_MEMORY_PATH env var"
+  //   CLAUDE_FLOW_MEMORY_PATH â€” memory-initializer.ts lines 19-28 doc
+  //     "Precedence (highest â†’ lowest): 1. CLAUDE_FLOW_MEMORY_PATH env var"
   //   See also memory.ts line 12: "#2105: --path > CLAUDE_FLOW_DB_PATH > CLAUDE_FLOW_MEMORY_PATH"
   'CLAUDE_FLOW_MEMORY_PATH',
 
-  // ── Statusline cosmetics (no CLI on the statusline; init-time settings.json) ─
+  // â”€â”€ Statusline cosmetics (no CLI on the statusline; init-time settings.json) â”€
   // Added 2026-06-02: statusline is invoked by Claude Code via hook config,
-  // not by an interactive `ruflo statusline …` command line. There is no CLI
+  // not by an interactive `ruflo statusline â€¦` command line. There is no CLI
   // surface to attach a flag to; the env reads in statusline-generator.ts
   // are the documented configuration channel.
   'RUFLO_STATUSLINE_COST_SYMBOL',
   'RUFLO_STATUSLINE_HIDE_COST',
 
-  // ── Tunables for routing/learning thresholds (operator knob, not user CLI) ───
+  // â”€â”€ Tunables for routing/learning thresholds (operator knob, not user CLI) â”€â”€â”€
   // Added 2026-06-02: model-router uses this as a runtime escalation threshold
   // tuned by ops, not selected per-command. No CLI flag is wired because no
   // single CLI invocation owns the router's lifetime.
   'CLAUDE_FLOW_MAX_UNCERTAINTY',
 
-  // ── MCP-tool-shaped tunables (param wins over env; env is documented fallback) ─
+  // â”€â”€ MCP-tool-shaped tunables (param wins over env; env is documented fallback) â”€
   // Added 2026-06-02 (ADR-089 #2246): memory_search_unified resolves namespaces
-  // in this priority: `namespace` param → `namespaces[]` param → env var →
+  // in this priority: `namespace` param â†’ `namespaces[]` param â†’ env var â†’
   // dynamic enumeration. The `namespaces[]` MCP-tool parameter IS the
   // CLI-flag-equivalent and takes precedence (memory-tools.ts:1079-1109). The
   // env is the documented operator fallback.
   'CLAUDE_FLOW_MEMORY_SEARCH_NAMESPACES',
 
-  // ── OS / runtime standard env ────────────────────────────────────────────────
+  // â”€â”€ OS / runtime standard env â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   'HOME',
   'USERPROFILE',
   'CLAUDE_PROJECT_DIR',
@@ -132,7 +132,7 @@ const KNOWN_ESCAPE_HATCHES = new Set([
   'PROMPT',
   'TOOL_INPUT_command',
 
-  // ── Router (ADR-130/148/149) operator knobs ─────────────────────────────────
+  // â”€â”€ Router (ADR-130/148/149) operator knobs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // These configure ruflo's neural-router/bandit/trajectory subsystems and
   // are intentionally env-only:
   //   - Most are CI/benchmark knobs (KNN_K, LATENCY_BUDGET_MS, COST_CEILING),
@@ -172,24 +172,24 @@ const KNOWN_ESCAPE_HATCHES = new Set([
   'CLAUDE_FLOW_ROUTER_TRAJECTORY_MAXSIZE',
   'CLAUDE_FLOW_ROUTER_TRAJECTORY_PATH',
   'CLAUDE_FLOW_ROUTER_TRAJECTORY_TASKLEN',
-  'CLAUDE_FLOW_SWARM_DIR',  // Set by ruflo init / inter-process — not user-typed
+  'CLAUDE_FLOW_SWARM_DIR',  // Set by ruflo init / inter-process â€” not user-typed
 ]);
 
-// ── Source directories to scan ────────────────────────────────────────────────
+// â”€â”€ Source directories to scan â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SCAN_ROOTS = [
   join(REPO_ROOT, 'v3/@claude-flow/cli/src'),
   join(REPO_ROOT, 'plugins'),
 ];
 
-// ── Skip patterns ─────────────────────────────────────────────────────────────
+// â”€â”€ Skip patterns â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'coverage', '__tests__', 'tests']);
 const SCAN_EXTS = new Set(['.ts', '.mjs', '.cjs', '.js']);
 
-// ── Regex to find process.env.CLAUDE_FLOW_* reads ────────────────────────────
+// â”€â”€ Regex to find process.env.CLAUDE_FLOW_* reads â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Matches: process.env.CLAUDE_FLOW_FOO or process.env['CLAUDE_FLOW_FOO']
 const ENV_READ_RE = /process\.env(?:\.([A-Z_]+)|\[['"]([A-Z_]+)['"]\])/g;
 
-// ── Indicator that a CLI arg takes precedence ─────────────────────────────────
+// â”€â”€ Indicator that a CLI arg takes precedence â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Presence of any of these in the surrounding 10 lines counts as documented precedence.
 const PRECEDENCE_INDICATORS = [
   /cli.*flag/i,
@@ -203,7 +203,7 @@ const PRECEDENCE_INDICATORS = [
   /caller.*can.*pass/i,
 ];
 
-// ── Walk source tree ─────────────────────────────────────────────────────────
+// â”€â”€ Walk source tree â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function* walkSourceFiles(dir) {
   let entries;
@@ -264,7 +264,7 @@ for (const root of SCAN_ROOTS) {
           && !/function\s+\w+\s*\(\s*\)/.test(fnContext.split('\n').slice(-5).join('\n'));
 
         if (hasExplicitParam) {
-          // Warn rather than fail — function params could be the override path
+          // Warn rather than fail â€” function params could be the override path
           warnings.push({ file: relFile, line: lineNo, varName });
         } else {
           violations.push({
@@ -279,12 +279,12 @@ for (const root of SCAN_ROOTS) {
   }
 }
 
-// ── Report ────────────────────────────────────────────────────────────────────
+// â”€â”€ Report â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-console.log(`env-var-precedence audit — scanned ${scanned.length} source file(s)`);
+console.log(`env-var-precedence audit â€” scanned ${scanned.length} source file(s)`);
 
 if (warnings.length > 0) {
-  console.log(`\nwarnings (function-param override path detected — verify manually):`);
+  console.log(`\nwarnings (function-param override path detected â€” verify manually):`);
   for (const w of warnings) {
     console.log(`  ? ${w.file}:${w.line}  ${w.varName}`);
   }
@@ -296,22 +296,22 @@ if (violations.length === 0) {
   process.exit(0);
 }
 
-console.error(`\n${violations.length} violation(s) — env var read without CLI-flag precedence documentation:`);
+console.error(`\n${violations.length} violation(s) â€” env var read without CLI-flag precedence documentation:`);
 for (const v of violations) {
   console.error(`  x ${v.file}:${v.line}  ${v.varName}`);
   console.error(`    context: ${v.context}`);
 }
 console.error(`
 Remediation:
-  Option A — Wire a CLI flag that takes precedence:
+  Option A â€” Wire a CLI flag that takes precedence:
     Before: const val = process.env.CLAUDE_FLOW_FOO;
     After:  const val = options.foo ?? process.env.CLAUDE_FLOW_FOO ?? DEFAULT;
     Then add "// CLI flag options.foo takes precedence over CLAUDE_FLOW_FOO env var"
 
-  Option B — Register as an escape hatch (CI/test/credential only):
+  Option B â€” Register as an escape hatch (CI/test/credential only):
     Add the env var name to KNOWN_ESCAPE_HATCHES in scripts/audit-env-var-precedence.mjs
     with a comment explaining why it is intentionally env-only.
 
-Reference: ADR-125 §"CLI flag wins", ADR-130 §env-var-config-precedence.
+Reference: ADR-125 Â§"CLI flag wins", ADR-130 Â§env-var-config-precedence.
 `);
 process.exit(1);

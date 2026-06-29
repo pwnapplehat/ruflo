@@ -1,44 +1,44 @@
 # @claude-flow/memory
 
 [![npm version](https://img.shields.io/npm/v/@claude-flow/memory.svg)](https://www.npmjs.com/package/@claude-flow/memory)
-[![Ecosystem downloads](https://img.shields.io/badge/ecosystem%20downloads-22.2M%2B-blue.svg)](https://github.com/ruvnet/ruflo/blob/main/data/clone-data.proof.json)
-[![Git clones (14d)](https://img.shields.io/badge/git%20clones%2014d-115k-blueviolet.svg)](https://github.com/ruvnet/ruflo/blob/main/data/clone-data.ledger.json)
+[![Ecosystem downloads](https://img.shields.io/badge/ecosystem%20downloads-22.2M%2B-blue.svg)](https://github.com/pwnapplehat/ruflo/blob/main/data/clone-data.proof.json)
+[![Git clones (14d)](https://img.shields.io/badge/git%20clones%2014d-115k-blueviolet.svg)](https://github.com/pwnapplehat/ruflo/blob/main/data/clone-data.ledger.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![HNSW search](https://img.shields.io/badge/HNSW-0.53ms%20%7C%201%2C889%20ops%2Fs-brightgreen.svg)](./benchmarks/results/)
 
-> High-performance memory for Claude Flow V3 — one canonical `MemoryService` API on top of a real hybrid backend (sql.js + AgentDB), persistent HNSW vector search that survives restart, a memory-bound consolidator, graceful keyword (FTS5) fallback when the embedder isn't available, plus the AutoMemoryBridge, self-learning, and knowledge-graph layers that build on top.
+> High-performance memory for Claude Flow V3 â€” one canonical `MemoryService` API on top of a real hybrid backend (sql.js + AgentDB), persistent HNSW vector search that survives restart, a memory-bound consolidator, graceful keyword (FTS5) fallback when the embedder isn't available, plus the AutoMemoryBridge, self-learning, and knowledge-graph layers that build on top.
 
 ## What's new in `3.0.0-alpha.18` (ADR-125)
 
-This release closes out [ADR-125 — Memory Consolidation](../../../v3/docs/adr/ADR-125-memory-consolidation.md). If you're upgrading from `3.0.0-alpha.17` or earlier, this is the headline:
+This release closes out [ADR-125 â€” Memory Consolidation](../../../v3/docs/adr/ADR-125-memory-consolidation.md). If you're upgrading from `3.0.0-alpha.17` or earlier, this is the headline:
 
-- **One canonical entry point.** `MemoryService` replaces the old `UnifiedMemoryService` name (both still exported — the old one is `@deprecated` and will be removed at `3.0.0-rc`). See [Migration](#migrating-from-30-0-alpha-17-or-earlier) below.
-- **A real hybrid default.** `createHybridService(...)` finally returns a service whose backend is an actual `HybridBackend` (sql.js + AgentDB). Earlier releases silently downgraded this to AgentDB-only — ADR-009's promise wasn't delivered until now.
-- **Persistent HNSW.** Closing a service snapshots its HNSW index to a sidecar (`<dbPath>.hnsw` + `<dbPath>.meta.json`). Reopening on the same path restores in milliseconds rather than rebuilding from scratch — search-ready cold start.
+- **One canonical entry point.** `MemoryService` replaces the old `UnifiedMemoryService` name (both still exported â€” the old one is `@deprecated` and will be removed at `3.0.0-rc`). See [Migration](#migrating-from-30-0-alpha-17-or-earlier) below.
+- **A real hybrid default.** `createHybridService(...)` finally returns a service whose backend is an actual `HybridBackend` (sql.js + AgentDB). Earlier releases silently downgraded this to AgentDB-only â€” ADR-009's promise wasn't delivered until now.
+- **Persistent HNSW.** Closing a service snapshots its HNSW index to a sidecar (`<dbPath>.hnsw` + `<dbPath>.meta.json`). Reopening on the same path restores in milliseconds rather than rebuilding from scratch â€” search-ready cold start.
 - **`MemoryConsolidator`.** A background service that evicts expired entries from indexes *and* HNSW, deduplicates by content hash, and rebuilds the HNSW index when it gets fragmented. Auto-runs on a configurable timer (default 6 hours) so memory stays bounded.
-- **Graceful retrieval.** `service.search('query')` no longer throws when `@claude-flow/embeddings` is unavailable — it degrades to FTS5 keyword search and emits `health.embedder = 'degraded'`. The full hybrid path also adds real Reciprocal Rank Fusion + MMR diversity rerank.
-- **Reproducible benchmarks.** `npm run bench` now actually runs. The HNSW search baseline (single-threaded, 1k × 128-dim cosine vectors on Apple Silicon, Node 22): **0.53 ms / search · 1,889 ops/s · 533 ms to build 1k**. See [`benchmarks/results/baseline-20260519T212453Z.md`](./benchmarks/results/baseline-20260519T212453Z.md).
-- **Node 26 install support** ([#1867](https://github.com/ruvnet/ruflo/issues/1867)) — `better-sqlite3` is fully optional; installs succeed on Node 24/26 and the package falls back to sql.js when the native build isn't available.
+- **Graceful retrieval.** `service.search('query')` no longer throws when `@claude-flow/embeddings` is unavailable â€” it degrades to FTS5 keyword search and emits `health.embedder = 'degraded'`. The full hybrid path also adds real Reciprocal Rank Fusion + MMR diversity rerank.
+- **Reproducible benchmarks.** `npm run bench` now actually runs. The HNSW search baseline (single-threaded, 1k Ã— 128-dim cosine vectors on Apple Silicon, Node 22): **0.53 ms / search Â· 1,889 ops/s Â· 533 ms to build 1k**. See [`benchmarks/results/baseline-20260519T212453Z.md`](./benchmarks/results/baseline-20260519T212453Z.md).
+- **Node 26 install support** ([#1867](https://github.com/pwnapplehat/ruflo/issues/1867)) â€” `better-sqlite3` is fully optional; installs succeed on Node 24/26 and the package falls back to sql.js when the native build isn't available.
 
 ## Features
 
-- **Canonical `MemoryService` API** — one entry point for store / retrieve / search / hybrid query
-- **Real hybrid backend** — `HybridBackend` (sql.js + AgentDB) for structured + vector queries (ADR-009 / ADR-125 Phase 2)
-- **Persistent HNSW** — index survives `close()` and restart; auto-snapshots every Nth write (ADR-125 Phase 3)
-- **`MemoryConsolidator`** — `sweepExpired()` + `dedup()` + `compactHnsw()` + auto-run timer (ADR-125 Phase 4)
-- **Graceful retrieval** — automatic FTS5 keyword fallback when embedder is unreachable; RRF + MMR for hybrid (ADR-125 Phase 5)
-- **HNSW vector search** — measured **0.53 ms / search at 1k × 128 dim** on Apple Silicon; see baseline above
-- **Auto Memory Bridge** — Bidirectional sync between Claude Code auto memory and AgentDB (ADR-048)
-- **Self-Learning** — LearningBridge connects insights to SONA/ReasoningBank neural pipeline (ADR-049)
-- **Knowledge Graph** — PageRank + label propagation community detection over memory entries (ADR-049)
-- **Agent-Scoped Memory** — 3-scope agent memory (project/local/user) with cross-agent knowledge transfer (ADR-049)
-- **Vector Quantization** — Binary, scalar, and product quantization for 4–32x memory reduction
-- **Multiple Distance Metrics** — Cosine, Euclidean, dot product, and Manhattan
-- **Query Builder** — Fluent API for building complex memory queries
-- **Cache Manager** — LRU caching with configurable size and TTL
-- **Migration Tools** — `MemoryMigrator` for moving from V2 memory systems
-- **Cross-platform** — Works on Linux, macOS, and Windows; Node 18+ (including Node 24/26)
+- **Canonical `MemoryService` API** â€” one entry point for store / retrieve / search / hybrid query
+- **Real hybrid backend** â€” `HybridBackend` (sql.js + AgentDB) for structured + vector queries (ADR-009 / ADR-125 Phase 2)
+- **Persistent HNSW** â€” index survives `close()` and restart; auto-snapshots every Nth write (ADR-125 Phase 3)
+- **`MemoryConsolidator`** â€” `sweepExpired()` + `dedup()` + `compactHnsw()` + auto-run timer (ADR-125 Phase 4)
+- **Graceful retrieval** â€” automatic FTS5 keyword fallback when embedder is unreachable; RRF + MMR for hybrid (ADR-125 Phase 5)
+- **HNSW vector search** â€” measured **0.53 ms / search at 1k Ã— 128 dim** on Apple Silicon; see baseline above
+- **Auto Memory Bridge** â€” Bidirectional sync between Claude Code auto memory and AgentDB (ADR-048)
+- **Self-Learning** â€” LearningBridge connects insights to SONA/ReasoningBank neural pipeline (ADR-049)
+- **Knowledge Graph** â€” PageRank + label propagation community detection over memory entries (ADR-049)
+- **Agent-Scoped Memory** â€” 3-scope agent memory (project/local/user) with cross-agent knowledge transfer (ADR-049)
+- **Vector Quantization** â€” Binary, scalar, and product quantization for 4â€“32x memory reduction
+- **Multiple Distance Metrics** â€” Cosine, Euclidean, dot product, and Manhattan
+- **Query Builder** â€” Fluent API for building complex memory queries
+- **Cache Manager** â€” LRU caching with configurable size and TTL
+- **Migration Tools** â€” `MemoryMigrator` for moving from V2 memory systems
+- **Cross-platform** â€” Works on Linux, macOS, and Windows; Node 18+ (including Node 24/26)
 
 ## Installation
 
@@ -48,13 +48,13 @@ npm install @claude-flow/memory
 
 ## Standalone use (without the Ruflo CLI)
 
-This package works on its own — you don't need `@claude-flow/cli` or the
+This package works on its own â€” you don't need `@claude-flow/cli` or the
 full Ruflo install. Use it any time you want HNSW vector search, an
-AgentDB façade, or the v3 controller registry from your own app.
+AgentDB faÃ§ade, or the v3 controller registry from your own app.
 
 Two recipes that exercise the most-installed surface:
 
-### Recipe 1 — HNSW index with built-in quantization (no other deps)
+### Recipe 1 â€” HNSW index with built-in quantization (no other deps)
 
 ```typescript
 // recipe.mjs
@@ -72,12 +72,12 @@ await index.addPoint('doc-a', new Float32Array([1, 0, 0, 0, 0, 0, 0, 0]));
 await index.addPoint('doc-b', new Float32Array([0.9, 0.1, 0, 0, 0, 0, 0, 0]));
 await index.addPoint('doc-c', new Float32Array([0, 1, 0, 0, 0, 0, 0, 0]));
 
-// Search — top 2 nearest to "doc-a"-shaped query
+// Search â€” top 2 nearest to "doc-a"-shaped query
 const hits = await index.search(new Float32Array([1, 0, 0, 0, 0, 0, 0, 0]), 2);
 console.log(hits); // [{ id: 'doc-a', distance: 0 }, { id: 'doc-b', distance: ~0.005 }]
 ```
 
-### Recipe 2 — Drive the controller registry against your own AgentDB
+### Recipe 2 â€” Drive the controller registry against your own AgentDB
 
 The registry coordinates 15+ memory controllers (learning bridge, memory
 graph, tiered cache, vector backend, etc.) on top of an AgentDB instance
@@ -108,13 +108,13 @@ await registry.shutdown();
 
 ## Quick Start
 
-The fastest way to get a full-featured memory service — hybrid backend, HNSW vector index, FTS5 keyword fallback, persistent snapshots, consolidation timer — is `createHybridService`:
+The fastest way to get a full-featured memory service â€” hybrid backend, HNSW vector index, FTS5 keyword fallback, persistent snapshots, consolidation timer â€” is `createHybridService`:
 
 ```typescript
 import { createHybridService } from '@claude-flow/memory';
 
 async function embedder(text: string): Promise<Float32Array> {
-  // Use any embedding provider — OpenAI, @claude-flow/embeddings, your own model.
+  // Use any embedding provider â€” OpenAI, @claude-flow/embeddings, your own model.
   // If the embedder ever fails, MemoryService falls back to FTS5 keyword search
   // automatically (emitting `health.embedder = 'degraded'`).
   return new Float32Array(/* ... */);
@@ -123,7 +123,7 @@ async function embedder(text: string): Promise<Float32Array> {
 const memory = await createHybridService('./data/memory.db', embedder, 1536);
 await memory.initialize();
 
-// Store an entry — content is embedded and added to both SQLite and HNSW
+// Store an entry â€” content is embedded and added to both SQLite and HNSW
 await memory.store({
   key: 'auth-patterns',
   content: 'OAuth 2.0 implementation patterns for secure authentication',
@@ -136,16 +136,16 @@ const similar = await memory.semanticSearch('user authentication best practices'
 // Keyword search via FTS5 (also used as the automatic fallback)
 const exact = await memory.searchKeyword('OAuth 2.0', { limit: 10 });
 
-// Hybrid search — RRF-fused dense + sparse, MMR-diversified
+// Hybrid search â€” RRF-fused dense + sparse, MMR-diversified
 const blended = await memory.search('authentication patterns', { limit: 10 });
 
-// Clean shutdown — flushes the consolidator timer and snapshots HNSW to disk
+// Clean shutdown â€” flushes the consolidator timer and snapshots HNSW to disk
 await memory.close();
 
-// Reopen the same path — entries AND HNSW index are restored from sidecar
+// Reopen the same path â€” entries AND HNSW index are restored from sidecar
 const reopened = await createHybridService('./data/memory.db', embedder, 1536);
 await reopened.initialize();
-// memory.search() is immediately fast — no rebuild
+// memory.search() is immediately fast â€” no rebuild
 ```
 
 You can also use the lower-level primitives directly. `HNSWIndex` is exported and works without any of the service layer if you just want a vector index:
@@ -180,7 +180,7 @@ If you're already using this package:
 import { UnifiedMemoryService } from '@claude-flow/memory';
 const memory = new UnifiedMemoryService({ /* ... */ });
 
-// After (recommended) — both names resolve to the same class
+// After (recommended) â€” both names resolve to the same class
 import { MemoryService } from '@claude-flow/memory';
 const memory = new MemoryService({ /* ... */ });
 
@@ -189,10 +189,10 @@ const memory = new MemoryService({ /* ... */ });
 
 Two other things changed in `3.0.0-alpha.18`:
 
-1. **`createHybridService` now does what its name says.** If you were relying on the old AgentDB-only downgrade, you'll get a real `HybridBackend` now — semantic search and structured queries both work without extra wiring.
+1. **`createHybridService` now does what its name says.** If you were relying on the old AgentDB-only downgrade, you'll get a real `HybridBackend` now â€” semantic search and structured queries both work without extra wiring.
 2. **`semanticSearch` no longer throws when the embedder is absent.** Code that relied on a thrown error to detect a misconfigured embedder should listen for `health.embedder = 'degraded'` events instead. See [Graceful retrieval](#graceful-retrieval-fts5-fallback) below.
 
-The `HnswLite` and `RvfBackend` classes are no longer top-level exports (they were internal implementation details). If your code imported them, switch to `HNSWIndex` (more capable, persistent) — they're verified to have zero external importers.
+The `HnswLite` and `RvfBackend` classes are no longer top-level exports (they were internal implementation details). If your code imported them, switch to `HNSWIndex` (more capable, persistent) â€” they're verified to have zero external importers.
 
 ## Persistence
 
@@ -200,7 +200,7 @@ In `3.0.0-alpha.18` the HNSW index survives `close()` and restart. Snapshots hap
 
 - On `service.close()`, the index is serialized to `<dbPath>.hnsw` and the in-memory entry/namespace/key/tag maps go to `<dbPath>.meta.json`.
 - During the lifetime of the service, the index also auto-snapshots every Nth `store()` call (default `N=1000`, configurable via `MemoryServiceConfig.snapshotInterval`).
-- On initialize, if both sidecars exist, they're restored. The service emits one of three `health.persistence` events: `'restored'` (success), `'fresh'` (no sidecar found — first run), or `'corrupt'` (deserialize failed — automatic fallback to fresh state).
+- On initialize, if both sidecars exist, they're restored. The service emits one of three `health.persistence` events: `'restored'` (success), `'fresh'` (no sidecar found â€” first run), or `'corrupt'` (deserialize failed â€” automatic fallback to fresh state).
 
 ```typescript
 import { MemoryService, HNSWIndex } from '@claude-flow/memory';
@@ -229,10 +229,10 @@ const buf: Buffer = index.serialize();
 // write buf to disk, transfer between processes, etc.
 
 const restored = HNSWIndex.deserialize(buf);
-// search works immediately — no rebuild
+// search works immediately â€” no rebuild
 ```
 
-The serialized format is versioned with a magic header (`HNSW\x01`) — a corrupted or stale snapshot is detected and rejected loudly rather than silently producing wrong neighbors.
+The serialized format is versioned with a magic header (`HNSW\x01`) â€” a corrupted or stale snapshot is detected and rejected loudly rather than silently producing wrong neighbors.
 
 ## Memory consolidation
 
@@ -262,7 +262,7 @@ const compaction = await consolidator.compactHnsw();
 const result = await consolidator.runAll();
 ```
 
-You don't have to construct it manually — `MemoryService` will wire it up if you opt in:
+You don't have to construct it manually â€” `MemoryService` will wire it up if you opt in:
 
 ```typescript
 const memory = new MemoryService({
@@ -289,7 +289,7 @@ The `nightlyLearner` controller in the AgentDB controller registry now delegates
 
 ```typescript
 const memory = new MemoryService({
-  // No embeddingGenerator — semantic queries will fall back to FTS5
+  // No embeddingGenerator â€” semantic queries will fall back to FTS5
 });
 await memory.initialize();
 
@@ -303,7 +303,7 @@ const results = await memory.search('OAuth', { limit: 5 });
 // Returns FTS-ranked matches; no throw
 ```
 
-When **both** dense (HNSW) and sparse (FTS5) paths are available, `service.search(query)` runs both, fuses the rankings with Reciprocal Rank Fusion (`k=60`), and reranks with MMR (`λ=0.7`) for diversity. This is what the AgentDB `hybridSearch` controller exposes too — it used to be a stub that returned `null`; in `3.0.0-alpha.18` it's a real implementation.
+When **both** dense (HNSW) and sparse (FTS5) paths are available, `service.search(query)` runs both, fuses the rankings with Reciprocal Rank Fusion (`k=60`), and reranks with MMR (`Î»=0.7`) for diversity. This is what the AgentDB `hybridSearch` controller exposes too â€” it used to be a stub that returned `null`; in `3.0.0-alpha.18` it's a real implementation.
 
 ## API Reference
 
@@ -710,10 +710,10 @@ const neighbors = graph.getNeighbors('entry-1', 2); // depth=2
 |-----------|--------|--------|
 | Graph build (1k nodes) | 2.78 ms | <200 ms |
 | PageRank (1k nodes) | 12.21 ms | <100 ms |
-| Community detection (1k) | 19.62 ms | — |
-| `rankWithGraph(10)` | 0.006 ms | — |
-| `getTopNodes(20)` | 0.308 ms | — |
-| `getNeighbors(d=2)` | 0.005 ms | — |
+| Community detection (1k) | 19.62 ms | â€” |
+| `rankWithGraph(10)` | 0.006 ms | â€” |
+| `getTopNodes(20)` | 0.308 ms | â€” |
+| `getNeighbors(d=2)` | 0.005 ms | â€” |
 
 ## Agent-Scoped Memory (ADR-049)
 
@@ -769,7 +769,7 @@ import {
 
 // Resolve path for an agent scope
 const dir = resolveAgentMemoryDir('my-agent', 'project');
-// → /workspaces/my-project/.claude/agent-memory/my-agent/
+// â†’ /workspaces/my-project/.claude/agent-memory/my-agent/
 
 // List all agent scopes in a directory
 const scopes = await listAgentScopes('/workspaces/my-project');
@@ -792,9 +792,9 @@ Measured on Apple Silicon (M-series), Node 22.22.1, vitest 4.0.16. Scenario: 1,0
 
 | Metric | Value | Notes |
 |---|---|---|
-| `build_time_ms` | **533.42 ms** | Sequential `addPoint()` × 1,000 |
+| `build_time_ms` | **533.42 ms** | Sequential `addPoint()` Ã— 1,000 |
 | `search_k10_avg_ms` | **0.5294 ms** | Post-warmup, average of 200 iterations |
-| `search_k50_avg_ms` | **0.5235 ms** | k=50 ≈ k=10 — heap-based selection dominates |
+| `search_k50_avg_ms` | **0.5235 ms** | k=50 â‰ˆ k=10 â€” heap-based selection dominates |
 | `add_avg_ms` | **0.8656 ms** | Incremental insert after the initial 1k |
 | `search_k10_ops_per_sec` | **1,888.9 ops/s** | Derived |
 | `search_k50_ops_per_sec` | **1,910.1 ops/s** | Derived |
@@ -841,11 +841,11 @@ import type {
 
 ## Dependencies
 
-- `agentdb` `^3.0.0-alpha.14` — Vector database engine
-- `sql.js` — SQLite driver via WASM (always available; no native build required)
-- `better-sqlite3` — **Optional** native SQLite driver for higher throughput. The package works without it (sql.js fallback), so installs succeed on Node 24/26 even when the native build can't compile ([#1867](https://github.com/ruvnet/ruflo/issues/1867))
-- `@claude-flow/embeddings` — **Optional** for semantic search. When absent or failing, `search()` automatically falls back to FTS5 keyword (see [Graceful retrieval](#graceful-retrieval-fts5-fallback))
-- `@claude-flow/neural` — **Optional** peer dependency for self-learning (graceful fallback when unavailable)
+- `agentdb` `^3.0.0-alpha.14` â€” Vector database engine
+- `sql.js` â€” SQLite driver via WASM (always available; no native build required)
+- `better-sqlite3` â€” **Optional** native SQLite driver for higher throughput. The package works without it (sql.js fallback), so installs succeed on Node 24/26 even when the native build can't compile ([#1867](https://github.com/pwnapplehat/ruflo/issues/1867))
+- `@claude-flow/embeddings` â€” **Optional** for semantic search. When absent or failing, `search()` automatically falls back to FTS5 keyword (see [Graceful retrieval](#graceful-retrieval-fts5-fallback))
+- `@claude-flow/neural` â€” **Optional** peer dependency for self-learning (graceful fallback when unavailable)
 
 ## Related Packages
 

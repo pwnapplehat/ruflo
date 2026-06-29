@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 /**
- * Static guard for ruvnet/ruflo#2132 — plugin `hooks.json` commands must be
+ * Static guard for pwnapplehat/ruflo#2132 â€” plugin `hooks.json` commands must be
  * cross-platform (work on Windows without WSL / Git Bash).
  *
  * The reporter ran the plugin hooks on native Windows and every `PostToolUse`
  * fired exit code 126 ("cannot execute binary file") because the commands
  * hardcoded:
  *
- *   - `/bin/bash -c '...'` — no such path on Windows
+ *   - `/bin/bash -c '...'` â€” no such path on Windows
  *   - POSIX-only pipelines: `jq`, `xargs -0`, `tr '\n' '\0'`, `sed`, `awk`
  *   - `.sh` scripts with `#!/usr/bin/env bash` shebang
  *
- * The fix pattern (used by `.claude/settings.json` and `hook-handler.cjs` —
+ * The fix pattern (used by `.claude/settings.json` and `hook-handler.cjs` â€”
  * which already works on Windows) is to invoke `node` directly with a `.cjs`
  * or `.mjs` script:
  *
@@ -54,7 +54,7 @@ const REPO_ROOT = resolve(__dirname, '..');
 // Directories to skip when walking
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'coverage']);
 
-// Skip everything under .claude/worktrees — those are scratch copies
+// Skip everything under .claude/worktrees â€” those are scratch copies
 function isSkippedPath(absPath) {
   const rel = relative(REPO_ROOT, absPath);
   if (rel.startsWith('.claude/worktrees/')) return true;
@@ -79,7 +79,7 @@ function* walkForHooksJson(dir) {
 // Patterns that break native Windows. Each rule has a label + a regex
 // applied to the `command` string (not the surrounding JSON).
 const BAD_PATTERNS = [
-  { label: '/bin/bash literal',  regex: /\/bin\/bash\b/,                hint: 'replace with `node "..../hook-handler.cjs" <subcommand>` — same pattern as .claude/settings.json' },
+  { label: '/bin/bash literal',  regex: /\/bin\/bash\b/,                hint: 'replace with `node "..../hook-handler.cjs" <subcommand>` â€” same pattern as .claude/settings.json' },
   { label: '/bin/sh literal',    regex: /\/bin\/sh\b/,                  hint: 'replace with `node ...` like .claude/settings.json' },
   { label: 'pipe to jq',         regex: /\|\s*jq\b/,                    hint: 'parse JSON inside a node helper (the cli-side hook script can read stdin via process.stdin)' },
   { label: 'xargs -0',           regex: /\bxargs\s+-0\b/,               hint: 'do argument passing inside the node helper, not via shell' },
@@ -162,11 +162,11 @@ for (const file of walkForHooksJson(REPO_ROOT)) {
   }
 }
 
-console.log(`plugin-hooks cross-platform audit — scanned ${scanned.length} file(s), ${scanned.reduce((a, b) => a + b.entries, 0)} hook command(s)`);
+console.log(`plugin-hooks cross-platform audit â€” scanned ${scanned.length} file(s), ${scanned.reduce((a, b) => a + b.entries, 0)} hook command(s)`);
 for (const s of scanned) console.log(`  ${s.file}: ${s.entries} command(s)`);
 
 if (posixExempt.length > 0) {
-  console.log(`\nPOSIX-exempt files (${posixExempt.length}) — skipped cross-platform scan, Windows shim checked:`);
+  console.log(`\nPOSIX-exempt files (${posixExempt.length}) â€” skipped cross-platform scan, Windows shim checked:`);
   for (const f of posixExempt) console.log(`  ${f}`);
 }
 
@@ -182,7 +182,7 @@ for (const v of violations) {
   console.error(`     cmd: ${v.cmd}`);
   console.error(`     fix: ${v.hint}`);
 }
-console.error('\nReference: ruvnet/ruflo#2132 (plugin hooks broken on Windows).');
+console.error('\nReference: pwnapplehat/ruflo#2132 (plugin hooks broken on Windows).');
 console.error('Cross-platform pattern: .claude/settings.json + .claude/helpers/hook-handler.cjs (node, no bash).');
 console.error('POSIX-exempt pattern: add "_platform": "posix" to hooks.json + create scripts/ruflo-hook.cjs sibling.');
 process.exit(1);

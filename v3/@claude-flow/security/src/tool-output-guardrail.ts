@@ -1,8 +1,8 @@
 /**
- * ToolOutputGuardrail — semantic screening of content returned by MCP tool
+ * ToolOutputGuardrail â€” semantic screening of content returned by MCP tool
  * calls, memory reads, and external API responses before that content enters
  * agent reasoning. Closes the OWASP ASI01 (Agent Goal Hijacking) gap
- * identified in ruvnet/ruflo#2149 / ADR-131.
+ * identified in pwnapplehat/ruflo#2149 / ADR-131.
  *
  * Threat model
  * ------------
@@ -15,12 +15,12 @@
  *
  * Scope
  * -----
- * - Detection only — does NOT modify the running prompt; callers decide
+ * - Detection only â€” does NOT modify the running prompt; callers decide
  *   what action to take (allow, flag, redact, reject) via `scanAndEnforce`.
- * - Synchronous pattern match — designed for <1ms p99 on typical tool
- *   responses (≤32KB). Large content is capped at `maxScanBytes` and the
+ * - Synchronous pattern match â€” designed for <1ms p99 on typical tool
+ *   responses (â‰¤32KB). Large content is capped at `maxScanBytes` and the
  *   truncation itself is reported as a low-severity finding.
- * - Pure-function shape — no I/O, no async, no model calls. Safe to invoke
+ * - Pure-function shape â€” no I/O, no async, no model calls. Safe to invoke
  *   in hot paths (every MCP tool result, every memory read).
  *
  * Non-goals
@@ -73,15 +73,15 @@ export interface GuardrailConfig {
   /**
    * Per-severity action.
    * Defaults:
-   *   low      → allow
-   *   medium   → flag
-   *   high     → redact
-   *   critical → reject
+   *   low      â†’ allow
+   *   medium   â†’ flag
+   *   high     â†’ redact
+   *   critical â†’ reject
    *
-   * `allow`  — content passes through unchanged, no logging required.
-   * `flag`   — content passes through; caller SHOULD log + monitor.
-   * `redact` — matched substrings replaced with `[REDACTED:<pattern>]`.
-   * `reject` — caller MUST drop the content and treat the tool call
+   * `allow`  â€” content passes through unchanged, no logging required.
+   * `flag`   â€” content passes through; caller SHOULD log + monitor.
+   * `redact` â€” matched substrings replaced with `[REDACTED:<pattern>]`.
+   * `reject` â€” caller MUST drop the content and treat the tool call
    *            as failed (signal the agent that the tool returned an
    *            unsafe payload rather than letting the payload through).
    */
@@ -115,7 +115,7 @@ const DEFAULT_MAX_SCAN_BYTES = 1024 * 1024;
 /**
  * Built-in pattern library. Ordered by severity (critical first) so the
  * `highest` field reflects the worst category. Patterns are intentionally
- * conservative — they target the explicit instruction-override / role-hijack
+ * conservative â€” they target the explicit instruction-override / role-hijack
  * shapes that show up in published indirect-injection corpora rather than
  * general "suspicious looking" text.
  */
@@ -125,7 +125,7 @@ const BUILTIN_PATTERNS: ReadonlyArray<{
   severity: InjectionSeverity;
   category: InjectionCategory;
 }> = [
-  // ── critical: instruction override + embedded system frames ──
+  // â”€â”€ critical: instruction override + embedded system frames â”€â”€
   {
     label: 'ignore-previous-instructions',
     // Allow optional filler words between the verb and the temporal keyword
@@ -153,7 +153,7 @@ const BUILTIN_PATTERNS: ReadonlyArray<{
     category: 'exfiltration',
   },
 
-  // ── high: role hijack + jailbreak + system tags + bidi unicode ──
+  // â”€â”€ high: role hijack + jailbreak + system tags + bidi unicode â”€â”€
   {
     label: 'system-tag-injection',
     regex: /<\/?system>/gi,
@@ -180,12 +180,12 @@ const BUILTIN_PATTERNS: ReadonlyArray<{
   },
   {
     label: 'bidi-override',
-    regex: /[‪-‮⁦-⁩]/g,
+    regex: /[â€ª-â€®â¦-â©]/g,
     severity: 'high',
     category: 'hidden-unicode',
   },
 
-  // ── medium: softer role manipulation + tool spoofing ──
+  // â”€â”€ medium: softer role manipulation + tool spoofing â”€â”€
   {
     label: 'role-hijack-act-as',
     regex: /\b(?:act|behave|pretend|role[-\s]?play)\s+as\s+(?:if\s+)?(?:a|an|the)\s+/gi,
@@ -199,10 +199,10 @@ const BUILTIN_PATTERNS: ReadonlyArray<{
     category: 'tool-spoofing',
   },
 
-  // ── low: zero-width whitespace (common in copy-paste attacks) ──
+  // â”€â”€ low: zero-width whitespace (common in copy-paste attacks) â”€â”€
   {
     label: 'zero-width-char',
-    regex: /[​-‍﻿]/g,
+    regex: /[â€‹-â€ï»¿]/g,
     severity: 'low',
     category: 'hidden-unicode',
   },
@@ -219,8 +219,8 @@ const SEVERITY_ORDER: Record<InjectionSeverity | 'none', number> = {
 function snippet(text: string, idx: number, len: number): string {
   const start = Math.max(0, idx - 24);
   const end = Math.min(text.length, idx + len + 24);
-  const head = start > 0 ? '…' : '';
-  const tail = end < text.length ? '…' : '';
+  const head = start > 0 ? 'â€¦' : '';
+  const tail = end < text.length ? 'â€¦' : '';
   return head + text.slice(start, end).replace(/\s+/g, ' ') + tail;
 }
 
@@ -242,7 +242,7 @@ export class ToolOutputGuardrail {
   }
 
   /**
-   * Pure scan — no side effects, no content modification. Useful when the
+   * Pure scan â€” no side effects, no content modification. Useful when the
    * caller wants to log findings but cannot drop the content (e.g. read-only
    * audit mode).
    */
@@ -297,7 +297,7 @@ export class ToolOutputGuardrail {
    * Scan + enforce policy. Returns the content to pass forward (possibly
    * redacted or empty) plus the scan result and the action that was taken.
    * Callers should treat `reject` as "drop the tool result and signal an
-   * error" — do NOT silently substitute empty content.
+   * error" â€” do NOT silently substitute empty content.
    */
   scanAndEnforce(content: string): {
     content: string;

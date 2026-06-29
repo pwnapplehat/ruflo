@@ -14,7 +14,7 @@ import { join } from 'path';
  * Ruflo-owned subdirectories within .cursor/ that are safe to delete.
  * Everything else in .cursor/ (agents, skills, commands, settings.local.json,
  * memory.db, worktrees, launch.json) belongs to Claude Code and must be preserved.
- * See: https://github.com/ruvnet/ruflo/issues/1557
+ * See: https://github.com/pwnapplehat/ruflo/issues/1557
  */
 const CLAUDE_OWNED_SUBDIRS = [
   { path: join('.claude', 'helpers'), description: 'Ruflo hook scripts' },
@@ -138,7 +138,7 @@ export const cleanupCommand: Command = {
     const found: { path: string; description: string; size: number; type: 'dir' | 'file'; skipped?: boolean }[] = [];
     let totalSize = 0;
 
-    // Scan ruflo-owned subdirs within .cursor/ (surgical ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â preserves Cursor files)
+    // Scan ruflo-owned subdirs within .cursor/ (surgical ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â preserves Cursor files)
     for (const artifact of CLAUDE_OWNED_SUBDIRS) {
       const fullPath = join(cwd, artifact.path);
       if (existsSync(fullPath)) {

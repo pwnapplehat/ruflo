@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// pretrain-from-github.mjs — pretrain ruflo's self-learning system from its
+// pretrain-from-github.mjs â€” pretrain ruflo's self-learning system from its
 // own GitHub history (commits + issues). Each commit/issue becomes one
 // trajectory through the SONA + EWC++ pipeline; Structured Distillation
 // (ADR-076) compresses each into the 4-field schema before embedding.
@@ -20,7 +20,7 @@
 //   BENCH_NO_WRITE=1 node scripts/pretrain-from-github.mjs  # don't write a run JSON
 //
 // Repro from a fresh checkout:
-//   git clone https://github.com/ruvnet/ruflo && cd ruflo
+//   git clone https://github.com/pwnapplehat/ruflo && cd ruflo
 //   npm install && ( cd v3/@claude-flow/cli && npx tsc -b )
 //   node v3/@claude-flow/cli/scripts/pretrain-from-github.mjs
 
@@ -35,11 +35,11 @@ const CLI_ROOT = resolve(SCRIPT_DIR, '..');
 const RUFLO_ROOT = resolve(SCRIPT_DIR, '../../../..');
 const RUNS_DIR = join(RUFLO_ROOT, 'docs', 'benchmarks', 'runs');
 
-// ADR-084 cross-repo support — REPO_ROOT and GH_REPO env-overridable so the
+// ADR-084 cross-repo support â€” REPO_ROOT and GH_REPO env-overridable so the
 // same script can pretrain on agentdb / agentic-flow / any other repo for
 // generalisation testing. Defaults preserve ruflo behaviour.
 const REPO_ROOT = process.env.REPO_ROOT ? resolve(process.env.REPO_ROOT) : RUFLO_ROOT;
-const GH_REPO   = process.env.GH_REPO   || 'ruvnet/ruflo';
+const GH_REPO   = process.env.GH_REPO   || 'pwnapplehat/ruflo';
 
 const COMMITS = Number(process.env.COMMITS) || 50;
 const ISSUES  = Number(process.env.ISSUES)  || 30;
@@ -49,17 +49,17 @@ const SOURCE  = process.env.SOURCE || 'all'; // 'all' | 'git' | 'issues'
 // Harvesters
 // ---------------------------------------------------------------------------
 
-// ADR-078 outcome signal — classify each commit by whether it was reverted,
+// ADR-078 outcome signal â€” classify each commit by whether it was reverted,
 // hotfix-followed, or stuck. Operates on the harvested-commits window plus a
 // wider lookahead window for revert/hotfix detection.
 //
 // Verdicts emitted:
-//   success — landed cleanly, no later commit reverted or fixed it
-//   reverted — a later commit subject starts with `Revert "<this subject>"`
-//   hotfixed — a later commit (within HOTFIX_WINDOW_COMMITS) shares >=50%
+//   success â€” landed cleanly, no later commit reverted or fixed it
+//   reverted â€” a later commit subject starts with `Revert "<this subject>"`
+//   hotfixed â€” a later commit (within HOTFIX_WINDOW_COMMITS) shares >=50%
 //              of the same touched files AND subject contains fix|hotfix|patch
 //
-// The "later" direction is git-log order (newest first → we look at older
+// The "later" direction is git-log order (newest first â†’ we look at older
 // indices in the lookahead, which are NEWER commits chronologically).
 const HOTFIX_WINDOW_COMMITS = Number(process.env.HOTFIX_WINDOW_COMMITS) || 20;
 const HOTFIX_FILE_OVERLAP = Number(process.env.HOTFIX_FILE_OVERLAP) || 0.5;
@@ -135,7 +135,7 @@ function harvestCommits(n) {
         let overlap = 0;
         for (const f of laterFiles) if (myFiles.has(f)) overlap++;
         // Use min() so a small targeted fix on a big change still triggers
-        // (semantic: "≥half of the smaller commit's files overlap").
+        // (semantic: "â‰¥half of the smaller commit's files overlap").
         const overlapFrac = overlap / Math.min(laterFiles.size, myFiles.size);
         if (overlapFrac >= HOTFIX_FILE_OVERLAP) {
           verdict = 'hotfixed';
@@ -190,7 +190,7 @@ async function main() {
   const neural = await import(join(CLI_ROOT, 'dist/src/mcp-tools/neural-tools.js'));
   const { distillAndSerialise } = await import(join(CLI_ROOT, 'dist/src/memory/structured-distill.js'));
 
-  // §1 — record the baseline (no clear; we want to learn ON TOP of whatever
+  // Â§1 â€” record the baseline (no clear; we want to learn ON TOP of whatever
   // history the user already has).
   const unified0 = await intel.getUnifiedLearningStats();
   const before = {
@@ -201,7 +201,7 @@ async function main() {
     memoryBridgeTotal: unified0.memoryBridge.totalEntries,
   };
 
-  // §2 — harvest
+  // Â§2 â€” harvest
   const tHarvest0 = performance.now();
   const commits = harvestCommits(COMMITS);
   const issues = harvestIssues(ISSUES);
@@ -213,10 +213,10 @@ async function main() {
     console.log(`Harvested: ${commits.length} commits + ${issues.length} issues = ${items.length} trajectories (${harvestMs.toFixed(0)} ms)`);
   }
 
-  // §3 — feed each item through the trajectory pipeline. The harvester
+  // Â§3 â€” feed each item through the trajectory pipeline. The harvester
   // emits one of: success | partial | reverted | hotfixed. We map this to
   // the trajectory pipeline's binary verdict {success, partial} since the
-  // pipeline doesn't accept arbitrary strings — but we preserve the original
+  // pipeline doesn't accept arbitrary strings â€” but we preserve the original
   // outcome in metadata + the summary's verdictMix so the signal isn't lost.
   const verdictToPipeline = (v) => {
     if (v === 'success') return 'success';
@@ -258,7 +258,7 @@ async function main() {
   const feedMs = performance.now() - tFeed0;
   intel.flushIntelligenceStats();
 
-  // §4 — also seed the neural store directly from the same items so
+  // Â§4 â€” also seed the neural store directly from the same items so
   // `neural_patterns list` reflects them (closes the "globalStats moved but
   // neural_patterns didn't" consistency note from ADR-075).
   const tSeed0 = performance.now();
@@ -271,7 +271,7 @@ async function main() {
   const seedResult = await neural.storeNeuralPatterns(neuralItems);
   const seedMs = performance.now() - tSeed0;
 
-  // §5 — read the after-counters via the unified aggregator (this is what
+  // Â§5 â€” read the after-counters via the unified aggregator (this is what
   // hooks_intelligence_unified-stats would return for a live caller).
   const unified1 = await intel.getUnifiedLearningStats();
   const after = {
@@ -303,7 +303,7 @@ async function main() {
       avgLatencyMs: items.length > 0 ? Number((feedMs / items.length).toFixed(2)) : 0,
       totalMs: Number(feedMs.toFixed(2)),
       sampleFailures: failures,
-      verdictMix,   // ADR-078 outcome signal — counts per harvested verdict
+      verdictMix,   // ADR-078 outcome signal â€” counts per harvested verdict
     },
     seedNeuralStore: {
       stored: seedResult.stored,
@@ -324,7 +324,7 @@ async function main() {
     console.log(JSON.stringify(summary, null, 2));
   } else {
     console.log('');
-    console.log('| Counter | Before | After | Δ |');
+    console.log('| Counter | Before | After | Î” |');
     console.log('|---|---:|---:|---:|');
     for (const k of Object.keys(after)) {
       console.log(`| ${k} | ${before[k]} | ${after[k]} | +${deltas[k]} |`);
@@ -335,10 +335,10 @@ async function main() {
     console.log(`Avg latency per trajectory: ${summary.feed.avgLatencyMs} ms`);
     console.log(`Neural store seeded: ${seedResult.stored}/${seedResult.total}`);
     console.log(`Verdict mix: success=${verdictMix.success} partial=${verdictMix.partial} reverted=${verdictMix.reverted} hotfixed=${verdictMix.hotfixed}`);
-    console.log(`Overall: ${summary.passed ? '✅ PASSED' : '⚠️  partial'}`);
+    console.log(`Overall: ${summary.passed ? 'âœ… PASSED' : 'âš ï¸  partial'}`);
     if (unified1.consistency.notes.length > 0) {
       console.log(`\nConsistency notes:`);
-      for (const n of unified1.consistency.notes) console.log(`  • ${n}`);
+      for (const n of unified1.consistency.notes) console.log(`  â€¢ ${n}`);
     }
   }
 
@@ -350,7 +350,7 @@ async function main() {
     if (!process.env.BENCH_JSON) console.log(`\nWrote ${join(RUNS_DIR, `pretrain-from-github-${stamp}.json`)}`);
   }
 
-  // ONNX runtime keeps a worker thread alive — force exit so this can be used
+  // ONNX runtime keeps a worker thread alive â€” force exit so this can be used
   // as a CI step or chained with other scripts.
   process.exit(summary.passed ? 0 : 1);
 }

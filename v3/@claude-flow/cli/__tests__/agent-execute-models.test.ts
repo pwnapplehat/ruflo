@@ -1,29 +1,29 @@
 /**
- * Regression guard for ruvnet/ruflo#1906 — model aliases must map to
+ * Regression guard for pwnapplehat/ruflo#1906 â€” model aliases must map to
  * current (Claude 4.x) model ids, not the deprecated Claude-3.x ids that
  * the Anthropic API now 404s.
  */
 import { describe, it, expect } from 'vitest';
 import { resolveAnthropicModel, DEFAULT_ANTHROPIC_MODEL } from '../src/mcp-tools/agent-execute-core.js';
 
-describe('#1906 — agent_execute model aliases resolve to current Claude 4.x ids', () => {
-  it('haiku → claude-haiku-4-5-20251001', () => {
+describe('#1906 â€” agent_execute model aliases resolve to current Claude 4.x ids', () => {
+  it('haiku â†’ claude-haiku-4-5-20251001', () => {
     expect(resolveAnthropicModel('haiku')).toBe('claude-haiku-4-5-20251001');
   });
-  it('sonnet → claude-sonnet-4-6', () => {
+  it('sonnet â†’ claude-sonnet-4-6', () => {
     expect(resolveAnthropicModel('sonnet')).toBe('claude-sonnet-4-6');
   });
-  it('opus → claude-opus-4-8 (#2232 alias bump)', () => {
+  it('opus â†’ claude-opus-4-8 (#2232 alias bump)', () => {
     expect(resolveAnthropicModel('opus')).toBe('claude-opus-4-8');
   });
   it('opus-4.7 reaches the prior pin', () => {
     expect(resolveAnthropicModel('opus-4.7')).toBe('claude-opus-4-7');
   });
-  it('inherit → the default (sonnet 4.6)', () => {
+  it('inherit â†’ the default (sonnet 4.6)', () => {
     expect(resolveAnthropicModel('inherit')).toBe('claude-sonnet-4-6');
     expect(DEFAULT_ANTHROPIC_MODEL).toBe('claude-sonnet-4-6');
   });
-  it('undefined → the default', () => {
+  it('undefined â†’ the default', () => {
     expect(resolveAnthropicModel(undefined)).toBe(DEFAULT_ANTHROPIC_MODEL);
   });
   it('anthropic:<id> prefix is stripped', () => {

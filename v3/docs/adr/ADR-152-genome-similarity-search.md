@@ -1,30 +1,30 @@
-# ADR-152 — Genome Similarity Search
+# ADR-152 â€” Genome Similarity Search
 
-**Status**: Accepted (spike landed iter 35 — both invariants pass)
+**Status**: Accepted (spike landed iter 35 â€” both invariants pass)
 **Date**: 2026-06-16 (revised same-day with spike result)
-**Parent**: [ADR-151](ADR-151-harness-intelligence-layer.md) (Phase 3 scope shell — Harness Intelligence Layer)
+**Parent**: [ADR-151](ADR-151-harness-intelligence-layer.md) (Phase 3 scope shell â€” Harness Intelligence Layer)
 **Inherits**: ADR-150's four architectural constraints (removable / optional / graceful / CI-gate)
-**Spike**: `plugins/ruflo-metaharness/scripts/_spike-similarity.mjs` ([iter-35 commit](https://github.com/ruvnet/ruflo/commit/HEAD))
+**Spike**: `plugins/ruflo-metaharness/scripts/_spike-similarity.mjs` ([iter-35 commit](https://github.com/pwnapplehat/ruflo/commit/HEAD))
 
-## Spike result (iter 35 — measured)
+## Spike result (iter 35 â€” measured)
 
 ```
-similarity(LEGAL, LEGAL).overall = 1.0000    ✓ Invariant 1 (self-match) — exact
+similarity(LEGAL, LEGAL).overall = 1.0000    âœ“ Invariant 1 (self-match) â€” exact
 similarity(LEGAL, SUPPORT).overall = 0.8296
-similarity(LEGAL, DEVOPS).overall  = 0.5840  ✓ Invariant 2 (vertical affinity) — support > devops
+similarity(LEGAL, DEVOPS).overall  = 0.5840  âœ“ Invariant 2 (vertical affinity) â€” support > devops
 
 Per-component (LEGAL vs SUPPORT):  cosine=0.9987  categorical=0.75   jaccard=0.2857
 Per-component (LEGAL vs DEVOPS):   cosine=0.9734  categorical=0      jaccard=0
 ```
 
 Notable findings from the spike:
-- **Numerical cosine alone is too coarse** — LEGAL vs DEVOPS scored cosine=0.9734 despite being unrelated verticals. The numerics are clustered around similar scorecard ranges. Categorical + jaccard pulled the composite correctly to 0.58 vs 0.83.
-- **The 0.6/0.25/0.15 weighting from the §Decision section reproduces the intended ordering** on the synthetic LEGAL/SUPPORT/DEVOPS fixtures.
-- **`categorical: 0` for LEGAL/DEVOPS** correctly fires because they share no enum field (different archetypes, different templates, different recommendedMode). This is a strong feature of the design — categorical disagreement is a clean kill-switch.
+- **Numerical cosine alone is too coarse** â€” LEGAL vs DEVOPS scored cosine=0.9734 despite being unrelated verticals. The numerics are clustered around similar scorecard ranges. Categorical + jaccard pulled the composite correctly to 0.58 vs 0.83.
+- **The 0.6/0.25/0.15 weighting from the Â§Decision section reproduces the intended ordering** on the synthetic LEGAL/SUPPORT/DEVOPS fixtures.
+- **`categorical: 0` for LEGAL/DEVOPS** correctly fires because they share no enum field (different archetypes, different templates, different recommendedMode). This is a strong feature of the design â€” categorical disagreement is a clean kill-switch.
 
 ## Context
 
-ADR-151 Phase-3 §3.1 calls for a similarity function over MetaHarness genome + scorecard JSON. It is the **critical-path dependency for §3.2 (Recommendation Engine), §3.3 (Fleet Drift), and §3.5 (Plugin Compatibility)** — three of the four other Phase-3 sub-capabilities consume similarity scores.
+ADR-151 Phase-3 Â§3.1 calls for a similarity function over MetaHarness genome + scorecard JSON. It is the **critical-path dependency for Â§3.2 (Recommendation Engine), Â§3.3 (Fleet Drift), and Â§3.5 (Plugin Compatibility)** â€” three of the four other Phase-3 sub-capabilities consume similarity scores.
 
 What we have already (post-ADR-150 implementation):
 - `harness genome <repo>` emits a 7-section JSON blob: `repo_type`, `agent_topology[]`, `risk_score`, `mcp_surface`, `test_confidence`, `publish_readiness`.
@@ -32,7 +32,7 @@ What we have already (post-ADR-150 implementation):
 - `harness threat-model <repo>` emits a `worst` severity + a list of categorized findings.
 - The iter-7 `oia-audit` records bundle all three above per timestamp in `metaharness-audit` memory namespace.
 
-What we need: a function `similarity(genomeA, genomeB) → number ∈ [0,1]` plus a per-dimension breakdown explaining where the two harnesses agree or differ.
+What we need: a function `similarity(genomeA, genomeB) â†’ number âˆˆ [0,1]` plus a per-dimension breakdown explaining where the two harnesses agree or differ.
 
 ## Decision
 
@@ -44,7 +44,7 @@ Project the structured genome + scorecard into a fixed-length numerical vector:
 
 | Index | Source | Field | Normalization |
 |---:|---|---|---|
-| 0 | score | `harnessFit` | already 0..100 → divide by 100 |
+| 0 | score | `harnessFit` | already 0..100 â†’ divide by 100 |
 | 1 | score | `compileConfidence` | divide by 100 |
 | 2 | score | `taskCoverage` | divide by 100 |
 | 3 | score | `toolSafety` | divide by 100 |
@@ -67,15 +67,15 @@ Three fields are categorical:
 | `template` | score | one of the 20 metaharness templates |
 | `recommendedMode` | score | `CLI`, `MCP`, or `CLI + MCP` |
 
-Each contributes `1` if matching, `0` if not. Sum / 4 → categorical-agreement score.
+Each contributes `1` if matching, `0` if not. Sum / 4 â†’ categorical-agreement score.
 
 ### 3. Set agreement over `agent_topology[]`
 
-The `agent_topology` field is an array (e.g. `["maintainer", "tester", "security", "release"]`). Jaccard similarity = `|A ∩ B| / |A ∪ B|`.
+The `agent_topology` field is an array (e.g. `["maintainer", "tester", "security", "release"]`). Jaccard similarity = `|A âˆ© B| / |A âˆª B|`.
 
 ### Composite
 
-`overallSimilarity = 0.6 · cosine + 0.25 · categorical + 0.15 · jaccard`
+`overallSimilarity = 0.6 Â· cosine + 0.25 Â· categorical + 0.15 Â· jaccard`
 
 Weights chosen so that:
 - Numerical similarity dominates (most signal density).
@@ -101,20 +101,20 @@ interface SimilarityResult {
 }
 ```
 
-The `perDimension` breakdown lets consumers explain *why* two harnesses scored as they did — critical for the §3.2 Recommendation Engine's confidence calculation and the §3.3 Drift Detection's alert reason.
+The `perDimension` breakdown lets consumers explain *why* two harnesses scored as they did â€” critical for the Â§3.2 Recommendation Engine's confidence calculation and the Â§3.3 Drift Detection's alert reason.
 
 ## Implementation surface
 
-- **One pure-TS function** in `plugins/ruflo-metaharness/scripts/_similarity.mjs` (shared module convention — see iter-1 `_harness.mjs` and iter-73 `_sessions.mjs`).
+- **One pure-TS function** in `plugins/ruflo-metaharness/scripts/_similarity.mjs` (shared module convention â€” see iter-1 `_harness.mjs` and iter-73 `_sessions.mjs`).
 - **One CLI skill** `harness-similarity` invoked as `npx ruflo metaharness similarity --a <genomeA.json> --b <genomeB.json>` (or `--a-key`/`--b-key` for memory-namespace lookup, mirroring iter-15 `audit-trend`).
 - **One MCP tool** `mcp__claude-flow__metaharness_similarity` so agents can call it during conversation.
 
-NO new dependency on `@metaharness/*` — the function operates on JSON shapes that the existing CLI already emits. Genuinely zero blast radius on ADR-150's four constraints:
+NO new dependency on `@metaharness/*` â€” the function operates on JSON shapes that the existing CLI already emits. Genuinely zero blast radius on ADR-150's four constraints:
 
-- Removable ✓ (pure-TS, reads JSON the CLI already produces)
-- Optional ✓ (no new dep)
-- Graceful ✓ (gracefully reports `degraded` if inputs are malformed)
-- CI-gate ✓ (standalone unit-testable; no `npx` required)
+- Removable âœ“ (pure-TS, reads JSON the CLI already produces)
+- Optional âœ“ (no new dep)
+- Graceful âœ“ (gracefully reports `degraded` if inputs are malformed)
+- CI-gate âœ“ (standalone unit-testable; no `npx` required)
 
 ## Smallest demonstrable spike (the implementation gate)
 
@@ -132,26 +132,26 @@ The spike script: `plugins/ruflo-metaharness/scripts/_spike-similarity.mjs`. Liv
 
 ### Positive
 
-- Unblocks §3.2 / §3.3 / §3.5 — three of four Phase-3 consumers can begin work in parallel once similarity ships.
-- No new dependencies, no runtime cost, pure-function semantics. Failure modes are limited to "garbage in → low confidence out" — never a crash.
+- Unblocks Â§3.2 / Â§3.3 / Â§3.5 â€” three of four Phase-3 consumers can begin work in parallel once similarity ships.
+- No new dependencies, no runtime cost, pure-function semantics. Failure modes are limited to "garbage in â†’ low confidence out" â€” never a crash.
 - The 9-dim feature vector + 3-component weighted composite is a **single source of truth** for similarity semantics; downstream ADRs reference back to this one rather than reinventing.
 
 ### Negative
 
 - **Choice of weights (0.6/0.25/0.15) is opinionated.** A different weighting could change the recommender's rankings. Mitigation: expose weights as optional CLI flags; defaults are documented; ship the fixtures from the spike as a regression-suite so weight changes are visible.
-- **Numerical vector excludes `threat-model worst`** because it's categorical and would inflate the categorical component too far. If `worst` regression is what matters for drift detection (§3.3), drift consumers must check `worst` separately.
-- **No semantic similarity over agent prompts / SKILL.md text.** ADR-151's §3.4 (capability graph) calls for that; this ADR explicitly defers it to keep §3.1 small.
+- **Numerical vector excludes `threat-model worst`** because it's categorical and would inflate the categorical component too far. If `worst` regression is what matters for drift detection (Â§3.3), drift consumers must check `worst` separately.
+- **No semantic similarity over agent prompts / SKILL.md text.** ADR-151's Â§3.4 (capability graph) calls for that; this ADR explicitly defers it to keep Â§3.1 small.
 
 ### Neutral
 
-- The function is invocable from any layer (CLI / MCP tool / direct Node import / future browser-side) without changes — the JSON contract is the only coupling.
+- The function is invocable from any layer (CLI / MCP tool / direct Node import / future browser-side) without changes â€” the JSON contract is the only coupling.
 
 ## Alternatives Considered
 
 **Alternative A: Use sentence embeddings over the README + agent prompt text.**
 - Pros: captures semantic similarity humans care about.
 - Cons: requires embeddings model + 384-dim vectors + similarity index. Adds a heavy dep, breaks ADR-150's removability rule for harnesses that disable optional deps.
-- Verdict: Defer to §3.4 (capability graph) where it's actually needed.
+- Verdict: Defer to Â§3.4 (capability graph) where it's actually needed.
 
 **Alternative B: Skip cosine, use only categorical + jaccard.**
 - Pros: simpler, no float math.
@@ -161,18 +161,18 @@ The spike script: `plugins/ruflo-metaharness/scripts/_spike-similarity.mjs`. Liv
 **Alternative C: Train a similarity model on real harness pairs.**
 - Pros: would learn actual user-perceived similarity.
 - Cons: requires labeled pairs that don't exist; circular (the recommender's job is to PRODUCE those pairs). Premature ML.
-- Verdict: defer until §3.2 has shipped enough data to bootstrap.
+- Verdict: defer until Â§3.2 has shipped enough data to bootstrap.
 
 ## Open Questions
 
-- Should weights be a configurable field in `mcp-policy.json`? Lean no — the 0.6/0.25/0.15 split should be a single global default. Per-org tuning is out of scope for §3.1.
+- Should weights be a configurable field in `mcp-policy.json`? Lean no â€” the 0.6/0.25/0.15 split should be a single global default. Per-org tuning is out of scope for Â§3.1.
 - Should the function ALSO emit a Mermaid diagram visualizing the breakdown? Probably yes via an optional `--format mermaid`. Cheap to add post-spike.
 - How does similarity interact with the iter-15 `audit-trend` script? `audit-trend` already diffs two timestamps of the SAME harness; this ADR adds a separate primitive for diffing two DIFFERENT harnesses. Both should live as siblings, not subtypes.
 
 ## References
 
-- [ADR-151](ADR-151-harness-intelligence-layer.md) — Phase 3 scope shell (parent)
-- [ADR-150](ADR-150-metaharness-integration-surfaces.md) — Phase 1+2 implementation, architectural constraints
-- iter-15 `audit-trend` — `plugins/ruflo-metaharness/scripts/audit-trend.mjs` (sibling drift-detection primitive)
-- iter-1 `_harness.mjs` — shared-module convention reference
+- [ADR-151](ADR-151-harness-intelligence-layer.md) â€” Phase 3 scope shell (parent)
+- [ADR-150](ADR-150-metaharness-integration-surfaces.md) â€” Phase 1+2 implementation, architectural constraints
+- iter-15 `audit-trend` â€” `plugins/ruflo-metaharness/scripts/audit-trend.mjs` (sibling drift-detection primitive)
+- iter-1 `_harness.mjs` â€” shared-module convention reference
 - Upstream `harness genome / score / threat-model` outputs documented in [`ruvnet/agent-harness-generator`](https://github.com/ruvnet/agent-harness-generator) source

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * RuFlo V3 Statusline — delegation build (#2195)
+ * RuFlo V3 Statusline â€” delegation build (#2195)
  *
- * Fix for ruvnet/ruflo#2195: the previous version re-implemented all data
+ * Fix for pwnapplehat/ruflo#2195: the previous version re-implemented all data
  * readers locally using fragile file probes that missed AgentDB patterns,
  * the v3/docs/adr/ ADR directory, and the real vector count.
  *
@@ -32,7 +32,7 @@ const CONFIG = {
   // estimate that "may differ from your actual bill" and reads as misleading on
   // subscription plans, where token usage is not billed per dollar. These let
   // each user pick what the segment means to them without changing the default.
-  //   RUFLO_STATUSLINE_COST_SYMBOL  override the leading '$' (e.g. ⚡, €, 🌱);
+  //   RUFLO_STATUSLINE_COST_SYMBOL  override the leading '$' (e.g. âš¡, â‚¬, ðŸŒ±);
   //                                 set to an empty string for the number alone.
   //   RUFLO_STATUSLINE_HIDE_COST    1/true/yes/on removes the segment entirely.
   costSymbol: process.env.RUFLO_STATUSLINE_COST_SYMBOL ?? '$',
@@ -41,10 +41,10 @@ const CONFIG = {
 
 const CWD = process.cwd();
 
-// ─── Delegation cache ───────────────────────────────────────────
+// â”€â”€â”€ Delegation cache â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Cache the CLI JSON result for 60s so rapid prompt re-renders
 // (Claude Code refreshes the statusline several times a second while
-// streaming) don't re-invoke the CLI each time. #2337: bumped 10s→60s
+// streaming) don't re-invoke the CLI each time. #2337: bumped 10sâ†’60s
 // because 10s was far too short for how often Claude Code re-renders.
 const CACHE_FILE = path.join(os.tmpdir(), 'ruflo-statusline-cache-' + require('crypto').createHash('md5').update(CWD).digest('hex').slice(0, 8) + '.json');
 const CACHE_TTL_MS = 60000;
@@ -109,7 +109,7 @@ function writeCache(data) {
  * Falls back to a minimal static object on failure so the statusline still renders.
  *
  * Fix for ruflo#2195: the previous local readers returned 0 for AgentDB patterns
- * (missed the .swarm/memory.db → AgentDB path), computed dddProgress wrong,
+ * (missed the .swarm/memory.db â†’ AgentDB path), computed dddProgress wrong,
  * and only counted ADRs in v3/implementation/adrs/ (missed v3/docs/adr/).
  */
 function getStatuslineData() {
@@ -118,7 +118,7 @@ function getStatuslineData() {
 
   try {
     // #2337: prefer an already-installed CLI bin via direct `node` invocation
-    // — no npx, no registry round-trip, no @latest re-resolve per render.
+    // â€” no npx, no registry round-trip, no @latest re-resolve per render.
     // Fall back to `npx --prefer-offline @claude-flow/cli` (no @latest) only
     // when nothing is installed locally, so a cold environment still works.
     const cliBin = resolveCliBin();
@@ -129,7 +129,7 @@ function getStatuslineData() {
       cmd,
       { encoding: 'utf-8', timeout: 8000, stdio: ['pipe', 'pipe', 'pipe'], cwd: CWD }
     ).trim();
-    // The CLI may emit preamble lines before the JSON — find the first '{'.
+    // The CLI may emit preamble lines before the JSON â€” find the first '{'.
     const jsonStart = raw.indexOf('{');
     if (jsonStart === -1) throw new Error('no JSON in CLI output');
     const data = JSON.parse(raw.slice(jsonStart));
@@ -168,7 +168,7 @@ function getLocalADRCount() {
   return { count: total, implemented: total, compliance: 0 };
 }
 
-// ─── Local overlays for segments the CLI JSON omits ──────────────
+// â”€â”€â”€ Local overlays for segments the CLI JSON omits â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // 'hooks statusline --json' only returns user/v3Progress/security/swarm/system.
 // agentdb/tests/hooks/integration are never populated, so without these overlays
 // they render as a permanent 0. Each reader is cheap and degrades to zeros.
@@ -338,7 +338,7 @@ function readJSON(filePath) {
   return null;
 }
 
-// ─── Git info (pure-Node / single exec — needed for branch display) ──────────
+// â”€â”€â”€ Git info (pure-Node / single exec â€” needed for branch display) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function getGitInfo() {
   const result = {
@@ -422,7 +422,7 @@ function getModelName() {
   return 'Claude Code';
 }
 
-// ─── Stdin reader (Claude Code pipes session JSON) ──────────────
+// â”€â”€â”€ Stdin reader (Claude Code pipes session JSON) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Claude Code sends session JSON via stdin. Read synchronously so the
 // script works both when invoked by Claude Code (stdin has JSON) and
 // when run manually from terminal (stdin is empty/tty).
@@ -487,7 +487,7 @@ function getPkgVersion() {
     ];
     // #2221: global installs (npm i -g ruflo) live outside CWD/node_modules, so the
     // probes above all miss and the version falls back to the hard-coded default.
-    // Derive the global node_modules dir from the running node binary (no npm spawn —
+    // Derive the global node_modules dir from the running node binary (no npm spawn â€”
     // statusline renders often). Covers nvm/mise (bin/../lib/node_modules) and Windows
     // (bin/node_modules) layouts.
     try {
@@ -517,12 +517,12 @@ function getPkgVersion() {
   return ver;
 }
 
-// ─── Rendering ──────────────────────────────────────────────────
+// â”€â”€â”€ Rendering â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function progressBar(current, total) {
   const width = 5;
   const filled = Math.round((current / total) * width);
-  return '[' + '●'.repeat(filled) + '○'.repeat(width - filled) + ']';
+  return '[' + 'â—'.repeat(filled) + 'â—‹'.repeat(width - filled) + ']';
 }
 
 function generateStatusline() {
@@ -568,10 +568,10 @@ function generateStatusline() {
   const lines = [];
 
   // Header
-  let header = c.bold + c.brightPurple + '▊ RuFlo V' + pkgVersion + ' ' + c.reset;
-  header += (coordinationActive ? c.brightCyan : c.dim) + '● ' + c.brightCyan + git.name + c.reset;
+  let header = c.bold + c.brightPurple + 'â–Š RuFlo V' + pkgVersion + ' ' + c.reset;
+  header += (coordinationActive ? c.brightCyan : c.dim) + 'â— ' + c.brightCyan + git.name + c.reset;
   if (git.gitBranch) {
-    header += '  ' + c.dim + '│' + c.reset + '  ' + c.brightBlue + '⏇ ' + git.gitBranch + c.reset;
+    header += '  ' + c.dim + 'â”‚' + c.reset + '  ' + c.brightBlue + 'â‡ ' + git.gitBranch + c.reset;
     const changes = git.modified + git.staged + git.untracked;
     if (changes > 0) {
       let ind = '';
@@ -580,72 +580,72 @@ function generateStatusline() {
       if (git.untracked > 0) ind += c.dim + '?' + git.untracked + c.reset;
       header += ' ' + ind;
     }
-    if (git.ahead > 0) header += ' ' + c.brightGreen + '↑' + git.ahead + c.reset;
-    if (git.behind > 0) header += ' ' + c.brightRed + '↓' + git.behind + c.reset;
+    if (git.ahead > 0) header += ' ' + c.brightGreen + 'â†‘' + git.ahead + c.reset;
+    if (git.behind > 0) header += ' ' + c.brightRed + 'â†“' + git.behind + c.reset;
   }
-  header += '  ' + c.dim + '│' + c.reset + '  ' + c.purple + modelName + c.reset;
+  header += '  ' + c.dim + 'â”‚' + c.reset + '  ' + c.purple + modelName + c.reset;
   const duration = costInfo ? costInfo.duration : '';
-  if (duration) header += '  ' + c.dim + '│' + c.reset + '  ' + c.cyan + '⏱ ' + duration + c.reset;
+  if (duration) header += '  ' + c.dim + 'â”‚' + c.reset + '  ' + c.cyan + 'â± ' + duration + c.reset;
   if (ctxInfo && ctxInfo.usedPct > 0) {
     const ctxColor = ctxInfo.usedPct >= 90 ? c.brightRed : ctxInfo.usedPct >= 70 ? c.brightYellow : c.brightGreen;
-    header += '  ' + c.dim + '│' + c.reset + '  ' + ctxColor + '● ' + ctxInfo.usedPct + '% ctx' + c.reset;
+    header += '  ' + c.dim + 'â”‚' + c.reset + '  ' + ctxColor + 'â— ' + ctxInfo.usedPct + '% ctx' + c.reset;
   }
   if (!CONFIG.hideCost && costInfo && costInfo.costUsd > 0) {
-    header += '  ' + c.dim + '│' + c.reset + '  ' + c.brightYellow + CONFIG.costSymbol + costInfo.costUsd.toFixed(2) + c.reset;
+    header += '  ' + c.dim + 'â”‚' + c.reset + '  ' + c.brightYellow + CONFIG.costSymbol + costInfo.costUsd.toFixed(2) + c.reset;
   }
   lines.push(header);
 
   // Separator
-  lines.push(c.dim + '─'.repeat(53) + c.reset);
+  lines.push(c.dim + 'â”€'.repeat(53) + c.reset);
 
   // Line 1: DDD Domains
   const domainsColor = domainsCompleted >= 3 ? c.brightGreen : domainsCompleted > 0 ? c.yellow : c.red;
   let perfIndicator;
   if (hasHnsw && vectorCount > 0) {
     const speedup = vectorCount > 10000 ? '12500x' : vectorCount > 1000 ? '150x' : '10x';
-    perfIndicator = c.brightGreen + '⚡ HNSW ' + speedup + c.reset;
+    perfIndicator = c.brightGreen + 'âš¡ HNSW ' + speedup + c.reset;
   } else if (patternsLearned > 0) {
     const pk = patternsLearned >= 1000 ? (patternsLearned / 1000).toFixed(1) + 'k' : String(patternsLearned);
-    perfIndicator = c.brightYellow + '📚 ' + pk + ' patterns' + c.reset;
+    perfIndicator = c.brightYellow + 'ðŸ“š ' + pk + ' patterns' + c.reset;
   } else {
-    perfIndicator = c.dim + '⚡ target: 150x-12500x' + c.reset;
+    perfIndicator = c.dim + 'âš¡ target: 150x-12500x' + c.reset;
   }
   lines.push(
-    c.brightCyan + '🏗️  DDD Domains' + c.reset + '    ' + progressBar(domainsCompleted, totalDomains) + '  ' +
+    c.brightCyan + 'ðŸ—ï¸  DDD Domains' + c.reset + '    ' + progressBar(domainsCompleted, totalDomains) + '  ' +
     domainsColor + domainsCompleted + c.reset + '/' + c.brightWhite + totalDomains + c.reset + '    ' + perfIndicator
   );
 
   // Line 2: Swarm + Hooks + CVE + Memory + Intelligence
-  const swarmInd = coordinationActive ? c.brightGreen + '◉' + c.reset : c.dim + '○' + c.reset;
+  const swarmInd = coordinationActive ? c.brightGreen + 'â—‰' + c.reset : c.dim + 'â—‹' + c.reset;
   const agentsColor = activeAgents > 0 ? c.brightGreen : c.red;
-  const secIcon = secStatus === 'CLEAN' ? '🟢' : (secStatus === 'IN_PROGRESS' || secStatus === 'STALE') ? '🟡' : (secStatus === 'NONE' ? '⚪' : '🔴');
+  const secIcon = secStatus === 'CLEAN' ? 'ðŸŸ¢' : (secStatus === 'IN_PROGRESS' || secStatus === 'STALE') ? 'ðŸŸ¡' : (secStatus === 'NONE' ? 'âšª' : 'ðŸ”´');
   const secColor = secStatus === 'CLEAN' ? c.brightGreen : (secStatus === 'IN_PROGRESS' || secStatus === 'STALE') ? c.brightYellow : (secStatus === 'NONE' ? c.dim : c.brightRed);
   const hooksColor = hooksEnabled > 0 ? c.brightGreen : c.dim;
   const intellColor = intelligencePct >= 80 ? c.brightGreen : intelligencePct >= 40 ? c.brightYellow : c.dim;
 
   lines.push(
-    c.brightYellow + '🤖 Swarm' + c.reset + '  ' + swarmInd + ' [' + agentsColor + String(activeAgents).padStart(2) + c.reset + '/' + c.brightWhite + maxAgents + c.reset + ']  ' +
-    c.brightPurple + '👥 ' + subAgents + c.reset + '    ' +
-    c.brightBlue + '🪝 ' + hooksColor + hooksEnabled + c.reset + '/' + c.brightWhite + hooksTotal + c.reset + '    ' +
+    c.brightYellow + 'ðŸ¤– Swarm' + c.reset + '  ' + swarmInd + ' [' + agentsColor + String(activeAgents).padStart(2) + c.reset + '/' + c.brightWhite + maxAgents + c.reset + ']  ' +
+    c.brightPurple + 'ðŸ‘¥ ' + subAgents + c.reset + '    ' +
+    c.brightBlue + 'ðŸª ' + hooksColor + hooksEnabled + c.reset + '/' + c.brightWhite + hooksTotal + c.reset + '    ' +
     secIcon + ' ' + secColor + 'CVE ' + cvesFixed + c.reset + '/' + c.brightWhite + totalCves + c.reset + '    ' +
-    c.brightCyan + '💾 ' + memoryMB + 'MB' + c.reset + '    ' +
-    intellColor + '🧠 ' + String(intelligencePct).padStart(3) + '%' + c.reset
+    c.brightCyan + 'ðŸ’¾ ' + memoryMB + 'MB' + c.reset + '    ' +
+    intellColor + 'ðŸ§  ' + String(intelligencePct).padStart(3) + '%' + c.reset
   );
 
   // Line 3: Architecture
   const dddColor = dddProgress >= 50 ? c.brightGreen : dddProgress > 0 ? c.yellow : c.red;
   const adrColor = adrCount > 0 ? (adrImpl === adrCount ? c.brightGreen : c.yellow) : c.dim;
-  const adrDisplay = adrColor + '●' + adrImpl + '/' + adrCount + c.reset;
+  const adrDisplay = adrColor + 'â—' + adrImpl + '/' + adrCount + c.reset;
 
   lines.push(
-    c.brightPurple + '🔧 Architecture' + c.reset + '    ' +
-    c.cyan + 'ADRs' + c.reset + ' ' + adrDisplay + '  ' + c.dim + '│' + c.reset + '  ' +
-    c.cyan + 'DDD' + c.reset + ' ' + dddColor + '●' + String(dddProgress).padStart(3) + '%' + c.reset + '  ' + c.dim + '│' + c.reset + '  ' +
-    c.cyan + 'Security' + c.reset + ' ' + secColor + '●' + secStatus + c.reset
+    c.brightPurple + 'ðŸ”§ Architecture' + c.reset + '    ' +
+    c.cyan + 'ADRs' + c.reset + ' ' + adrDisplay + '  ' + c.dim + 'â”‚' + c.reset + '  ' +
+    c.cyan + 'DDD' + c.reset + ' ' + dddColor + 'â—' + String(dddProgress).padStart(3) + '%' + c.reset + '  ' + c.dim + 'â”‚' + c.reset + '  ' +
+    c.cyan + 'Security' + c.reset + ' ' + secColor + 'â—' + secStatus + c.reset
   );
 
   // Line 4: AgentDB, Tests, Integration
-  const hnswInd = hasHnsw ? c.brightGreen + '⚡' + c.reset : '';
+  const hnswInd = hasHnsw ? c.brightGreen + 'âš¡' + c.reset : '';
   const sizeDisp = dbSizeKB >= 1024 ? (dbSizeKB / 1024).toFixed(1) + 'MB' : dbSizeKB + 'KB';
   const vectorColor = vectorCount > 0 ? c.brightGreen : c.dim;
   const testColor = testFiles > 0 ? c.brightGreen : c.dim;
@@ -656,23 +656,23 @@ function generateStatusline() {
   let integStr = '';
   if (mcpServers.total > 0) {
     const mcpCol = mcpServers.enabled === mcpServers.total ? c.brightGreen : mcpServers.enabled > 0 ? c.brightYellow : c.red;
-    integStr += c.cyan + 'MCP' + c.reset + ' ' + mcpCol + '●' + mcpServers.enabled + '/' + mcpServers.total + c.reset;
+    integStr += c.cyan + 'MCP' + c.reset + ' ' + mcpCol + 'â—' + mcpServers.enabled + '/' + mcpServers.total + c.reset;
   }
-  if (integration.hasDatabase) integStr += (integStr ? '  ' : '') + c.brightGreen + '◆' + c.reset + 'DB';
-  if (!integStr) integStr = c.dim + '● none' + c.reset;
+  if (integration.hasDatabase) integStr += (integStr ? '  ' : '') + c.brightGreen + 'â—†' + c.reset + 'DB';
+  if (!integStr) integStr = c.dim + 'â— none' + c.reset;
 
   lines.push(
-    c.brightCyan + '📊 AgentDB' + c.reset + '    ' +
-    c.cyan + 'Vectors' + c.reset + ' ' + vectorColor + '●' + vectorCount + hnswInd + c.reset + '  ' + c.dim + '│' + c.reset + '  ' +
-    c.cyan + 'Size' + c.reset + ' ' + c.brightWhite + sizeDisp + c.reset + '  ' + c.dim + '│' + c.reset + '  ' +
-    c.cyan + 'Tests' + c.reset + ' ' + testColor + '●' + testFiles + c.reset + ' ' + c.dim + '(~' + testCases + ' cases)' + c.reset + '  ' + c.dim + '│' + c.reset + '  ' +
+    c.brightCyan + 'ðŸ“Š AgentDB' + c.reset + '    ' +
+    c.cyan + 'Vectors' + c.reset + ' ' + vectorColor + 'â—' + vectorCount + hnswInd + c.reset + '  ' + c.dim + 'â”‚' + c.reset + '  ' +
+    c.cyan + 'Size' + c.reset + ' ' + c.brightWhite + sizeDisp + c.reset + '  ' + c.dim + 'â”‚' + c.reset + '  ' +
+    c.cyan + 'Tests' + c.reset + ' ' + testColor + 'â—' + testFiles + c.reset + ' ' + c.dim + '(~' + testCases + ' cases)' + c.reset + '  ' + c.dim + 'â”‚' + c.reset + '  ' +
     integStr
   );
 
   return lines.join('\n');
 }
 
-// JSON output — delegates to CLI for accuracy; caller can use --json flag
+// JSON output â€” delegates to CLI for accuracy; caller can use --json flag
 function generateJSON() {
   const d = getStatuslineData();
   const git = getGitInfo();
@@ -683,7 +683,7 @@ function generateJSON() {
   });
 }
 
-// ─── Main ───────────────────────────────────────────────────────
+// â”€â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if (process.argv.includes('--json')) {
   console.log(JSON.stringify(generateJSON(), null, 2));
 } else if (process.argv.includes('--compact')) {

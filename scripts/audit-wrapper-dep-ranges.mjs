@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Static guard for ruvnet/ruflo#2127 (and the family of #1147 / #2018).
+ * Static guard for pwnapplehat/ruflo#2127 (and the family of #1147 / #2018).
  *
  * The reporter hit `TypeError: Invalid Version: (empty)` inside arborist's
  * `canDedupe` while installing `ruflo@3.8.0`. Two reviewers could not
@@ -18,7 +18,7 @@
  *   2. The root `claude-flow` umbrella's sibling deps that we maintain
  *      (`@claude-flow/cli-core`, `@claude-flow/mcp`, `@claude-flow/neural`,
  *      `@claude-flow/shared`) likewise include their actual published
- *      versions (best-effort — only when the corresponding workspace
+ *      versions (best-effort â€” only when the corresponding workspace
  *      package.json is present locally).
  *
  *   3. The `ruflo` wrapper does NOT carry a pre-release range
@@ -51,7 +51,7 @@ function readPkg(relPath) {
 const violations = [];
 const checks = [];
 
-// ── 1. ruflo wrapper's @claude-flow/cli dep range ────────────────────────────
+// â”€â”€ 1. ruflo wrapper's @claude-flow/cli dep range â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const rufloPkg = readPkg('ruflo/package.json');
 const cliPkg = readPkg('v3/@claude-flow/cli/package.json');
@@ -66,10 +66,10 @@ if (!rufloPkg) {
 
   if (!rufloDepRange) {
     violations.push(
-      `ruflo/package.json does not declare @claude-flow/cli — wrapper must depend on the CLI it wraps`
+      `ruflo/package.json does not declare @claude-flow/cli â€” wrapper must depend on the CLI it wraps`
     );
   } else {
-    checks.push(`ruflo wraps @claude-flow/cli with range "${rufloDepRange}" — cli published as ${cliVersion}`);
+    checks.push(`ruflo wraps @claude-flow/cli with range "${rufloDepRange}" â€” cli published as ${cliVersion}`);
 
     // 1a. Range must include the current cli version
     if (!semver.satisfies(cliVersion, rufloDepRange, { includePrerelease: true })) {
@@ -92,7 +92,7 @@ if (!rufloPkg) {
   }
 }
 
-// ── 2. root claude-flow umbrella sibling deps ────────────────────────────────
+// â”€â”€ 2. root claude-flow umbrella sibling deps â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const rootPkg = readPkg('package.json');
 const siblingsToCheck = [
@@ -104,10 +104,10 @@ const siblingsToCheck = [
 
 for (const { dep, workspace } of siblingsToCheck) {
   const wsPkg = readPkg(workspace);
-  if (!wsPkg) continue; // best-effort — skip if workspace missing
+  if (!wsPkg) continue; // best-effort â€” skip if workspace missing
   const range = rootPkg?.dependencies?.[dep];
   if (!range) continue;
-  checks.push(`claude-flow umbrella → ${dep}: range "${range}" — workspace at ${wsPkg.version}`);
+  checks.push(`claude-flow umbrella â†’ ${dep}: range "${range}" â€” workspace at ${wsPkg.version}`);
 
   if (!semver.satisfies(wsPkg.version, range, { includePrerelease: true })) {
     violations.push(
@@ -117,9 +117,9 @@ for (const { dep, workspace } of siblingsToCheck) {
   }
 }
 
-// ── 3. report ────────────────────────────────────────────────────────────────
+// â”€â”€ 3. report â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-console.log(`wrapper-dep-ranges audit — scanned ${checks.length} declaration(s)`);
+console.log(`wrapper-dep-ranges audit â€” scanned ${checks.length} declaration(s)`);
 for (const c of checks) console.log(`  ${c}`);
 
 if (violations.length === 0) {
@@ -129,7 +129,7 @@ if (violations.length === 0) {
 }
 
 console.error('\nviolations:');
-for (const v of violations) console.error(`  ✗ ${v}`);
-console.error(`\n${violations.length} violation(s) — see remediation hints above.`);
-console.error('Reference: ruvnet/ruflo#2127 (Invalid Version dedupe crash).');
+for (const v of violations) console.error(`  âœ— ${v}`);
+console.error(`\n${violations.length} violation(s) â€” see remediation hints above.`);
+console.error('Reference: pwnapplehat/ruflo#2127 (Invalid Version dedupe crash).');
 process.exit(1);

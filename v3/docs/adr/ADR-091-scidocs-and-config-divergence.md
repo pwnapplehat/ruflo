@@ -1,12 +1,12 @@
-# ADR-091 — 4-Dataset BEIR + Config Divergence
+# ADR-091 â€” 4-Dataset BEIR + Config Divergence
 
-**Status**: Accepted — Implemented in ruflo 3.10.30
+**Status**: Accepted â€” Implemented in ruflo 3.10.30
 **Date**: 2026-05-31
-**Tracking**: continuation of BEIR climb (ADR-085 → 086 → 087 → 088 → 089 → 090 → 091)
+**Tracking**: continuation of BEIR climb (ADR-085 â†’ 086 â†’ 087 â†’ 088 â†’ 089 â†’ 090 â†’ 091)
 
 ## Context
 
-3.10.29 shipped 3-dataset BEIR (NFCorpus + SciFact + ArguAna, rank 4/11 mean). SciDocs is the 4th BEIR dataset that runs in <3hr of CPU ingest — small enough to be tractable, large enough (25,657 docs) to be a meaningful generalisation test.
+3.10.29 shipped 3-dataset BEIR (NFCorpus + SciFact + ArguAna, rank 4/11 mean). SciDocs is the 4th BEIR dataset that runs in <3hr of CPU ingest â€” small enough to be tractable, large enough (25,657 docs) to be a meaningful generalisation test.
 
 ## Measured proof
 
@@ -28,14 +28,14 @@
 | **ruflo best (per-dataset)** | **110M** | **0.358** | **0.683** | **0.432** | **0.211** | **0.421** |
 | GTR-XL (published) | 1.2B | 0.343 | 0.662 | 0.439 | 0.174 | 0.405 |
 | GenQ (published) | 110M | 0.319 | 0.644 | 0.493 | 0.143 | 0.400 |
-| BM25 (published Lucene) | — | 0.325 | 0.679 | 0.397 | 0.158 | **0.390** |
+| BM25 (published Lucene) | â€” | 0.325 | 0.679 | 0.397 | 0.158 | **0.390** |
 | Contriever (published) | 110M | 0.328 | 0.677 | 0.379 | 0.165 | 0.387 |
 | TAS-B (published) | 66M | 0.319 | 0.643 | 0.429 | 0.149 | 0.385 |
 | DocT5query (published) | 60M | 0.328 | 0.675 | 0.349 | 0.162 | 0.378 |
 | ColBERT (published) | 110M | 0.305 | 0.671 | 0.233 | 0.145 | 0.339 |
 | SBERT msmarco (published) | 110M | 0.272 | 0.555 | 0.371 | 0.122 | 0.330 |
 
-**Rank 3 of 11.** Beats every published baseline except SPLADE++ (-0.012, ~tied) and BGE-large (-0.070). Specifically beats GTR-XL with 1/10× the params (110M vs 1.2B).
+**Rank 3 of 11.** Beats every published baseline except SPLADE++ (-0.012, ~tied) and BGE-large (-0.070). Specifically beats GTR-XL with 1/10Ã— the params (110M vs 1.2B).
 
 ## The config-divergence pattern
 
@@ -59,29 +59,29 @@ This is a real finding from running 4 datasets, not a guess. Worth a separate ex
 
 ## Reusable infrastructure shipped
 
-- `scripts/run-beir-bge.mjs` — gains SciDocs baselines
-- `scripts/run-beir-hybrid.mjs` — gains SciDocs baselines
-- `docs/benchmarks/runs/beir-scidocs-bge-latest.json` — dense alone
-- `docs/benchmarks/runs/beir-scidocs-hybrid-rrf-latest.json` — RRF
+- `scripts/run-beir-bge.mjs` â€” gains SciDocs baselines
+- `scripts/run-beir-hybrid.mjs` â€” gains SciDocs baselines
+- `docs/benchmarks/runs/beir-scidocs-bge-latest.json` â€” dense alone
+- `docs/benchmarks/runs/beir-scidocs-hybrid-rrf-latest.json` â€” RRF
 
 ## Honest limits
 
-- **4/18 BEIR datasets.** The 0.421 mean is suggestive, not BEIR-average. The 5 biggest BEIR datasets (TREC-COVID, FiQA, HotpotQA, NQ, DBPedia — all >50k docs) remain GPU-gated.
+- **4/18 BEIR datasets.** The 0.421 mean is suggestive, not BEIR-average. The 5 biggest BEIR datasets (TREC-COVID, FiQA, HotpotQA, NQ, DBPedia â€” all >50k docs) remain GPU-gated.
 - **Zero-shot.** No fine-tuning. NFCorpus and ArguAna both have train splits we haven't used.
-- **The "best per-dataset" mean is realistic if you tune per corpus.** A fixed-pipeline mean would be lower — Lucene+RRF+CE everywhere = 0.358 + 0.683 + 0.283 (extrapolated ArguAna CE failure) + ~0.20 (SciDocs RRF+CE not run, estimated similar to RRF alone) ≈ ~0.38 ≈ same as published BM25 mean.
-- **CE rerank's variance is large** — wins on NFCorpus and SciFact, ties on neither, actively hurts on ArguAna and (estimated) SciDocs. Calibrate before deploying.
+- **The "best per-dataset" mean is realistic if you tune per corpus.** A fixed-pipeline mean would be lower â€” Lucene+RRF+CE everywhere = 0.358 + 0.683 + 0.283 (extrapolated ArguAna CE failure) + ~0.20 (SciDocs RRF+CE not run, estimated similar to RRF alone) â‰ˆ ~0.38 â‰ˆ same as published BM25 mean.
+- **CE rerank's variance is large** â€” wins on NFCorpus and SciFact, ties on neither, actively hurts on ArguAna and (estimated) SciDocs. Calibrate before deploying.
 
 ## What's next (mostly blocked on GPU)
 
-- **Auto-pipeline selector** — train a tiny classifier on per-dataset training pairs to pick the best pipeline. Cheap, doesn't need GPU.
+- **Auto-pipeline selector** â€” train a tiny classifier on per-dataset training pairs to pick the best pipeline. Cheap, doesn't need GPU.
 - **5+ more BEIR datasets** via GPU.
 - **Fine-tune BGE-base** on NFCorpus/ArguAna train splits.
-- **bge-reranker-v2-m3** (568M) on the datasets where CE wins (NFCorpus, SciFact) — heavyweight opt-in.
+- **bge-reranker-v2-m3** (568M) on the datasets where CE wins (NFCorpus, SciFact) â€” heavyweight opt-in.
 
 ## Verification
 
 ```bash
-git clone https://github.com/ruvnet/ruflo && cd ruflo
+git clone https://github.com/pwnapplehat/ruflo && cd ruflo
 npm install && ( cd v3/@claude-flow/cli && npx tsc )
 
 mkdir -p /tmp/beir-scidocs && cd /tmp/beir-scidocs
@@ -89,9 +89,9 @@ curl -sL -o sd.zip 'https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/da
 
 # Dense alone (best for SciDocs)
 BEIR_DATA_DIR=/tmp/beir-scidocs/scidocs node /path/to/scripts/run-beir-bge.mjs
-# → nDCG@10 0.211, rank 2/11
+# â†’ nDCG@10 0.211, rank 2/11
 
 # RRF (slightly worse on SciDocs)
 USE_LUCENE_BM25=1 BEIR_DATA_DIR=/tmp/beir-scidocs/scidocs node /path/to/scripts/run-beir-hybrid.mjs
-# → nDCG@10 0.203
+# â†’ nDCG@10 0.203
 ```

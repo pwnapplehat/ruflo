@@ -1,5 +1,5 @@
 /**
- * Regression guard for ruvnet/ruflo#1914 — `killStaleDaemons` must only ever
+ * Regression guard for pwnapplehat/ruflo#1914 â€” `killStaleDaemons` must only ever
  * reap daemons belonging to the current workspace (ADR-014: per-workspace
  * daemon scope). Before this fix it SIGTERM'd every process whose command line
  * contained `daemon start --foreground`, so `daemon start` in workspace B
@@ -18,7 +18,7 @@ import {
 const psLine = (root: string, pid = 4242, extra = '') =>
   `${pid} node /usr/local/lib/node_modules/@claude-flow/cli/bin/cli.js daemon start --foreground --quiet${extra} --workspace ${root}`;
 
-describe('#1914 — daemon workspace scoping', () => {
+describe('#1914 â€” daemon workspace scoping', () => {
   describe('daemonCommandLineBelongsToWorkspace', () => {
     it('matches a daemon line stamped with this workspace', () => {
       expect(daemonCommandLineBelongsToWorkspace(psLine('/Users/me/proj-a'), '/Users/me/proj-a')).toBe(true);
@@ -62,7 +62,7 @@ describe('#1914 — daemon workspace scoping', () => {
     });
   });
 
-  // #2356 — the inverse helper that powers `daemon status --all`: pull the
+  // #2356 â€” the inverse helper that powers `daemon status --all`: pull the
   // workspace root back out of a daemon process command line so leaked daemons
   // in other workspaces can be enumerated and aged.
   describe('extractWorkspaceFromDaemonLine', () => {

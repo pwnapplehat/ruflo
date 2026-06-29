@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * benchmark-seed-corpus.mjs — DRACO-style measurement of the bundled
+ * benchmark-seed-corpus.mjs â€” DRACO-style measurement of the bundled
  * seed corpus (ADR-149).
  *
  * For each row in `v3/@claude-flow/cli/assets/model-router/seed-rows.json`,
@@ -10,13 +10,13 @@
  * measured `scores: {model_id: 0..1}` map back to the row.
  *
  * This is the data lift that makes ADR-149's qualityBar selection actually
- * cost-optimal — without measured scores, the bundled KRR fits to assumptions.
+ * cost-optimal â€” without measured scores, the bundled KRR fits to assumptions.
  *
  * USAGE
- *   # Dry-run (default — no API calls, prints projected cost)
+ *   # Dry-run (default â€” no API calls, prints projected cost)
  *   node scripts/benchmark-seed-corpus.mjs
  *
- *   # Live — REAL OpenRouter API calls, spends real money
+ *   # Live â€” REAL OpenRouter API calls, spends real money
  *   OPENROUTER_API_KEY=sk-or-... node scripts/benchmark-seed-corpus.mjs --live
  *
  *   # Subset (testing): first 8 rows only
@@ -28,7 +28,7 @@
  *   # Different judge
  *   node scripts/benchmark-seed-corpus.mjs --live --judge openai/gpt-4.1
  *
- * COST NOTE: 64 rows × ~5 candidates = ~320 candidate calls + ~320 judge calls.
+ * COST NOTE: 64 rows Ã— ~5 candidates = ~320 candidate calls + ~320 judge calls.
  * Cheap-tier rows are short (~50 input / ~80 output tokens); strong-tier rows
  * are longer (~200 input / ~400 output). Projected: ~$1-3 USD. Default
  * --max-cost gate is $5.00.
@@ -46,7 +46,7 @@ const SEED_PATH = resolvePath(REPO_ROOT, 'v3', '@claude-flow', 'cli', 'assets', 
 const PROVENANCE_PATH = resolvePath(REPO_ROOT, 'v3', '@claude-flow', 'cli', 'assets', 'model-router', 'seed-rows.provenance.json');
 
 // ============================================================================
-// Candidate registry — the models we'll score every row against.
+// Candidate registry â€” the models we'll score every row against.
 // Prices: USD per million tokens (input / output) as of 2026-06-15.
 // ============================================================================
 
@@ -113,7 +113,7 @@ if (!existsSync(SEED_PATH)) {
 const allRows = JSON.parse(readFileSync(SEED_PATH, 'utf8'));
 const provenance = existsSync(PROVENANCE_PATH) ? JSON.parse(readFileSync(PROVENANCE_PATH, 'utf8')) : null;
 
-// ADR-149 v2 — read task+tier directly from each row when present
+// ADR-149 v2 â€” read task+tier directly from each row when present
 // (gen-seed-corpus-v2.mjs persists them in the row). Fall back to the v1
 // template-regeneration path when the corpus pre-dates v2.
 const v2Rows = allRows.every(r => typeof r.task === 'string' && typeof r.tier === 'string');
@@ -127,9 +127,9 @@ if (v2Rows) {
     tier: row.tier,
     _idx: idx,
   }));
-  console.log(`[bench] v2 corpus detected — using row.task + row.tier directly (${allRows.length} rows).`);
+  console.log(`[bench] v2 corpus detected â€” using row.task + row.tier directly (${allRows.length} rows).`);
 } else {
-  // v1 fallback — deterministic template regeneration.
+  // v1 fallback â€” deterministic template regeneration.
   const CHEAP_TEMPLATES = [
     'rename {x} to {y}',
     'add a console.log to {x}',
@@ -158,7 +158,7 @@ if (v2Rows) {
     'design a distributed consensus protocol with byzantine fault tolerance for {x}',
     'audit the {x} authentication flow for OWASP top-10 vulnerabilities',
     'architect a multi-tenant database schema with row-level security for {x}',
-    'analyze why {x} has a memory leak under load — produce hypothesis with evidence',
+    'analyze why {x} has a memory leak under load â€” produce hypothesis with evidence',
     'refactor {x} to the strategy pattern and migrate all callers safely',
     'write a threat model for {x} including STRIDE categorization and mitigations',
     'compare CRDT-based and OT-based collaborative editing for {x} with citations',
@@ -198,32 +198,32 @@ if (v2Rows) {
     template: reconstructed[idx].template,
     _idx: idx,
   }));
-  console.log(`[bench] v1 corpus detected — regenerating task text from templates (${allRows.length} rows).`);
+  console.log(`[bench] v1 corpus detected â€” regenerating task text from templates (${allRows.length} rows).`);
 }
 
 const ROWS = ARGS.maxRows ? enrichedRows.slice(0, ARGS.maxRows) : enrichedRows;
 
 // ============================================================================
-// Tier-aware rubrics — different criteria per tier
+// Tier-aware rubrics â€” different criteria per tier
 // ============================================================================
 
 const RUBRICS = {
   cheap: [
-    { name: 'correct_transform',  weight: 0.50, desc: 'The response performs the requested transformation correctly (e.g. var→const, rename X to Y, add console.log, etc.)' },
+    { name: 'correct_transform',  weight: 0.50, desc: 'The response performs the requested transformation correctly (e.g. varâ†’const, rename X to Y, add console.log, etc.)' },
     { name: 'no_extraneous_prose', weight: 0.25, desc: 'Returns the corrected code/answer without surrounding explanation, markdown, or hedge prose' },
     { name: 'preserves_behavior', weight: 0.25, desc: 'Did not break or omit other parts of the original code/intent' },
   ],
   mid: [
     { name: 'solves_task',         weight: 0.40, desc: 'Actually addresses the requested mid-tier work (implements helper, refactors as asked, etc.) with reasonable depth' },
     { name: 'idiomatic',           weight: 0.20, desc: 'Code is idiomatic and follows current best practices for the language' },
-    { name: 'completeness',        weight: 0.20, desc: 'Coverage is complete — does not stub out major parts or punt on the harder half' },
+    { name: 'completeness',        weight: 0.20, desc: 'Coverage is complete â€” does not stub out major parts or punt on the harder half' },
     { name: 'clarity',             weight: 0.10, desc: 'Reasoning / structure is clear; would be readable in a real codebase' },
     { name: 'no_extraneous_prose', weight: 0.10, desc: 'Stays close to the requested output format' },
   ],
   strong: [
-    { name: 'technical_depth',     weight: 0.30, desc: 'Demonstrates real technical depth — not handwaving — on the topic (distributed systems, security, architecture, debugging)' },
+    { name: 'technical_depth',     weight: 0.30, desc: 'Demonstrates real technical depth â€” not handwaving â€” on the topic (distributed systems, security, architecture, debugging)' },
     { name: 'tradeoffs',           weight: 0.25, desc: 'Surfaces trade-offs, alternatives, and gotchas appropriate to a senior engineer' },
-    { name: 'actionable',          weight: 0.20, desc: 'The output is actionable — has steps, code, or a concrete plan, not just abstract advice' },
+    { name: 'actionable',          weight: 0.20, desc: 'The output is actionable â€” has steps, code, or a concrete plan, not just abstract advice' },
     { name: 'completeness',        weight: 0.15, desc: 'Covers the requested scope without major omissions' },
     { name: 'no_extraneous_prose', weight: 0.10, desc: 'Stays close to the requested output format and length' },
   ],
@@ -265,7 +265,7 @@ async function callOR(modelId, prompt, apiKey, opts = {}) {
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://github.com/ruvnet/ruflo',
+      'HTTP-Referer': 'https://github.com/pwnapplehat/ruflo',
       'X-Title': 'ruflo-benchmark-seed-corpus',
     },
     body: JSON.stringify({
@@ -295,7 +295,7 @@ async function callOR(modelId, prompt, apiKey, opts = {}) {
 function buildJudgePrompt(row, response) {
   const rubric = RUBRICS[row.tier];
   const rubricList = rubric.map(r => `  - ${r.name} (weight ${r.weight}): ${r.desc}`).join('\n');
-  return `You are grading an AI model's response to a coding task. Score each rubric criterion as 0.0 (fails), 0.5 (partial), or 1.0 (meets). Return ONLY a JSON object: {"scores":{"<criterion>":<0|0.5|1>},"comment":"<≤80 char>"}. No prose outside the JSON.
+  return `You are grading an AI model's response to a coding task. Score each rubric criterion as 0.0 (fails), 0.5 (partial), or 1.0 (meets). Return ONLY a JSON object: {"scores":{"<criterion>":<0|0.5|1>},"comment":"<â‰¤80 char>"}. No prose outside the JSON.
 
 USER PROMPT (tier=${row.tier}):
 ${row.task}
@@ -306,7 +306,7 @@ ${response}
 RUBRIC:
 ${rubricList}
 
-Be strict — only award 1.0 if the criterion is unambiguously met.`;
+Be strict â€” only award 1.0 if the criterion is unambiguously met.`;
 }
 
 function aggregateScore(row, judgeJson) {
@@ -348,10 +348,10 @@ async function main() {
   const projected = projectedCost();
   console.log(`- projected total cost (incl. judge): ~$${projected.toFixed(4)} USD`);
   console.log(`- max-cost gate: $${ARGS.maxCost.toFixed(2)}`);
-  console.log(`- live mode: ${ARGS.live ? '**YES — real API calls + WILL overwrite seed-rows.json**' : 'no (dry run)'}\n`);
+  console.log(`- live mode: ${ARGS.live ? '**YES â€” real API calls + WILL overwrite seed-rows.json**' : 'no (dry run)'}\n`);
 
   if (!ARGS.live) {
-    console.log('Dry run — no API calls and no file writes. To run live:');
+    console.log('Dry run â€” no API calls and no file writes. To run live:');
     console.log(`  OPENROUTER_API_KEY=sk-or-... node scripts/benchmark-seed-corpus.mjs --live\n`);
     console.log('===BENCH_JSON===');
     console.log(JSON.stringify({ dryRun: true, projectedCostUSD: projected, candidates: CANDIDATES.map(c => c.id), judge: ARGS.judge, corpusSize: ROWS.length }, null, 2));
@@ -395,7 +395,7 @@ async function main() {
     }
     measured.push({ idx: row._idx, tier: row.tier, task: row.task, scores, details: candidateResults });
     if ((ri + 1) % 5 === 0 || ri === ROWS.length - 1) {
-      console.log(`  [${ri + 1}/${ROWS.length}] tier=${row.tier} \`${row.task.slice(0, 60)}…\`  spend so far: model=$${totalModelCost.toFixed(4)} judge=$${totalJudgeCost.toFixed(4)}`);
+      console.log(`  [${ri + 1}/${ROWS.length}] tier=${row.tier} \`${row.task.slice(0, 60)}â€¦\`  spend so far: model=$${totalModelCost.toFixed(4)} judge=$${totalJudgeCost.toFixed(4)}`);
     }
   }
 
@@ -439,8 +439,8 @@ async function main() {
   console.log(`\n| Model | Tier | Cheap | Mid | Strong | Overall | Latency | Errors |`);
   console.log(`|---|---|---|---|---|---|---|---|`);
   for (const r of aggRows.sort((a, b) => (b.overall_avg_score ?? 0) - (a.overall_avg_score ?? 0))) {
-    const fmt = (v) => v == null ? '—' : (v * 100).toFixed(1) + '%';
-    console.log(`| \`${r.id}\` | ${r.tier} | ${fmt(r.cheap_avg_score)} | ${fmt(r.mid_avg_score)} | ${fmt(r.strong_avg_score)} | **${fmt(r.overall_avg_score)}** | ${r.latency_mean_ms ? r.latency_mean_ms.toFixed(0) + ' ms' : '—'} | ${r.errors} |`);
+    const fmt = (v) => v == null ? 'â€”' : (v * 100).toFixed(1) + '%';
+    console.log(`| \`${r.id}\` | ${r.tier} | ${fmt(r.cheap_avg_score)} | ${fmt(r.mid_avg_score)} | ${fmt(r.strong_avg_score)} | **${fmt(r.overall_avg_score)}** | ${r.latency_mean_ms ? r.latency_mean_ms.toFixed(0) + ' ms' : 'â€”'} | ${r.errors} |`);
   }
   console.log();
 
@@ -460,7 +460,7 @@ async function main() {
 
   if (ARGS.writeRows) {
     // Overwrite seed-rows.json with measured scores per model id.
-    // ADR-149 v2 — preserve ALL original row keys (notably `task` + `tier`,
+    // ADR-149 v2 â€” preserve ALL original row keys (notably `task` + `tier`,
     // which gen-seed-corpus-v2.mjs writes per row). The prior stripping
     // implementation dropped these fields and broke the v2-detection logic
     // in this script's reader on the next run, silently falling back to v1

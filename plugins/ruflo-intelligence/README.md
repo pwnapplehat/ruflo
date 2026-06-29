@@ -1,13 +1,13 @@
 # ruflo-intelligence
 
-User-facing surface for Ruflo's self-learning system. Wraps **29 intelligence-related MCP tools** across four families into discoverable skills, commands, and the canonical 4-step pipeline (RETRIEVE → JUDGE → DISTILL → CONSOLIDATE). Coordinates with `ruflo-agentdb` (namespace convention), `ruflo-ruvector` (trajectory recording substrate), and `ruflo-browser` (consumes trajectory hooks for session replay).
+User-facing surface for Ruflo's self-learning system. Wraps **29 intelligence-related MCP tools** across four families into discoverable skills, commands, and the canonical 4-step pipeline (RETRIEVE â†’ JUDGE â†’ DISTILL â†’ CONSOLIDATE). Coordinates with `ruflo-agentdb` (namespace convention), `ruflo-ruvector` (trajectory recording substrate), and `ruflo-browser` (consumes trajectory hooks for session replay).
 
 > **Status:** ADR-0001 implemented. Plugin v0.3.0 targets `@claude-flow/cli` v3.6.x.
 
 ## Install
 
 ```
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 /plugin install ruflo-intelligence@ruflo
 ```
 
@@ -25,7 +25,7 @@ User-facing surface for Ruflo's self-learning system. Wraps **29 intelligence-re
 | Routing & meta hooks (`hooks_route`, `hooks_explain`, `hooks_pretrain`, `hooks_build-agents`, `hooks_metrics`, `hooks_transfer`) | 6 | `hooks-tools.ts:884, 1062, 1420, 1499, 1593, 1664` |
 | `hooks_model-*` (3-tier routing) | 3 | `hooks-tools.ts:3797, 3844, 3879` |
 | `ruvllm_sona_*` + `ruvllm_microlora_*` | 4 | `v3/@claude-flow/cli/src/mcp-tools/ruvllm-tools.ts:142, 169, 192, 222` |
-| **Total** | **29** | — |
+| **Total** | **29** | â€” |
 
 ## The 4-step intelligence pipeline
 
@@ -42,18 +42,18 @@ For an end-to-end run:
 
 ```
 hooks_pretrain
-  → hooks_intelligence_trajectory-start
-    → (each step) hooks_intelligence_trajectory-step
-  → hooks_intelligence_trajectory-end
-  → hooks_intelligence_learn
-  → ruvllm_sona_adapt    # DISTILL
-  → agentdb_consolidate  # CONSOLIDATE
-  → neural_compress      # storage efficiency
+  â†’ hooks_intelligence_trajectory-start
+    â†’ (each step) hooks_intelligence_trajectory-step
+  â†’ hooks_intelligence_trajectory-end
+  â†’ hooks_intelligence_learn
+  â†’ ruvllm_sona_adapt    # DISTILL
+  â†’ agentdb_consolidate  # CONSOLIDATE
+  â†’ neural_compress      # storage efficiency
 ```
 
 ## Cross-project pattern transfer (IPFS)
 
-`hooks_transfer` is the substrate plugin's most underused capability. It publishes learned patterns to IPFS (via Pinata) so a different project — or a different machine — can fetch and apply them. Use the `intelligence-transfer` skill or call directly:
+`hooks_transfer` is the substrate plugin's most underused capability. It publishes learned patterns to IPFS (via Pinata) so a different project â€” or a different machine â€” can fetch and apply them. Use the `intelligence-transfer` skill or call directly:
 
 ```bash
 # Publish patterns from this project to IPFS
@@ -75,11 +75,11 @@ Several Claude Code hooks fire intelligence-side writes:
 | Hook | Tool invoked | Target |
 |------|--------------|--------|
 | `pre-task` | `hooks_route` + `hooks_intelligence_pattern-search` | RETRIEVE phase |
-| `post-task --train-neural` | `agentdb_pattern-store` (ReasoningBank) → falls back to `memory_store --namespace pattern` | DISTILL phase, writes to **`pattern`** namespace |
-| `pretrain` (one-shot) | `hooks_pretrain` → seeds `memory_store --namespace patterns` | Bootstrap, writes to **`patterns`** namespace (plural) |
+| `post-task --train-neural` | `agentdb_pattern-store` (ReasoningBank) â†’ falls back to `memory_store --namespace pattern` | DISTILL phase, writes to **`pattern`** namespace |
+| `pretrain` (one-shot) | `hooks_pretrain` â†’ seeds `memory_store --namespace patterns` | Bootstrap, writes to **`patterns`** namespace (plural) |
 | Trajectory hooks (ruvector substrate) | `intelligence_trajectory-*` | Recorded by `ruflo-ruvector`; consumed by this plugin's pattern-store |
 
-> **Pluralization gotcha:** ReasoningBank fallback writes to `pattern` (singular). The `pretrain` hook writes to `patterns` (plural). They are *different* namespaces. See `ruflo-agentdb` ADR-0001 §"Namespace convention" for the canonical contract.
+> **Pluralization gotcha:** ReasoningBank fallback writes to `pattern` (singular). The `pretrain` hook writes to `patterns` (plural). They are *different* namespaces. See `ruflo-agentdb` ADR-0001 Â§"Namespace convention" for the canonical contract.
 
 ## Namespace coordination with ruflo-agentdb
 
@@ -91,7 +91,7 @@ This plugin defers to [ruflo-agentdb ADR-0001](../ruflo-agentdb/docs/adrs/0001-a
 | `patterns` (plural) | `hooks_pretrain`, `neural_train` corpus | distinct from `pattern` |
 | `claude-memories` | `memory_search_unified` (default include) | Claude Code auto-memory bridge |
 
-Do **not** invent new top-level namespaces for intelligence purposes — the convention is owned upstream.
+Do **not** invent new top-level namespaces for intelligence purposes â€” the convention is owned upstream.
 
 ## EWC++ consolidation
 
@@ -101,7 +101,7 @@ The plugin claims EWC++ consolidation; here's how to actually invoke it:
 2. **Periodically** (or after N task completions), call `agentdb_consolidate` to fold patterns into the long-term store under EWC++ semantics.
 3. **For SONA / MicroLoRA adapters specifically**, call `ruvllm_microlora_adapt` with the `--consolidate` flag to apply Elastic Weight Consolidation on the adapter's weight deltas. This prevents catastrophic forgetting when the adapter is trained on a new domain.
 
-Without these calls, fresh trajectories overwrite older patterns without protection — the system "forgets". The pipeline diagram above bakes consolidation into step 4 deliberately.
+Without these calls, fresh trajectories overwrite older patterns without protection â€” the system "forgets". The pipeline diagram above bakes consolidation into step 4 deliberately.
 
 ## MoE (Mixture of Experts) routing
 
@@ -111,32 +111,32 @@ Without these calls, fresh trajectories overwrite older patterns without protect
 |------|-------------|
 | `balanced` (default) | General-purpose: SONA + HNSW retrieval, no MoE specialization |
 | `sona` | Single-domain specialization with SONA adaptation |
-| `moe` | Multi-domain expert routing — recommended when tasks span 3+ distinct domains |
+| `moe` | Multi-domain expert routing â€” recommended when tasks span 3+ distinct domains |
 | `hnsw` | Pure pattern retrieval, no online adaptation |
 
 Configure once via `mcp tool call hooks_intelligence -- '{"mode": "moe", "enableSona": true}'` and let the dispatcher route subsequent learning calls.
 
 ## Commands
 
-- `/intelligence` — Dashboard: stats, metrics, model-tier distribution, routing rationale on demand
-- `/neural` — Neural training and prediction (`train`, `status`, `patterns`, `predict`, `optimize`, `compress`)
+- `/intelligence` â€” Dashboard: stats, metrics, model-tier distribution, routing rationale on demand
+- `/neural` â€” Neural training and prediction (`train`, `status`, `patterns`, `predict`, `optimize`, `compress`)
 
 ## Skills
 
-- `neural-train` — Train SONA + MicroLoRA patterns from successful tasks
-- `intelligence-route` — Route tasks using learned patterns; produces a `hooks_explain` rationale
-- `intelligence-transfer` — Publish/fetch patterns via IPFS (`hooks_transfer`)
+- `neural-train` â€” Train SONA + MicroLoRA patterns from successful tasks
+- `intelligence-route` â€” Route tasks using learned patterns; produces a `hooks_explain` rationale
+- `intelligence-transfer` â€” Publish/fetch patterns via IPFS (`hooks_transfer`)
 
 ## Architecture Decisions
 
-- [`ADR-0001` — Optimize ruflo-intelligence (surface completeness, 4-step pipeline, IPFS transfer, namespace coordination)](./docs/adrs/0001-intelligence-surface-completeness.md)
+- [`ADR-0001` â€” Optimize ruflo-intelligence (surface completeness, 4-step pipeline, IPFS transfer, namespace coordination)](./docs/adrs/0001-intelligence-surface-completeness.md)
 
 ## Related Plugins
 
-- `ruflo-agentdb` — substrate for HNSW + namespace contract; `agentdb_pattern-*` is this plugin's storage backend
-- `ruflo-ruvector` — trajectory hooks substrate; `intelligence_trajectory-*` calls land in ruvector's persisted trajectories
-- `ruflo-browser` — consumes trajectory hooks for session replay (ADR-0001 there)
-- `ruflo-daa` — Dynamic Agentic Architecture; cognitive patterns feed routing as inputs
+- `ruflo-agentdb` â€” substrate for HNSW + namespace contract; `agentdb_pattern-*` is this plugin's storage backend
+- `ruflo-ruvector` â€” trajectory hooks substrate; `intelligence_trajectory-*` calls land in ruvector's persisted trajectories
+- `ruflo-browser` â€” consumes trajectory hooks for session replay (ADR-0001 there)
+- `ruflo-daa` â€” Dynamic Agentic Architecture; cognitive patterns feed routing as inputs
 
 ## License
 

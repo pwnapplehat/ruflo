@@ -3,8 +3,8 @@
 config/config.json
 
 # Generated files
-chat-ui/dotenv-local.txt
-chat-ui/cloudbuild.yaml
+ruvocal/dotenv-local.txt
+ruvocal/cloudbuild.yaml
 mcp-bridge/cloudbuild.yaml
 node_modules/
 mcp-bridge/node_modules/

@@ -4,7 +4,7 @@
  * Both the agent_execute MCP tool and the workflow runtime (G3) need
  * to dispatch a prompt to an agent's configured Anthropic model. This
  * module factors that path out so it's testable and reusable, and
- * keeps the wire from agent_spawn → ProviderManager (real) in one
+ * keeps the wire from agent_spawn â†’ ProviderManager (real) in one
  * place rather than duplicated.
  */
 
@@ -30,16 +30,16 @@ export interface AgentRecord {
   model?: ClaudeModel;
   modelRoutedBy?: 'explicit' | 'router' | 'codemod' | 'default' | 'hybrid';
   /**
-   * ADR-149 — concrete picked model id (e.g. `openai/gpt-4.1`,
+   * ADR-149 â€” concrete picked model id (e.g. `openai/gpt-4.1`,
    * `inclusionai/ling-2.6-flash`). Present when the cost-optimal neural
    * router contributed to the decision; downstream `executeAgentInline`
    * uses this to dispatch via the correct provider's API instead of
    * falling back to MODEL_MAP[tier].
    */
   modelId?: string;
-  /** ADR-148 phase 2 — execution provider hint. */
+  /** ADR-148 phase 2 â€” execution provider hint. */
   provider?: 'anthropic' | 'openrouter';
-  /** ADR-148 phase 2 — concrete OpenRouter slug when provider='openrouter'. */
+  /** ADR-148 phase 2 â€” concrete OpenRouter slug when provider='openrouter'. */
   openrouterModel?: string;
   lastResult?: Record<string, unknown>;
 }
@@ -66,11 +66,11 @@ function saveAgentStore(store: AgentStore): void {
   writeFileSync(getAgentPath(), JSON.stringify(store, null, 2), 'utf-8');
 }
 
-// #1906/#2232 — Current model ids (Claude 4.x family):
-//   Opus 4.8    → claude-opus-4-8   (current, the `opus` alias)
-//   Opus 4.7    → claude-opus-4-7   (prior pin, reachable via `opus-4.7`)
-//   Sonnet 4.6  → claude-sonnet-4-6
-//   Haiku 4.5   → claude-haiku-4-5-20251001
+// #1906/#2232 â€” Current model ids (Claude 4.x family):
+//   Opus 4.8    â†’ claude-opus-4-8   (current, the `opus` alias)
+//   Opus 4.7    â†’ claude-opus-4-7   (prior pin, reachable via `opus-4.7`)
+//   Sonnet 4.6  â†’ claude-sonnet-4-6
+//   Haiku 4.5   â†’ claude-haiku-4-5-20251001
 // `inherit` and the various defaults below all map to Sonnet 4.6.
 export const DEFAULT_ANTHROPIC_MODEL = 'claude-sonnet-4-6';
 const MODEL_MAP: Record<string, string> = {
@@ -81,11 +81,11 @@ const MODEL_MAP: Record<string, string> = {
   inherit: DEFAULT_ANTHROPIC_MODEL,
 };
 
-// #2357 — the adaptive-thinking family (Fable 5, Opus 4.8, Opus 4.7) removed
+// #2357 â€” the adaptive-thinking family (Fable 5, Opus 4.8, Opus 4.7) removed
 // the sampling parameters (temperature/top_p/top_k); the Anthropic API
 // returns 400 "Extra inputs are not permitted" when any is present.
 // Prefix-match so dated snapshots (e.g. claude-opus-4-8-YYYYMMDD) are
-// covered. Applies only to the direct Anthropic path — the Ollama/OpenRouter
+// covered. Applies only to the direct Anthropic path â€” the Ollama/OpenRouter
 // OpenAI-compat paths accept temperature and are unchanged.
 export function modelRejectsSamplingParams(model: string): boolean {
   return /^claude-(fable-5|opus-4-8|opus-4-7)/.test(model);
@@ -112,11 +112,11 @@ export interface AnthropicCallResult {
 }
 
 /**
- * Generic Anthropic Messages API call. No agent registry coupling — used
+ * Generic Anthropic Messages API call. No agent registry coupling â€” used
  * by agent_execute (with the agent's configured model) and by the WASM
  * agent runtime (G4) when the bundled WASM only echoes input.
  *
- * #1725 — falls back to Ollama Cloud (Tier-2, OpenAI-compat) when
+ * #1725 â€” falls back to Ollama Cloud (Tier-2, OpenAI-compat) when
  * ANTHROPIC_API_KEY is unset and OLLAMA_API_KEY is present, or when
  * RUFLO_PROVIDER=ollama is explicitly set. Response shape is normalized
  * to the Anthropic-flavored AnthropicCallResult so existing callers
@@ -126,7 +126,7 @@ export async function callAnthropicMessages(input: AnthropicCallInput): Promise<
   const explicitProvider = (process.env.RUFLO_PROVIDER || '').toLowerCase();
   const ollamaKey = process.env.OLLAMA_API_KEY;
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
-  // #2042 — OpenRouter is an OpenAI-compat endpoint that fronts dozens of
+  // #2042 â€” OpenRouter is an OpenAI-compat endpoint that fronts dozens of
   // providers. Reporter (@ummcke00) had `providers.openrouter.apiKey` in
   // their config.yaml but agent_execute hardcoded Anthropic. Detect via
   // explicit RUFLO_PROVIDER=openrouter OR presence of OPENROUTER_API_KEY
@@ -158,7 +158,7 @@ export async function callAnthropicMessages(input: AnthropicCallInput): Promise<
     return {
       success: false,
       error:
-        'No LLM provider configured. Set ANTHROPIC_API_KEY (Tier-3), OPENROUTER_API_KEY (#2042), or OLLAMA_API_KEY (Tier-2 — #1725).',
+        'No LLM provider configured. Set ANTHROPIC_API_KEY (Tier-3), OPENROUTER_API_KEY (#2042), or OLLAMA_API_KEY (Tier-2 â€” #1725).',
     };
   }
   const model = input.model || DEFAULT_ANTHROPIC_MODEL;
@@ -176,10 +176,10 @@ export async function callAnthropicMessages(input: AnthropicCallInput): Promise<
       body: JSON.stringify({
         model,
         max_tokens: input.maxTokens || 1024,
-        // #2357 — omit temperature for models that reject sampling params
-        // (Fable 5 / Opus 4.8 / Opus 4.7 → 400 "Extra inputs are not
+        // #2357 â€” omit temperature for models that reject sampling params
+        // (Fable 5 / Opus 4.8 / Opus 4.7 â†’ 400 "Extra inputs are not
         // permitted"); keep the 0.7 default unchanged for models that still
-        // accept it (sonnet / haiku / opus ≤4.6).
+        // accept it (sonnet / haiku / opus â‰¤4.6).
         ...(modelRejectsSamplingParams(model)
           ? {}
           : { temperature: typeof input.temperature === 'number' ? input.temperature : 0.7 }),
@@ -234,7 +234,7 @@ export async function callAnthropicMessages(input: AnthropicCallInput): Promise<
 }
 
 /**
- * Ollama Cloud / OpenAI-compat provider — Tier-2 routing per ADR-026 + #1725.
+ * Ollama Cloud / OpenAI-compat provider â€” Tier-2 routing per ADR-026 + #1725.
  *
  * Endpoint: https://ollama.com/v1/chat/completions
  * Auth: Authorization: Bearer <OLLAMA_API_KEY>
@@ -242,9 +242,9 @@ export async function callAnthropicMessages(input: AnthropicCallInput): Promise<
  * Translates the Anthropic-flavored input shape onto OpenAI chat-completions
  * and translates the response back so callers never see provider-specific
  * fields. Logical model names are mapped to Ollama Cloud defaults:
- *   - 'haiku'  / 'sonnet'  → 'gpt-oss:120b-cloud' (sensible single default)
- *   - 'opus'              → 'gpt-oss:120b-cloud' (no opus tier on Ollama)
- *   - explicit 'ollama:<model>' or bare provider-native name → passed through
+ *   - 'haiku'  / 'sonnet'  â†’ 'gpt-oss:120b-cloud' (sensible single default)
+ *   - 'opus'              â†’ 'gpt-oss:120b-cloud' (no opus tier on Ollama)
+ *   - explicit 'ollama:<model>' or bare provider-native name â†’ passed through
  */
 async function callOllamaCompat(
   input: AnthropicCallInput & { apiKey: string },
@@ -327,11 +327,11 @@ async function callOllamaCompat(
 
 /**
  * Generic OpenAI-compat caller for OpenRouter and other OpenAI-shaped
- * endpoints. #2042 — reporter (@ummcke00) configured OpenRouter via
+ * endpoints. #2042 â€” reporter (@ummcke00) configured OpenRouter via
  * config.yaml but agent_execute hardcoded the Anthropic fetch. This is
  * the same shape as `callOllamaCompat` but routes to a configurable
  * baseUrl + sends an OpenRouter-friendly default model when none is
- * specified. Logical model names (haiku/sonnet/opus) pass through —
+ * specified. Logical model names (haiku/sonnet/opus) pass through â€”
  * OpenRouter accepts vendor-prefixed names like `anthropic/claude-3.5-sonnet`.
  */
 async function callOpenAICompat(
@@ -359,7 +359,7 @@ async function callOpenAICompat(
         'content-type': 'application/json',
         // OpenRouter convention: identify the integrating app for analytics
         // and rate-limit tiering. Harmless on other OpenAI-compat backends.
-        'HTTP-Referer': 'https://github.com/ruvnet/ruflo',
+        'HTTP-Referer': 'https://github.com/pwnapplehat/ruflo',
         'X-Title': 'Ruflo',
       },
       body: JSON.stringify({
@@ -408,7 +408,7 @@ async function callOpenAICompat(
 
 function resolveOpenAICompatModel(input: string | undefined, fallback: string): string {
   if (!input) return fallback;
-  // Logical Claude names → OpenRouter Anthropic-vendored names.
+  // Logical Claude names â†’ OpenRouter Anthropic-vendored names.
   // #2357 Finding C: the 3.5 / 3-opus slugs were retired Oct 2025; align with
   // MODEL_MAP (claude-haiku-4-5 / claude-sonnet-4-6 / claude-opus-4-8).
   if (input === 'haiku') return 'anthropic/claude-haiku-4-5';
@@ -420,7 +420,7 @@ function resolveOpenAICompatModel(input: string | undefined, fallback: string): 
 function resolveOllamaModel(input: string | undefined): string {
   const DEFAULT = 'gpt-oss:120b-cloud';
   if (!input) return DEFAULT;
-  // Logical → cloud default
+  // Logical â†’ cloud default
   if (input === 'haiku' || input === 'sonnet' || input === 'opus' || input === 'inherit') {
     return DEFAULT;
   }
@@ -464,7 +464,7 @@ export interface AgentExecuteResult {
   error?: string;
   remediation?: string;
   /**
-   * ADR-149 iter 7 — present when the request was retried after a 429/5xx
+   * ADR-149 iter 7 â€” present when the request was retried after a 429/5xx
    * via `nextCostOptimalAlternative`. Each entry records a model that
    * was tried and failed, in attempt order. The final `model` field is
    * the one that produced the surfaced result (success or final error).
@@ -478,7 +478,7 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
   if (!agent) return { success: false, agentId: input.agentId, error: 'Agent not found' };
   if (agent.status === 'terminated') return { success: false, agentId: input.agentId, error: 'Agent has been terminated' };
 
-  // ADR-149 iter 13 — first-call dispatch prefers `agent.modelId` (the
+  // ADR-149 iter 13 â€” first-call dispatch prefers `agent.modelId` (the
   // cost-optimal pick from the neural backend) over `MODEL_MAP[agent.model]`
   // when present. Before this fix the first attempt always used the tier
   // mapping; only the iter-7 fallback chain used modelId on retry, which
@@ -487,13 +487,13 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
   //
   // Rules:
   //   - agent.modelId is set AND it's a non-Anthropic slug (e.g.
-  //     'inclusionai/ling-2.6-flash', 'openai/gpt-4.1') → dispatch
+  //     'inclusionai/ling-2.6-flash', 'openai/gpt-4.1') â†’ dispatch
   //     directly via that id. callAnthropicMessages forwards non-Anthropic
   //     ids through OpenRouter (#2042), so this gets us the cost-optimal
   //     model on attempt 1.
-  //   - agent.modelId starts with 'anthropic/' → strip the prefix, use the
-  //     bare Anthropic id (e.g. 'anthropic/claude-haiku-4.5' → 'claude-haiku-4.5').
-  //   - agent.modelId is unset (no neural backend fired) → fall back to the
+  //   - agent.modelId starts with 'anthropic/' â†’ strip the prefix, use the
+  //     bare Anthropic id (e.g. 'anthropic/claude-haiku-4.5' â†’ 'claude-haiku-4.5').
+  //   - agent.modelId is unset (no neural backend fired) â†’ fall back to the
   //     legacy tier-mapped MODEL_MAP path. Existing behaviour preserved.
   let firstCallModel: string;
   if (agent.modelId) {
@@ -517,7 +517,7 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
 
   const startedAt = Date.now();
 
-  // #2042 — delegate to callAnthropicMessages so the v3 provider router
+  // #2042 â€” delegate to callAnthropicMessages so the v3 provider router
   // (Anthropic / Ollama / OpenRouter) governs which backend is hit.
   let result = await callAnthropicMessages({
     model: anthropicModel,
@@ -528,7 +528,7 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
     timeoutMs: input.timeoutMs,
   });
 
-  // ADR-149 iter 7 — fallback chain on retryable failures (429, 5xx,
+  // ADR-149 iter 7 â€” fallback chain on retryable failures (429, 5xx,
   // timeout). When the cost-optimal neural backend picked a specific
   // model id and that model fails for a transient reason, fall back to
   // the next-cheapest candidate that clears the quality bar. Budget is
@@ -541,7 +541,7 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
     if (isRetryable) {
       try {
         const { nextCostOptimalAlternative } = await import('../ruvector/neural-router.js');
-        // ADR-149 iter 9 — delegate to the shared task-embedder LRU. The
+        // ADR-149 iter 9 â€” delegate to the shared task-embedder LRU. The
         // pipeline + cache are shared with agent-tools.ts, so the embedding
         // for this prompt is almost always already cached from the initial
         // routing decision (no extra inference cost in steady state).
@@ -569,15 +569,15 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
           }
         }
       } catch {
-        // Fallback chain is best-effort — preserve the original error result.
+        // Fallback chain is best-effort â€” preserve the original error result.
       }
     }
   }
 
   agent.status = 'idle';
 
-  // ADR-149 — close the bandit feedback loop. `recordModelOutcome` updates
-  // the Beta(α,β) prior for the agent's tier so the Thompson sampler learns
+  // ADR-149 â€” close the bandit feedback loop. `recordModelOutcome` updates
+  // the Beta(Î±,Î²) prior for the agent's tier so the Thompson sampler learns
   // from production traffic instead of staying frozen at install-day priors.
   // This is best-effort: any error here must NOT break the agent execution.
   // For now, "success" = the model returned a response without an API error.
@@ -586,21 +586,21 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
   try {
     const { recordModelOutcome, recordModelOutcomeByModelId } = await import('../ruvector/model-router.js');
     // Bandit priors are keyed on the 3 canonical tiers (haiku/sonnet/opus/inherit);
-    // collapse opus-4.7 → opus before recording so the bandit's per-tier Beta
+    // collapse opus-4.7 â†’ opus before recording so the bandit's per-tier Beta
     // updates correctly.
     const tier: 'haiku' | 'sonnet' | 'opus' | 'inherit' =
       agent.model === 'opus-4.7' ? 'opus' :
       (agent.model as 'haiku' | 'sonnet' | 'opus' | 'inherit' | undefined) ?? 'sonnet';
     const outcome: 'success' | 'failure' = result.success ? 'success' : 'failure';
     recordModelOutcome(input.prompt, tier, outcome);
-    // ADR-149 — also write to the shadow per-modelId priors when the cost-
+    // ADR-149 â€” also write to the shadow per-modelId priors when the cost-
     // optimal neural backend picked a concrete model id. Selection logic
     // still uses tier priors, but the per-modelId data accumulates so a
     // future refactor can switch the selector over.
     if (agent.modelId) {
       recordModelOutcomeByModelId(input.prompt, agent.modelId, outcome);
     }
-    // ADR-149 iter 17 — close the production-data side of the feedback loop.
+    // ADR-149 iter 17 â€” close the production-data side of the feedback loop.
     // The trajectory recorder (CLAUDE_FLOW_ROUTER_TRAJECTORY=1) writes
     // per-decision rows to .swarm/model-router-trajectories.jsonl from the
     // model-router itself. Now we ALSO write outcome rows here so future
@@ -615,7 +615,7 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
         const scores: Record<string, number> | undefined = agent.modelId
           ? { [agent.modelId]: outcome === 'success' ? 1.0 : 0.0 }
           : undefined;
-        // iter 31 — pass token usage + modelId so the recorder can compute
+        // iter 31 â€” pass token usage + modelId so the recorder can compute
         // USD spend at write time. Consumers (`router decisions`, cost-
         // savings reports) get cost without their own price table.
         recordTrajectoryOutcome({
@@ -629,7 +629,7 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
       } catch { /* never break execution */ }
     }
   } catch {
-    // Silent — bandit feedback must never block routing.
+    // Silent â€” bandit feedback must never block routing.
   }
 
   if (result.success) {
@@ -650,7 +650,7 @@ export async function executeAgentTask(input: AgentExecuteInput): Promise<AgentE
   }
 
   saveAgentStore(store);
-  // No-provider-configured error → surface the same actionable message
+  // No-provider-configured error â†’ surface the same actionable message
   // the router built, with a #2042-aware remediation pointer.
   const noProvider = (result.error || '').includes('No LLM provider configured');
   return {

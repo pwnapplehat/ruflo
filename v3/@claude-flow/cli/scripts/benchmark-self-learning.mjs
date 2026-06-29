@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// benchmark-self-learning.mjs — proof harness for #2245.
+// benchmark-self-learning.mjs â€” proof harness for #2245.
 //
 // Replaces the "self-learning reports success but persists nothing" theater
 // with measured deltas: actually runs each entry point N times and prints what
@@ -12,11 +12,11 @@
 //   BENCH_NO_WRITE=1 node scripts/benchmark-self-learning.mjs
 //
 // Repro:
-//   1. Clone ruvnet/ruflo, npm install, build the CLI:
+//   1. Clone pwnapplehat/ruflo, npm install, build the CLI:
 //        npm install && (cd v3/@claude-flow/cli && npx tsc -b)
 //   2. Run this script. It prints a "before/after" table per surface.
 //   3. Inspect docs/benchmarks/runs/self-learning-<ts>.json for the persisted
-//      proof — diff against previous runs to catch any future regression.
+//      proof â€” diff against previous runs to catch any future regression.
 
 import { mkdirSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -43,7 +43,7 @@ async function main() {
   intel.clearIntelligence();
 
   // -------------------------------------------------------------------------
-  // §A — recordSignalProcessed
+  // Â§A â€” recordSignalProcessed
   // -------------------------------------------------------------------------
   const A_before = intel.getIntelligenceStats();
   const tA = performance.now();
@@ -54,7 +54,7 @@ async function main() {
   const A_delta = A_after.signalsProcessed - A_before.signalsProcessed;
 
   // -------------------------------------------------------------------------
-  // §B — hooks_task-completed (trainPatterns:true) → trajectory pipeline
+  // Â§B â€” hooks_task-completed (trainPatterns:true) â†’ trajectory pipeline
   // -------------------------------------------------------------------------
   const taskCompleted = hooks.hooksTools.find((t) => t.name === 'hooks_task-completed');
   const B_before = intel.getIntelligenceStats();
@@ -63,7 +63,7 @@ async function main() {
   for (let i = 0; i < N; i++) {
     const r = await taskCompleted.handler({
       taskId: `bench-${i}`,
-      success: i % 5 !== 4, // 80% success, 20% failure — mixed verdict
+      success: i % 5 !== 4, // 80% success, 20% failure â€” mixed verdict
       quality: 0.5 + (i % 5) * 0.1,
       trainPatterns: true,
       content: `Benchmark task ${i}: refactor or test or fix`,
@@ -74,7 +74,7 @@ async function main() {
   const B_after = intel.getIntelligenceStats();
 
   // -------------------------------------------------------------------------
-  // §C — hooks_task-completed recorded-only (negative control)
+  // Â§C â€” hooks_task-completed recorded-only (negative control)
   // -------------------------------------------------------------------------
   const C_before = intel.getIntelligenceStats();
   const tC = performance.now();
@@ -85,7 +85,7 @@ async function main() {
   const C_after = intel.getIntelligenceStats();
 
   // -------------------------------------------------------------------------
-  // §D — storeNeuralPatterns + neural_patterns list reflects them
+  // Â§D â€” storeNeuralPatterns + neural_patterns list reflects them
   // -------------------------------------------------------------------------
   const items = Array.from({ length: N }, (_, i) => ({
     name: `pattern-${i}`,
@@ -99,7 +99,7 @@ async function main() {
   const D_list = await listTool.handler({ action: 'list' });
 
   // -------------------------------------------------------------------------
-  // §E — multi-step trajectory pipeline (end-to-end)
+  // Â§E â€” multi-step trajectory pipeline (end-to-end)
   // -------------------------------------------------------------------------
   const trajStart = hooks.hooksTools.find((t) => t.name === 'hooks_intelligence_trajectory-start');
   const trajStep  = hooks.hooksTools.find((t) => t.name === 'hooks_intelligence_trajectory-step');
@@ -126,7 +126,7 @@ async function main() {
   const dtE = performance.now() - tE;
 
   // -------------------------------------------------------------------------
-  // §F — getUnifiedLearningStats (ADR-075)
+  // Â§F â€” getUnifiedLearningStats (ADR-075)
   // -------------------------------------------------------------------------
   const tF = performance.now();
   const unified = await intel.getUnifiedLearningStats();
@@ -160,7 +160,7 @@ async function main() {
         calls: N,
         trajectoriesDelta: C_after.trajectoriesRecorded - C_before.trajectoriesRecorded,
         passed: (C_after.trajectoriesRecorded - C_before.trajectoriesRecorded) === 0,
-        note: 'negative control — should NOT touch trajectories',
+        note: 'negative control â€” should NOT touch trajectories',
         elapsedMs: Number(dtC.toFixed(2)),
       },
       D_pretrain_neuralPatterns: {
@@ -175,7 +175,7 @@ async function main() {
         persistedCount,
         sonaUpdateCount,
         passed: persistedCount === Math.min(5, N), // persistence is the must-pass; SONA depends on env
-        note: 'MCP trajectory tools feed sonaCoordinator (see hooks_intelligence_stats), not globalStats — observable outcomes checked here',
+        note: 'MCP trajectory tools feed sonaCoordinator (see hooks_intelligence_stats), not globalStats â€” observable outcomes checked here',
         elapsedMs: Number(dtE.toFixed(2)),
       },
       F_unifiedStats: {
@@ -191,7 +191,7 @@ async function main() {
           'consistency.notes': unified.consistency.notes.length,
         },
         passed: !!unifiedOk,
-        note: 'ADR-075 — one aggregator across the 4 stores. Each sub-view names its source.',
+        note: 'ADR-075 â€” one aggregator across the 4 stores. Each sub-view names its source.',
         elapsedMs: Number(dtF.toFixed(2)),
       },
     },
@@ -209,20 +209,20 @@ async function main() {
   if (process.env.BENCH_JSON) {
     console.log(JSON.stringify(summary, null, 2));
   } else {
-    console.log(`# Self-learning benchmark (#2245) — N=${N}`);
+    console.log(`# Self-learning benchmark (#2245) â€” N=${N}`);
     console.log('');
     console.log('| Section | Calls | Delta | Passed | Latency (ms) |');
     console.log('|---|---:|---:|:---:|---:|');
-    console.log(`| A recordSignalProcessed | ${N} | +${summary.sections.A_recordSignalProcessed.signalsProcessedDelta} | ${summary.sections.A_recordSignalProcessed.passed ? '✅' : '❌'} | ${summary.sections.A_recordSignalProcessed.elapsedMs} |`);
-    console.log(`| B task-completed (train) | ${N} | trained=${summary.sections.B_taskCompleted_trainPatterns.trainedViaPipeline}, trajectories+${summary.sections.B_taskCompleted_trainPatterns.trajectoriesDelta} | ${summary.sections.B_taskCompleted_trainPatterns.passed ? '✅' : '❌'} | ${summary.sections.B_taskCompleted_trainPatterns.elapsedMs} (${summary.sections.B_taskCompleted_trainPatterns.avgLatencyMsPerCall}/call) |`);
-    console.log(`| C task-completed (record-only) | ${N} | trajectories+${summary.sections.C_taskCompleted_recordedOnly.trajectoriesDelta} (expected 0) | ${summary.sections.C_taskCompleted_recordedOnly.passed ? '✅' : '❌'} | ${summary.sections.C_taskCompleted_recordedOnly.elapsedMs} |`);
-    console.log(`| D pretrain → neural_patterns | ${items.length} | stored=${summary.sections.D_pretrain_neuralPatterns.stored}, listed=${summary.sections.D_pretrain_neuralPatterns.listTotal} | ${summary.sections.D_pretrain_neuralPatterns.passed ? '✅' : '❌'} | ${summary.sections.D_pretrain_neuralPatterns.elapsedMs} |`);
-    console.log(`| E multi-step trajectory | ${summary.sections.E_multiStepTrajectory.cycles} | persisted=${summary.sections.E_multiStepTrajectory.persistedCount}, sonaUpdate=${summary.sections.E_multiStepTrajectory.sonaUpdateCount} | ${summary.sections.E_multiStepTrajectory.passed ? '✅' : '❌'} | ${summary.sections.E_multiStepTrajectory.elapsedMs} |`);
+    console.log(`| A recordSignalProcessed | ${N} | +${summary.sections.A_recordSignalProcessed.signalsProcessedDelta} | ${summary.sections.A_recordSignalProcessed.passed ? 'âœ…' : 'âŒ'} | ${summary.sections.A_recordSignalProcessed.elapsedMs} |`);
+    console.log(`| B task-completed (train) | ${N} | trained=${summary.sections.B_taskCompleted_trainPatterns.trainedViaPipeline}, trajectories+${summary.sections.B_taskCompleted_trainPatterns.trajectoriesDelta} | ${summary.sections.B_taskCompleted_trainPatterns.passed ? 'âœ…' : 'âŒ'} | ${summary.sections.B_taskCompleted_trainPatterns.elapsedMs} (${summary.sections.B_taskCompleted_trainPatterns.avgLatencyMsPerCall}/call) |`);
+    console.log(`| C task-completed (record-only) | ${N} | trajectories+${summary.sections.C_taskCompleted_recordedOnly.trajectoriesDelta} (expected 0) | ${summary.sections.C_taskCompleted_recordedOnly.passed ? 'âœ…' : 'âŒ'} | ${summary.sections.C_taskCompleted_recordedOnly.elapsedMs} |`);
+    console.log(`| D pretrain â†’ neural_patterns | ${items.length} | stored=${summary.sections.D_pretrain_neuralPatterns.stored}, listed=${summary.sections.D_pretrain_neuralPatterns.listTotal} | ${summary.sections.D_pretrain_neuralPatterns.passed ? 'âœ…' : 'âŒ'} | ${summary.sections.D_pretrain_neuralPatterns.elapsedMs} |`);
+    console.log(`| E multi-step trajectory | ${summary.sections.E_multiStepTrajectory.cycles} | persisted=${summary.sections.E_multiStepTrajectory.persistedCount}, sonaUpdate=${summary.sections.E_multiStepTrajectory.sonaUpdateCount} | ${summary.sections.E_multiStepTrajectory.passed ? 'âœ…' : 'âŒ'} | ${summary.sections.E_multiStepTrajectory.elapsedMs} |`);
     const f = summary.sections.F_unifiedStats;
-    console.log(`| F unified-stats | 4 stores | bridge.reachable=${f.observed['memoryBridge.reachable']}, sona.available=${f.observed['sona.available']}, neural.count=${f.observed['neuralPatterns.patternCount']}, notes=${f.observed['consistency.notes']} | ${f.passed ? '✅' : '❌'} | ${f.elapsedMs} |`);
+    console.log(`| F unified-stats | 4 stores | bridge.reachable=${f.observed['memoryBridge.reachable']}, sona.available=${f.observed['sona.available']}, neural.count=${f.observed['neuralPatterns.patternCount']}, notes=${f.observed['consistency.notes']} | ${f.passed ? 'âœ…' : 'âŒ'} | ${f.elapsedMs} |`);
     console.log('');
     console.log(`Final state: signalsProcessed=${summary.finalState.signalsProcessed}, trajectoriesRecorded=${summary.finalState.trajectoriesRecorded}, patternsLearned=${summary.finalState.patternsLearned}`);
-    console.log(`Overall: ${allPassed ? '✅ ALL PASSED' : '❌ FAILED'}`);
+    console.log(`Overall: ${allPassed ? 'âœ… ALL PASSED' : 'âŒ FAILED'}`);
   }
 
   if (!process.env.BENCH_NO_WRITE) {

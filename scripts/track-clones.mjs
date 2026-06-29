@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Clone tracker — fetches 14-day GitHub clone numbers for the ruflo
+ * Clone tracker â€” fetches 14-day GitHub clone numbers for the ruflo
  * ecosystem repos and appends a snapshot to `data/clone-data.rvf`
  * (a RuVector RVF vector store).
  *
@@ -40,7 +40,7 @@ const LEDGER_PATH = path_resolve(DATA_DIR, 'clone-data.ledger.json');
 const PROOF_PATH = path_resolve(DATA_DIR, 'clone-data.proof.json');
 
 const REPOS = [
-  'ruvnet/ruflo',
+  'pwnapplehat/ruflo',
   'ruvnet/agentdb',
   'ruvnet/agentic-flow',
   'ruvnet/ruvector',
@@ -62,7 +62,7 @@ const NPM_PKGS_HEADLINE = [
 
 function fetchClones(repo) {
   try {
-    // Use execFileSync with array args — repo name is program-controlled but
+    // Use execFileSync with array args â€” repo name is program-controlled but
     // array form prevents accidental shell metacharacter expansion (CWE-78).
     const out = execFileSync('gh', ['api', `repos/${repo}/traffic/clones`], {
       encoding: 'utf8',
@@ -100,7 +100,7 @@ async function loadOrCreateRvf() {
   if (!rvfModule) return null;
 
   const { RvfDatabase } = rvfModule;
-  const dimensions = 10; // 5 repos × {count, uniques}
+  const dimensions = 10; // 5 repos Ã— {count, uniques}
 
   if (existsSync(RVF_PATH)) {
     return RvfDatabase.open(RVF_PATH).catch(async (err) => {
@@ -233,7 +233,7 @@ async function main() {
       clones_14d: totalClones,
       unique_cloners_14d: totalUniques,
       npm_downloads_12mo_headline: npmHeadlineTotal,
-      headline: `${(npmHeadlineTotal / 1e6).toFixed(1)}M npm downloads · ${Math.round(totalClones / 1000)}k git clones (14d)`,
+      headline: `${(npmHeadlineTotal / 1e6).toFixed(1)}M npm downloads Â· ${Math.round(totalClones / 1000)}k git clones (14d)`,
     },
     ledger_snapshot_count: ledger.snapshot_count,
     ledger_sha256: ledgerSha,
@@ -241,7 +241,7 @@ async function main() {
     rvf_path: 'data/clone-data.rvf',
   };
   writeFileSync(PROOF_PATH, JSON.stringify(proof, null, 2) + '\n');
-  console.error(`  proof:           ${PROOF_PATH} (ledger sha256: ${ledgerSha.slice(0, 16)}…)`);
+  console.error(`  proof:           ${PROOF_PATH} (ledger sha256: ${ledgerSha.slice(0, 16)}â€¦)`);
 }
 
 main().catch((err) => {

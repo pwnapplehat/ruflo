@@ -261,7 +261,7 @@ describe('ControllerRegistry', () => {
 
   describe('graceful degradation', () => {
     it('should continue when AgentDB is unavailable', async () => {
-      // No AgentDB module available — should still init CLI-layer controllers
+      // No AgentDB module available â€” should still init CLI-layer controllers
       await registry.initialize({ backend: mockBackend });
       expect(registry.isInitialized()).toBe(true);
     });
@@ -405,13 +405,13 @@ describe('ControllerRegistry', () => {
       expect(registry.isEnabled('learningBridge')).toBe(false);
     });
 
-    // Regression guard for ruvnet/ruflo#2019.
+    // Regression guard for pwnapplehat/ruflo#2019.
     //
     // agentdb@3.0.0-alpha.14's `getController()` switch only handles
     // memory/reflexion/skills/causal/causalGraph and THROWS
     // `Unknown controller: vectorBackend` for everything else. The
     // registry's old try/catch silently swallowed that throw and
-    // returned null — so `vectorBackend` (and `graphAdapter`) reported
+    // returned null â€” so `vectorBackend` (and `graphAdapter`) reported
     // `enabled: false` even though the field is right there on the
     // agentdb instance. The fix probes `agentdb[name]` directly before
     // falling back to getController.
@@ -444,7 +444,7 @@ describe('ControllerRegistry', () => {
 
     // Companion guard: if a future agentdb exposes these via
     // getController instead of as direct fields, we must still find
-    // them — proves the fallback path stays intact.
+    // them â€” proves the fallback path stays intact.
     it('vectorBackend: falls back to getController when no direct property exists (issue #2019)', async () => {
       const fakeVectorBackend = { kind: 'vectorBackend-via-controller' };
       const fakeAgentDb: any = {

@@ -1,7 +1,7 @@
 /**
- * PluginIntegrityVerifier — install-layer security for plugin supply chain.
+ * PluginIntegrityVerifier â€” install-layer security for plugin supply chain.
  *
- * Implements P1 of ADR-145 (ruvnet/ruflo#2254): Stage-1 Ed25519 signature
+ * Implements P1 of ADR-145 (pwnapplehat/ruflo#2254): Stage-1 Ed25519 signature
  * verification at `plugins install`. Stage-2 (semantic-intent scan against
  * SCH attacks) lands in P2; per-namespace write ACLs land in P3-P4.
  *
@@ -17,7 +17,7 @@
  *
  *   - SCH (arXiv:2605.14460): malicious intent wrapped as natural-language
  *     "compliance rules" in plugin descriptions. The agent generates the
- *     harmful code at runtime — no static payload exists. 77.67% breach
+ *     harmful code at runtime â€” no static payload exists. 77.67% breach
  *     success, 0.00% scanner detection. Stage-2 (P2) catches this; Stage-1
  *     does not.
  *
@@ -62,7 +62,7 @@ export interface SignedPluginManifest {
 export interface TrustAnchor {
   /** Hex-encoded Ed25519 public key the publisher signs with. */
   readonly publicKey: string;
-  /** Human-readable owner — for audit, not for trust decisions. */
+  /** Human-readable owner â€” for audit, not for trust decisions. */
   readonly owner: string;
   /** Optional ISO 8601 date after which this anchor is no longer trusted. */
   readonly expiresAt?: string;
@@ -88,9 +88,9 @@ export interface VerificationResult {
   readonly status: VerificationStatus;
   readonly pluginId: string;
   readonly signerFingerprint?: string;
-  /** Verification timestamp — useful for telemetry correlation. */
+  /** Verification timestamp â€” useful for telemetry correlation. */
   readonly ts: number;
-  /** Operator-facing detail; do not parse — log only. */
+  /** Operator-facing detail; do not parse â€” log only. */
   readonly detail?: string;
 }
 
@@ -99,7 +99,7 @@ export interface VerifierConfig {
   /**
    * When true, `verify` returns the actual failure status. When false (legacy
    * mode), `verify` returns the failure status BUT callers may choose to
-   * proceed with a warning — the strictness gate lives at the caller, not
+   * proceed with a warning â€” the strictness gate lives at the caller, not
    * here, so the verifier itself is always pure.
    */
   readonly strict?: boolean;
@@ -109,7 +109,7 @@ export interface VerifierConfig {
 
 /**
  * Canonical JSON serialisation for hashing. Deterministic key ordering at
- * every nesting level. Pure; identical input → identical output bytes.
+ * every nesting level. Pure; identical input â†’ identical output bytes.
  */
 export function canonicalize(value: unknown): string {
   if (value === null || typeof value !== 'object') return JSON.stringify(value);
@@ -124,7 +124,7 @@ export function hashManifest(manifest: PluginManifest): string {
   return createHash('sha256').update(canonicalize(manifest)).digest('hex');
 }
 
-/** Short fingerprint for telemetry — first 16 hex chars of the key. */
+/** Short fingerprint for telemetry â€” first 16 hex chars of the key. */
 export function fingerprint(publicKey: string): string {
   return publicKey.slice(0, 16);
 }
@@ -152,7 +152,7 @@ export function findAnchor(
 }
 
 /**
- * `PluginIntegrityVerifier` — Stage-1 verifier (signature + trust anchor).
+ * `PluginIntegrityVerifier` â€” Stage-1 verifier (signature + trust anchor).
  *
  * Pure-ish: holds the trust-anchor list and clock, no other state. Safe to
  * construct per-invocation or share.
@@ -206,7 +206,7 @@ export class PluginIntegrityVerifier {
         pluginId,
         signerFingerprint: fingerprint(signed.publicKey),
         ts: now,
-        detail: '@noble/ed25519 not available — cannot verify',
+        detail: '@noble/ed25519 not available â€” cannot verify',
       };
     }
 
@@ -242,7 +242,7 @@ export class PluginIntegrityVerifier {
   }
 }
 
-// ─── helpers ────────────────────────────────────────────────────────────
+// â”€â”€â”€ helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function hexToBytes(hex: string): Uint8Array {
   const out = new Uint8Array(hex.length >>> 1);

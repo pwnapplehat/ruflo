@@ -4,7 +4,7 @@
     PowerShell equivalent of scripts/install.sh.
 
 .DESCRIPTION
-    https://github.com/ruvnet/ruflo
+    https://github.com/pwnapplehat/ruflo
 
     Native Windows installer that works in PowerShell and cmd without requiring
     Git-Bash, WSL, or MSYS. Mirrors install.sh's flag surface.
@@ -31,7 +31,7 @@
     Specific version (default: latest).
 
 .EXAMPLE
-    irm https://cdn.jsdelivr.net/gh/ruvnet/ruflo@main/scripts/install.ps1 | iex
+    irm https://cdn.jsdelivr.net/gh/pwnapplehat/ruflo@main/scripts/install.ps1 | iex
 .EXAMPLE
     .\scripts\install.ps1 -Full
 .EXAMPLE
@@ -161,7 +161,7 @@ if ($SetupMcp) {
         }
     } | ConvertTo-Json -Depth 10
     Set-Content -Path $mcpJson -Value $mcpContent -Encoding UTF8
-    Write-Ok "Wrote $mcpJson â€” reload Cursor (Developer: Reload Window) to load the MCP server."
+    Write-Ok "Wrote $mcpJson Ã¢â‚¬â€ reload Cursor (Developer: Reload Window) to load the MCP server."
 }
 
 # --- Init wizard -------------------------------------------------------------
@@ -199,7 +199,7 @@ Write-Host "  4. Agents are in .cursor/agents/, skills in .cursor/skills/." -For
 Write-Host "  5. Hooks in .cursor/hooks.json wire ruflo intelligence into Cursor events." -ForegroundColor Gray
 if (-not $env:CURSOR_API_KEY) {
     Write-Host ""
-    Write-Warn "CURSOR_API_KEY not set â€” headless background workers that spawn SDK agents will be disabled."
+    Write-Warn "CURSOR_API_KEY not set Ã¢â‚¬â€ headless background workers that spawn SDK agents will be disabled."
     Write-Warn "Set it via: `$env:CURSOR_API_KEY = 'cursor_...'  (Cursor Dashboard -> Integrations)"
 }
 Write-Host ""

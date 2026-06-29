@@ -18,10 +18,10 @@ COPY mcp-stdio-kernel.js ./
 
 # Create writable directories for MCP backends (ruflo, ruvector, agentic-flow)
 # These tools write state/tasks/memory to the working directory at runtime
-RUN mkdir -p /app/.claude-flow/tasks /app/.claude-flow/memory /app/.claude-flow/sessions \
-    /app/.claude-flow/agents /app/.claude-flow/config /app/.claude-flow/data \
-    /app/.claude-flow/logs /app/.claude-flow/swarm \
-    && chown -R node:node /app/.claude-flow
+RUN mkdir -p /app/.cursor-flow/tasks /app/.cursor-flow/memory /app/.cursor-flow/sessions \
+    /app/.cursor-flow/agents /app/.cursor-flow/config /app/.cursor-flow/data \
+    /app/.cursor-flow/logs /app/.cursor-flow/swarm \
+    && chown -R node:node /app/.cursor-flow
 
 USER node
 
@@ -38,7 +38,6 @@ ENV MCP_GROUP_SECURITY=false
 ENV MCP_GROUP_BROWSER=false
 ENV MCP_GROUP_NEURAL=false
 ENV MCP_GROUP_AGENTIC_FLOW=false
-ENV MCP_GROUP_CLAUDE_CODE=false
 ENV MCP_GROUP_GEMINI=false
 ENV MCP_GROUP_CODEX=false
 

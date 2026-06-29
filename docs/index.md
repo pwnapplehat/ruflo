@@ -14,7 +14,7 @@ Ruflo provides native Cursor plugins for multi-agent orchestration, /loop worker
 
 ```bash
 # Add the marketplace
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 
 # Install plugins
 /plugin install ruflo-core@ruflo
@@ -79,7 +79,7 @@ RuFlo plugins use Claude Code's native capabilities when available:
 
 ## Links
 
-- [GitHub Repository](https://github.com/ruvnet/ruflo)
+- [GitHub Repository](https://github.com/pwnapplehat/ruflo)
 - [npm Packages](https://www.npmjs.com/package/@claude-flow/cli)
-- [ADR-091: Native Integration](https://github.com/ruvnet/ruflo/blob/main/v3/docs/adr/ADR-091-loop-monitor-native-integration.md)
-- [Issues & Support](https://github.com/ruvnet/ruflo/issues)
+- [ADR-091: Native Integration](https://github.com/pwnapplehat/ruflo/blob/main/v3/docs/adr/ADR-091-loop-monitor-native-integration.md)
+- [Issues & Support](https://github.com/pwnapplehat/ruflo/issues)

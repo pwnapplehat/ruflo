@@ -2,14 +2,14 @@
 
 Session-as-skill browser automation. Playwright-backed via 23 `mcp__claude-flow__browser_*` tools, with each session captured as a first-class **RVF cognitive container** holding manifest + trajectory + screenshots + sanitized cookies + findings, indexed in AgentDB and gated by AIDefence.
 
-> **v0.2.0 architecture** — every browser session is now an addressable, replayable, federatable artifact. Status is **Proposed** per [ADR-0001](./docs/adrs/0001-browser-skills-architecture.md); the load-bearing replay assumption requires a pre-Accept spike (see ADR Verification §4).
+> **v0.2.0 architecture** â€” every browser session is now an addressable, replayable, federatable artifact. Status is **Proposed** per [ADR-0001](./docs/adrs/0001-browser-skills-architecture.md); the load-bearing replay assumption requires a pre-Accept spike (see ADR Verification Â§4).
 >
-> **Substrate alignment (ADR-122).** This plugin is the user-facing skill layer; the substrate primitives — signed trajectories (Ed25519 + RVF), causal-graph self-healing, AIDefence-attested cookie vault, federated MCTS, Session Capsules, Workflow Compiler — ship in the [`@claude-flow/browser@3.0.0-alpha.4`](https://www.npmjs.com/package/@claude-flow/browser) npm package. See the [substrate announcement](https://gist.github.com/ruvnet/a708fafb1375ed69bc48377df47fa2ac) and tracking issue [#2041](https://github.com/ruvnet/ruflo/issues/2041).
+> **Substrate alignment (ADR-122).** This plugin is the user-facing skill layer; the substrate primitives â€” signed trajectories (Ed25519 + RVF), causal-graph self-healing, AIDefence-attested cookie vault, federated MCTS, Session Capsules, Workflow Compiler â€” ship in the [`@claude-flow/browser@3.0.0-alpha.4`](https://www.npmjs.com/package/@claude-flow/browser) npm package. See the [substrate announcement](https://gist.github.com/ruvnet/a708fafb1375ed69bc48377df47fa2ac) and tracking issue [#2041](https://github.com/pwnapplehat/ruflo/issues/2041).
 
 ## Install
 
 ```
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 /plugin install ruflo-browser@ruflo
 ```
 
@@ -19,13 +19,13 @@ A browser session is allocated an RVF container at session-start and committed a
 
 ```
 <rvf-id>/
-├── manifest.yaml         # URL, viewport, profile, runner, lineage
-├── trajectory.ndjson     # one line per action via ruvector hooks trajectory-step
-├── screenshots/<step>.png
-├── snapshots/<step>.json # accessibility trees indexed by navigation
-├── dom/                  # optional, when --with-dom
-├── cookies.json          # AIDefence-sanitized
-└── findings.md           # test verdicts, scrape outputs, injection quarantine
+â”œâ”€â”€ manifest.yaml         # URL, viewport, profile, runner, lineage
+â”œâ”€â”€ trajectory.ndjson     # one line per action via ruvector hooks trajectory-step
+â”œâ”€â”€ screenshots/<step>.png
+â”œâ”€â”€ snapshots/<step>.json # accessibility trees indexed by navigation
+â”œâ”€â”€ dom/                  # optional, when --with-dom
+â”œâ”€â”€ cookies.json          # AIDefence-sanitized
+â””â”€â”€ findings.md           # test verdicts, scrape outputs, injection quarantine
 ```
 
 Re-open with `rvf ingest <id>`, fork with `rvf derive`, federate with `rvf export`.
@@ -38,8 +38,8 @@ Re-open with `rvf ingest <id>`, fork with `rvf derive`, federate with `rvf expor
 /ruflo-browser ls [--query <text>]      # list sessions, AgentDB-indexed
 /ruflo-browser show <session-id>        # manifest + trajectory + verdict
 /ruflo-browser replay <session-id>      # re-drive trajectory
-/ruflo-browser export <session-id>      # rvf export → tar.zst
-/ruflo-browser fork <session-id>        # rvf derive → new lineage-tracked session
+/ruflo-browser export <session-id>      # rvf export â†’ tar.zst
+/ruflo-browser fork <session-id>        # rvf derive â†’ new lineage-tracked session
 /ruflo-browser purge <session-id>       # destroy, keep redacted manifest
 /ruflo-browser doctor                   # check Playwright, MCP, AgentDB, AIDefence
 ```
@@ -52,10 +52,10 @@ Re-open with `rvf ingest <id>`, fork with `rvf derive`, federate with `rvf expor
 | `browser-replay` | Replay a stored trajectory, optionally on a different URL or with mutated inputs. |
 | `browser-extract` | Run a stored `browser-templates` recipe or one-shot extraction. PII-scanned. |
 | `browser-login` | Drive an auth flow once, sanitize+vault cookies for reuse. |
-| `browser-form-fill` | Form interaction with field-name → value mapping. |
+| `browser-form-fill` | Form interaction with field-name â†’ value mapping. |
 | `browser-screenshot-diff` | Pixel + DOM diff between two session screenshots (visual regression). |
 | `browser-auth-flow` | Probe an auth flow for redirect leaks, missing CSRF, weak session cookies. |
-| `browser-test` | UI test recipe — composes `browser-record` + `browser-replay`. |
+| `browser-test` | UI test recipe â€” composes `browser-record` + `browser-replay`. |
 
 `browser-scrape` is a deprecation shim that delegates to `browser-extract`. Removed in v0.3.0.
 
@@ -68,13 +68,13 @@ Re-open with `rvf ingest <id>`, fork with `rvf derive`, federate with `rvf expor
 | `browser-templates` | `<template-name>` | scrape recipe with selector chain + post-process | replaces ad-hoc memory strings |
 | `browser-cookies` | `<host>` | claims-gated cookie blob + expiry + AIDefence verdict | cookie reuse without re-auth |
 
-Raw cookies and tokens never enter AgentDB unwrapped — see ADR §3.
+Raw cookies and tokens never enter AgentDB unwrapped â€” see ADR Â§3.
 
 ## AIDefence gates (mandatory)
 
-1. **Pre-storage scan** — every scraped string passes `aidefence_has_pii` before AgentDB store.
-2. **Cookie sanitization** — `aidefence_scan` flags high-entropy strings; vault them in `browser-cookies`.
-3. **Prompt-injection check** — extracted text returning to an LLM passes `aidefence_is_safe`. Hits get quarantined to `findings.md`. With [`aidefence@2.3.0` (ADR-118)](../../v3/docs/adr/ADR-118-aidefence-2.3.0-upgrade.md) the check now catches role-hijack (`you are now …` / `act as …` / `pretend to be …`) and jailbreak markers (`DAN mode` / `developer mode` / `god mode` / `root mode`) in addition to the canonical `ignore all previous instructions` family — high-leverage upgrade for browser-scraped pages.
+1. **Pre-storage scan** â€” every scraped string passes `aidefence_has_pii` before AgentDB store.
+2. **Cookie sanitization** â€” `aidefence_scan` flags high-entropy strings; vault them in `browser-cookies`.
+3. **Prompt-injection check** â€” extracted text returning to an LLM passes `aidefence_is_safe`. Hits get quarantined to `findings.md`. With [`aidefence@2.3.0` (ADR-118)](../../v3/docs/adr/ADR-118-aidefence-2.3.0-upgrade.md) the check now catches role-hijack (`you are now â€¦` / `act as â€¦` / `pretend to be â€¦`) and jailbreak markers (`DAN mode` / `developer mode` / `god mode` / `root mode`) in addition to the canonical `ignore all previous instructions` family â€” high-leverage upgrade for browser-scraped pages.
 
 ## MCP surface
 
@@ -103,28 +103,28 @@ bash plugins/ruflo-browser/scripts/smoke.sh
 # Expected on green: "13 passed, 0 failed"
 ```
 
-Verifies plugin structural soundness — file inventory, frontmatter validity, ADR cross-references, AgentDB namespace coverage in the agent, allowed-tools enumeration in skills, and that the 5 lifecycle MCP tools are present in the CLI source.
+Verifies plugin structural soundness â€” file inventory, frontmatter validity, ADR cross-references, AgentDB namespace coverage in the agent, allowed-tools enumeration in skills, and that the 5 lifecycle MCP tools are present in the CLI source.
 
-### Replay spike (interactive, online — pre-Accept gate)
+### Replay spike (interactive, online â€” pre-Accept gate)
 
 ```bash
 bash plugins/ruflo-browser/scripts/replay-spike.sh
 ```
 
-Records + replays a baseline session against each URL in `scripts/SITES.txt` (10 sites by default, varying drift profiles). Writes `spike-results/<timestamp>/STATUS.md` with per-site verdicts and the aggregate replay rate. The ADR threshold is **≥80%**; meeting it is the gate to flip ADR-0001 from `Proposed` → `Accepted`. Below the threshold, the proposal degrades to "session as audit log" (replay and screenshot-diff become best-effort).
+Records + replays a baseline session against each URL in `scripts/SITES.txt` (10 sites by default, varying drift profiles). Writes `spike-results/<timestamp>/STATUS.md` with per-site verdicts and the aggregate replay rate. The ADR threshold is **â‰¥80%**; meeting it is the gate to flip ADR-0001 from `Proposed` â†’ `Accepted`. Below the threshold, the proposal degrades to "session as audit log" (replay and screenshot-diff become best-effort).
 
-The spike requires `agent-browser` (or `npx --yes agent-browser`), `ruvector@0.2.25` (auto-fetched via `npx`), and network access. It is **not** part of the smoke test — running it is a deliberate audit step.
+The spike requires `agent-browser` (or `npx --yes agent-browser`), `ruvector@0.2.25` (auto-fetched via `npx`), and network access. It is **not** part of the smoke test â€” running it is a deliberate audit step.
 
 ## Architecture Decisions
 
-- [`ADR-0001` — Adopt session-as-skill architecture for ruflo-browser](./docs/adrs/0001-browser-skills-architecture.md)
+- [`ADR-0001` â€” Adopt session-as-skill architecture for ruflo-browser](./docs/adrs/0001-browser-skills-architecture.md)
 
 ## Related Plugins
 
-- `ruflo-ruvector` — trajectory hooks, SONA pattern distillation, MCP tools
-- `ruflo-agentdb` — controllers backing `browser-sessions`, `browser-selectors`, `browser-templates`, `browser-cookies`
-- `ruflo-aidefence` — PII / prompt-injection gates
-- `ruflo-federation` — cross-installation session sharing via RVF export
+- `ruflo-ruvector` â€” trajectory hooks, SONA pattern distillation, MCP tools
+- `ruflo-agentdb` â€” controllers backing `browser-sessions`, `browser-selectors`, `browser-templates`, `browser-cookies`
+- `ruflo-aidefence` â€” PII / prompt-injection gates
+- `ruflo-federation` â€” cross-installation session sharing via RVF export
 
 ## License
 

@@ -17,7 +17,7 @@ When you need to build or update a knowledge graph from source code or documenta
 
 1. **Scan files** -- use `Glob` and `Read` to enumerate and read source files at the given path
 2. **Identify entities** -- extract classes, functions, modules, types, and config references from each file
-3. **Map relations** -- for each entity, determine its relations to other entities. **Critical: TypeScript `import type` and inline `type` specifiers (`import { type Foo, bar }`) are erased at compile time and MUST NOT be counted as value imports** -- they're a separate, weaker relation. Misclassifying them produces phantom runtime cycles (see ruvnet/ruflo#2049).
+3. **Map relations** -- for each entity, determine its relations to other entities. **Critical: TypeScript `import type` and inline `type` specifiers (`import { type Foo, bar }`) are erased at compile time and MUST NOT be counted as value imports** -- they're a separate, weaker relation. Misclassifying them produces phantom runtime cycles (see pwnapplehat/ruflo#2049).
    - `imports`: value imports (`import { x } from '...'`, `require(...)`) -- weight `0.9`
    - `type-depends-on`: TypeScript type-only imports (`import type { Foo } from '...'` and `import { type Foo, value } from '...'`) -- weight `0.1`, **never used for cycle detection or runtime impact analysis**
    - `extends`: class inheritance -- weight `0.9`
@@ -28,9 +28,9 @@ When you need to build or update a knowledge graph from source code or documenta
 
    **Regex hint for classifying TS imports** (so a naive `from '...'` grep doesn't conflate the two):
    ```
-   ^\s*import\s+type\s+               → type-depends-on (entire import is type-only)
-   ^\s*import\s*\{[^}]*\btype\s+\w+   → split: type specifiers → type-depends-on, value specifiers → imports
-   ^\s*import\s+[^{]*\bfrom\s+        → imports (value)
+   ^\s*import\s+type\s+               â†’ type-depends-on (entire import is type-only)
+   ^\s*import\s*\{[^}]*\btype\s+\w+   â†’ split: type specifiers â†’ type-depends-on, value specifiers â†’ imports
+   ^\s*import\s+[^{]*\bfrom\s+        â†’ imports (value)
    ```
 4. **Store in AgentDB** -- call `mcp__claude-flow__agentdb_hierarchical-store` for each entity with metadata (name, type, file, line, description)
 5. **Create edges** -- call `mcp__claude-flow__agentdb_causal-edge` for each relation with source, target, relation type, and weight

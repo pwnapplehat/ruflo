@@ -21,10 +21,11 @@ serve(async (req) => {
     
     console.log('Optimize config request:', { preset, currentGoal });
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+    const AI_GATEWAY_API_KEY = Deno.env.get('AI_GATEWAY_API_KEY');
+    if (!AI_GATEWAY_API_KEY) {
+      throw new Error('AI_GATEWAY_API_KEY is not configured');
     }
+    const AI_GATEWAY_URL = Deno.env.get('AI_GATEWAY_URL') || 'https://api.openai.com/v1/chat/completions';
 
     const systemPrompt = `You are an expert research workflow architect specializing in GOAP (Goal-Oriented Action Planning) configuration optimization.
 
@@ -115,10 +116,10 @@ Be specific and practical - these settings will directly control AI research beh
 
     const userPrompt = presetPrompts[preset.toLowerCase()] || `Optimize research settings for: ${preset}. Goal: ${currentGoal || 'general research'}`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch(AI_GATEWAY_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Authorization': `Bearer ${AI_GATEWAY_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

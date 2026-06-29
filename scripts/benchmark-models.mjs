@@ -1,29 +1,29 @@
 #!/usr/bin/env node
 /**
- * benchmark-models.mjs — Real measured benchmark of cheap-tier model
+ * benchmark-models.mjs â€” Real measured benchmark of cheap-tier model
  * alternatives via OpenRouter (ADR-148 phase 2 follow-up).
  *
  * What this measures, per model, on the machine it runs on:
  *   - latency: per-query mean, p50, p95 (wall-clock, includes network)
  *   - quality: pass rate against a hand-crafted pattern check
- *   - cost:    USD per query from OpenRouter's `usage` field (tokens × price)
+ *   - cost:    USD per query from OpenRouter's `usage` field (tokens Ã— price)
  *
  * The test corpus is hand-crafted to be representative of cheap-tier work
- * (single-file structural edits, naming, adds/removes) — the kind of task
+ * (single-file structural edits, naming, adds/removes) â€” the kind of task
  * that #2334's hybrid router should be confident on. Each row has a
  * `check` regex that the model's response must contain to count as a pass.
  *
  * USAGE
- *   # Dry run — print what would be called + cost estimate, no API calls
+ *   # Dry run â€” print what would be called + cost estimate, no API calls
  *   node scripts/benchmark-models.mjs
  *
- *   # Live run — REAL OpenRouter API calls, spends real money
+ *   # Live run â€” REAL OpenRouter API calls, spends real money
  *   OPENROUTER_API_KEY=sk-or-... node scripts/benchmark-models.mjs --live
  *
  *   # Custom model list
  *   node scripts/benchmark-models.mjs --live --models google/gemini-flash-1.5,openai/gpt-4o-mini
  *
- *   # Custom max-cost cap (default $0.50 — refuses to run if estimate exceeds)
+ *   # Custom max-cost cap (default $0.50 â€” refuses to run if estimate exceeds)
  *   node scripts/benchmark-models.mjs --live --max-cost 1.00
  *
  * OUTPUT: markdown to stdout + JSON after `===BENCH_JSON===`. Writes a
@@ -46,7 +46,7 @@ const REPO_ROOT = resolvePath(__dirname, '..');
 
 /**
  * Default cheap-tier candidate list. Prices are quoted public list prices in
- * USD per million tokens (input / output) as of 2026-06-15 — re-verify
+ * USD per million tokens (input / output) as of 2026-06-15 â€” re-verify
  * before relying on them for cost projections.
  */
 const DEFAULT_MODELS = [
@@ -64,9 +64,9 @@ const DEFAULT_MODELS = [
   { id: 'mistralai/ministral-3b-2512',        in_per_m: 0.10,  out_per_m: 0.10, family: 'mistral' },
   // Qwen
   { id: 'qwen/qwen-2.5-7b-instruct',          in_per_m: 0.05,  out_per_m: 0.10, family: 'qwen' },
-  // InclusionAI — extreme cheap
+  // InclusionAI â€” extreme cheap
   { id: 'inclusionai/ling-2.6-flash',         in_per_m: 0.01,  out_per_m: 0.03, family: 'inclusionai' },
-  // NVIDIA — free Nemotron tier (cost=$0 but rate-limited; useful as a fallback / budget tier)
+  // NVIDIA â€” free Nemotron tier (cost=$0 but rate-limited; useful as a fallback / budget tier)
   { id: 'nvidia/nemotron-nano-9b-v2:free',    in_per_m: 0.00,  out_per_m: 0.00, family: 'nvidia' },
   { id: 'nvidia/nemotron-3-super-120b-a12b:free', in_per_m: 0.00, out_per_m: 0.00, family: 'nvidia' },
 ];
@@ -214,7 +214,7 @@ async function callOpenRouter(modelId, userPrompt, apiKey) {
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://github.com/ruvnet/ruflo',
+      'HTTP-Referer': 'https://github.com/pwnapplehat/ruflo',
       'X-Title': 'ruflo-benchmark-models',
     },
     body: JSON.stringify({
@@ -266,16 +266,16 @@ async function main() {
   console.log('# Cheap-tier model benchmark (ADR-148 phase 2)\n');
   console.log(`- ts: ${new Date().toISOString().slice(0, 19)}Z`);
   console.log(`- node: ${process.version}  platform: ${process.platform}-${process.arch}`);
-  console.log(`- corpus: ${CORPUS.length} queries × ${ARGS.repeat} repeat`);
+  console.log(`- corpus: ${CORPUS.length} queries Ã— ${ARGS.repeat} repeat`);
   console.log(`- models: ${MODELS.length} (${MODELS.map(m => m.id).join(', ')})`);
   console.log(`- max-tokens per response: ${ARGS.maxTokens}`);
   const projected = projectedCost();
   console.log(`- projected total cost (rough): ~$${projected.toFixed(4)} USD (~$${(projected / MODELS.length).toFixed(4)}/model)`);
   console.log(`- max-cost gate: $${ARGS.maxCost.toFixed(2)}`);
-  console.log(`- live mode: ${ARGS.live ? '**YES — real API calls**' : 'no (dry run)'}\n`);
+  console.log(`- live mode: ${ARGS.live ? '**YES â€” real API calls**' : 'no (dry run)'}\n`);
 
   if (!ARGS.live) {
-    console.log('Dry run — no API calls. To run for real:');
+    console.log('Dry run â€” no API calls. To run for real:');
     console.log(`  OPENROUTER_API_KEY=sk-or-... node scripts/benchmark-models.mjs --live\n`);
     console.log('===BENCH_JSON===');
     console.log(JSON.stringify({ dryRun: true, projectedCostUSD: projected, models: MODELS.map(m => m.id), corpusSize: CORPUS.length }, null, 2));
@@ -301,7 +301,7 @@ async function main() {
 
   for (let r = 0; r < ARGS.repeat; r++) {
     for (const row of CORPUS) {
-      // Per-row, parallel over models (small fan-out — OR rate limits allowing)
+      // Per-row, parallel over models (small fan-out â€” OR rate limits allowing)
       const tasks = MODELS.map((m, mi) => async () => {
         try {
           const resp = await callOpenRouter(m.id, row.task, apiKey);
@@ -351,18 +351,18 @@ async function main() {
     };
   });
 
-  // Sort by pass rate desc, then by cost asc — Pareto-friendly view
+  // Sort by pass rate desc, then by cost asc â€” Pareto-friendly view
   rows.sort((a, b) => b.passRate - a.passRate || a.usdCost - b.usdCost);
 
   const showStdev = ARGS.repeat > 1;
-  console.log(`| Model | Family | Pass | Latency mean${showStdev ? ' ± σ' : ''} | p95 | $/run | $/1k passes |`);
+  console.log(`| Model | Family | Pass | Latency mean${showStdev ? ' Â± Ïƒ' : ''} | p95 | $/run | $/1k passes |`);
   console.log(`|---|---|---|---|---|---|---|`);
   for (const r of rows) {
     const dollarPer1kPasses = r.passes > 0 ? (r.usdCost / r.passes) * 1000 : Infinity;
     const lat = showStdev
-      ? `${r.latency.mean.toFixed(0)} ± ${r.latency.stdev.toFixed(0)} ms`
+      ? `${r.latency.mean.toFixed(0)} Â± ${r.latency.stdev.toFixed(0)} ms`
       : `${r.latency.mean.toFixed(0)} ms`;
-    console.log(`| \`${r.model}\` | ${r.family} | **${r.passes}/${r.total} = ${(r.passRate * 100).toFixed(1)}%** | ${lat} | ${r.latency.p95.toFixed(0)} ms | $${r.usdCost.toFixed(5)} | ${dollarPer1kPasses === Infinity ? '∞' : '$' + dollarPer1kPasses.toFixed(4)} |`);
+    console.log(`| \`${r.model}\` | ${r.family} | **${r.passes}/${r.total} = ${(r.passRate * 100).toFixed(1)}%** | ${lat} | ${r.latency.p95.toFixed(0)} ms | $${r.usdCost.toFixed(5)} | ${dollarPer1kPasses === Infinity ? 'âˆž' : '$' + dollarPer1kPasses.toFixed(4)} |`);
   }
   console.log('');
   console.log(`Total spend: $${rows.reduce((s, r) => s + r.usdCost, 0).toFixed(5)}`);

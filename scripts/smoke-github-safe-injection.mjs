@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Regression guard for ruvnet/ruflo#2089 — ADR-127 Phase 1.
+ * Regression guard for pwnapplehat/ruflo#2089 â€” ADR-127 Phase 1.
  *
  * Generalizes the smoke-pre-bash-hook.mjs pattern (#2017) to the GitHub helper
  * surface.  `github-safe.js` writes untrusted PR/issue body content to a temp
@@ -14,7 +14,7 @@
  *   1. The helper passed `--body-file <tmpfile>`, NOT `--body <rawbody>`.
  *   2. The temp-file content is verbatim (not shell-expanded).
  *   3. A body >256KB triggers a rejection BEFORE gh is invoked (Phase 2 target;
- *      Phase 1 documents the expected red→green without failing the build).
+ *      Phase 1 documents the expected redâ†’green without failing the build).
  *   4. An empty body skips the temp-file path entirely (no-op, helper exits 0).
  *
  * Runs against BOTH copies:
@@ -34,7 +34,7 @@ const HELPERS = [
   join(REPO_ROOT, 'v3', '@claude-flow', 'cli', '.claude', 'helpers', 'github-safe.js'),
 ];
 
-// 256 KB — the GitHub API body field limit documented in ADR-127.
+// 256 KB â€” the GitHub API body field limit documented in ADR-127.
 const MAX_BODY_BYTES = 256 * 1024;
 
 // Create a fake `gh` script that logs its argv to a capture file and exits 0.
@@ -55,19 +55,19 @@ const shimEnv = { ...process.env, PATH: `${fakeGhDir}:${process.env.PATH || ''}`
 
 const cases = [
   {
-    name: 'backtick body — temp-file path, body verbatim',
+    name: 'backtick body â€” temp-file path, body verbatim',
     args: ['issue', 'comment', '1', 'code: `rm -rf /`'],
     expectBodyVerbatim: 'code: `rm -rf /`',
     expectBodyFileFlagInArgv: true,
   },
   {
-    name: '$() body — temp-file path, body verbatim',
+    name: '$() body â€” temp-file path, body verbatim',
     args: ['pr', 'comment', '1', 'result: $(whoami)'],
     expectBodyVerbatim: 'result: $(whoami)',
     expectBodyFileFlagInArgv: true,
   },
   {
-    name: 'semicolon body — temp-file path, body verbatim',
+    name: 'semicolon body â€” temp-file path, body verbatim',
     args: ['issue', 'create', '--title', 'test', '--body', 'a; b; c'],
     expectBodyVerbatim: 'a; b; c',
     expectBodyFileFlagInArgv: true,
@@ -75,15 +75,15 @@ const cases = [
   {
     // Phase 2: github-safe.js now enforces the 256KB cap (GITHUB_SAFE_VERSION=1.0.0).
     // A body exceeding the limit must be rejected (exit 1) BEFORE gh is invoked.
-    name: '>256KB body — must be rejected (body cap, Phase 2)',
+    name: '>256KB body â€” must be rejected (body cap, Phase 2)',
     args: ['issue', 'comment', '1', 'x'.repeat(MAX_BODY_BYTES + 1)],
     expectExit: 1,
   },
   {
-    name: 'empty body — no-op path, exits 0',
+    name: 'empty body â€” no-op path, exits 0',
     args: ['issue', 'comment', '1', ''],
     expectExit: 0,
-    // Empty body takes the "execute normally" branch — gh is called directly.
+    // Empty body takes the "execute normally" branch â€” gh is called directly.
     // The fake-gh exits 0, so the helper should exit 0 too.
   },
 ];
@@ -105,20 +105,20 @@ function runOne(helperPath, c) {
   const fails = [];
 
   if (c.note) {
-    // Documented transition — don't fail the build.
+    // Documented transition â€” don't fail the build.
     return { fails: [], out, err, status: r.status, note: c.note };
   }
 
   if (c.expectExit !== undefined && c.expectExit !== 'any' && r.status !== c.expectExit) {
     // Special case: a body that exceeds the kernel's MAX_ARG_STRLEN (128 KiB on
     // most Linux kernels) gets rejected by the OS at exec time rather than by
-    // the helper itself — spawnSync returns status=null with error.code=E2BIG.
+    // the helper itself â€” spawnSync returns status=null with error.code=E2BIG.
     // For the purposes of "must be rejected before gh is invoked," that
     // counts: the body literally cannot reach `gh`. macOS allows >1 MiB args
     // so locally the helper's own cap fires; CI Linux trips E2BIG first.
     const isE2BIG = r.status === null && r.error && r.error.code === 'E2BIG';
     if (c.expectExit === 1 && isE2BIG) {
-      // Treated as rejected — no extra failure.
+      // Treated as rejected â€” no extra failure.
     } else {
       fails.push(`exit ${r.status} (expected ${c.expectExit})${isE2BIG ? ' [E2BIG]' : ''}`);
     }
@@ -134,7 +134,7 @@ function runOne(helperPath, c) {
         fails.push('could not parse gh argv capture file');
       }
     } else {
-      fails.push('fake gh was not invoked (capture file missing) — helper may have crashed before calling gh');
+      fails.push('fake gh was not invoked (capture file missing) â€” helper may have crashed before calling gh');
     }
 
     if (c.expectBodyFileFlagInArgv) {
@@ -144,7 +144,7 @@ function runOne(helperPath, c) {
         fails.push(`--body-file not found in gh argv (argv: ${JSON.stringify(argv.slice(0, 8))})`);
       }
       if (hasBodyInline) {
-        fails.push('--body (inline) found in gh argv — body is being passed unsafely');
+        fails.push('--body (inline) found in gh argv â€” body is being passed unsafely');
       }
     }
 
@@ -159,7 +159,7 @@ function runOne(helperPath, c) {
             fails.push(`temp-file content mismatch: expected ${JSON.stringify(c.expectBodyVerbatim)}, got ${JSON.stringify(content.slice(0, 120))}`);
           }
         } else {
-          // Temp file may have been cleaned up already — that's OK for the verbatim check.
+          // Temp file may have been cleaned up already â€” that's OK for the verbatim check.
           // The --body-file flag presence is already verified above.
         }
       }
@@ -199,7 +199,7 @@ try { unlinkSync(fakeGhPath); } catch (_) { /* ignore */ }
 try { require('fs').rmdirSync(fakeGhDir); } catch (_) { /* ignore */ }
 
 if (failed > 0) {
-  console.error(`\n${failed} github-safe injection smoke case(s) failed — regression of #2089`);
+  console.error(`\n${failed} github-safe injection smoke case(s) failed â€” regression of #2089`);
   process.exit(1);
 }
 console.log('\nok: github-safe injection smoke passed both helper copies');

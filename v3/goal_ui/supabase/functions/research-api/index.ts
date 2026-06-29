@@ -54,10 +54,11 @@ serve(async (req) => {
   }
 
   try {
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+    const AI_GATEWAY_API_KEY = Deno.env.get('AI_GATEWAY_API_KEY');
+    if (!AI_GATEWAY_API_KEY) {
+      throw new Error('AI_GATEWAY_API_KEY is not configured');
     }
+    const AI_GATEWAY_URL = Deno.env.get('AI_GATEWAY_URL') || 'https://api.openai.com/v1/chat/completions';
 
     const { goal, config = {}, aiModel = 'google/gemini-2.5-flash', stream: enableStreaming = true }: ResearchRequest = await req.json();
 
@@ -90,7 +91,7 @@ serve(async (req) => {
       const allFindings = [];
       
       for (const step of researchSteps) {
-        const stepResult = await executeResearchStep(step, goal, config, aiModel, LOVABLE_API_KEY);
+        const stepResult = await executeResearchStep(step, goal, config, aiModel, AI_GATEWAY_API_KEY, AI_GATEWAY_URL);
         allFindings.push(stepResult);
       }
 
@@ -133,7 +134,7 @@ serve(async (req) => {
             })}\n\n`));
 
             // Execute step
-            const stepResult = await executeResearchStep(step, goal, config, aiModel, LOVABLE_API_KEY);
+            const stepResult = await executeResearchStep(step, goal, config, aiModel, AI_GATEWAY_API_KEY, AI_GATEWAY_URL);
 
             // Send step complete event
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({
@@ -187,14 +188,15 @@ async function executeResearchStep(
   goal: string,
   config: any,
   aiModel: string,
-  apiKey: string
+  apiKey: string,
+  gatewayUrl: string
 ) {
   const systemPrompt = config.prompts?.systemPrompt || buildSystemPrompt(config);
   const userPrompt = buildUserPrompt(step, goal, config);
 
   console.log(`Executing step ${step.stepNumber}: ${step.stepTitle}`);
 
-  const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+  const response = await fetch(gatewayUrl, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,

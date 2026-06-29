@@ -1,7 +1,7 @@
 /**
- * AgentAuthorizationPropagator — action-layer security for agent delegation.
+ * AgentAuthorizationPropagator â€” action-layer security for agent delegation.
  *
- * Implements P1 of ADR-144 (ruvnet/ruflo#2248): scope-envelope on SendMessage
+ * Implements P1 of ADR-144 (pwnapplehat/ruflo#2248): scope-envelope on SendMessage
  * + per-action authorization checks. P2-P5 wire this into the comms layer,
  * MCP dispatcher, MCP auth validator, and provenance log respectively.
  *
@@ -9,11 +9,11 @@
  * ------------
  * When agent A delegates a task to agent B via SendMessage, B can today
  * escalate the granted scope by calling tools A was never authorized to
- * invoke. RBAC/ABAC on agent roles do not solve this — roles don't compose
+ * invoke. RBAC/ABAC on agent roles do not solve this â€” roles don't compose
  * under dynamic LLM delegation (arXiv:2605.05440, Grade A formal analysis).
  *
  * The fix is scope-based propagation: every SendMessage carries an
- * `AuthScope` that is *monotonically reducing* — each hop can drop tools or
+ * `AuthScope` that is *monotonically reducing* â€” each hop can drop tools or
  * servers from the granted set but never add them. This is the same shape
  * as OAuth scope reduction; adding back a tool requires talking to the
  * original principal out-of-band.
@@ -21,7 +21,7 @@
  * Scope
  * -----
  * - P1 (this file): the component, the envelope, the type-level invariants.
- *   No call sites yet — adding the wrapping/enforcement in P2-P4.
+ *   No call sites yet â€” adding the wrapping/enforcement in P2-P4.
  * - All operations synchronous, pure, allocation-light. Targets < 1 ms p99
  *   for `wrapOutbound` + `checkToolCall` so it can sit on every SendMessage.
  *
@@ -102,7 +102,7 @@ export class AuthorizationPropagationError extends Error {
 export function makeLegacyPermissiveScope(principalId = 'legacy'): AuthScope {
   return {
     principalId,
-    grantedTools: ['*'],     // sentinel — see `checkToolCall`
+    grantedTools: ['*'],     // sentinel â€” see `checkToolCall`
     grantedServers: ['*'],
     delegationDepth: Number.MAX_SAFE_INTEGER,
     expiresAt: Number.MAX_SAFE_INTEGER,
@@ -110,10 +110,10 @@ export function makeLegacyPermissiveScope(principalId = 'legacy'): AuthScope {
 }
 
 /**
- * `AgentAuthorizationPropagator` — the load-bearing component for ADR-144.
+ * `AgentAuthorizationPropagator` â€” the load-bearing component for ADR-144.
  *
  * Construction is intentionally cheap (no I/O, no async). Callers can build
- * a fresh instance per task without overhead, or share one — it holds no
+ * a fresh instance per task without overhead, or share one â€” it holds no
  * mutable state beyond the optional provenance buffer.
  */
 export class AgentAuthorizationPropagator {
@@ -139,7 +139,7 @@ export class AgentAuthorizationPropagator {
    * Invariants enforced (throws `AuthorizationPropagationError` on violation):
    *   - newly granted tools MUST be a subset of `currentScope.grantedTools`
    *   - newly granted servers MUST be a subset of `currentScope.grantedServers`
-   *   - delegationDepth MUST decrement by ≥ 1 (must remain ≥ 0)
+   *   - delegationDepth MUST decrement by â‰¥ 1 (must remain â‰¥ 0)
    *   - principalId is propagated unchanged
    *   - expiresAt cannot be extended; copied from the holder
    */
@@ -151,7 +151,7 @@ export class AgentAuthorizationPropagator {
     if (currentScope.delegationDepth <= 0) {
       throw new AuthorizationPropagationError(
         'depth-underflow',
-        `cannot delegate further — delegationDepth=${currentScope.delegationDepth}`,
+        `cannot delegate further â€” delegationDepth=${currentScope.delegationDepth}`,
       );
     }
     const now = Date.now();
@@ -250,7 +250,7 @@ export class AgentAuthorizationPropagator {
   }
 }
 
-// ─── helpers ────────────────────────────────────────────────────────────
+// â”€â”€â”€ helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function subsetOrThrow(
   parent: ReadonlyArray<string>,
@@ -262,7 +262,7 @@ function subsetOrThrow(
     if (!parent.includes(item) && item !== '*') {
       throw new AuthorizationPropagationError(
         'scope-cannot-grow',
-        `cannot grant ${kind} '${item}' — not in parent scope`,
+        `cannot grant ${kind} '${item}' â€” not in parent scope`,
       );
     }
   }

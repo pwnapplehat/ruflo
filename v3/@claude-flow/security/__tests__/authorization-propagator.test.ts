@@ -1,9 +1,9 @@
 /**
- * Tests for AgentAuthorizationPropagator (ADR-144 P1, ruvnet/ruflo#2248).
+ * Tests for AgentAuthorizationPropagator (ADR-144 P1, pwnapplehat/ruflo#2248).
  *
  * Covers the load-bearing invariants of the action-layer security model:
  *  - wrapOutbound monotonically reduces scope (cannot grant more than holder)
- *  - delegationDepth decrements by ≥ 1 every hop; depth-0 cannot delegate
+ *  - delegationDepth decrements by â‰¥ 1 every hop; depth-0 cannot delegate
  *  - expired scopes are rejected at wrap and at check
  *  - checkToolCall returns stable, telemetry-friendly reasons
  *  - verifyServerAuth rejects empty / nullish credentials
@@ -32,7 +32,7 @@ function scope(overrides: Partial<AuthScope> = {}): AuthScope {
   };
 }
 
-describe('wrapOutbound — scope reduction invariants', () => {
+describe('wrapOutbound â€” scope reduction invariants', () => {
   const prop = new AgentAuthorizationPropagator();
 
   it('decrements delegationDepth by exactly 1', () => {
@@ -82,7 +82,7 @@ describe('wrapOutbound — scope reduction invariants', () => {
   });
 });
 
-describe('checkToolCall — typed decisions', () => {
+describe('checkToolCall â€” typed decisions', () => {
   const prop = new AgentAuthorizationPropagator();
 
   it('allows a tool that is in scope', () => {
@@ -111,7 +111,7 @@ describe('checkToolCall — typed decisions', () => {
   });
 });
 
-describe('verifyServerAuth — fail-closed on missing credentials', () => {
+describe('verifyServerAuth â€” fail-closed on missing credentials', () => {
   const prop = new AgentAuthorizationPropagator();
 
   it('rejects missing credential', () => {

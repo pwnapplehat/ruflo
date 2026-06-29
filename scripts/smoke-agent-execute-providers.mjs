@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Regression guard for ruvnet/ruflo#2042 — agent_execute hardcoded the
+ * Regression guard for pwnapplehat/ruflo#2042 â€” agent_execute hardcoded the
  * Anthropic SDK and ignored the v3 provider system. Reporter: @ummcke00.
  *
  * The fix routes executeAgentTask() through callAnthropicMessages(),
@@ -17,7 +17,7 @@
  *
  * Plus one behavioral check: invoke callAnthropicMessages() with
  * OPENROUTER_API_KEY set and assert the response error names the
- * openrouter provider (not Anthropic) — proves the dispatch fires.
+ * openrouter provider (not Anthropic) â€” proves the dispatch fires.
  */
 
 import { readFileSync } from 'node:fs';
@@ -27,8 +27,8 @@ import { dirname, resolve } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SOURCE = resolve(__dirname, '../v3/@claude-flow/cli/src/mcp-tools/agent-execute-core.ts');
 
-function fail(msg) { console.error(`✗ ${msg}`); process.exitCode = 1; }
-function pass(msg) { console.log(`✓ ${msg}`); }
+function fail(msg) { console.error(`âœ— ${msg}`); process.exitCode = 1; }
+function pass(msg) { console.log(`âœ“ ${msg}`); }
 
 const src = readFileSync(SOURCE, 'utf8');
 
@@ -37,23 +37,23 @@ const execBody = src.match(/export async function executeAgentTask[\s\S]*?\n\}\n
 if (!execBody) {
   fail('executeAgentTask not found');
 } else if (/fetch\(['"]https:\/\/api\.anthropic\.com\/v1\/messages['"]/.test(execBody[0])) {
-  fail('executeAgentTask still contains inline `fetch(https://api.anthropic.com/...)` — #2042 regression');
+  fail('executeAgentTask still contains inline `fetch(https://api.anthropic.com/...)` â€” #2042 regression');
 } else if (!/callAnthropicMessages/.test(execBody[0])) {
-  fail('executeAgentTask does not delegate to callAnthropicMessages — #2042 regression');
+  fail('executeAgentTask does not delegate to callAnthropicMessages â€” #2042 regression');
 } else {
   pass('executeAgentTask delegates to callAnthropicMessages (no inline Anthropic fetch)');
 }
 
 // 2. callAnthropicMessages references OPENROUTER_API_KEY
 if (!/OPENROUTER_API_KEY/.test(src)) {
-  fail('OPENROUTER_API_KEY env var not referenced — OpenRouter branch missing');
+  fail('OPENROUTER_API_KEY env var not referenced â€” OpenRouter branch missing');
 } else {
   pass('OPENROUTER_API_KEY env var routes the OpenRouter branch');
 }
 
 // 3. callOpenAICompat helper exists
 if (!/async function callOpenAICompat/.test(src)) {
-  fail('callOpenAICompat helper missing — #2042 fix incomplete');
+  fail('callOpenAICompat helper missing â€” #2042 fix incomplete');
 } else {
   pass('callOpenAICompat helper exists for OpenRouter + OpenAI-compat backends');
 }
@@ -65,7 +65,7 @@ if (!/OPENROUTER_API_KEY/.test(src) || !/OLLAMA_API_KEY/.test(src) || !/ANTHROPI
   pass('No-provider error message lists Anthropic + OpenRouter + Ollama options');
 }
 
-// 5. Static contract — the OpenRouter dispatch must be reachable from
+// 5. Static contract â€” the OpenRouter dispatch must be reachable from
 // callAnthropicMessages BEFORE the Anthropic key check, so a user with
 // only OPENROUTER_API_KEY (no Anthropic key) hits the openrouter
 // branch instead of the "no provider configured" error. We assert the
@@ -83,7 +83,7 @@ if (!callAnthropicBody) {
   } else if (noKeyIdx < 0) {
     fail('Anthropic-key early-return not found in callAnthropicMessages');
   } else if (openrouterIdx > noKeyIdx) {
-    fail('OpenRouter dispatch sits AFTER the Anthropic-key early-return — non-Anthropic users will hit "no provider" instead of openrouter');
+    fail('OpenRouter dispatch sits AFTER the Anthropic-key early-return â€” non-Anthropic users will hit "no provider" instead of openrouter');
   } else {
     pass('OpenRouter dispatch precedes the Anthropic-key early-return (correct order)');
   }

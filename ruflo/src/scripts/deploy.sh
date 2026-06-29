@@ -1,6 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# Deploy Chat UI + MCP Bridge to Google Cloud Run
+# Deploy RuVocal Chat UI + MCP Bridge to Google Cloud Run
 # White-label package — configure via config/config.json
 # =============================================================================
 set -e
@@ -22,7 +22,7 @@ PROJECT_ID=$(cat "$CONFIG_FILE" | python3 -c "import json,sys; print(json.load(s
 REGION=$(cat "$CONFIG_FILE" | python3 -c "import json,sys; print(json.load(sys.stdin)['gcp'].get('region','us-central1'))")
 BRAND_NAME=$(cat "$CONFIG_FILE" | python3 -c "import json,sys; print(json.load(sys.stdin)['brand']['name'])")
 DOMAIN=$(cat "$CONFIG_FILE" | python3 -c "import json,sys; print(json.load(sys.stdin)['brand']['domain'])")
-CHAT_SERVICE=$(cat "$CONFIG_FILE" | python3 -c "import json,sys; print(json.load(sys.stdin)['gcp'].get('serviceName',{}).get('chatUi','chat-ui'))")
+CHAT_SERVICE=$(cat "$CONFIG_FILE" | python3 -c "import json,sys; print(json.load(sys.stdin)['gcp'].get('serviceName',{}).get('chatUi','ruvocal'))")
 BRIDGE_SERVICE=$(cat "$CONFIG_FILE" | python3 -c "import json,sys; print(json.load(sys.stdin)['gcp'].get('serviceName',{}).get('mcpBridge','mcp-bridge'))")
 
 VERSION="v$(date +%Y%m%d%H%M)"
@@ -63,10 +63,10 @@ echo ""
 echo ">>> Step 3/4: Deploying Chat UI ($CHAT_SERVICE)..."
 
 # Replace placeholder with actual MCP bridge URL
-sed -i "s|__MCP_BRIDGE_URL__|${MCP_BRIDGE_URL}|g" chat-ui/dotenv-local.txt
+sed -i "s|__MCP_BRIDGE_URL__|${MCP_BRIDGE_URL}|g" ruvocal/dotenv-local.txt
 
 gcloud builds submit \
-  --config=chat-ui/cloudbuild.yaml \
+  --config=ruvocal/cloudbuild.yaml \
   --substitutions=_VERSION="$VERSION" \
   --project="$PROJECT_ID" \
   --region="$REGION" 2>&1 | tail -15

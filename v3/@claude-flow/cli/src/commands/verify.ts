@@ -52,11 +52,11 @@ interface Witness {
   };
 }
 
-const DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/ruvnet/ruflo/{branch}/verification.md.json';
+const DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/pwnapplehat/ruflo/{branch}/verification.md.json';
 
 async function fetchWitness(branch: string): Promise<Witness> {
   const url = DEFAULT_MANIFEST_URL.replace('{branch}', branch);
-  // audit_1776853149979: bare fetch had no timeout — a hung GitHub CDN would
+  // audit_1776853149979: bare fetch had no timeout â€” a hung GitHub CDN would
   // pin the verify command indefinitely. 30s is generous for a sub-MB JSON.
   const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
   if (!res.ok) {
@@ -78,7 +78,7 @@ function loadLocalWitness(localPath: string): Witness {
  * The witness manifest paths are repo-relative (e.g.
  * "v3/@claude-flow/cli/dist/src/mcp-tools/hooks-tools.js"). For
  * end users, only the dist/ subtree ships in node_modules. We map
- * the repo path → the installed equivalent by stripping the
+ * the repo path â†’ the installed equivalent by stripping the
  * "v3/@claude-flow/<pkg>/" prefix and looking up node_modules/<pkg>/.
  */
 function repoPathToInstalledPath(repoPath: string): string | null {
@@ -123,7 +123,7 @@ function repoPathToInstalledPath(repoPath: string): string | null {
     }
     return null;
   }
-  // Top-level paths (e.g. package.json) — return relative to cwd
+  // Top-level paths (e.g. package.json) â€” return relative to cwd
   const top = join(process.cwd(), repoPath);
   return existsSync(top) ? top : null;
 }
@@ -141,7 +141,7 @@ async function verifySignature(witness: Witness): Promise<{
   publicKeyReproducible: boolean;
   signatureValid: boolean;
 }> {
-  // Lazy-load @noble/ed25519 — keep verify command snappy when no signature check needed
+  // Lazy-load @noble/ed25519 â€” keep verify command snappy when no signature check needed
   let ed: typeof import('@noble/ed25519') | null = null;
   try {
     ed = await import('@noble/ed25519');
@@ -211,7 +211,7 @@ export const verifyCommand: Command = {
     if (!asJson) {
       output.writeln();
       output.writeln(output.bold('Ruflo Verification'));
-      output.writeln(output.dim('─'.repeat(50)));
+      output.writeln(output.dim('â”€'.repeat(50)));
     }
 
     let witness: Witness;
@@ -274,10 +274,10 @@ export const verifyCommand: Command = {
         : r.status === 'drift'
           ? output.warning('drift')
           : output.error(r.status);
-      output.writeln(`  [${status}] ${r.id} — ${r.desc}`);
+      output.writeln(`  [${status}] ${r.id} â€” ${r.desc}`);
       if (r.status === 'drift' && r.localSha256) {
-        output.writeln(output.dim(`         expected sha256: ${r.sha256.slice(0, 16)}…`));
-        output.writeln(output.dim(`         local    sha256: ${r.localSha256.slice(0, 16)}…`));
+        output.writeln(output.dim(`         expected sha256: ${r.sha256.slice(0, 16)}â€¦`));
+        output.writeln(output.dim(`         local    sha256: ${r.localSha256.slice(0, 16)}â€¦`));
       } else if (r.status === 'regressed') {
         output.writeln(output.dim(`         marker missing: '${r.marker}' not found in ${r.installedPath ?? r.file}`));
       } else if (r.status === 'missing') {

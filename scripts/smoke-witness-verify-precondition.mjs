@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 /**
- * Regression guard for ruvnet/ruflo#1880.
+ * Regression guard for pwnapplehat/ruflo#1880.
  *
  * The 12-hour scheduled witness verification runs `verify.mjs` in a
  * source-only checkout (no `npm ci`, no `npm run build`) and conflates
  * two completely different failure modes:
  *
- *   1. `@noble/ed25519` not installed       → precondition (install needed)
- *   2. dist files referenced by manifest    → precondition (build needed)
+ *   1. `@noble/ed25519` not installed       â†’ precondition (install needed)
+ *   2. dist files referenced by manifest    â†’ precondition (build needed)
  *      not present on disk
- *   3. signature actually doesn't verify    → real failure
- *   4. specific dist file regressed         → real failure
+ *   3. signature actually doesn't verify    â†’ real failure
+ *   4. specific dist file regressed         â†’ real failure
  *
  * Before this guard, all four exited with code 1, so the scheduled
  * runner filed a duplicate "verification failed" issue every 12 hours
@@ -57,7 +57,7 @@ function record(name, condition, detail) {
   }
 }
 
-// ── Case 1: @noble/ed25519 missing → exit 2 (precondition) ──────────
+// â”€â”€ Case 1: @noble/ed25519 missing â†’ exit 2 (precondition) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Drop verify.mjs into an empty root with no node_modules anywhere up
 // the tree, so the ed25519 probe fails on every candidate.
 console.log('\nCase 1: @noble/ed25519 not installed (source-only)');
@@ -66,7 +66,7 @@ console.log('\nCase 1: @noble/ed25519 not installed (source-only)');
   // verify.mjs's probes use createRequire(join(root, 'noop.js')) which
   // walks up from `root`. Putting `root` deep under tmp ensures Node
   // walks /tmp/.../node_modules (absent) then /tmp/node_modules (absent)
-  // then /node_modules (absent on CI) — no resolution.
+  // then /node_modules (absent on CI) â€” no resolution.
   const isolatedRoot = join(tmp, 'isolated', 'repo');
   mkdirSync(isolatedRoot, { recursive: true });
   // Stub node_modules to mask any system-level @noble/ed25519 install.
@@ -96,10 +96,10 @@ console.log('\nCase 1: @noble/ed25519 not installed (source-only)');
   rmSync(tmp, { recursive: true, force: true });
 }
 
-// ── Case 2: all manifest files missing → exit 2 (precondition) ──────
+// â”€â”€ Case 2: all manifest files missing â†’ exit 2 (precondition) â”€â”€â”€â”€â”€â”€
 // Point verify.mjs at an isolated root that DOES have @noble/ed25519
 // reachable (symlinked from the real install) but has none of the
-// manifest's dist/ files — mimicking a clean clone with no build run.
+// manifest's dist/ files â€” mimicking a clean clone with no build run.
 console.log('\nCase 2: all manifest files missing (source-only, deps installed)');
 {
   const tmp = mkdtempSync(join(tmpdir(), 'witness-smoke-nobuild-'));
@@ -123,9 +123,9 @@ console.log('\nCase 2: all manifest files missing (source-only, deps installed)'
   // We accept either:
   //   - exit 2 with precondition=dist-not-built (the new behavior)
   //   - exit 2 with precondition=noble-ed25519-not-installed (if the
-  //     symlink trick didn't satisfy the probe on this runner — also a
+  //     symlink trick didn't satisfy the probe on this runner â€” also a
   //     precondition, still not a real failure)
-  // We do NOT accept exit 1 — that's the bug this guard exists to catch.
+  // We do NOT accept exit 1 â€” that's the bug this guard exists to catch.
   record(
     'exit code is 2 (precondition), not 1',
     out.status === 2,
@@ -140,9 +140,9 @@ console.log('\nCase 2: all manifest files missing (source-only, deps installed)'
   rmSync(tmp, { recursive: true, force: true });
 }
 
-// ── Case 3: built tree → never exit 2 (precondition is one-way) ─────
+// â”€â”€ Case 3: built tree â†’ never exit 2 (precondition is one-way) â”€â”€â”€â”€â”€
 // On a built tree the verifier may produce 0 (clean) or 1 (some real
-// regression caught) — both mean verification actually ran. What it
+// regression caught) â€” both mean verification actually ran. What it
 // must NEVER produce here is exit 2, because that would mean a built
 // tree was mis-classified as "needs install/build" and the scheduled
 // runner would silently skip filing real regressions.

@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 /**
- * Regression guard for ruvnet/ruflo#1859 + #1862.
+ * Regression guard for pwnapplehat/ruflo#1859 + #1862.
  *
  * Drives each PostToolUse hook command from `hooks/hooks.json` with synthetic
  * Claude-Code-style stdin against a locally built CLI, asserting:
  *
  *   - Exit code 0 (no parser errors like "Invalid value for --format")
  *   - Output records the *intended* value (the file path / command), not a
- *     stray boolean like "true" — the symptom that #1859 reported
+ *     stray boolean like "true" â€” the symptom that #1859 reported
  *
- * The script substitutes `npx ruflo@alpha` → the local CLI binary, so
+ * The script substitutes `npx ruflo@alpha` â†’ the local CLI binary, so
  * we exercise the same flag wiring users hit in production but pinned to
  * the build under test.
  *
@@ -27,7 +27,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const HOOKS_JSON = join(__dirname, '..', 'hooks', 'hooks.json');
 
-// `cliInvoke` is the literal token-string that should run the CLI — caller
+// `cliInvoke` is the literal token-string that should run the CLI â€” caller
 // passes the full thing so this script doesn't need to guess shebangs:
 //   - local node script:   "node /abs/path/to/bin/cli.js"
 //   - shell wrapper:       "/abs/path/to/wrapper.sh"
@@ -48,7 +48,7 @@ const findHook = (matcher) => {
   const hit = post.find(h => h.matcher === matcher);
   if (!hit) throw new Error(`No PostToolUse hook with matcher=${matcher}`);
   return hit.hooks[0].command
-    // legacy form: `npx ruflo@alpha hooks …`
+    // legacy form: `npx ruflo@alpha hooks â€¦`
     .replace(/npx ruflo@alpha/g, cliInvoke)
     // #1921 form: hook subcommands go through scripts/ruflo-hook.sh (which
     // prepends `hooks`). Bypass the shim here and call the built CLI directly

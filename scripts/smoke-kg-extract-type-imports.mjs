@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Smoke test for ruvnet/ruflo#2049: kg-extract must NOT conflate
+ * Smoke test for pwnapplehat/ruflo#2049: kg-extract must NOT conflate
  * TypeScript `import type` with value imports.
  *
- * The user-visible failure mode was a phantom `findings ⇄ finding-actions`
+ * The user-visible failure mode was a phantom `findings â‡„ finding-actions`
  * cycle detected in a 51-service codebase, driven by `kg-extract`'s
  * step-3 regex grep treating `import type { Foo }` and
  * `import { foo }` as the same edge type.
@@ -12,13 +12,13 @@
  *  1. **Static**: parses both kg-extract/SKILL.md and kg-traverse/SKILL.md
  *     and asserts they no longer reference the disabled `semantic-route`
  *     controller (kg-traverse) and that kg-extract carves type-only
- *     imports out as a separate relation with weight ≤ 0.1.
+ *     imports out as a separate relation with weight â‰¤ 0.1.
  *  2. **Behavioural**: builds a tiny TS fixture in /tmp with a known
  *     type-only cycle and a known value-import edge, runs the
  *     skill's documented regex patterns over it, and asserts the
  *     edge counts are what the spec says they should be.
  *
- * Pinned to the SKILL.md contract — if a future PR re-introduces the
+ * Pinned to the SKILL.md contract â€” if a future PR re-introduces the
  * over-counting behaviour, this fails before merge.
  *
  * Usage:  node scripts/smoke-kg-extract-type-imports.mjs
@@ -38,12 +38,12 @@ const KG_TRAVERSE = join(SKILL_DIR, 'kg-traverse', 'SKILL.md');
 
 const failures = [];
 function check(label, ok, detail = '') {
-  if (ok) console.log(`  ✓ ${label}`);
-  else { console.log(`  ✗ ${label}${detail ? ' — ' + detail : ''}`); failures.push(label); }
+  if (ok) console.log(`  âœ“ ${label}`);
+  else { console.log(`  âœ— ${label}${detail ? ' â€” ' + detail : ''}`); failures.push(label); }
 }
 
 // ---------------------------------------------------------------------------
-// Part 1 — Static contract checks on the SKILL.md files
+// Part 1 â€” Static contract checks on the SKILL.md files
 // ---------------------------------------------------------------------------
 
 console.log('[1/2] Static contract checks');
@@ -58,7 +58,7 @@ if (!existsSync(KG_EXTRACT)) {
     'expected a `type-depends-on` relation to be defined in kg-extract step 3',
   );
   check(
-    'kg-extract weights `type-depends-on` at ≤ 0.1',
+    'kg-extract weights `type-depends-on` at â‰¤ 0.1',
     /type-depends-on[^\n]*0\.1/.test(extract),
     'expected weight `0.1` (or smaller) explicitly for type-only imports',
   );
@@ -71,7 +71,7 @@ if (!existsSync(KG_EXTRACT)) {
   check(
     'kg-extract no longer references `agentdb_semantic-route` in allowed-tools',
     !/allowed-tools[^\n]*agentdb_semantic-route/.test(extract),
-    'the semanticRouter controller is `enabled: false` in current builds — see #2049',
+    'the semanticRouter controller is `enabled: false` in current builds â€” see #2049',
   );
 }
 
@@ -92,7 +92,7 @@ if (!existsSync(KG_TRAVERSE)) {
 }
 
 // ---------------------------------------------------------------------------
-// Part 2 — Behavioural check: a TS fixture with one type-only cycle
+// Part 2 â€” Behavioural check: a TS fixture with one type-only cycle
 // ---------------------------------------------------------------------------
 
 console.log('\n[2/2] Behavioural classification check on a TS fixture');
@@ -101,7 +101,7 @@ const fixtureDir = join(tmpdir(), 'ruflo-kg-fixture-' + randomBytes(4).toString(
 mkdirSync(fixtureDir, { recursive: true });
 
 const findingsTs = `
-// findings.service.ts — emits one VALUE import + one TYPE import on a sibling
+// findings.service.ts â€” emits one VALUE import + one TYPE import on a sibling
 import { loadFindingActionsTimeline } from './finding-actions.service';
 import type { AuditEvent } from './audit-events';
 
@@ -110,7 +110,7 @@ export class FindingsService {
 }
 `;
 const findingActionsTs = `
-// finding-actions.service.ts — emits one TYPE-ONLY import back at findings,
+// finding-actions.service.ts â€” emits one TYPE-ONLY import back at findings,
 // which used to drive a phantom value-import cycle
 import type { Finding } from './findings.service';
 import { isAudit } from './audit-events';
@@ -128,7 +128,7 @@ writeFileSync(join(fixtureDir, 'findings.service.ts'), findingsTs);
 writeFileSync(join(fixtureDir, 'finding-actions.service.ts'), findingActionsTs);
 writeFileSync(join(fixtureDir, 'audit-events.ts'), auditEventsTs);
 
-/** The classifier the SKILL.md documents — re-implemented here as the test contract. */
+/** The classifier the SKILL.md documents â€” re-implemented here as the test contract. */
 function classifyImports(source) {
   const valueImports = [];
   const typeImports = [];
@@ -139,7 +139,7 @@ function classifyImports(source) {
       typeImports.push(typeOnly[1]);
       continue;
     }
-    // Match `import { ... } from '...'` (value import — may contain inline `type` specifiers,
+    // Match `import { ... } from '...'` (value import â€” may contain inline `type` specifiers,
     // but the import line as a whole produces a value-import edge for any non-type specifier).
     const value = line.match(/^\s*import\s+[^{]*\{([^}]*)\}\s*from\s+['"]([^'"]+)['"]/);
     if (value) {
@@ -170,7 +170,7 @@ check(
   `got ${findingActionsClass.valueImports.length} value + ${findingActionsClass.typeImports.length} type`,
 );
 check(
-  'fixture: no value-import cycle between findings ↔ finding-actions',
+  'fixture: no value-import cycle between findings â†” finding-actions',
   findingActionsClass.valueImports.includes('./findings.service') === false,
   'finding-actions.service.ts must NOT count `import type { Finding } from ./findings.service` as a value-import edge',
 );
@@ -181,7 +181,7 @@ rmSync(fixtureDir, { recursive: true, force: true });
 // ---------------------------------------------------------------------------
 console.log('');
 if (failures.length > 0) {
-  console.log(`FAIL: ${failures.length} issue(s) — see above`);
+  console.log(`FAIL: ${failures.length} issue(s) â€” see above`);
   process.exit(1);
 } else {
   console.log('OK: kg-extract type-import classification + kg-traverse controller wiring are correct');

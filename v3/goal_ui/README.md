@@ -1,15 +1,21 @@
-# RuFlo Research
+# Ruflo Goal Planner UI
 
-> Goal-Oriented Action Planning UI for autonomous AI research workflows. Part of the [RuFlo](https://github.com/ruvnet/ruflo) platform.
-> Live: [goal.ruv.io](https://goal.ruv.io/) · Agents dashboard: [goal.ruv.io/agents](https://goal.ruv.io/agents)
+> Self-hostable Goal-Oriented Action Planning (GOAP) UI for the Cursor-native
+> [ruflo](https://github.com/pwnapplehat/ruflo) fork. A Vite + React web app that
+> turns plain-English goals into executable agent plans using A* search through a
+> state space of actions with preconditions and effects.
 
-Turn plain-English research goals into executable agent plans. RuFlo Research applies classic Goal-Oriented Action Planning (GOAP) — A* search through a state space of actions with preconditions and effects — to autonomous AI research, then dispatches the work to live agents you can inspect in real time.
+Ruflo Research applies classic Goal-Oriented Action Planning (GOAP) — A* search
+through a state space of actions with preconditions and effects — to autonomous
+AI research, then dispatches the work to live agents you can inspect in real
+time. This package is part of the Cursor-native ruflo fork and is intended to be
+self-hosted alongside your ruflo installation.
 
 ## Highlights
 
 | | |
 |---|---|
-| 🎯 **Plain-English goals** | Describe an outcome — RuFlo extracts success criteria, constraints, and implicit preconditions |
+| 🎯 **Plain-English goals** | Describe an outcome — ruflo extracts success criteria, constraints, and implicit preconditions |
 | 🧭 **GOAP A\* planner** | Shortest-path search through actions with preconditions/effects; replans on the fly when state changes |
 | 🤖 **Live agent dashboard** | `/agents` shows every spawned agent — role, current step, status, trajectories |
 | 🌳 **Visual plan tree** | Goals render as collapsible action trees with progress, blocked branches, rollbacks |
@@ -49,6 +55,8 @@ v3/goal_ui/
 
 ## Embedding the Widget
 
+Host `dist/widget.js` and `dist/widget.css` on your own domain, then:
+
 ```html
 <div id="ruflo-research-widget-container"></div>
 <script>
@@ -57,8 +65,8 @@ v3/goal_ui/
     accentColor: "#10b981",
   };
 </script>
-<script src="https://goal.ruv.io/widget.js"></script>
-<link rel="stylesheet" href="https://goal.ruv.io/widget.css" />
+<script src="https://YOUR-DOMAIN/widget.js"></script>
+<link rel="stylesheet" href="https://YOUR-DOMAIN/widget.css" />
 ```
 
 The widget exposes a global `window.RufloResearchWidget` with `init(containerId)` and `version` for programmatic control. See [`docs/WIDGET-INTEGRATION.md`](docs/WIDGET-INTEGRATION.md) for the full integration guide.
@@ -69,7 +77,10 @@ React 18 · TypeScript 5 · Vite 5 · Tailwind 3 · shadcn/ui · Radix UI · Rea
 
 ## Deployment
 
-Hosted on Netlify (`netlify.toml`) at [goal.ruv.io](https://goal.ruv.io/). See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for self-hosting instructions and edge-function deploy steps.
+Self-host on Netlify (`netlify.toml`) or any static host. See
+[`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for self-hosting instructions and
+edge-function deploy steps. There is no upstream-hosted demo in this fork —
+run it on your own infrastructure.
 
 ## Environment
 
@@ -81,6 +92,11 @@ VITE_SUPABASE_PROJECT_ID=...
 VITE_SUPABASE_PUBLISHABLE_KEY=...
 ```
 
+For the Supabase Edge Functions, set `AI_GATEWAY_URL` and `AI_GATEWAY_API_KEY`
+as secrets in your Supabase project (Dashboard → Project Settings → Edge
+Functions → Secrets) pointing to any OpenAI-compatible chat-completions
+endpoint you control.
+
 ## License
 
-MIT — same as the parent [RuFlo](https://github.com/ruvnet/ruflo) project.
+MIT — same as the parent [ruflo](https://github.com/pwnapplehat/ruflo) project.

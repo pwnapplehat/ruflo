@@ -1,4 +1,4 @@
-# Migration Guide — switching plugin scripts to `@claude-flow/cli-core`
+# Migration Guide â€” switching plugin scripts to `@claude-flow/cli-core`
 
 > **Status:** alpha (3.7.0-alpha.5). This is an opt-in migration for plugin authors who want the cold-cache speedup today and accept the storage-format trade-off documented below.
 
@@ -17,12 +17,12 @@ What you trade for it:
 
 | Call shape | Cold-cache before | Cold-cache after | Backend change |
 |---|---:|---:|---|
-| `memory store` | ~25 s | ~2 s | SQLite → JSON |
-| `memory retrieve` | ~25 s | ~2 s | SQLite → JSON |
-| `memory list` | ~25 s | ~2 s | SQLite → JSON |
-| `memory delete` | ~25 s | ~2 s | SQLite → JSON |
-| `memory stats` | ~25 s | ~2 s | SQLite → JSON |
-| `memory search` (substring OK) | ~25 s | ~2 s | SQLite → JSON, semantic → substring |
+| `memory store` | ~25 s | ~2 s | SQLite â†’ JSON |
+| `memory retrieve` | ~25 s | ~2 s | SQLite â†’ JSON |
+| `memory list` | ~25 s | ~2 s | SQLite â†’ JSON |
+| `memory delete` | ~25 s | ~2 s | SQLite â†’ JSON |
+| `memory stats` | ~25 s | ~2 s | SQLite â†’ JSON |
+| `memory search` (substring OK) | ~25 s | ~2 s | SQLite â†’ JSON, semantic â†’ substring |
 
 ## What's NOT migrable yet
 
@@ -50,8 +50,8 @@ After:
 
 ```js
 const cliPkg = process.env.CLI_CORE === '1'
-  ? '@claude-flow/cli-core@alpha'  // lite path — JSON backend, fast cold cache
-  : '@claude-flow/cli@latest';     // heavy path — SQLite/HNSW, slow cold cache
+  ? '@claude-flow/cli-core@alpha'  // lite path â€” JSON backend, fast cold cache
+  : '@claude-flow/cli@latest';     // heavy path â€” SQLite/HNSW, slow cold cache
 const r = spawnSync('npx', [
   cliPkg, 'memory', 'store',
   '--namespace', 'cost-tracking',
@@ -66,8 +66,8 @@ Setting `CLI_CORE=1` opts into the lite path. Leaving it unset preserves the exi
 
 1. **Pick one plugin script** (e.g. cost-tracker's `track.mjs`) and apply the env-flag pattern above.
 2. **Run with both flags** in your dev workflow for a few days. Observe whether the JSON backend's substring-search regression bites you.
-3. **If yes**, fall back to `cli@latest` for the affected call sites and document the gap; ping us on issue [#1760](https://github.com/ruvnet/ruflo/issues/1760) so we can prioritize.
-4. **If no**, flip the default in your plugin's package.json by setting `CLI_CORE=1` in your scripts' env — done.
+3. **If yes**, fall back to `cli@latest` for the affected call sites and document the gap; ping us on issue [#1760](https://github.com/pwnapplehat/ruflo/issues/1760) so we can prioritize.
+4. **If no**, flip the default in your plugin's package.json by setting `CLI_CORE=1` in your scripts' env â€” done.
 
 ## Storage backend coexistence
 
@@ -92,7 +92,7 @@ Or replace the conditional with the bare `'@claude-flow/cli@latest'` and re-run.
 
 ## Reporting issues
 
-cli-core is alpha — please file feedback at https://github.com/ruvnet/ruflo/issues with the label `cli-core-alpha`. Specifically helpful:
+cli-core is alpha â€” please file feedback at https://github.com/pwnapplehat/ruflo/issues with the label `cli-core-alpha`. Specifically helpful:
 
 - Cold-cache wall-time on your network (run `rm -rf ~/.npm/_npx; time npx -y @claude-flow/cli-core@alpha --version`)
 - Substring-search false negatives (cases where you expected semantic match)
@@ -118,14 +118,14 @@ The follow-up PR will:
    // cli/src/types.ts (after)
    export * from '@claude-flow/cli-core/types';
    ```
-3. The 60+ `import './types.js'` call sites inside cli stay unchanged — they hit the shim, which re-exports cli-core's authoritative defs. Zero runtime risk because the source files are already identical.
+3. The 60+ `import './types.js'` call sites inside cli stay unchanged â€” they hit the shim, which re-exports cli-core's authoritative defs. Zero runtime risk because the source files are already identical.
 4. Future drift is impossible: if cli-core's types change, cli picks them up automatically via the dep.
 
 This is intentionally **not** part of alpha.5 itself. The cli@3.6.30 tarball is 2.2 MB / 1146 files; touching its foundation files is a real PR with proper review, smoke tests, and a release. alpha.5 just lays the wiring (subpath exports) so the PR is mechanical when we cut it.
 
 ## Cross-references
 
-- [ADR-100](../../docs/adr/ADR-100-cli-core-split-lazy-load.md) — design rationale
-- [Issue #1748 #3](https://github.com/ruvnet/ruflo/issues/1748) — the cold-cache problem this addresses
-- [Issue #1760](https://github.com/ruvnet/ruflo/issues/1760) — alpha tracking
-- Branch [`feat/cli-core-split`](https://github.com/ruvnet/ruflo/tree/feat/cli-core-split) — work in progress
+- [ADR-100](../../docs/adr/ADR-100-cli-core-split-lazy-load.md) â€” design rationale
+- [Issue #1748 #3](https://github.com/pwnapplehat/ruflo/issues/1748) â€” the cold-cache problem this addresses
+- [Issue #1760](https://github.com/pwnapplehat/ruflo/issues/1760) â€” alpha tracking
+- Branch [`feat/cli-core-split`](https://github.com/pwnapplehat/ruflo/tree/feat/cli-core-split) â€” work in progress

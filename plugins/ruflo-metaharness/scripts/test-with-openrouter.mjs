@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// test-with-openrouter.mjs â€” runtime test that exercises metaharness
+// test-with-openrouter.mjs Ã¢â‚¬â€ runtime test that exercises metaharness
 // scaffolding + lifecycle commands using OPENROUTER_API_KEY fetched
 // from GCP Secret Manager.
 //
@@ -55,8 +55,8 @@ const ARGS = (() => {
 let passed = 0, failed = 0;
 const failures = [];
 function assert(cond, label) {
-  if (cond) { console.log(`  âœ“ ${label}`); passed++; }
-  else { console.log(`  âœ— ${label}`); failures.push(label); failed++; }
+  if (cond) { console.log(`  Ã¢Å“â€œ ${label}`); passed++; }
+  else { console.log(`  Ã¢Å“â€” ${label}`); failures.push(label); failed++; }
 }
 
 function fetchSecretFromGcp(secretName) {
@@ -67,7 +67,7 @@ function fetchSecretFromGcp(secretName) {
     );
     return out.trim();
   } catch (e) {
-    console.error(`  âš  gcloud secret fetch failed: ${(e.message || '').slice(0, 120)}`);
+    console.error(`  Ã¢Å¡Â  gcloud secret fetch failed: ${(e.message || '').slice(0, 120)}`);
     return null;
   }
 }
@@ -91,7 +91,7 @@ async function cheapInferenceCall(apiKey) {
     headers: {
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://github.com/ruvnet/ruflo',
+      'HTTP-Referer': 'https://github.com/pwnapplehat/ruflo',
       'X-Title': 'ruflo-metaharness-test',
     },
     body: JSON.stringify({
@@ -125,15 +125,15 @@ function runMetaharness(args, opts = {}) {
 }
 
 async function main() {
-  console.log('# test-with-openrouter â€” metaharness Ã— GCP Ã— OpenRouter e2e\n');
+  console.log('# test-with-openrouter Ã¢â‚¬â€ metaharness Ãƒâ€” GCP Ãƒâ€” OpenRouter e2e\n');
 
-  // â”€â”€ 0. Preflight â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  console.log('Phase 0 â€” preflight');
+  // Ã¢â€â‚¬Ã¢â€â‚¬ 0. Preflight Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  console.log('Phase 0 Ã¢â‚¬â€ preflight');
   const gcloudWho = execSync('gcloud config get-value account 2>&1', { encoding: 'utf-8' }).trim();
   assert(!!gcloudWho && !/None/.test(gcloudWho), `gcloud authenticated (${gcloudWho || 'none'})`);
 
-  // â”€â”€ 1. Fetch OPENROUTER_API_KEY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  console.log('\nPhase 1 â€” fetch OPENROUTER_API_KEY from GCP Secret Manager');
+  // Ã¢â€â‚¬Ã¢â€â‚¬ 1. Fetch OPENROUTER_API_KEY Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  console.log('\nPhase 1 Ã¢â‚¬â€ fetch OPENROUTER_API_KEY from GCP Secret Manager');
   const apiKey = fetchSecretFromGcp('OPENROUTER_API_KEY');
   assert(typeof apiKey === 'string' && apiKey.length > 20, 'OPENROUTER_API_KEY fetched (length OK)');
   if (!apiKey) {
@@ -141,22 +141,22 @@ async function main() {
     process.exit(2);
   }
   // Echo only length+prefix, never the raw key
-  console.log(`  key length: ${apiKey.length}, prefix: ${apiKey.slice(0, 7)}â€¦`);
+  console.log(`  key length: ${apiKey.length}, prefix: ${apiKey.slice(0, 7)}Ã¢â‚¬Â¦`);
 
-  // â”€â”€ 2. Verify the key authenticates against OpenRouter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  console.log('\nPhase 2 â€” verify OpenRouter authentication');
+  // Ã¢â€â‚¬Ã¢â€â‚¬ 2. Verify the key authenticates against OpenRouter Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  console.log('\nPhase 2 Ã¢â‚¬â€ verify OpenRouter authentication');
   const modelsResp = await listOpenRouterModels(apiKey);
   assert(modelsResp.ok, `OpenRouter /api/v1/models returns 2xx (got ${modelsResp.ok ? 'ok' : modelsResp.status})`);
   if (modelsResp.ok) {
     assert(modelsResp.modelCount > 10, `model list non-empty (${modelsResp.modelCount} models)`);
   }
 
-  // â”€â”€ 3. Scaffold a fresh harness â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  // CRITICAL: `metaharness new <name>` writes to $CWD/<name> â€” the
+  // Ã¢â€â‚¬Ã¢â€â‚¬ 3. Scaffold a fresh harness Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  // CRITICAL: `metaharness new <name>` writes to $CWD/<name> Ã¢â‚¬â€ the
   // --target flag is ignored by the CLI (verified 2026-06-16 against
   // metaharness@0.1.11). Run from inside a fresh temp dir so the
   // scaffold lands there, not in the ruflo project root.
-  console.log('\nPhase 3 â€” scaffold a fresh harness');
+  console.log('\nPhase 3 Ã¢â‚¬â€ scaffold a fresh harness');
   const fixture = mkdtempSync(join(tmpdir(), 'ruflo-mh-openrouter-'));
   const target = join(fixture, 'test-harness');
   console.log(`  fixture cwd: ${fixture}`);
@@ -168,9 +168,9 @@ async function main() {
   assert(scaffold.exitCode === 0, `metaharness new exit 0 (got ${scaffold.exitCode})`);
   assert(existsSync(target), `target dir created at ${target}`);
 
-  // â”€â”€ 4. Run lifecycle commands against the scaffold â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  console.log('\nPhase 4 â€” lifecycle commands on the scaffold');
-  // harness doctor â€” quick smoke
+  // Ã¢â€â‚¬Ã¢â€â‚¬ 4. Run lifecycle commands against the scaffold Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+  console.log('\nPhase 4 Ã¢â‚¬â€ lifecycle commands on the scaffold');
+  // harness doctor Ã¢â‚¬â€ quick smoke
   const doc = runHarness(['doctor', target]);
   assert(doc.exitCode === 0, `harness doctor exit 0 (got ${doc.exitCode})`);
 
@@ -183,7 +183,7 @@ async function main() {
   })();
   assert(scoreJson && typeof scoreJson.score === 'number', 'score.json has numeric score');
 
-  // harness genome â€” exit 0 (ready) or 1 (needs-work) both acceptable.
+  // harness genome Ã¢â‚¬â€ exit 0 (ready) or 1 (needs-work) both acceptable.
   // Only exit 2 (blocked / scan-error) is a real failure.
   const gen = runHarness(['genome', target, '--json']);
   assert(gen.exitCode === 0 || gen.exitCode === 1, `harness genome exit 0 or 1 (got ${gen.exitCode})`);
@@ -193,9 +193,9 @@ async function main() {
   // mcp-scan can exit 1 on findings; either 0 or 1 is acceptable here.
   assert(scan.exitCode === 0 || scan.exitCode === 1, `harness mcp-scan exit 0 or 1 (got ${scan.exitCode})`);
 
-  // â”€â”€ 5. (Optional) one real OpenRouter inference call â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Ã¢â€â‚¬Ã¢â€â‚¬ 5. (Optional) one real OpenRouter inference call Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   if (!ARGS.skipInference) {
-    console.log('\nPhase 5 â€” single OpenRouter inference call (cheapest auto-route, max_tokens=1)');
+    console.log('\nPhase 5 Ã¢â‚¬â€ single OpenRouter inference call (cheapest auto-route, max_tokens=1)');
     const inf = await cheapInferenceCall(apiKey);
     assert(inf.ok, `OpenRouter inference 2xx (got ${inf.ok ? 'ok' : inf.status})`);
     if (inf.ok) {
@@ -203,10 +203,10 @@ async function main() {
       console.log(`  usage: prompt=${inf.usage?.prompt_tokens} completion=${inf.usage?.completion_tokens}`);
     }
   } else {
-    console.log('\nPhase 5 â€” SKIPPED (--skip-inference)');
+    console.log('\nPhase 5 Ã¢â‚¬â€ SKIPPED (--skip-inference)');
   }
 
-  // â”€â”€ 6. Cleanup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Ã¢â€â‚¬Ã¢â€â‚¬ 6. Cleanup Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
   if (!ARGS.keep) {
     rmSync(fixture, { recursive: true, force: true });
     console.log(`\nFixture cleaned: ${fixture}`);
@@ -220,7 +220,7 @@ async function main() {
     for (const f of failures) console.log(`  - ${f}`);
     process.exit(1);
   }
-  console.log('\nâœ“ All harness Ã— OpenRouter integration checks passed.');
+  console.log('\nÃ¢Å“â€œ All harness Ãƒâ€” OpenRouter integration checks passed.');
 }
 
 main().catch((e) => {

@@ -16,7 +16,7 @@ export function generateSettings(options: InitOptions): object {
   // the helpers directory will also be bundled. The hook commands point at
   // .claude/helpers/hook-handler.cjs; if that file isn't created (as in
   // --minimal where components.helpers=false), every hook fires and silently
-  // fails to find its handler. Either bundle the helpers OR drop the hooks —
+  // fails to find its handler. Either bundle the helpers OR drop the hooks â€”
   // the option this fix takes is the latter (minimal stays minimal).
   if (options.components.settings && options.components.helpers) {
     settings.hooks = generateHooksConfig(options.hooks);
@@ -41,13 +41,13 @@ export function generateSettings(options: InitOptions): object {
     ],
   };
 
-  // #1670 — RuFlo attribution (Co-Authored-By trailer + PR footer) is now
+  // #1670 â€” RuFlo attribution (Co-Authored-By trailer + PR footer) is now
   // OPT-IN. Default behavior no longer injects a third-party Co-Authored-By
-  // line into the user's commits — that pattern silently inflated GitHub
+  // line into the user's commits â€” that pattern silently inflated GitHub
   // contributor graphs and was hard to undo without rewriting history. Pass
   // `--attribution` (or `attribution: true` in InitOptions) to enable.
   //
-  // #2078 — when the user DOES opt in, write a no-reply bot email so GitHub
+  // #2078 â€” when the user DOES opt in, write a no-reply bot email so GitHub
   // treats this as a tool, not a personal contribution. Personal emails get
   // added to user repos' contributor graphs even when the trailer is opt-in.
   // `ruflo-bot@users.noreply.github.com` is GitHub's no-reply convention and
@@ -55,7 +55,7 @@ export function generateSettings(options: InitOptions): object {
   if (options.attribution === true) {
     settings.attribution = {
       commit: 'Co-Authored-By: ruflo-bot <ruflo-bot@users.noreply.github.com>',
-      pr: '🤖 Generated with [RuFlo](https://github.com/ruvnet/ruflo)',
+      pr: 'ðŸ¤– Generated with [RuFlo](https://github.com/pwnapplehat/ruflo)',
     };
   }
 
@@ -127,7 +127,7 @@ export function generateSettings(options: InitOptions): object {
       enabled: options.runtime.enableNeural,
     },
     daemon: {
-      autoStart: false,  // Opt-in only — prevents unintended token consumption (#1427, #1330)
+      autoStart: false,  // Opt-in only â€” prevents unintended token consumption (#1427, #1330)
       workers: [
         'map',           // Codebase mapping
         'audit',         // Security auditing (critical priority)
@@ -176,10 +176,10 @@ const IS_WINDOWS = process.platform === 'win32';
 /**
  * Build a hook command that resolves to the right helpers dir on every
  * install layout. `ruflo init` can land helpers either project-locally
- * (`<project>/.claude/helpers/…`, when run from a project root) or globally
- * (`$HOME/.claude/helpers/…`, when settings.json gets merged into the
+ * (`<project>/.claude/helpers/â€¦`, when run from a project root) or globally
+ * (`$HOME/.claude/helpers/â€¦`, when settings.json gets merged into the
  * user-level Claude Code config). The earlier `${CLAUDE_PROJECT_DIR:-.}`
- * form assumed project-local — so any global-install user hit
+ * form assumed project-local â€” so any global-install user hit
  * `MODULE_NOT_FOUND` on every Bash/Edit/Session hook (#1943).
  *
  * The fix is a tiny POSIX `sh` probe: try `$CLAUDE_PROJECT_DIR/.claude/...`
@@ -224,20 +224,20 @@ function generateStatusLineConfig(_options: InitOptions): object {
   // Valid fields: type, command, padding (optional).
   // The script runs after each assistant message (debounced 300ms).
   //
-  // ruflo#1948 + #1973: the previous `sh -c 'D="${CLAUDE_PROJECT_DIR:-.}"; …'`
+  // ruflo#1948 + #1973: the previous `sh -c 'D="${CLAUDE_PROJECT_DIR:-.}"; â€¦'`
   // form requires a POSIX shell on PATH. On native Windows (no
   // Git-Bash / WSL), `sh` either isn't found or its quoting gets
   // mangled, producing weird artifacts like files named `0)` or
   // `toastr.error('ESD...` from misparsed tokens leaking back into
-  // the file system. NEVER use `cmd /c` for statusline — Claude Code
+  // the file system. NEVER use `cmd /c` for statusline â€” Claude Code
   // manages stdin directly for statusline commands and `cmd /c`
   // blocks the stdin forwarding.
   //
   // Solution: emit a platform-appropriate command at init time.
-  //   POSIX:   `sh -c 'D="…"; … exec node "$D/<script>"'` (existing)
+  //   POSIX:   `sh -c 'D="â€¦"; â€¦ exec node "$D/<script>"'` (existing)
   //   Windows: a Node.js one-liner that resolves the path internally
   //            using `process.env.CLAUDE_PROJECT_DIR` with a HOME
-  //            fallback — no shell-quoting hazards because the
+  //            fallback â€” no shell-quoting hazards because the
   //            resolution happens inside node, not in the shell.
   const script = '.claude/helpers/statusline.cjs';
 
@@ -250,7 +250,7 @@ function generateStatusLineConfig(_options: InitOptions): object {
     //   const home = process.env.USERPROFILE || process.env.HOME || '.';
     //   const h = p.join(home, '.claude/helpers/statusline.cjs');
     //   require(fs.existsSync(f) ? f : h);
-    // …compressed onto one line. Double-quotes around the -e arg are
+    // â€¦compressed onto one line. Double-quotes around the -e arg are
     // safe on cmd.exe; the inner JS uses single-quotes for strings.
     const js =
       "const fs=require('fs'),p=require('path');" +
@@ -287,7 +287,7 @@ function generateHooksConfig(config: HooksConfig): object {
   // Node.js scripts handle errors internally via try/catch.
   // No shell-level error suppression needed (2>/dev/null || true breaks Windows).
 
-  // PreToolUse — validate commands and edits before execution
+  // PreToolUse â€” validate commands and edits before execution
   if (config.preToolUse) {
     hooks.PreToolUse = [
       {
@@ -313,7 +313,7 @@ function generateHooksConfig(config: HooksConfig): object {
     ];
   }
 
-  // PostToolUse — record edits and commands for session metrics / learning
+  // PostToolUse â€” record edits and commands for session metrics / learning
   if (config.postToolUse) {
     hooks.PostToolUse = [
       {
@@ -339,7 +339,7 @@ function generateHooksConfig(config: HooksConfig): object {
     ];
   }
 
-  // UserPromptSubmit — intelligent task routing
+  // UserPromptSubmit â€” intelligent task routing
   if (config.userPromptSubmit) {
     hooks.UserPromptSubmit = [
       {
@@ -354,7 +354,7 @@ function generateHooksConfig(config: HooksConfig): object {
     ];
   }
 
-  // SessionStart — restore session state + import auto memory
+  // SessionStart â€” restore session state + import auto memory
   if (config.sessionStart) {
     hooks.SessionStart = [
       {
@@ -374,7 +374,7 @@ function generateHooksConfig(config: HooksConfig): object {
     ];
   }
 
-  // SessionEnd — persist session state
+  // SessionEnd â€” persist session state
   if (config.sessionStart) {
     hooks.SessionEnd = [
       {
@@ -389,7 +389,7 @@ function generateHooksConfig(config: HooksConfig): object {
     ];
   }
 
-  // Stop — sync auto memory on exit
+  // Stop â€” sync auto memory on exit
   if (config.stop) {
     hooks.Stop = [
       {
@@ -404,7 +404,7 @@ function generateHooksConfig(config: HooksConfig): object {
     ];
   }
 
-  // PreCompact — preserve context before compaction
+  // PreCompact â€” preserve context before compaction
   if (config.preCompact) {
     hooks.PreCompact = [
       {
@@ -438,7 +438,7 @@ function generateHooksConfig(config: HooksConfig): object {
     ];
   }
 
-  // SubagentStart — status update when a sub-agent is spawned
+  // SubagentStart â€” status update when a sub-agent is spawned
   hooks.SubagentStart = [
     {
       hooks: [
@@ -451,7 +451,7 @@ function generateHooksConfig(config: HooksConfig): object {
     },
   ];
 
-  // SubagentStop — track agent completion for metrics
+  // SubagentStop â€” track agent completion for metrics
   // NOTE: The valid event is "SubagentStop" (not "SubagentEnd")
   hooks.SubagentStop = [
     {
@@ -465,7 +465,7 @@ function generateHooksConfig(config: HooksConfig): object {
     },
   ];
 
-  // Notification — capture Claude Code notifications for logging
+  // Notification â€” capture Claude Code notifications for logging
   if (config.notification) {
     hooks.Notification = [
       {

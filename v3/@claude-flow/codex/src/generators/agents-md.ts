@@ -85,7 +85,7 @@ ${testCommand}
 
 ## Links
 
-- Documentation: https://github.com/ruvnet/ruflo
+- Documentation: https://github.com/pwnapplehat/ruflo
 `;
 }
 
@@ -197,7 +197,7 @@ ${skillsTable}
 - **claude-flow** = LEDGER (coordinates: memory, routing, swarm state)
 - **Codex** = EXECUTOR (writes code, runs tests, creates files)
 
-**Critical rule:** DON'T STOP after calling claude-flow commands. Coordination commands return instantly — continue immediately with the next implementation step.
+**Critical rule:** DON'T STOP after calling claude-flow commands. Coordination commands return instantly â€” continue immediately with the next implementation step.
 
 ## MCP Integration
 
@@ -279,8 +279,8 @@ npx @claude-flow/cli hooks pre-task --description "task summary"
 
 ## Links
 
-- Documentation: https://github.com/ruvnet/ruflo
-- Issues: https://github.com/ruvnet/ruflo/issues
+- Documentation: https://github.com/pwnapplehat/ruflo
+- Issues: https://github.com/pwnapplehat/ruflo/issues
 `;
 }
 

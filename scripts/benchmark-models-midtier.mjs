@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * benchmark-models-midtier.mjs — Real measured benchmark of mid-tier
+ * benchmark-models-midtier.mjs â€” Real measured benchmark of mid-tier
  * (sonnet-class) model alternatives via OpenRouter, with LLM-as-judge
  * grading because regex won't capture multi-step refactor quality.
  *
@@ -12,16 +12,16 @@
  *
  * The judge sees the user prompt + the candidate's response + a per-row
  * rubric, then returns a JSON verdict. Two layers of grading:
- *   1. Structural checks (lightweight regex/include) — fail fast on egregious
+ *   1. Structural checks (lightweight regex/include) â€” fail fast on egregious
  *      output (empty, refused, didn't even attempt).
- *   2. Judge rubric — for everything that passes structural, a 0..1 score
+ *   2. Judge rubric â€” for everything that passes structural, a 0..1 score
  *      reflecting how well the response actually solved the task.
  *
  * USAGE
- *   # Dry-run (default — no API calls, prints projected cost)
+ *   # Dry-run (default â€” no API calls, prints projected cost)
  *   node scripts/benchmark-models-midtier.mjs
  *
- *   # Live — REAL OpenRouter API calls, spends real money
+ *   # Live â€” REAL OpenRouter API calls, spends real money
  *   OPENROUTER_API_KEY=sk-or-... node scripts/benchmark-models-midtier.mjs --live
  *
  *   # Custom model list / repeats / judge
@@ -29,7 +29,7 @@
  *
  * COST NOTE: mid-tier responses are longer (~600-800 tokens) so each call
  * is more expensive than the cheap-tier bench. The judge call is also a
- * mid-class model. Default 7 models × 12 queries × 1 repeat + judges
+ * mid-class model. Default 7 models Ã— 12 queries Ã— 1 repeat + judges
  * projects to ~$0.20-0.40 USD. --max-cost gate defaults to $1.00.
  *
  * Co-Authored-By: RuFlo <ruv@ruv.net>
@@ -64,14 +64,14 @@ const DEFAULT_MODELS = [
 const DEFAULT_JUDGE = 'anthropic/claude-sonnet-4-6';
 
 // ============================================================================
-// Mid-tier corpus — 12 multi-step / multi-criterion tasks
+// Mid-tier corpus â€” 12 multi-step / multi-criterion tasks
 // ============================================================================
 
 /**
  * Each task has:
  *   id: stable identifier
  *   task: the user prompt sent to the candidate model
- *   structural: lightweight check (substring/regex) — if any is missing the
+ *   structural: lightweight check (substring/regex) â€” if any is missing the
  *               judge stage is skipped and the row scores 0
  *   rubric: 3-5 criteria the judge grades, each as a `{name, weight}` pair.
  *           Weights sum to 1.0.
@@ -138,11 +138,11 @@ function verify(token) {
   },
   {
     id: 'algo-sliding-window-1',
-    task: `Implement a JavaScript function \`longestSubarrayWithSumAtMost(arr, k)\` that returns the length of the longest contiguous subarray whose sum is <= k. Use the sliding-window technique (O(n)). Include 3 inline test cases as comments showing input → expected output. Return ONLY the JavaScript, no prose.`,
+    task: `Implement a JavaScript function \`longestSubarrayWithSumAtMost(arr, k)\` that returns the length of the longest contiguous subarray whose sum is <= k. Use the sliding-window technique (O(n)). Include 3 inline test cases as comments showing input â†’ expected output. Return ONLY the JavaScript, no prose.`,
     structural: { mustInclude: ['function', 'longestSubarrayWithSumAtMost'], mustNotInclude: [] },
     rubric: [
       { name: 'correct_algorithm',      weight: 0.35, desc: 'Implementation correctly returns the longest subarray length; sliding window with two pointers' },
-      { name: 'is_linear_time',         weight: 0.20, desc: 'O(n) — does not use a nested loop or quadratic structure' },
+      { name: 'is_linear_time',         weight: 0.20, desc: 'O(n) â€” does not use a nested loop or quadratic structure' },
       { name: 'has_3_test_cases',       weight: 0.20, desc: 'Has 3 inline test cases with expected outputs in comments' },
       { name: 'edge_cases_handled',     weight: 0.15, desc: 'Handles empty array, k smaller than smallest element, etc.' },
       { name: 'no_extraneous_prose',    weight: 0.10, desc: 'Returned code only' },
@@ -153,7 +153,7 @@ function verify(token) {
     task: `Write a PostgreSQL migration that adds a NOT NULL \`created_at TIMESTAMPTZ\` column with default NOW() to a 50M-row \`orders\` table, AND a separate down migration. The migration must be safe to run on a live system without locking writes for more than ~1s. Return ONLY the two SQL files concatenated, separated by '-- DOWN --'. No prose.`,
     structural: { mustInclude: ['ALTER TABLE', 'orders', '-- DOWN --'], mustNotInclude: [] },
     rubric: [
-      { name: 'staged_approach',        weight: 0.30, desc: 'Adds the column as nullable first, backfills, then sets NOT NULL — or uses DEFAULT NOW() with a known-safe technique. Does not block writes.' },
+      { name: 'staged_approach',        weight: 0.30, desc: 'Adds the column as nullable first, backfills, then sets NOT NULL â€” or uses DEFAULT NOW() with a known-safe technique. Does not block writes.' },
       { name: 'idempotent_safe',        weight: 0.15, desc: 'Uses IF NOT EXISTS or equivalent guards so re-running is safe' },
       { name: 'down_reverses',          weight: 0.20, desc: 'Down migration removes the column cleanly' },
       { name: 'tx_or_no_tx_correct',    weight: 0.20, desc: 'Either avoids a single huge transaction (for the live constraint) or explains why it is needed' },
@@ -329,7 +329,7 @@ async function callOpenRouter(modelId, userPrompt, apiKey, opts = {}) {
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://github.com/ruvnet/ruflo',
+      'HTTP-Referer': 'https://github.com/pwnapplehat/ruflo',
       'X-Title': 'ruflo-benchmark-midtier',
     },
     body: JSON.stringify({
@@ -359,7 +359,7 @@ async function callOpenRouter(modelId, userPrompt, apiKey, opts = {}) {
 }
 
 // ============================================================================
-// Grading — structural pass/fail, then LLM judge for the rubric
+// Grading â€” structural pass/fail, then LLM judge for the rubric
 // ============================================================================
 
 function structuralPass(row, content) {
@@ -375,7 +375,7 @@ function structuralPass(row, content) {
 
 function buildJudgePrompt(row, response) {
   const rubricList = row.rubric.map(r => `  - ${r.name} (weight ${r.weight}): ${r.desc}`).join('\n');
-  return `You are grading an AI model's response to a coding task. Score each rubric criterion as 0.0 (fails), 0.5 (partial), or 1.0 (meets). Return ONLY a JSON object of the form: {"scores": {"<criterion>": <0|0.5|1>}, "comment": "<≤80-char comment>"}. No prose outside the JSON.
+  return `You are grading an AI model's response to a coding task. Score each rubric criterion as 0.0 (fails), 0.5 (partial), or 1.0 (meets). Return ONLY a JSON object of the form: {"scores": {"<criterion>": <0|0.5|1>}, "comment": "<â‰¤80-char comment>"}. No prose outside the JSON.
 
 USER PROMPT TO THE MODEL:
 ${row.task}
@@ -386,7 +386,7 @@ ${response}
 RUBRIC:
 ${rubricList}
 
-Reminder: return ONLY the JSON object. Be strict — only award 1.0 if the criterion is unambiguously met.`;
+Reminder: return ONLY the JSON object. Be strict â€” only award 1.0 if the criterion is unambiguously met.`;
 }
 
 function aggregateRubric(row, judgeJson) {
@@ -427,17 +427,17 @@ async function main() {
   console.log('# Mid-tier model benchmark (ADR-148 phase 2 follow-up)\n');
   console.log(`- ts: ${new Date().toISOString().slice(0, 19)}Z`);
   console.log(`- node: ${process.version}  platform: ${process.platform}-${process.arch}`);
-  console.log(`- corpus: ${CORPUS.length} mid-tier queries × ${ARGS.repeat} repeat`);
+  console.log(`- corpus: ${CORPUS.length} mid-tier queries Ã— ${ARGS.repeat} repeat`);
   console.log(`- models: ${MODELS.length} (${MODELS.map(m => m.id).join(', ')})`);
   console.log(`- judge: ${ARGS.judge}`);
   console.log(`- max-tokens per response: ${ARGS.maxTokens}`);
   const projected = projectedCost();
   console.log(`- projected total cost (incl. judge): ~$${projected.toFixed(4)} USD`);
   console.log(`- max-cost gate: $${ARGS.maxCost.toFixed(2)}`);
-  console.log(`- live mode: ${ARGS.live ? '**YES — real API calls**' : 'no (dry run)'}\n`);
+  console.log(`- live mode: ${ARGS.live ? '**YES â€” real API calls**' : 'no (dry run)'}\n`);
 
   if (!ARGS.live) {
-    console.log('Dry run — no API calls. To run live:');
+    console.log('Dry run â€” no API calls. To run live:');
     console.log(`  OPENROUTER_API_KEY=sk-or-... node scripts/benchmark-models-midtier.mjs --live\n`);
     console.log('===BENCH_JSON===');
     console.log(JSON.stringify({ dryRun: true, projectedCostUSD: projected, models: MODELS.map(m => m.id), judge: ARGS.judge, corpusSize: CORPUS.length }, null, 2));
@@ -528,17 +528,17 @@ async function main() {
     };
   });
 
-  // Sort: judge score desc, then $/query asc — Pareto-friendly
+  // Sort: judge score desc, then $/query asc â€” Pareto-friendly
   rows.sort((a, b) => b.avgScore - a.avgScore || a.usdCost - b.usdCost);
 
-  console.log(`| Model | Family | Avg score | Struct pass | Latency mean${showStdev ? ' ± σ' : ''} | $/run | $/quality |`);
+  console.log(`| Model | Family | Avg score | Struct pass | Latency mean${showStdev ? ' Â± Ïƒ' : ''} | $/run | $/quality |`);
   console.log(`|---|---|---|---|---|---|---|`);
   for (const r of rows) {
     const qualityCost = r.avgScore > 0 ? r.usdCost / r.avgScore : Infinity;
     const lat = showStdev
-      ? `${r.latency.mean.toFixed(0)} ± ${r.latency.stdev.toFixed(0)} ms`
+      ? `${r.latency.mean.toFixed(0)} Â± ${r.latency.stdev.toFixed(0)} ms`
       : `${r.latency.mean.toFixed(0)} ms`;
-    console.log(`| \`${r.model}\` | ${r.family} | **${(r.avgScore * 100).toFixed(1)}%${showStdev ? ' ± ' + (r.scoreStdev * 100).toFixed(1) + '%' : ''}** | ${(r.structuralPassRate * 100).toFixed(0)}% | ${lat} | $${r.usdCost.toFixed(5)} | ${qualityCost === Infinity ? '∞' : '$' + qualityCost.toFixed(5)} |`);
+    console.log(`| \`${r.model}\` | ${r.family} | **${(r.avgScore * 100).toFixed(1)}%${showStdev ? ' Â± ' + (r.scoreStdev * 100).toFixed(1) + '%' : ''}** | ${(r.structuralPassRate * 100).toFixed(0)}% | ${lat} | $${r.usdCost.toFixed(5)} | ${qualityCost === Infinity ? 'âˆž' : '$' + qualityCost.toFixed(5)} |`);
   }
   console.log('');
   console.log(`Total model spend: $${rows.reduce((s, r) => s + r.usdCost, 0).toFixed(5)}`);

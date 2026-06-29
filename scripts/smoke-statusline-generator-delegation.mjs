@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Regression guard for ruvnet/ruflo#2195.
+ * Regression guard for pwnapplehat/ruflo#2195.
  *
  * The statusline generator previously re-implemented all data readers
  * locally with fragile file probes that returned wrong values:
- *   - DDD:          0/5   (AgentDB has 26k+ patterns → should be 5/5)
- *   - Intelligence: 1%    (healthy system → should be 100%)
- *   - ADR count:    87/87 (missed v3/docs/adr/ → should be 128)
+ *   - DDD:          0/5   (AgentDB has 26k+ patterns â†’ should be 5/5)
+ *   - Intelligence: 1%    (healthy system â†’ should be 100%)
+ *   - ADR count:    87/87 (missed v3/docs/adr/ â†’ should be 128)
  *   - Vectors:      22    (read session-imports, not AgentDB total)
  *
  * The fix delegates to 'npx @claude-flow/cli@latest hooks statusline --json'
@@ -34,7 +34,7 @@ let failed = 0;
 function pass(msg) { console.log(`  ok: ${msg}`); passed++; }
 function fail(msg) { console.error(`  FAIL: ${msg}`); failed++; }
 
-// ─── Layer 1: static source contract ────────────────────────────
+// â”€â”€â”€ Layer 1: static source contract â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 console.log('\n[1/3] STATIC SOURCE CONTRACT');
 
 if (!existsSync(GENERATOR_SRC)) {
@@ -51,19 +51,19 @@ if (!existsSync(GENERATOR_SRC)) {
   if (!src.includes('getLearningStats')) {
     pass('getLearningStats (old local reader) removed from generator');
   } else {
-    fail('getLearningStats still present in generator — old fragile local reader NOT removed (#2195)');
+    fail('getLearningStats still present in generator â€” old fragile local reader NOT removed (#2195)');
   }
 
   if (!src.includes('getV3Progress')) {
     pass('getV3Progress (old local reader) removed from generator');
   } else {
-    fail('getV3Progress still present in generator — old fragile local reader NOT removed (#2195)');
+    fail('getV3Progress still present in generator â€” old fragile local reader NOT removed (#2195)');
   }
 
   if (src.includes("'v3', 'docs', 'adr'") || src.includes("v3/docs/adr")) {
     pass('generator counts v3/docs/adr ADR directory');
   } else {
-    fail('generator missing v3/docs/adr in ADR count — will undercount ADRs (#2195)');
+    fail('generator missing v3/docs/adr in ADR count â€” will undercount ADRs (#2195)');
   }
 
   if (src.includes("'v3', 'implementation', 'adrs'") || src.includes("v3/implementation/adrs")) {
@@ -73,7 +73,7 @@ if (!existsSync(GENERATOR_SRC)) {
   }
 }
 
-// ─── Layer 2: generated .cjs syntax check ───────────────────────
+// â”€â”€â”€ Layer 2: generated .cjs syntax check â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 console.log('\n[2/3] GENERATED .CJS SYNTAX CHECK');
 
 if (!existsSync(GENERATOR_DIST)) {
@@ -109,7 +109,7 @@ if (!existsSync(GENERATOR_DIST)) {
       if (cjsContent.includes('hooks statusline --json')) {
         pass('generated .cjs contains delegation to hooks statusline --json');
       } else {
-        fail('generated .cjs does NOT delegate to hooks statusline --json — generator output is wrong');
+        fail('generated .cjs does NOT delegate to hooks statusline --json â€” generator output is wrong');
       }
 
       if (cjsContent.includes('v3/docs/adr')) {
@@ -126,7 +126,7 @@ if (!existsSync(GENERATOR_DIST)) {
   }
 }
 
-// ─── Layer 3: runtime JSON range validation ──────────────────────
+// â”€â”€â”€ Layer 3: runtime JSON range validation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 console.log('\n[3/3] RUNTIME JSON RANGE VALIDATION');
 
 if (!existsSync(CJS_PATH)) {
@@ -180,8 +180,8 @@ if (!existsSync(CJS_PATH)) {
         } else if (data.adrs?.count === 0) {
           pass('adrs.count = 0 (acceptable in minimal checkout without ADR dirs)');
         } else {
-          // count in [1, 87] — acceptable in a sparse checkout but worth noting
-          pass(`adrs.count = ${data.adrs?.count} (single ADR directory only — acceptable in sparse checkout)`);
+          // count in [1, 87] â€” acceptable in a sparse checkout but worth noting
+          pass(`adrs.count = ${data.adrs?.count} (single ADR directory only â€” acceptable in sparse checkout)`);
         }
 
       } catch (e) {
@@ -191,7 +191,7 @@ if (!existsSync(CJS_PATH)) {
   } catch (err) {
     // If the CLI delegation timed out (network unavailable in CI), the .cjs
     // falls back to buildLocalFallback() which returns all-zeros but valid JSON.
-    // That's acceptable — the important thing is no crash.
+    // That's acceptable â€” the important thing is no crash.
     if (err.status === 0 || err.stdout) {
       pass('--json ran without crash (fallback path ok)');
     } else {
@@ -201,8 +201,8 @@ if (!existsSync(CJS_PATH)) {
   }
 }
 
-// ─── Result ───────────────────────────────────────────────────────
-console.log(`\n${'─'.repeat(60)}`);
+// â”€â”€â”€ Result â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+console.log(`\n${'â”€'.repeat(60)}`);
 console.log(`statusline-generator-delegation smoke: ${passed} passed, ${failed} failed`);
 
 if (failed > 0) {

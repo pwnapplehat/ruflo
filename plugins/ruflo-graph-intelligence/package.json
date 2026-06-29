@@ -1,7 +1,7 @@
 {
   "name": "ruflo-graph-intelligence",
   "version": "0.1.0-alpha.1",
-  "description": "RuFlo Graph Intelligence Engine — real-time relationship intelligence with complexity-aware execution. Single-entry personalized PageRank, streaming delta updates, witness-signed reasoning artifacts over RuFlo's substrate graphs.",
+  "description": "RuFlo Graph Intelligence Engine â€” real-time relationship intelligence with complexity-aware execution. Single-entry personalized PageRank, streaming delta updates, witness-signed reasoning artifacts over RuFlo's substrate graphs.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -48,7 +48,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ruvnet/ruflo.git",
+    "url": "https://github.com/pwnapplehat/ruflo.git",
     "directory": "plugins/ruflo-graph-intelligence"
   },
   "engines": {

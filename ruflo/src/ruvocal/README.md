@@ -1,10 +1,8 @@
 # RuVocal — RuFlo Web UI
 
-> RuFlo's multi-model AI chat with built-in Model Context Protocol (MCP) tool calling. Live at [**flo.ruv.io**](https://flo.ruv.io/).
+> A self-hostable SvelteKit web UI for the Cursor-native [RuFlo](https://github.com/pwnapplehat/ruflo) fork — multi-model AI chat with built-in Model Context Protocol (MCP) tool calling.
 
-[![Try the Web UI — flo.ruv.io](https://img.shields.io/badge/✨_Try_it-flo.ruv.io-6366f1?style=for-the-badge&logo=svelte&logoColor=white)](https://flo.ruv.io/)
-
-RuVocal is the SvelteKit web app that lets you chat with Qwen, Claude, Gemini, or OpenAI while [RuFlo](https://github.com/ruvnet/ruflo) invokes the same ~210 MCP tools the CLI uses — agent orchestration, persistent memory, swarm coordination, code review, GitHub ops — all directly from chat. No install, no API key needed to try the hosted demo.
+RuVocal is the SvelteKit web app that lets you chat with Qwen, Claude, Gemini, or OpenAI while [RuFlo](https://github.com/pwnapplehat/ruflo) invokes the same ~210 MCP tools the CLI uses — agent orchestration, persistent memory, swarm coordination, code review, GitHub ops — all directly from chat. Bring your own API key and your own MCP servers; nothing is hosted for you.
 
 It started as a fork of the [HuggingFace chat-ui](https://github.com/huggingface/chat-ui) v0.20.0 and has been extended with a WASM-MCP integration layer, parallel tool execution, an in-browser tool gallery, and a "RuFlo Capabilities" tour modal. See [ADR-033](../../docs/adr/ADR-033-RUVOCAL-WASM-MCP-INTEGRATION.md) for the architecture.
 
@@ -18,26 +16,21 @@ It started as a fork of the [HuggingFace chat-ui](https://github.com/huggingface
 | 💾 **AgentDB-backed memory** | "Remember my favorite color is indigo" → recalled weeks later via HNSW vector search |
 | 🧠 **6 curated frontier models** | Qwen 3.6 Max (default), Claude Sonnet 4.6, Claude Haiku 4.5, Gemini 2.5 Pro, Gemini 2.5 Flash, OpenAI — via OpenRouter |
 | 🔌 **Bring-your-own MCP servers** | Add HTTP/SSE/stdio endpoints from the chat input; they join the parallel-execution flow |
-| 🦾 **ruvLLM ready** | Native support for [ruvLLM](https://github.com/ruvnet/RuVector/tree/main/examples/ruvLLM) — RuFlo's self-improving local model layer |
 | 🏠 **Self-hostable** | Multi-stage Dockerfile (`INCLUDE_DB=true` builds in MongoDB), `cloudbuild.yaml` for Google Cloud Run |
 
 ## Quick Start
 
-### Hosted (zero install)
-
-[**flo.ruv.io**](https://flo.ruv.io/) — pick a model, type a question. That's it.
-
 ### Local dev
 
 ```bash
-git clone https://github.com/ruvnet/ruflo
+git clone https://github.com/pwnapplehat/ruflo
 cd ruflo/ruflo/src/ruvocal
 cp .env .env.local        # then edit .env.local — see below
 npm install
 npm run dev               # → http://localhost:5173
 ```
 
-Minimum `.env.local` to use OpenRouter (matches the hosted setup):
+Minimum `.env.local` to use OpenRouter:
 
 ```env
 OPENAI_BASE_URL=https://openrouter.ai/api/v1
@@ -70,9 +63,9 @@ docker run -p 3000:3000 \
   ruvocal
 ```
 
-### Google Cloud Run (production-style)
+### Google Cloud Run (self-hosted production-style)
 
-`cloudbuild.yaml` does a multi-stage build with `INCLUDE_DB=true`, pushes to Artifact Registry, and deploys to Cloud Run. Hosted demo at `flo.ruv.io` runs from this exact pipeline. See [`cloudbuild.yaml`](./cloudbuild.yaml) and the deploy notes in [ADR-033](../../docs/adr/ADR-033-RUVOCAL-WASM-MCP-INTEGRATION.md).
+`cloudbuild.yaml` does a multi-stage build with `INCLUDE_DB=true`, pushes to Artifact Registry, and deploys to Cloud Run. Use this as a starting point for your own deployment. See [`cloudbuild.yaml`](./cloudbuild.yaml) and the deploy notes in [ADR-033](../../docs/adr/ADR-033-RUVOCAL-WASM-MCP-INTEGRATION.md).
 
 ## Database
 
@@ -90,12 +83,11 @@ RuVocal calls tools exposed by Model Context Protocol servers and feeds results 
 
 ```env
 MCP_SERVERS=[
-  {"name":"RuFlo Core","url":"https://mcp-bridge-...run.app/mcp/core","transport":"sse"},
-  {"name":"RuFlo Intelligence","url":"https://mcp-bridge-...run.app/mcp/intelligence","transport":"sse"},
-  {"name":"RuFlo Agents","url":"https://mcp-bridge-...run.app/mcp/agents","transport":"sse"},
-  {"name":"RuFlo Memory","url":"https://mcp-bridge-...run.app/mcp/memory","transport":"sse"},
-  {"name":"RuFlo DevTools","url":"https://mcp-bridge-...run.app/mcp/devtools","transport":"sse"},
-  {"name":"π Shared Brain","url":"https://mcp.pi.ruv.io","transport":"streamable-http"}
+  {"name":"RuFlo Core","url":"http://localhost:3001/mcp/core","transport":"sse"},
+  {"name":"RuFlo Intelligence","url":"http://localhost:3001/mcp/intelligence","transport":"sse"},
+  {"name":"RuFlo Agents","url":"http://localhost:3001/mcp/agents","transport":"sse"},
+  {"name":"RuFlo Memory","url":"http://localhost:3001/mcp/memory","transport":"sse"},
+  {"name":"RuFlo DevTools","url":"http://localhost:3001/mcp/devtools","transport":"sse"}
 ]
 ```
 
@@ -149,16 +141,14 @@ npm run preview       # preview the build locally
 - **Capabilities modal** — `src/lib/components/RufloHelpModal.svelte`
 - **Dynamic follow-ups** — tool-call-aware suggested next prompts in `ChatWindow.svelte`
 
-For deeper internals, see [`CLAUDE.md`](./CLAUDE.md) (Claude Code agent guide) and [ADR-033](../../docs/adr/ADR-033-RUVOCAL-WASM-MCP-INTEGRATION.md).
+For deeper internals, see [`CLAUDE.md`](./CLAUDE.md) and [ADR-033](../../docs/adr/ADR-033-RUVOCAL-WASM-MCP-INTEGRATION.md).
 
 ## Related
 
-- 🏠 **Parent project** — [RuFlo](https://github.com/ruvnet/ruflo)
-- 🎯 **Goal Planner UI** — [goal.ruv.io](https://goal.ruv.io/) · [/agents](https://goal.ruv.io/agents)
+- 🏠 **Project home** — [pwnapplehat/ruflo](https://github.com/pwnapplehat/ruflo)
 - 📖 **ADR-033** — RuVocal/WASM-MCP integration architecture
-- 📋 **Roadmap** — [issue #1689](https://github.com/ruvnet/ruflo/issues/1689)
 - 🍴 **Upstream** — [huggingface/chat-ui](https://github.com/huggingface/chat-ui) (RuVocal is forked from v0.20.0)
 
 ## License
 
-MIT — same as the parent [RuFlo](https://github.com/ruvnet/ruflo) project.
+MIT — same as the [RuFlo](https://github.com/pwnapplehat/ruflo) project.

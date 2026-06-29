@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Static guard for ruvnet/ruflo#2151 — enforce three-way version lockstep
+ * Static guard for pwnapplehat/ruflo#2151 â€” enforce three-way version lockstep
  * across the umbrella packages that ship together:
  *
  *   - @claude-flow/cli  (v3/@claude-flow/cli/package.json)
- *   - claude-flow       (root package.json — umbrella)
- *   - ruflo             (ruflo/package.json — thin user-facing wrapper)
+ *   - claude-flow       (root package.json â€” umbrella)
+ *   - ruflo             (ruflo/package.json â€” thin user-facing wrapper)
  *
  * Why: when these drift (e.g. ruflo@3.10.2 but cli@3.10.1, observed in
  * #2151), `npx ruflo --version` prints the bundled CLI's version (3.10.1),
@@ -21,8 +21,8 @@
  * this audit is about identity, that one is about inclusion).
  *
  * Exit codes:
- *   0 — versions identical and dep range covers cli
- *   1 — drift detected; remediation hints printed
+ *   0 â€” versions identical and dep range covers cli
+ *   1 â€” drift detected; remediation hints printed
  */
 
 import { readFileSync, existsSync } from 'node:fs';
@@ -58,7 +58,7 @@ for (const { label, path } of TARGETS) {
   versions[label] = pkg.version;
 }
 
-console.log('umbrella-version-lockstep audit — three-package identity check');
+console.log('umbrella-version-lockstep audit â€” three-package identity check');
 for (const { label } of TARGETS) {
   console.log(`  ${label.padEnd(20)} ${versions[label] ?? '(missing)'}`);
 }
@@ -68,9 +68,9 @@ if (unique.size > 1) {
   violations.push(
     `version drift across umbrella packages: ${[...unique].join(' / ')}.\n` +
     `    Bump all three to the same version per CLAUDE.md "Publishing Rules" before shipping:\n` +
-    `      v3/@claude-flow/cli/package.json   ← ${versions['@claude-flow/cli'] ?? '?'}\n` +
-    `      package.json (claude-flow)         ← ${versions['claude-flow'] ?? '?'}\n` +
-    `      ruflo/package.json                 ← ${versions['ruflo'] ?? '?'}`
+    `      v3/@claude-flow/cli/package.json   â† ${versions['@claude-flow/cli'] ?? '?'}\n` +
+    `      package.json (claude-flow)         â† ${versions['claude-flow'] ?? '?'}\n` +
+    `      ruflo/package.json                 â† ${versions['ruflo'] ?? '?'}`
   );
 }
 
@@ -86,7 +86,7 @@ if (rufloPkg && cliVersion) {
         `    Update ruflo/package.json dependencies to "^${cliVersion}".`
       );
     } else {
-      console.log(`  ruflo dep "@claude-flow/cli": "${range}" covers ${cliVersion} ✓`);
+      console.log(`  ruflo dep "@claude-flow/cli": "${range}" covers ${cliVersion} âœ“`);
     }
   }
 }
@@ -97,7 +97,7 @@ if (violations.length === 0) {
 }
 
 console.error('\nviolations:');
-for (const v of violations) console.error(`  ✗ ${v}`);
+for (const v of violations) console.error(`  âœ— ${v}`);
 console.error(`\n${violations.length} violation(s).`);
-console.error('Reference: ruvnet/ruflo#2151 (version mismatch — ruflo@3.10.2 + cli@3.10.1).');
+console.error('Reference: pwnapplehat/ruflo#2151 (version mismatch â€” ruflo@3.10.2 + cli@3.10.1).');
 process.exit(1);

@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 /**
- * Regression guard for ruvnet/ruflo#2120 — `ruflo memory stats` and
+ * Regression guard for pwnapplehat/ruflo#2120 â€” `ruflo memory stats` and
  * `listEntries` returned 0 entries against a populated `.swarm/memory.db`
  * on WSL2 (reporter: @alexandrelealbess, alpha.81).
  *
  * Root cause: the `WHERE status = 'active'` filter in both
  * `bridgeListEntries` (memory-bridge.ts) and `listEntries`
  * (memory-initializer.ts:2544+) excluded rows where the `status` column
- * was NULL — which happens when:
+ * was NULL â€” which happens when:
  *   - The DB was created before the status column existed
  *   - The auto-memory bridge wrote rows via a path that didn't set status
  *   - ALTER TABLE ADD COLUMN's DEFAULT backfill was skipped
  *
  * This smoke creates a `.swarm/memory.db` with 251 entries that have NULL
  * status (simulating an old DB), then asserts both code paths return 251
- * — not 0.
+ * â€” not 0.
  *
  * Without the #2120 fix, the assertion fails with `total: 0`.
  */
@@ -29,8 +29,8 @@ import { dirname } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..');
 
-function fail(msg) { console.error(`✗ ${msg}`); process.exitCode = 1; }
-function pass(msg) { console.log(`✓ ${msg}`); }
+function fail(msg) { console.error(`âœ— ${msg}`); process.exitCode = 1; }
+function pass(msg) { console.log(`âœ“ ${msg}`); }
 
 // 1. Build a `.swarm/memory.db` that mirrors the reporter's setup:
 //    251 entries with status = NULL.
@@ -81,7 +81,7 @@ try {
   }
 
   // 3. Run the actual `listEntries` from the built CLI dist with the
-  //    bridge DISABLED via env hint — we test the raw sql.js fallback
+  //    bridge DISABLED via env hint â€” we test the raw sql.js fallback
   //    path because the AgentDB v3 bridge optionally pulls a Xenova
   //    embedding model on init which hangs CI without network.
   process.env.CLAUDE_FLOW_MEMORY_PATH = swarmDir;
@@ -103,7 +103,7 @@ try {
   }
 
   // 4. After listEntries, the backfill in ensureSchemaColumns should
-  //    have updated NULL → 'active'. Verify by re-reading.
+  //    have updated NULL â†’ 'active'. Verify by re-reading.
   {
     const SQL3 = await initSqlJs();
     const verify = new SQL3.Database(new Uint8Array(await (await import('node:fs/promises')).readFile(dbPath)));
@@ -114,7 +114,7 @@ try {
     if (activeCount !== 251) {
       fail(`backfill: expected 251 status='active' rows after listEntries, got ${activeCount}`);
     } else {
-      pass(`backfill: ensureSchemaColumns promoted NULL → 'active' for all 251 rows`);
+      pass(`backfill: ensureSchemaColumns promoted NULL â†’ 'active' for all 251 rows`);
     }
     verify.close();
   }
@@ -128,7 +128,7 @@ if (process.exitCode) {
 } else {
   console.log('\n#2120 regression smoke PASS');
   // Exit explicitly so a lazy bridge handle / sql.js worker keepalive
-  // doesn't prevent the process from terminating (observed locally —
+  // doesn't prevent the process from terminating (observed locally â€”
   // assertions all passed but process kept running for 30s+).
   process.exit(0);
 }

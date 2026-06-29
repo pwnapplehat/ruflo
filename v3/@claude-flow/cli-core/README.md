@@ -6,13 +6,13 @@
 
 > **Status:** alpha (pre-release). Tracking ADR-100. Don't depend on this in production yet.
 
-Lightweight core CLI surface for [Claude Flow](https://github.com/ruvnet/ruflo) — `memory` + `hooks` commands only. Designed to load fast on a cold npx cache so plugin skills don't race Claude Code's 30 second MCP-startup timeout.
+Lightweight core CLI surface for [Claude Flow](https://github.com/pwnapplehat/ruflo) â€” `memory` + `hooks` commands only. Designed to load fast on a cold npx cache so plugin skills don't race Claude Code's 30 second MCP-startup timeout.
 
 ## Why a separate package?
 
-Issue [#1748 #3](https://github.com/ruvnet/ruflo/issues/1748) documented a silent failure mode for new users: `npx claude-flow@latest mcp start` from a cold npx cache regularly exceeds 30 seconds (1.8 MB / 999 files), Claude Code's MCP startup timeout fires, zero tools register, and the user observes "Ruflo is broken — no MCP tools available."
+Issue [#1748 #3](https://github.com/pwnapplehat/ruflo/issues/1748) documented a silent failure mode for new users: `npx claude-flow@latest mcp start` from a cold npx cache regularly exceeds 30 seconds (1.8 MB / 999 files), Claude Code's MCP startup timeout fires, zero tools register, and the user observes "Ruflo is broken â€” no MCP tools available."
 
-`@claude-flow/cli-core` is a ≤250 KB packed subset containing only what plugin skills actually call: `memory store/list/retrieve/search/delete/init` and the `hooks` family (route, model-outcome, post-edit, pre-task, etc.). On a cold cache, `npx @claude-flow/cli-core@alpha memory store ...` should complete in under 5 seconds — well under the timeout.
+`@claude-flow/cli-core` is a â‰¤250 KB packed subset containing only what plugin skills actually call: `memory store/list/retrieve/search/delete/init` and the `hooks` family (route, model-outcome, post-edit, pre-task, etc.). On a cold cache, `npx @claude-flow/cli-core@alpha memory store ...` should complete in under 5 seconds â€” well under the timeout.
 
 ## Install
 
@@ -33,23 +33,23 @@ npx @claude-flow/cli-core@alpha memory store --key x --value 1 --namespace patte
 
 ## What's NOT included (use `@claude-flow/cli` for these)
 
-- `swarm`, `hive-mind`, `agent`, `task`, `coordination` — multi-agent orchestration
-- `neural`, `embeddings`, `intelligence` — full ML surface
-- `federation`, `claims`, `aidefence` — cross-installation features
-- `browser`, `wasm`, `rvf` — sandbox + browser automation
-- `init`, `migrate`, `doctor`, `daemon`, `deployment` — lifecycle management
-- `performance`, `security`, `providers`, `plugins`, `config` — admin surface
+- `swarm`, `hive-mind`, `agent`, `task`, `coordination` â€” multi-agent orchestration
+- `neural`, `embeddings`, `intelligence` â€” full ML surface
+- `federation`, `claims`, `aidefence` â€” cross-installation features
+- `browser`, `wasm`, `rvf` â€” sandbox + browser automation
+- `init`, `migrate`, `doctor`, `daemon`, `deployment` â€” lifecycle management
+- `performance`, `security`, `providers`, `plugins`, `config` â€” admin surface
 
 For any of these, install `@claude-flow/cli@alpha` (the metapackage that re-exports cli-core and lazy-loads everything else).
 
 ## Compatibility
 
-`@claude-flow/cli-core@3.7.0-alpha.x` ships in lockstep with `@claude-flow/cli@3.7.0-alpha.x`. Once promoted from alpha → latest, the two packages will continue to share the major.minor line.
+`@claude-flow/cli-core@3.7.0-alpha.x` ships in lockstep with `@claude-flow/cli@3.7.0-alpha.x`. Once promoted from alpha â†’ latest, the two packages will continue to share the major.minor line.
 
 ## Verification
 
 ```bash
-# Cold cache test — clear npx cache first
+# Cold cache test â€” clear npx cache first
 rm -rf ~/.npm/_npx
 time npx @claude-flow/cli-core@alpha memory store --key smoke --value test --namespace test
 # Expected: <5 seconds wall-time on typical broadband
@@ -57,11 +57,11 @@ time npx @claude-flow/cli-core@alpha memory store --key smoke --value test --nam
 
 ## Documentation
 
-- [ADR-100 — cli-core split](../../docs/adr/ADR-100-cli-core-split-lazy-load.md) — design rationale
-- **[MIGRATION.md](./MIGRATION.md) — concrete diff + env-flag pattern for switching plugin scripts**
-- [Issue #1748](https://github.com/ruvnet/ruflo/issues/1748) — the bug this package addresses
-- [Issue #1760](https://github.com/ruvnet/ruflo/issues/1760) — alpha tracking issue (status, benchmarks, fire-by-fire progress)
-- [Main `@claude-flow/cli` README](../cli/README.md) — full feature list
+- [ADR-100 â€” cli-core split](../../docs/adr/ADR-100-cli-core-split-lazy-load.md) â€” design rationale
+- **[MIGRATION.md](./MIGRATION.md) â€” concrete diff + env-flag pattern for switching plugin scripts**
+- [Issue #1748](https://github.com/pwnapplehat/ruflo/issues/1748) â€” the bug this package addresses
+- [Issue #1760](https://github.com/pwnapplehat/ruflo/issues/1760) â€” alpha tracking issue (status, benchmarks, fire-by-fire progress)
+- [Main `@claude-flow/cli` README](../cli/README.md) â€” full feature list
 
 ## License
 

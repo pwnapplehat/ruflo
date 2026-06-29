@@ -11,8 +11,8 @@ description: |
 
 author: rUv
 license: MIT
-homepage: https://github.com/ruvnet/ruflo/tree/main/v3/plugins/agentic-qe
-repository: https://github.com/ruvnet/ruflo
+homepage: https://github.com/pwnapplehat/ruflo/tree/main/v3/plugins/agentic-qe
+repository: https://github.com/pwnapplehat/ruflo
 
 # Plugin metadata
 metadata:
@@ -496,9 +496,9 @@ integration:
       - ToolRegistry
       - ToolHandler
 
-# ═══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # IMPLEMENTATION STATUS & PLAN
-# ═══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 implementation:
   status: in-progress  # planning | in-progress | complete
@@ -676,7 +676,7 @@ implementation:
         phase: 2
         priority: high
         estimatedLines: 200
-        description: TinyDancer ↔ ADR-026 adapter
+        description: TinyDancer â†” ADR-026 adapter
 
       - path: src/contexts/ContextMapper.ts
         status: pending
@@ -1001,7 +1001,7 @@ implementation:
       deliverables:
         - Anti-corruption layer isolates agentic-qe from V3 internals
         - Memory namespace coordination working
-        - TinyDancer ↔ ADR-026 routing aligned
+        - TinyDancer â†” ADR-026 routing aligned
 
     - phase: 3
       name: MCP Tools

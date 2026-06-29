@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 /**
- * Regression guard for ruvnet/ruflo#1874.
+ * Regression guard for pwnapplehat/ruflo#1874.
  *
  * Static dist scan: assert the MCP server packages emit a spec-compliant
  * `YYYY-MM-DD` string for `protocolVersion`, never the previous
  * `{major,minor,patch}` object form. This catches the regression class
  * without needing to actually boot the HTTP server (which has its own
- * separate plumbing issues — bin/cli.js auto-detects MCP-stdio mode for
+ * separate plumbing issues â€” bin/cli.js auto-detects MCP-stdio mode for
  * any `mcp start *` invocation when stdin isn't a TTY, and the
  * in-process HTTP server doesn't keep the process alive after start).
  *
  * Combined with:
- *   - witness markers (#1874-mcp, #1874-shared) — manifest attests the
+ *   - witness markers (#1874-mcp, #1874-shared) â€” manifest attests the
  *     spec strings are present
- *   - corrected unit test in mcp.test.ts — uses the spec string form
+ *   - corrected unit test in mcp.test.ts â€” uses the spec string form
  *
  * This three-way coverage catches the bug class.
  */
@@ -37,7 +37,7 @@ const pass = (m) => console.log(`ok: ${m}`);
 for (const target of TARGETS) {
   const path = resolve(REPO_ROOT, target);
   if (!existsSync(path)) {
-    fail(`${target} not found — build the package first`);
+    fail(`${target} not found â€” build the package first`);
     continue;
   }
   const src = readFileSync(path, 'utf8');
@@ -51,7 +51,7 @@ for (const target of TARGETS) {
   // Find the protocolVersion assignment and assert it's a date string
   const match = src.match(/protocolVersion\s*=\s*(['"][^'"]*['"]|\{[^}]+\}|[^;,\n]+)/);
   if (!match) {
-    fail(`${target} has no protocolVersion assignment — schema changed?`);
+    fail(`${target} has no protocolVersion assignment â€” schema changed?`);
     continue;
   }
   const value = match[1].trim();
@@ -62,5 +62,5 @@ for (const target of TARGETS) {
   pass(`${target}: protocolVersion = ${value}`);
 }
 
-console.log(failed === 0 ? '\nMCP protocol-shape compliance ✓' : `\n${failed} compliance failure(s) ✗`);
+console.log(failed === 0 ? '\nMCP protocol-shape compliance âœ“' : `\n${failed} compliance failure(s) âœ—`);
 process.exit(failed > 0 ? 1 : 0);

@@ -8,36 +8,36 @@
 
 `@claude-flow/browser` currently provides 59 MCP browser tools built on `agent-browser` + Playwright + Chromium. This stack works but has fundamental problems:
 
-1. **~400MB Chromium binary** — must download on first run, bloats Docker images, prevents edge deployment
-2. **200-500MB RAM per tab** — limits concurrent browser sessions in swarms
-3. **Black box rendering** — agents can only see the DOM and screenshots; layout/render trees are inaccessible
-4. **Not embeddable in WASM** — cannot run on Cognitum compute tiles or in serverless functions
-5. **Browser version drift** — same page renders differently across Chrome versions, breaking visual regression tests
-6. **Node.js ↔ Chrome IPC overhead** — every interaction is a roundtrip through CDP (Chrome DevTools Protocol)
+1. **~400MB Chromium binary** â€” must download on first run, bloats Docker images, prevents edge deployment
+2. **200-500MB RAM per tab** â€” limits concurrent browser sessions in swarms
+3. **Black box rendering** â€” agents can only see the DOM and screenshots; layout/render trees are inaccessible
+4. **Not embeddable in WASM** â€” cannot run on Cognitum compute tiles or in serverless functions
+5. **Browser version drift** â€” same page renders differently across Chrome versions, breaking visual regression tests
+6. **Node.js â†” Chrome IPC overhead** â€” every interaction is a roundtrip through CDP (Chrome DevTools Protocol)
 
-**Servo** is a Rust browser engine (Mozilla → Linux Foundation) with parallel CSS (Stylo) and GPU rendering (WebRender), both already shipping in Firefox. It can be embedded as a library, compiled headless at ~5MB, and exposes internal layout/render trees that Chromium keeps private.
+**Servo** is a Rust browser engine (Mozilla â†’ Linux Foundation) with parallel CSS (Stylo) and GPU rendering (WebRender), both already shipping in Firefox. It can be embedded as a library, compiled headless at ~5MB, and exposes internal layout/render trees that Chromium keeps private.
 
 ## Decision
 
-Replace Playwright/Chromium with **Servo** as the rendering backend for `@claude-flow/browser`. Keep the existing 59-tool MCP interface, trajectory learning, security scanning, swarm coordination, and 9 workflow templates unchanged. The swap is at the adapter layer — `AgentBrowserAdapter` becomes `ServoAdapter`.
+Replace Playwright/Chromium with **Servo** as the rendering backend for `@claude-flow/browser`. Keep the existing 59-tool MCP interface, trajectory learning, security scanning, swarm coordination, and 9 workflow templates unchanged. The swap is at the adapter layer â€” `AgentBrowserAdapter` becomes `ServoAdapter`.
 
-### Architecture: Before → After
+### Architecture: Before â†’ After
 
 ```
 BEFORE (Playwright):
-  MCP Tool Call → BrowserService → AgentBrowserAdapter → agent-browser CLI → Playwright → Chromium
-                       ↓                                                         ↓
+  MCP Tool Call â†’ BrowserService â†’ AgentBrowserAdapter â†’ agent-browser CLI â†’ Playwright â†’ Chromium
+                       â†“                                                         â†“
                   Security/Memory                                          CDP (IPC)
-                                                                               ↓
+                                                                               â†“
                                                                     Blink (C++) layout
                                                                     V8 (C++) JavaScript
                                                                     ~400MB + ~300MB/tab
 
 AFTER (Servo):
-  MCP Tool Call → BrowserService → ServoAdapter → libservo (embedded Rust)
-                       ↓                                ↓
+  MCP Tool Call â†’ BrowserService â†’ ServoAdapter â†’ libservo (embedded Rust)
+                       â†“                                â†“
                   Security/Memory                  Direct API (no IPC)
-                                                        ↓
+                                                        â†“
                                               Stylo (Rust) parallel CSS
                                               SpiderMonkey (C) JavaScript
                                               WebRender (Rust) GPU/CPU paint
@@ -60,15 +60,15 @@ AFTER (Servo):
 
 Everything above the adapter layer is unchanged:
 
-- **59 MCP tools** — same names, same parameters, same behavior
-- **BrowserService API** — `open()`, `click()`, `fill()`, `snapshot()`, `screenshot()`, etc.
-- **Security scanner** — URL validation, phishing detection, PII scanning, XSS/SQLi prevention
-- **Trajectory learning** — ReasoningBank/SONA pattern storage and retrieval
-- **Memory integration** — HNSW-indexed pattern search for similar browser interactions
-- **Swarm coordination** — multi-session parallel browsing with agent roles (navigator, scraper, validator, tester, monitor)
-- **9 workflow templates** — login-basic, login-oauth, logout, scrape-table, scrape-list, contact-form, visual-regression, smoke-test, uptime-check
-- **Hooks** — `preBrowseHook`, `postBrowseHook` for learning integration
-- **93% context reduction** — element refs (`@e1`) instead of full CSS selectors
+- **59 MCP tools** â€” same names, same parameters, same behavior
+- **BrowserService API** â€” `open()`, `click()`, `fill()`, `snapshot()`, `screenshot()`, etc.
+- **Security scanner** â€” URL validation, phishing detection, PII scanning, XSS/SQLi prevention
+- **Trajectory learning** â€” ReasoningBank/SONA pattern storage and retrieval
+- **Memory integration** â€” HNSW-indexed pattern search for similar browser interactions
+- **Swarm coordination** â€” multi-session parallel browsing with agent roles (navigator, scraper, validator, tester, monitor)
+- **9 workflow templates** â€” login-basic, login-oauth, logout, scrape-table, scrape-list, contact-form, visual-regression, smoke-test, uptime-check
+- **Hooks** â€” `preBrowseHook`, `postBrowseHook` for learning integration
+- **93% context reduction** â€” element refs (`@e1`) instead of full CSS selectors
 
 ### New Capabilities (Servo-Only)
 
@@ -76,21 +76,21 @@ Servo exposes internal trees that Chromium keeps private. These become **new MCP
 
 | New Tool | Description |
 |----------|-------------|
-| `browser/layout_tree` | Full computed layout tree — positions, sizes, margins, padding, z-index for every element |
-| `browser/render_tree` | WebRender display list — what actually gets painted, in what order |
-| `browser/style_cascade` | CSS cascade resolution — which rules won, specificity, origin |
-| `browser/reflow_cost` | Per-element layout cost — identify expensive reflows |
+| `browser/layout_tree` | Full computed layout tree â€” positions, sizes, margins, padding, z-index for every element |
+| `browser/render_tree` | WebRender display list â€” what actually gets painted, in what order |
+| `browser/style_cascade` | CSS cascade resolution â€” which rules won, specificity, origin |
+| `browser/reflow_cost` | Per-element layout cost â€” identify expensive reflows |
 | `browser/paint_order` | Stacking context and paint layer breakdown |
-| `browser/parallel_stats` | Stylo parallelism metrics — how many cores used for CSS |
+| `browser/parallel_stats` | Stylo parallelism metrics â€” how many cores used for CSS |
 
 These enable a new agent reasoning mode:
 
 ```
 Playwright agent:
-  snapshot → accessibility tree → "@e3 is a button labeled Submit"
+  snapshot â†’ accessibility tree â†’ "@e3 is a button labeled Submit"
 
 Servo agent:
-  snapshot → accessibility tree + layout tree → "@e3 is a button labeled Submit
+  snapshot â†’ accessibility tree + layout tree â†’ "@e3 is a button labeled Submit
     at (340, 220), 120x40px, z-index 2, in stacking context #form,
     font: 14px Inter, background: #2563eb, reflow cost: 0.3ms"
 ```
@@ -98,7 +98,7 @@ Servo agent:
 ### ServoAdapter Implementation
 
 ```rust
-// servo-adapter/src/lib.rs — napi-rs binding
+// servo-adapter/src/lib.rs â€” napi-rs binding
 
 use napi::*;
 use napi_derive::napi;
@@ -223,7 +223,7 @@ export class ServoAdapter implements BrowserAdapter {
       const { x, y, width, height } = ref.layoutBox;
       this.servo.click(x + width / 2, y + height / 2);
     } else {
-      // CSS selector — find via DOM, get layout position, click
+      // CSS selector â€” find via DOM, get layout position, click
       const pos = this.servo.getElementPosition(target);
       this.servo.click(pos.centerX, pos.centerY);
     }
@@ -263,25 +263,25 @@ export class ServoAdapter implements BrowserAdapter {
 
 ```
 @ruvector/servo-native              (npm, prebuilt Rust binary via napi-rs)
-├── src/lib.rs                      Servo embedding + napi bindings
-├── servo-headless/                  Minimal Servo build config (no GPU, no media)
-├── prebuilds/
-│   ├── linux-x64/servo-native.node
-│   ├── darwin-arm64/servo-native.node
-│   └── win32-x64/servo-native.node
-└── package.json                    ~5MB per platform
+â”œâ”€â”€ src/lib.rs                      Servo embedding + napi bindings
+â”œâ”€â”€ servo-headless/                  Minimal Servo build config (no GPU, no media)
+â”œâ”€â”€ prebuilds/
+â”‚   â”œâ”€â”€ linux-x64/servo-native.node
+â”‚   â”œâ”€â”€ darwin-arm64/servo-native.node
+â”‚   â””â”€â”€ win32-x64/servo-native.node
+â””â”€â”€ package.json                    ~5MB per platform
 
 @claude-flow/browser                (existing package, adapter swap)
-├── src/
-│   ├── adapters/
-│   │   ├── agent-browser-adapter.ts   ← DEPRECATED (Playwright)
-│   │   └── servo-adapter.ts           ← NEW (default)
-│   ├── browser-service.ts             unchanged
-│   ├── security/                      unchanged
-│   ├── memory/                        unchanged
-│   ├── workflows/                     unchanged
-│   └── hooks/                         unchanged
-└── package.json
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ adapters/
+â”‚   â”‚   â”œâ”€â”€ agent-browser-adapter.ts   â† DEPRECATED (Playwright)
+â”‚   â”‚   â””â”€â”€ servo-adapter.ts           â† NEW (default)
+â”‚   â”œâ”€â”€ browser-service.ts             unchanged
+â”‚   â”œâ”€â”€ security/                      unchanged
+â”‚   â”œâ”€â”€ memory/                        unchanged
+â”‚   â”œâ”€â”€ workflows/                     unchanged
+â”‚   â””â”€â”€ hooks/                         unchanged
+â””â”€â”€ package.json
     - "@ruvector/servo-native": "^1.0.0"   (replaces agent-browser)
     + peerDependencies: none (no Playwright, no Chrome)
 ```
@@ -291,10 +291,10 @@ export class ServoAdapter implements BrowserAdapter {
 Same `browser` group, new backend:
 
 ```javascript
-// TOOL_GROUPS — no change needed, browser group already exists
+// TOOL_GROUPS â€” no change needed, browser group already exists
 browser: {
   enabled: process.env.MCP_GROUP_BROWSER === "true",
-  description: "Headless browser automation — navigate, click, fill, screenshot (Servo)",
+  description: "Headless browser automation â€” navigate, click, fill, screenshot (Servo)",
   source: "ruflo",
   prefixes: ["browser_"],
 }
@@ -312,7 +312,7 @@ RUN npx playwright install chromium               # +400MB
 # AFTER: Servo native binary
 FROM node:20-slim                                  # 200MB base image
 RUN npm install @ruvector/servo-native             # +5MB
-# Total: ~205MB vs ~2.5GB — 12x smaller
+# Total: ~205MB vs ~2.5GB â€” 12x smaller
 ```
 
 ### Swarm Impact
@@ -330,15 +330,15 @@ This makes the existing swarm coordination (navigator, scraper, validator, teste
 
 ### Migration Path
 
-1. **Phase 1: Dual adapter** — Ship `ServoAdapter` alongside `AgentBrowserAdapter`. Environment variable selects:
+1. **Phase 1: Dual adapter** â€” Ship `ServoAdapter` alongside `AgentBrowserAdapter`. Environment variable selects:
    ```bash
    BROWSER_ENGINE=servo    # default (new)
    BROWSER_ENGINE=playwright  # fallback
    ```
 
-2. **Phase 2: Servo default** — `ServoAdapter` becomes default. `AgentBrowserAdapter` remains as fallback for sites with rendering issues.
+2. **Phase 2: Servo default** â€” `ServoAdapter` becomes default. `AgentBrowserAdapter` remains as fallback for sites with rendering issues.
 
-3. **Phase 3: Playwright removal** — Remove `agent-browser` and Playwright dependencies entirely. Servo handles all browsing.
+3. **Phase 3: Playwright removal** â€” Remove `agent-browser` and Playwright dependencies entirely. Servo handles all browsing.
 
 ### Compatibility Matrix
 
@@ -364,21 +364,21 @@ For the 95% of agent browsing tasks (navigate, read content, fill forms, click b
 
 ### Positive
 
-- **12x smaller Docker images** — 205MB vs 2.5GB
-- **15x more concurrent tabs** — 20MB/tab vs 300MB/tab
-- **Zero IPC overhead** — direct Rust FFI instead of CDP pipe
-- **Layout tree access** — new agent reasoning capabilities impossible with Playwright
-- **No browser download** — prebuilt binary ships with npm package
-- **Deterministic rendering** — same HTML always produces same layout (no Chrome version drift)
-- **WASM-compatible** — future path to edge/serverless/Cognitum tile deployment
-- **Same API** — all 59 existing MCP tools, security, memory, swarm, workflows work unchanged
+- **12x smaller Docker images** â€” 205MB vs 2.5GB
+- **15x more concurrent tabs** â€” 20MB/tab vs 300MB/tab
+- **Zero IPC overhead** â€” direct Rust FFI instead of CDP pipe
+- **Layout tree access** â€” new agent reasoning capabilities impossible with Playwright
+- **No browser download** â€” prebuilt binary ships with npm package
+- **Deterministic rendering** â€” same HTML always produces same layout (no Chrome version drift)
+- **WASM-compatible** â€” future path to edge/serverless/Cognitum tile deployment
+- **Same API** â€” all 59 existing MCP tools, security, memory, swarm, workflows work unchanged
 
 ### Negative
 
-- **Servo gaps** — some CSS4 features and WebGL not fully supported
-- **SpiderMonkey** — different JS engine than Chrome's V8; rare edge cases may differ
-- **Native binary builds** — must ship prebuilds for linux-x64, darwin-arm64, win32-x64
-- **Less ecosystem tooling** — no Chrome DevTools for debugging (mitigated by layout tree access)
+- **Servo gaps** â€” some CSS4 features and WebGL not fully supported
+- **SpiderMonkey** â€” different JS engine than Chrome's V8; rare edge cases may differ
+- **Native binary builds** â€” must ship prebuilds for linux-x64, darwin-arm64, win32-x64
+- **Less ecosystem tooling** â€” no Chrome DevTools for debugging (mitigated by layout tree access)
 
 ### Risks & Mitigations
 
@@ -391,8 +391,8 @@ For the 95% of agent browsing tasks (navigate, read content, fill forms, click b
 
 ## Related
 
-- [ADR-035: MCP Tool Groups](ADR-035-MCP-TOOL-GROUPS.md) — browser group architecture
-- [ADR-033: RuVector + Ruflo MCP Integration](ADR-033-RUVECTOR-RUFLO-MCP-INTEGRATION.md) — stdio MCP client pattern
-- [@claude-flow/browser README](https://github.com/ruvnet/ruflo/blob/main/v3/@claude-flow/browser/README.md) — existing 59-tool API surface
-- [Servo project](https://servo.org/) — Linux Foundation browser engine
-- [napi-rs](https://napi.rs/) — Rust ↔ Node.js FFI framework
+- [ADR-035: MCP Tool Groups](ADR-035-MCP-TOOL-GROUPS.md) â€” browser group architecture
+- [ADR-033: RuVector + Ruflo MCP Integration](ADR-033-RUVECTOR-RUFLO-MCP-INTEGRATION.md) â€” stdio MCP client pattern
+- [@claude-flow/browser README](https://github.com/pwnapplehat/ruflo/blob/main/v3/@claude-flow/browser/README.md) â€” existing 59-tool API surface
+- [Servo project](https://servo.org/) â€” Linux Foundation browser engine
+- [napi-rs](https://napi.rs/) â€” Rust â†” Node.js FFI framework

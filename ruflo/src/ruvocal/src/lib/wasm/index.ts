@@ -719,9 +719,9 @@ function createMockWasmModule() {
 								gallery_list: { cat: "gallery", desc: "List available agent templates. OPTIONAL: category", ex: '{"category": "development"}' },
 								gallery_load: { cat: "gallery", desc: "Load and activate an agent template. REQUIRED: id", ex: '{"id": "development-agent"}' },
 								gallery_search: { cat: "gallery", desc: "Search templates by keyword. REQUIRED: query", ex: '{"query": "security"}' },
-								// --- Brain (shared collective intelligence at pi.ruv.io, via pi-brain MCP) ---
+								// --- Brain (shared collective intelligence via a pi-brain MCP server you configure) ---
 								brain_status: { cat: "brain", desc: "Check brain health: memory count, graph edges, clusters, embedding engine, drift status", ex: "{}" },
-								brain_search: { cat: "brain", desc: "Semantic search across 2,000+ shared memories. REQUIRED: query. OPTIONAL: limit, min_quality", ex: '{"query": "authentication patterns", "limit": 5}' },
+								brain_search: { cat: "brain", desc: "Semantic search across shared memories. REQUIRED: query. OPTIONAL: limit, min_quality", ex: '{"query": "authentication patterns", "limit": 5}' },
 								brain_list: { cat: "brain", desc: "List recent memories. OPTIONAL: limit, category, min_quality", ex: '{"limit": 10, "category": "pattern"}' },
 								brain_share: { cat: "brain", desc: "Share a learning with the collective. REQUIRED: category, title, content. OPTIONAL: tags[]. Categories: architecture|pattern|solution|convention|security|performance|tooling|debug", ex: '{"category": "pattern", "title": "React auth hook", "content": "useAuth() with refresh token rotation", "tags": ["react", "auth"]}' },
 								brain_drift: { cat: "brain", desc: "Check knowledge drift across categories. Shows how knowledge is evolving over time", ex: "{}" },
@@ -753,10 +753,10 @@ function createMockWasmModule() {
 								text = `SYSTEM GUIDANCE — AVAILABLE TOOLS\n\n` +
 									`You have two MCP servers:\n` +
 									`  1. RVAgent Local (WASM) — files, memory, tasks, witness, gallery (runs in browser)\n` +
-									`  2. pi-brain (mcp.pi.ruv.io) — shared collective intelligence with 2,000+ memories\n\n` +
+									`  2. pi-brain (your configured pi-brain MCP endpoint) — shared collective intelligence\n\n` +
 									`${sections.join("\n\n")}\n\n` +
 									`TIPS:\n` +
-									`• Brain tools (brain_*) connect to pi.ruv.io shared knowledge — search before implementing\n` +
+									`• Brain tools (brain_*) connect to a shared knowledge server you configure — search before implementing\n` +
 									`• Local tools (files, memory, tasks) operate in this browser sandbox\n` +
 									`• Always pass REQUIRED parameters in JSON format\n` +
 									`• Use witness_log to create audit trails for important actions`;

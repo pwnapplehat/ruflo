@@ -1,10 +1,10 @@
 /**
- * Tests for the regex entity tagger (ADR-147 P2, ruvnet/ruflo#2317).
+ * Tests for the regex entity tagger (ADR-147 P2, pwnapplehat/ruflo#2317).
  *
  * Goal of the tagger: a conservative third signal for hybridSearch.
  * False negatives are fine (dense + sparse cover the rest); false
  * positives would dilute the RRF score by adding noise rows. These
- * tests pin the conservatism — generic prose returns nothing, and
+ * tests pin the conservatism â€” generic prose returns nothing, and
  * concrete structured tokens (email, URL, path, quote, proper-noun
  * bigram) round-trip cleanly.
  */

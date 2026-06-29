@@ -5,7 +5,7 @@ Agent teams, swarm coordination, Monitor streams, and worktree isolation.
 ## Install
 
 ```
-/plugin marketplace add ruvnet/ruflo
+/plugin marketplace add pwnapplehat/ruflo
 /plugin install ruflo-swarm@ruflo
 ```
 
@@ -45,7 +45,7 @@ This plugin pairs with Claude Code's native multi-agent tools (no MCP needed):
 | `Task` | Spawn a sub-agent (use `name:` for addressability + `run_in_background: true` for parallel execution) |
 | `SendMessage` | Inter-agent comms (named agents only) |
 | `TaskCreate / TaskList / TaskGet / TaskUpdate / TaskOutput / TaskStop` | Shared task tracker for swarm pipelines |
-| `Monitor` | Live-stream events from a long-running process (`persistent: true`) — primary wake signal for /loop |
+| `Monitor` | Live-stream events from a long-running process (`persistent: true`) â€” primary wake signal for /loop |
 | `EnterWorktree / ExitWorktree` | Git worktree isolation per agent |
 
 ## Anti-drift defaults (per CLAUDE.md)
@@ -55,7 +55,7 @@ For coding swarms, the canonical defaults that prevent agent drift:
 | Setting | Value | Rationale |
 |---------|-------|-----------|
 | `topology` | `hierarchical` | Coordinator catches divergence |
-| `maxAgents` | 6–8 | Smaller team = less drift |
+| `maxAgents` | 6â€“8 | Smaller team = less drift |
 | `strategy` | `specialized` | Clear roles, no overlap |
 | `consensus` | `raft` | Leader maintains authoritative state |
 | `memory` | `hybrid` | SQLite + AgentDB for both fast + durable |
@@ -64,7 +64,7 @@ For 10+ agent teams, use `hierarchical-mesh` (queen + peer communication).
 
 ## Namespace coordination
 
-This plugin owns the `swarm-state` AgentDB namespace (kebab-case, follows the convention from [ruflo-agentdb ADR-0001 §"Namespace convention"](../ruflo-agentdb/docs/adrs/0001-agentdb-optimization.md)). Reserved namespaces (`pattern`, `claude-memories`, `default`) MUST NOT be shadowed.
+This plugin owns the `swarm-state` AgentDB namespace (kebab-case, follows the convention from [ruflo-agentdb ADR-0001 Â§"Namespace convention"](../ruflo-agentdb/docs/adrs/0001-agentdb-optimization.md)). Reserved namespaces (`pattern`, `claude-memories`, `default`) MUST NOT be shadowed.
 
 `swarm-state` indexes active swarms, agent assignments, and topology snapshots. Accessed via `memory_*` (namespace-routed).
 
@@ -77,10 +77,10 @@ bash plugins/ruflo-swarm/scripts/smoke.sh
 
 ## Architecture Decisions
 
-- [`ADR-0001` — ruflo-swarm plugin contract (12-tool MCP surface, anti-drift defaults, Monitor streaming, smoke as contract)](./docs/adrs/0001-swarm-contract.md)
+- [`ADR-0001` â€” ruflo-swarm plugin contract (12-tool MCP surface, anti-drift defaults, Monitor streaming, smoke as contract)](./docs/adrs/0001-swarm-contract.md)
 
 ## Related Plugins
 
-- `ruflo-agentdb` — namespace convention owner
-- `ruflo-autopilot` — owns the 270s cache-aware /loop heartbeat for long-running swarms
-- `ruflo-intelligence` — `hooks_route` powers swarm agent recommendation per task
+- `ruflo-agentdb` â€” namespace convention owner
+- `ruflo-autopilot` â€” owns the 270s cache-aware /loop heartbeat for long-running swarms
+- `ruflo-intelligence` â€” `hooks_route` powers swarm agent recommendation per task

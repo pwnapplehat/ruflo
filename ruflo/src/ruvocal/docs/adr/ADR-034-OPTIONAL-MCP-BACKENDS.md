@@ -1,4 +1,4 @@
-# ADR-034: Optional MCP Backends — Claude Code, Gemini, Codex
+# ADR-034: Optional MCP Backends — Cursor (legacy — removed in Cursor-native fork), Gemini, Codex
 
 **Status:** Accepted
 **Date:** 2026-03-05
@@ -8,7 +8,7 @@
 
 ADR-033 added ruvector (61 tools) and ruflo (215 tools) as default MCP backends. Users also want access to additional AI agent capabilities:
 
-- **Claude Code** — Anthropic's coding agent with file editing, bash execution, and code analysis tools
+- **Cursor (legacy — removed in Cursor-native fork)** — Anthropic's coding agent with file editing, bash execution, and code analysis tools
 - **Gemini MCP** — Google's Gemini model with conversation context management, multimodal capabilities
 - **OpenAI Codex** — OpenAI's coding agent for code generation and execution
 
@@ -24,7 +24,7 @@ Add three optional MCP backends that can be enabled via environment variables. U
 |---------|-----------|-----------------|---------|---------|
 | ruvector | `ENABLE_RUVECTOR` | None | `npx ruvector mcp start` | **enabled** |
 | ruflo | `ENABLE_RUFLO` | None | `npx ruflo mcp start` | **enabled** |
-| Claude Code | `ENABLE_CLAUDE_CODE` | `ANTHROPIC_API_KEY` | `claude mcp serve` | disabled |
+| Cursor (legacy — removed in Cursor-native fork) | `ENABLE_CLAUDE_CODE` | `ANTHROPIC_API_KEY` | `claude mcp serve` | disabled |
 | Gemini MCP | `ENABLE_GEMINI_MCP` | `GOOGLE_API_KEY` | `npx gemini-mcp-server` | disabled |
 | Codex | `ENABLE_CODEX` | `OPENAI_API_KEY` | `npx @openai/codex mcp serve` | disabled |
 
@@ -35,7 +35,7 @@ All backends use the same `StdioMcpClient` from ADR-033. Tools are namespaced by
 ```
 ruvector__hooks_route      → ruvector MCP
 ruflo__agent_spawn         → ruflo MCP
-claude__Read               → Claude Code MCP
+claude__Read               → Cursor (legacy — removed in Cursor-native fork) MCP
 gemini__chat               → Gemini MCP
 codex__execute             → Codex MCP
 ```
@@ -53,7 +53,7 @@ codex__execute             → Codex MCP
 │                                                       │
 │  Optional backends (API key required):                │
 │  ┌──────────────┐  ┌───────────┐  ┌───────────────┐ │
-│  │ Claude Code  │  │ Gemini    │  │ OpenAI Codex │ │
+│  │ Cursor (legacy — removed in Cursor-native fork)  │  │ Gemini    │  │ OpenAI Codex │ │
 │  │ (opt-in)     │  │ (opt-in)  │  │ (opt-in)     │ │
 │  └──────────────┘  └───────────┘  └───────────────┘ │
 └───────────────────────────────────────────────────────┘
@@ -86,7 +86,7 @@ OPENAI_API_KEY=sk-...      # already set for OpenAI models
 |---------|--------|-----|-------------|
 | ruvector | ~30MB | Low | ~3s |
 | ruflo | ~50MB | Low | ~5s |
-| Claude Code | ~100MB | Medium | ~5s |
+| Cursor (legacy — removed in Cursor-native fork) | ~100MB | Medium | ~5s |
 | Gemini MCP | ~40MB | Low | ~4s |
 | Codex | ~80MB | Medium | ~5s |
 
@@ -101,7 +101,7 @@ With all 5 backends enabled, the bridge container needs ~800MB memory.
 - API keys shared with the chat proxy (no additional secrets needed for Gemini/OpenAI)
 
 ### Negative
-- Claude Code requires `@anthropic-ai/claude-code` installed (large package)
+- Cursor (legacy — removed in Cursor-native fork) requires `@anthropic-ai/claude-code` installed (large package)
 - Each optional backend adds ~40-100MB memory when enabled
 - More child processes to manage in the container
 
