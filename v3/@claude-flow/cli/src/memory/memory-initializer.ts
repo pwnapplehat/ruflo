@@ -3,7 +3,7 @@
  * Properly initializes the memory database with sql.js (WASM SQLite)
  * Includes pattern tables, vector embeddings, migration state tracking
  *
- * ADR-053: Routes through ControllerRegistry → AgentDB v3 when available,
+ * ADR-053: Routes through ControllerRegistry ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ AgentDB v3 when available,
  * falls back to raw sql.js for backwards compatibility.
  *
  * @module v3/cli/memory-initializer
@@ -15,10 +15,10 @@ import { createRequire } from 'node:module';
 import { readFileMaybeEncrypted, writeFileRestricted } from '../fs-secure.js';
 
 /**
- * #2356 — cached, synchronous capability probe for @ruvector/core. `getHNSWStatus`
+ * #2356 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â cached, synchronous capability probe for @ruvector/core. `getHNSWStatus`
  * is sync and is called by `neural status` in a fresh process that never warms
  * the lazy HNSW singleton, so reporting availability off the warm singleton
- * alone produced a false "Not loaded — @ruvector/core not available" even when
+ * alone produced a false "Not loaded ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â @ruvector/core not available" even when
  * the package is installed and exposes VectorDb. Resolving the module (without
  * importing/initializing it) is a faithful, cheap availability signal.
  */
@@ -40,10 +40,10 @@ function isRuvectorCoreResolvable(): boolean {
  * `getMemoryRoot()`, so the documented config entry
  * points (`memory.persistPath` config field, `memory configure --path`,
  * `CLAUDE_FLOW_MEMORY_PATH` env var) all silently no-op'd. This helper
- * is the single source of truth — every `.swarm/memory.db` resolution in
+ * is the single source of truth ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â every `.swarm/memory.db` resolution in
  * this file flows through it.
  *
- * Precedence (highest → lowest):
+ * Precedence (highest ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ lowest):
  *   1. CLAUDE_FLOW_MEMORY_PATH env var
  *   2. memory.persistPath / memory.path in claude-flow.config.json (cwd or
  *      the directory the CLI was invoked from)
@@ -78,7 +78,7 @@ export function getMemoryRoot(): string {
         return _memoryRootCache;
       }
     } catch {
-      /* malformed config — fall through to default */
+      /* malformed config ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â fall through to default */
     }
   }
 
@@ -114,8 +114,8 @@ export function resolveDbPath(cliFlag?: string): string {
 // ADR-053: Lazy import of AgentDB v3 bridge
 let _bridge: typeof import('./memory-bridge.js') | null | undefined;
 async function getBridge(): Promise<typeof import('./memory-bridge.js') | null> {
-  // #2120 — Allow callers to force the raw sql.js fallback path. The
-  // ensureSchemaColumns backfill (NULL → 'active') lives in that
+  // #2120 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Allow callers to force the raw sql.js fallback path. The
+  // ensureSchemaColumns backfill (NULL ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ 'active') lives in that
   // fallback, so smokes that verify legacy-DB migration semantics need a
   // way to bypass the bridge. Also useful when the bridge would hang on
   // network-bound init (Xenova model fetch) in offline CI.
@@ -417,7 +417,7 @@ CREATE TABLE IF NOT EXISTS vector_indexes (
 
 -- ============================================
 -- GRAPH EDGES (ADR-130 Phase 1)
--- Unified knowledge graph backend — sql.js canonical store
+-- Unified knowledge graph backend ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â sql.js canonical store
 -- ============================================
 
 -- Unified graph edges table (ADR-130)
@@ -429,7 +429,7 @@ CREATE TABLE IF NOT EXISTS graph_edges (
   target_id       TEXT NOT NULL,             -- domain-prefixed node ID
   relation        TEXT NOT NULL,             -- e.g. "caused", "depends-on", "imports"
   weight          REAL DEFAULT 1.0,
-  -- Temporal / reliability semantics (ADR-130 §"graph that forgets" property)
+  -- Temporal / reliability semantics (ADR-130 Ãƒâ€šÃ‚Â§"graph that forgets" property)
   confidence      REAL DEFAULT 1.0,          -- [0,1]; updated by JUDGE step
   decay_rate      REAL DEFAULT 0.0,          -- per-day exponential decay applied at read time
   last_reinforced TEXT,                      -- ISO-8601; set when CONSOLIDATE re-touches edge
@@ -523,7 +523,7 @@ export async function getHNSWIndex(options?: {
 
     const { VectorDb } = ruvectorCore;
 
-    // Persistent storage paths — resolve to absolute to survive CWD changes
+    // Persistent storage paths ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â resolve to absolute to survive CWD changes
     const swarmDir = getMemoryRoot();
     if (!fs.existsSync(swarmDir)) {
       fs.mkdirSync(swarmDir, { recursive: true });
@@ -750,7 +750,7 @@ export function getHNSWStatus(): {
 } {
   // ADR-053: If bridge was previously loaded, report availability
   if (_bridge && _bridge !== null) {
-    // Bridge is loaded — HNSW-equivalent is available via AgentDB v3
+    // Bridge is loaded ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â HNSW-equivalent is available via AgentDB v3
     return {
       available: true,
       initialized: true,
@@ -895,7 +895,7 @@ export function getQuantizationStats(embedding: number[] | Float32Array): {
 /**
  * Batch cosine similarity - compute query against multiple vectors
  * Optimized for V8 JIT with typed arrays
- * ~50μs per 1000 vectors (384-dim)
+ * ~50ÃƒÅ½Ã‚Â¼s per 1000 vectors (384-dim)
  */
 export function batchCosineSim(
   query: Float32Array | number[],
@@ -1083,7 +1083,7 @@ INSERT OR IGNORE INTO vector_indexes (id, name, dimensions) VALUES
 export interface MemoryInitResult {
   success: boolean;
   /**
-   * #1791.6 — set when an existing database was found and `force` was not
+   * #1791.6 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â set when an existing database was found and `force` was not
    * passed. The call is treated as a successful no-op rather than an error.
    */
   alreadyExists?: boolean;
@@ -1166,20 +1166,20 @@ export async function ensureSchemaColumns(dbPath: string): Promise<{
       }
     }
 
-    // #2120 — Belt-and-suspenders backfill. `ALTER TABLE ADD COLUMN
+    // #2120 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Belt-and-suspenders backfill. `ALTER TABLE ADD COLUMN
     // status TEXT DEFAULT 'active'` should populate existing rows with
     // 'active' in modern SQLite, but: (a) some auto-memory bridge writes
     // happen via INSERT paths that pass an explicit NULL, (b) some
     // historical sql.js builds skipped the DEFAULT backfill, (c)
     // entries can be migrated in from older snapshots. After ensuring
-    // the column exists, force-backfill any remaining NULL → 'active'.
+    // the column exists, force-backfill any remaining NULL ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ 'active'.
     // Safe on already-correct DBs (0 rows updated).
     if (columnsAdded.includes('status') || existingColumns.has('status')) {
       try {
         db.run(`UPDATE memory_entries SET status = 'active' WHERE status IS NULL`);
         modified = true;
       } catch {
-        /* table is read-only or doesn't exist — skip */
+        /* table is read-only or doesn't exist ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â skip */
       }
     }
 
@@ -1218,9 +1218,9 @@ export async function checkAndMigrateLegacy(options: {
   // Check for legacy locations
   const legacyPaths = [
     path.join(process.cwd(), 'memory.db'),
-    path.join(process.cwd(), '.claude/memory.db'),
+    path.join(process.cwd(), '.cursor-flow/memory.db'),
     path.join(process.cwd(), 'data/memory.db'),
-    path.join(process.cwd(), '.claude-flow/memory.db')
+    path.join(process.cwd(), '.cursor-flow/memory.db')
   ];
 
   for (const legacyPath of legacyPaths) {
@@ -1350,7 +1350,7 @@ export async function initializeMemoryDatabase(options: {
     }
 
     // Check existing database
-    // #1791.6 — Idempotent re-init: if the database already exists and the
+    // #1791.6 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Idempotent re-init: if the database already exists and the
     // caller did not pass --force, treat it as a successful no-op instead of
     // an error. Callers (CLI, MCP tools, embeddings) can branch on
     // `alreadyExists` if they want a different message; previous behavior
@@ -1738,7 +1738,7 @@ export async function loadEmbeddingModel(options?: {
       // the model files from the HuggingFace CDN. Without the catch, that
       // throw escapes the outer try and aborts loadEmbeddingModel() with
       // success=false BEFORE we reach the (working) ruvector ONNX fallback
-      // below — leaving embeddingModelState=null, which then crashes
+      // below ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â leaving embeddingModelState=null, which then crashes
       // generateLocalEmbedding() with "Cannot read properties of null
       // (reading 'model')" on every memory store / search call.
       try {
@@ -1917,15 +1917,15 @@ export async function generateEmbedding(text: string): Promise<{
 
 /**
  * Generate an embedding using ONLY the local model chain (transformers.js /
- * ruvector ONNX / hash fallback) — never the AgentDB bridge.
+ * ruvector ONNX / hash fallback) ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â never the AgentDB bridge.
  *
  * #2312: this MUST stay bridge-free. `memory-bridge.ts` rescues a degraded
  * agentdb embedder by delegating to this module; if that delegation went
  * through `generateEmbedding` (bridge-first), the call would re-enter the
  * patched `agentdb.embedder.embed` and recurse unboundedly:
  *
- *   generateEmbedding → bridgeGenerateEmbedding → embedder.embed (patched)
- *     → generateEmbedding → … (heap OOM at ~4 GB on CI, no stack overflow
+ *   generateEmbedding ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ bridgeGenerateEmbedding ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ embedder.embed (patched)
+ *     ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ generateEmbedding ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ (heap OOM at ~4 GB on CI, no stack overflow
  *     because the cycle is async/microtask-driven)
  *
  * Keeping the local chain as its own export breaks that cycle structurally.
@@ -1944,7 +1944,7 @@ export async function generateLocalEmbedding(text: string): Promise<{
   // #2461: loadEmbeddingModel() can leave embeddingModelState null when an
   // earlier loader (transformers fetch, ruvector init) throws and we never
   // reach the hash-fallback assignment. Don't lie with a `!` non-null
-  // assertion — fall back to a synthetic hash-fallback state so we degrade
+  // assertion ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â fall back to a synthetic hash-fallback state so we degrade
   // to the deterministic 128-dim hash embedding instead of crashing the
   // entire memory store/search path with "reading property 'model' of null".
   const state = embeddingModelState ?? {
@@ -1976,7 +1976,7 @@ export async function generateLocalEmbedding(text: string): Promise<{
   }
 
   // Deterministic hash-based fallback (for testing/demo without ONNX).
-  // AUDIT #3: backend='mock' — these vectors do NOT carry real semantics.
+  // AUDIT #3: backend='mock' ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â these vectors do NOT carry real semantics.
   const embedding = generateHashEmbedding(text, state.dimensions);
   return {
     embedding,
@@ -2339,7 +2339,7 @@ export async function storeEntry(options: {
 
   try {
     if (!fs.existsSync(dbPath)) {
-      return { success: false, id: '', error: 'Database not initialized. Run: claude-flow memory init' };
+      return { success: false, id: '', error: 'Database not initialized. Run: ruflo memory init' };
     }
 
     // Ensure schema has all required columns (migration for older DBs)
@@ -2368,7 +2368,7 @@ export async function storeEntry(options: {
 
     // #1941: provision a `vector_indexes` row for this namespace before the
     // entry insert. The HNSW lookup uses this table to find which namespaces
-    // are indexed — without a row, `memory_search({namespace:"X"})` returns
+    // are indexed ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â without a row, `memory_search({namespace:"X"})` returns
     // 0 even when memory_entries holds matching rows. INSERT OR IGNORE
     // preserves the existing `default` / `patterns` rows.
     try {
@@ -2376,7 +2376,7 @@ export async function storeEntry(options: {
         `INSERT OR IGNORE INTO vector_indexes (id, name, dimensions) VALUES (?, ?, ?)`,
         [namespace, namespace, embeddingDimensions ?? 384]
       );
-    } catch { /* vector_indexes may not exist on legacy DBs — fall through */ }
+    } catch { /* vector_indexes may not exist on legacy DBs ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â fall through */ }
 
     // Insert or update entry (upsert mode uses REPLACE)
     const insertSql = upsert
@@ -2491,7 +2491,7 @@ export async function searchEntries(options: {
     const queryEmb = await generateEmbedding(query);
     const queryEmbedding = queryEmb.embedding;
 
-    // Try RaBitQ pre-filter first (32× compressed Hamming scan)
+    // Try RaBitQ pre-filter first (32ÃƒÆ’Ã¢â‚¬â€ compressed Hamming scan)
     try {
       const { searchRabitq } = await import('./rabitq-index.js');
       const rabitqCandidates = await searchRabitq(queryEmbedding, { k: limit * 2, namespace: effectiveNamespace });
@@ -2633,7 +2633,7 @@ export async function searchEntries(options: {
 /**
  * Optimized cosine similarity
  * V8 JIT-friendly - avoids manual unrolling which can hurt performance
- * ~0.5μs per 384-dim vector comparison
+ * ~0.5ÃƒÅ½Ã‚Â¼s per 384-dim vector comparison
  */
 function cosineSim(a: number[], b: number[]): number {
   if (!a || !b || a.length === 0 || b.length === 0) return 0;
@@ -2713,7 +2713,7 @@ export async function listEntries(options: {
     const fileBuffer = readFileMaybeEncrypted(dbPath, null);
     const db = new SQL.Database(fileBuffer);
 
-    // #2120 — accept `status IS NULL` alongside `'active'`. Old DBs
+    // #2120 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â accept `status IS NULL` alongside `'active'`. Old DBs
     // that predate the status column may have NULL after migration.
     // See memory-bridge.ts:bridgeListEntries for full context.
     // Get total count
@@ -2734,7 +2734,7 @@ export async function listEntries(options: {
     // Get entries
     const safeLimit = parseInt(String(limit), 10) || 100;
     const safeOffset = parseInt(String(offset), 10) || 0;
-    // #2120 — same NULL-as-active acceptance as the count above.
+    // #2120 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â same NULL-as-active acceptance as the count above.
     const listStmt = namespace
       ? db.prepare(`SELECT id, key, namespace, content, embedding, access_count, created_at, updated_at FROM memory_entries WHERE (status = 'active' OR status IS NULL) AND namespace = ? ORDER BY updated_at DESC LIMIT ? OFFSET ?`)
       : db.prepare(`SELECT id, key, namespace, content, embedding, access_count, created_at, updated_at FROM memory_entries WHERE (status = 'active' OR status IS NULL) ORDER BY updated_at DESC LIMIT ? OFFSET ?`);
@@ -2777,7 +2777,7 @@ export async function listEntries(options: {
           hasEmbedding: boolean;
           content?: string;
         } = {
-          // #2073: don't truncate id when content is requested — callers
+          // #2073: don't truncate id when content is requested ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â callers
           // (notably memory_export) need the full id to round-trip via import.
           id: options.includeContent ? String(id) : String(id).substring(0, 20),
           key: key || String(id).substring(0, 15),

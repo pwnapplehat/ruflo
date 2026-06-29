@@ -2,7 +2,7 @@
  * V3 CLI Neural Command
  * Neural pattern training, MoE, Flash Attention, pattern learning
  *
- * Created with ❤️ by ruv.io
+ * Created with â¤ï¸ by ruv.io
  */
 
 import type { Command, CommandContext, CommandResult } from '../types.js';
@@ -28,9 +28,9 @@ const trainCommand: Command = {
     { name: 'curriculum', type: 'boolean', description: 'Enable curriculum learning', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow neural train -p coordination -e 100', description: 'Train coordination patterns' },
-    { command: 'claude-flow neural train -d ./training-data.json --flash', description: 'Train from file with Flash Attention' },
-    { command: 'claude-flow neural train -p security --wasm --contrastive', description: 'Security patterns with contrastive learning' },
+    { command: 'ruflo neural train -p coordination -e 100', description: 'Train coordination patterns' },
+    { command: 'ruflo neural train -d ./training-data.json --flash', description: 'Train from file with Flash Attention' },
+    { command: 'ruflo neural train -p security --wasm --contrastive', description: 'Security patterns with contrastive learning' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const patternType = (ctx.flags.pattern || ctx.flags.patternType || ctx.flags['pattern-type']) as string || 'coordination';
@@ -48,7 +48,7 @@ const trainCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Neural Pattern Training (RuVector WASM)'));
-    output.writeln(output.dim('─'.repeat(55)));
+    output.writeln(output.dim('â”€'.repeat(55)));
 
     const spinner = output.createSpinner({ text: 'Initializing RuVector training systems...', spinner: 'dots' });
     spinner.start();
@@ -373,14 +373,14 @@ const trainCommand: Command = {
       });
 
       output.writeln();
-      output.writeln(output.success(`✓ ${patternsRecorded} patterns saved to ${persistence.patternsFile}`));
+      output.writeln(output.success(`âœ“ ${patternsRecorded} patterns saved to ${persistence.patternsFile}`));
 
       if (useWasm && wasmFeatures.length > 0) {
         const backendUsed = ruvectorStats?.backend || 'unknown';
         const backendMsg = backendUsed === 'wasm'
           ? `RuVector WASM backend: ${wasmFeatures.join(', ')}`
           : `RuVector JS fallback (install @ruvector/learning-wasm for native speed): ${wasmFeatures.join(', ')}`;
-        output.writeln(output.highlight(`✓ ${backendMsg}`));
+        output.writeln(output.highlight(`âœ“ ${backendMsg}`));
       }
 
       return {
@@ -414,15 +414,15 @@ const statusCommand: Command = {
     { name: 'verbose', short: 'v', type: 'boolean', description: 'Show detailed metrics' },
   ],
   examples: [
-    { command: 'claude-flow neural status', description: 'Show all neural status' },
-    { command: 'claude-flow neural status -m model-123', description: 'Check specific model' },
+    { command: 'ruflo neural status', description: 'Show all neural status' },
+    { command: 'ruflo neural status -m model-123', description: 'Check specific model' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const verbose = ctx.flags.verbose === true;
 
     output.writeln();
     output.writeln(output.bold('Neural Network Status (Real)'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Checking neural systems...', spinner: 'dots' });
     spinner.start();
@@ -462,7 +462,7 @@ const statusCommand: Command = {
             component: 'SONA Coordinator',
             status: stats.sonaEnabled ? output.success('Active') : output.warning('Inactive'),
             details: stats.sonaEnabled
-              ? `Adaptation: ${(adaptBench.avgMs * 1000).toFixed(2)}μs avg`
+              ? `Adaptation: ${(adaptBench.avgMs * 1000).toFixed(2)}Î¼s avg`
               : 'Not initialized',
           },
           {
@@ -488,7 +488,7 @@ const statusCommand: Command = {
             // #2356: distinguish "loaded in this process" from "installed but
             // not yet loaded" from "not installed". Previously `neural status`
             // always printed "Not loaded" because it never warms the lazy
-            // singleton — a false negative even when @ruvector/core is present.
+            // singleton â€” a false negative even when @ruvector/core is present.
             component: 'HNSW Index',
             status: hnswStatus.initialized
               ? output.success('Ready')
@@ -561,8 +561,8 @@ const statusCommand: Command = {
           { metric: 'Trajectories Recorded', value: String(stats.trajectoriesRecorded) },
           { metric: 'Patterns Learned', value: String(stats.patternsLearned) },
           { metric: 'HNSW Dimensions', value: String(hnswStatus.dimensions) },
-          { metric: 'SONA Adaptation (avg)', value: `${(adaptBench.avgMs * 1000).toFixed(2)}μs` },
-          { metric: 'SONA Adaptation (max)', value: `${(adaptBench.maxMs * 1000).toFixed(2)}μs` },
+          { metric: 'SONA Adaptation (avg)', value: `${(adaptBench.avgMs * 1000).toFixed(2)}Î¼s` },
+          { metric: 'SONA Adaptation (max)', value: `${(adaptBench.maxMs * 1000).toFixed(2)}Î¼s` },
           { metric: 'Target Met (<0.05ms)', value: adaptBench.targetMet ? output.success('Yes') : output.warning('No') },
           {
             metric: 'Last Adaptation',
@@ -621,8 +621,8 @@ const patternsCommand: Command = {
     { name: 'limit', short: 'l', type: 'number', description: 'Max patterns to return', default: '10' },
   ],
   examples: [
-    { command: 'claude-flow neural patterns --action list', description: 'List all patterns' },
-    { command: 'claude-flow neural patterns -a analyze -q "error handling"', description: 'Analyze patterns' },
+    { command: 'ruflo neural patterns --action list', description: 'List all patterns' },
+    { command: 'ruflo neural patterns -a analyze -q "error handling"', description: 'Analyze patterns' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const action = ctx.flags.action as string || 'list';
@@ -631,7 +631,7 @@ const patternsCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold(`Neural Patterns - ${action}`));
-    output.writeln(output.dim('─'.repeat(40)));
+    output.writeln(output.dim('â”€'.repeat(40)));
 
     try {
       const {
@@ -683,7 +683,7 @@ const patternsCommand: Command = {
         output.writeln();
         output.writeln(output.dim(`Total: ${allPatterns.length} patterns (persisted) | Trajectories: ${stats.trajectoriesRecorded}`));
         if (persistence.patternsExist) {
-          output.writeln(output.success(`✓ Loaded from: ${persistence.patternsFile}`));
+          output.writeln(output.success(`âœ“ Loaded from: ${persistence.patternsFile}`));
         }
       } else if (action === 'analyze' && query) {
         // Analyze patterns related to query
@@ -713,7 +713,7 @@ const patternsCommand: Command = {
     } catch (error) {
       // Fallback if intelligence not initialized
       output.writeln(output.dim('Intelligence system not initialized.'));
-      output.writeln(output.dim('Run: claude-flow neural train --pattern-type general'));
+      output.writeln(output.dim('Run: ruflo neural train --pattern-type general'));
       return { success: false };
     }
   },
@@ -729,8 +729,8 @@ const predictCommand: Command = {
     { name: 'format', short: 'f', type: 'string', description: 'Output format: json, table', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural predict -i "implement authentication"', description: 'Predict routing for task' },
-    { command: 'claude-flow neural predict -i "fix bug in login" -k 3', description: 'Get top 3 predictions' },
+    { command: 'ruflo neural predict -i "implement authentication"', description: 'Predict routing for task' },
+    { command: 'ruflo neural predict -i "fix bug in login" -k 3', description: 'Get top 3 predictions' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const input = ctx.flags.input as string;
@@ -744,7 +744,7 @@ const predictCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Neural Prediction (Real)'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Running inference...', spinner: 'dots' });
     spinner.start();
@@ -765,7 +765,7 @@ const predictCommand: Command = {
       output.writeln();
 
       if (matches.length === 0) {
-        output.writeln(output.warning('No similar patterns found. Try training first: claude-flow neural train'));
+        output.writeln(output.warning('No similar patterns found. Try training first: ruflo neural train'));
         return { success: true, data: { matches: [] } };
       }
 
@@ -827,8 +827,8 @@ const optimizeCommand: Command = {
     { name: 'verbose', short: 'v', type: 'boolean', description: 'Show detailed metrics' },
   ],
   examples: [
-    { command: 'claude-flow neural optimize --method quantize', description: 'Quantize patterns to Int8' },
-    { command: 'claude-flow neural optimize --method analyze -v', description: 'Analyze memory usage' },
+    { command: 'ruflo neural optimize --method quantize', description: 'Quantize patterns to Int8' },
+    { command: 'ruflo neural optimize --method analyze -v', description: 'Analyze memory usage' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const method = ctx.flags.method as string || 'quantize';
@@ -836,7 +836,7 @@ const optimizeCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Pattern Optimization (Real)'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     const spinner = output.createSpinner({ text: `Running ${method} optimization...`, spinner: 'dots' });
     spinner.start();
@@ -934,7 +934,7 @@ const optimizeCommand: Command = {
             { metric: 'Quantized', before: '-', after: String(quantizedCount) },
             { metric: 'Storage Size', before: `${(beforeSize / 1024).toFixed(1)} KB`, after: `${(afterSize / 1024).toFixed(1)} KB` },
             { metric: 'Reduction Ratio', before: '-', after: actualRatio > 0 ? `${actualRatio.toFixed(2)}x` : 'N/A (no data)' },
-            { metric: 'Precision', before: 'Float32', after: 'Int8 (±0.5%)' },
+            { metric: 'Precision', before: 'Float32', after: 'Int8 (Â±0.5%)' },
           ],
         });
 
@@ -1026,8 +1026,8 @@ const exportCommand: Command = {
     { name: 'name', short: 'n', type: 'string', description: 'Custom name for exported model' },
   ],
   examples: [
-    { command: 'claude-flow neural export -m security-patterns --ipfs', description: 'Export and pin to IPFS' },
-    { command: 'claude-flow neural export -m code-review -o ./export.json', description: 'Export to file' },
+    { command: 'ruflo neural export -m security-patterns --ipfs', description: 'Export and pin to IPFS' },
+    { command: 'ruflo neural export -m code-review -o ./export.json', description: 'Export to file' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const modelId = ctx.flags.model as string || 'all';
@@ -1039,7 +1039,7 @@ const exportCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Secure Model Export'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Preparing export...', spinner: 'dots' });
     spinner.start();
@@ -1225,7 +1225,7 @@ const exportCommand: Command = {
 
         output.writeln();
         output.writeln(output.success('Share this CID for others to import your trained patterns'));
-        output.writeln(output.dim(`Import command: claude-flow neural import --cid ${result.IpfsHash}`));
+        output.writeln(output.dim(`Import command: ruflo neural import --cid ${result.IpfsHash}`));
       }
 
       if (!outputFile && !pinToIpfs) {
@@ -1253,9 +1253,9 @@ const listCommand: Command = {
     { name: 'cid', type: 'string', description: 'Custom registry CID (default: official registry)' },
   ],
   examples: [
-    { command: 'claude-flow neural list', description: 'List all available models' },
-    { command: 'claude-flow neural list --category security', description: 'List only security models' },
-    { command: 'claude-flow neural list -f json', description: 'Output as JSON' },
+    { command: 'ruflo neural list', description: 'List all available models' },
+    { command: 'ruflo neural list --category security', description: 'List only security models' },
+    { command: 'ruflo neural list -f json', description: 'Output as JSON' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const category = ctx.flags.category as string | undefined;
@@ -1267,7 +1267,7 @@ const listCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Pre-trained Model Registry'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
 
     const spinner = output.createSpinner({ text: 'Fetching model registry...', spinner: 'dots' });
     spinner.start();
@@ -1368,11 +1368,11 @@ const listCommand: Command = {
         output.writeln(output.dim('Registry CID: ' + registryCid));
         output.writeln();
         output.writeln(output.bold('Import Commands:'));
-        output.writeln(output.dim('  All models:      ') + `claude-flow neural import --cid ${registryCid}`);
+        output.writeln(output.dim('  All models:      ') + `ruflo neural import --cid ${registryCid}`);
         if (category) {
-          output.writeln(output.dim(`  ${category} only: `) + `claude-flow neural import --cid ${registryCid} --category ${category}`);
+          output.writeln(output.dim(`  ${category} only: `) + `ruflo neural import --cid ${registryCid} --category ${category}`);
         } else {
-          output.writeln(output.dim('  By category:     ') + `claude-flow neural import --cid ${registryCid} --category <category>`);
+          output.writeln(output.dim('  By category:     ') + `ruflo neural import --cid ${registryCid} --category <category>`);
         }
       }
 
@@ -1396,9 +1396,9 @@ const importCommand: Command = {
     { name: 'category', type: 'string', description: 'Only import patterns from specific category' },
   ],
   examples: [
-    { command: 'claude-flow neural import --cid QmXxx...', description: 'Import from IPFS' },
-    { command: 'claude-flow neural import -f ./patterns.json --verify', description: 'Import from file' },
-    { command: 'claude-flow neural import --cid QmNr1yYMK... --category security', description: 'Import only security patterns' },
+    { command: 'ruflo neural import --cid QmXxx...', description: 'Import from IPFS' },
+    { command: 'ruflo neural import -f ./patterns.json --verify', description: 'Import from file' },
+    { command: 'ruflo neural import --cid QmNr1yYMK... --category security', description: 'Import only security patterns' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const cid = ctx.flags.cid as string;
@@ -1414,7 +1414,7 @@ const importCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Secure Model Import'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Fetching model...', spinner: 'dots' });
     spinner.start();
@@ -1599,7 +1599,7 @@ const importCommand: Command = {
 
       output.writeln();
       output.writeln(output.success('Patterns imported and ready to use'));
-      output.writeln(output.dim('Run "claude-flow neural patterns --action list" to see imported patterns'));
+      output.writeln(output.dim('Run "ruflo neural patterns --action list" to see imported patterns'));
 
       return { success: true };
     } catch (error) {
@@ -1619,8 +1619,8 @@ const benchmarkCommand: Command = {
     { name: 'keys', short: 'k', type: 'number', description: 'Number of keys for attention', default: '100' },
   ],
   examples: [
-    { command: 'claude-flow neural benchmark', description: 'Run default benchmark' },
-    { command: 'claude-flow neural benchmark -d 128 -i 5000', description: 'Custom benchmark' },
+    { command: 'ruflo neural benchmark', description: 'Run default benchmark' },
+    { command: 'ruflo neural benchmark -d 128 -i 5000', description: 'Custom benchmark' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const dim = Math.min(parseInt(ctx.flags.dim as string || '256', 10), 256);
@@ -1629,7 +1629,7 @@ const benchmarkCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('RuVector WASM Benchmark'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Running benchmarks...', spinner: 'dots' });
     spinner.start();
@@ -1760,9 +1760,9 @@ const benchmarkCommand: Command = {
           { metric: 'Dimension', value: String(dim) },
           { metric: 'Iterations', value: iterations.toLocaleString() },
           { metric: 'Total Time', value: `${loraTime.toFixed(2)}ms` },
-          { metric: 'Avg Adaptation', value: `${(loraAvg * 1000).toFixed(2)}μs` },
+          { metric: 'Avg Adaptation', value: `${(loraAvg * 1000).toFixed(2)}Î¼s` },
           { metric: 'Adaptations/sec', value: Math.round(1000 / loraAvg).toLocaleString() },
-          { metric: 'Target (<100μs)', value: loraAvg * 1000 < 100 ? output.success('✓ PASS') : output.warning('✗ FAIL') },
+          { metric: 'Target (<100Î¼s)', value: loraAvg * 1000 < 100 ? output.success('âœ“ PASS') : output.warning('âœ— FAIL') },
         ],
       });
 
@@ -1778,18 +1778,18 @@ const benchmarkCommand: Command = {
 };
 
 // ============================================================================
-// ADR-148 — `neural router` subcommand tree: status / train / reload
+// ADR-148 â€” `neural router` subcommand tree: status / train / reload
 // ============================================================================
 
 const routerStatusCommand: Command = {
   name: 'status',
-  description: 'Show the cost-optimal neural router state (ADR-148) — gate, backend, artifact, counters',
+  description: 'Show the cost-optimal neural router state (ADR-148) â€” gate, backend, artifact, counters',
   options: [
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router status', description: 'Show router state' },
-    { command: 'CLAUDE_FLOW_ROUTER_NEURAL=1 claude-flow neural router status', description: 'Show status with gate open' },
+    { command: 'ruflo neural router status', description: 'Show router state' },
+    { command: 'CLAUDE_FLOW_ROUTER_NEURAL=1 ruflo neural router status', description: 'Show status with gate open' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const format = (ctx.flags.format as string) || 'table';
@@ -1804,18 +1804,18 @@ const routerStatusCommand: Command = {
     }
     output.writeln();
     output.writeln(output.bold('Cost-Optimal Neural Router (ADR-148)'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
     output.writeln(`  Gate (CLAUDE_FLOW_ROUTER_NEURAL=1): ${status.enabled ? output.success('open') : output.warning('closed')}`);
     output.writeln(`  Backend available:                  ${status.available ? output.success('yes') : output.warning('no')}`);
-    output.writeln(`  Active backend (routedBy):          ${status.routedBy ?? '—'}`);
+    output.writeln(`  Active backend (routedBy):          ${status.routedBy ?? 'â€”'}`);
     output.writeln(`  Reason:                             ${status.reason}`);
     output.writeln(`  Quality bar:                        ${status.config.qualityBar}`);
     output.writeln(`  Seed corpus path:                   ${status.config.seedCorpusPath}`);
     output.writeln(`  Bundled KRR artifact path:          ${status.config.bundledKrrPath}`);
-    output.writeln(`  User artifact (modelPath):          ${status.config.modelPath ?? '—'}`);
+    output.writeln(`  User artifact (modelPath):          ${status.config.modelPath ?? 'â€”'}`);
     output.writeln();
     output.writeln(output.bold('Counters (process-local since last reset)'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
     output.writeln(`  Total decisions:    ${stats.totalDecisions}`);
     output.writeln(`  routedBy:           heuristic=${stats.routedByCounts.heuristic}  hybrid=${stats.routedByCounts.hybrid}  bandit-fallback=${stats.routedByCounts['bandit-fallback']}`);
     output.writeln(`  neuralBackend:      knn=${stats.neuralBackendCounts['metaharness-knn']}  krr=${stats.neuralBackendCounts['metaharness-krr']}  fastgrnn=${stats.neuralBackendCounts.fastgrnn}`);
@@ -1827,15 +1827,15 @@ const routerStatusCommand: Command = {
 
 const routerTrainCommand: Command = {
   name: 'train',
-  description: 'Train a KRR router artifact from a DRACO-shaped JSON corpus (or the bundled seed) — pure TS, no native deps',
+  description: 'Train a KRR router artifact from a DRACO-shaped JSON corpus (or the bundled seed) â€” pure TS, no native deps',
   options: [
     { name: 'corpus', short: 'c', type: 'string', description: 'Path to DRACO rows JSON ({embedding, scores}). Defaults to the bundled seed corpus.' },
     { name: 'out', short: 'o', type: 'string', description: 'Output path for the trained KRR JSON.' },
     { name: 'quality-bar', short: 'q', type: 'number', description: 'qualityBar for cost-optimal selection (default 0.8)', default: '0.8' },
   ],
   examples: [
-    { command: 'claude-flow neural router train', description: 'Train from the bundled seed and write to ./router.krr.json' },
-    { command: 'claude-flow neural router train -c ./my-corpus.json -o ./my-router.krr.json', description: 'Train from a custom corpus' },
+    { command: 'ruflo neural router train', description: 'Train from the bundled seed and write to ./router.krr.json' },
+    { command: 'ruflo neural router train -c ./my-corpus.json -o ./my-router.krr.json', description: 'Train from a custom corpus' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const corpusPath = ctx.flags.corpus as string | undefined;
@@ -1859,12 +1859,12 @@ const routerTrainCommand: Command = {
     const rows = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
     output.writeln();
     output.writeln(output.bold('Training KRR router (ADR-148)'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
     output.writeln(`  Corpus: ${seedPath}  (${rows.length} rows, dim=${rows[0]?.embedding?.length ?? '?'})`);
     output.writeln(`  Output: ${outPath}`);
     output.writeln(`  qualityBar: ${qualityBar}`);
     output.writeln();
-    const spinner = output.createSpinner({ text: 'Fitting Beta-Bernoulli KRR with leave-one-out CV…', spinner: 'dots' });
+    const spinner = output.createSpinner({ text: 'Fitting Beta-Bernoulli KRR with leave-one-out CVâ€¦', spinner: 'dots' });
     spinner.start();
     const t0 = performance.now();
     const { router, lambda, looQuality } = mh.trainRouter(rows, { haiku: 1, sonnet: 3, opus: 15 }, {
@@ -1872,18 +1872,18 @@ const routerTrainCommand: Command = {
       lambdas: [1e-4, 1e-3, 1e-2, 1e-1, 1e0],
     });
     const ms = performance.now() - t0;
-    spinner.succeed(`Trained in ${ms.toFixed(0)}ms (λ=${lambda.toExponential(3)}, looQuality=${looQuality.toFixed(4)})`);
+    spinner.succeed(`Trained in ${ms.toFixed(0)}ms (Î»=${lambda.toExponential(3)}, looQuality=${looQuality.toFixed(4)})`);
     fs.writeFileSync(outPath, JSON.stringify(router.toJSON()));
     const bytes = fs.statSync(outPath).size;
-    output.writeln(`Wrote ${bytes} bytes → ${outPath}`);
+    output.writeln(`Wrote ${bytes} bytes â†’ ${outPath}`);
     output.writeln();
-    output.writeln(output.dim('Use: CLAUDE_FLOW_ROUTER_NEURAL=1 CLAUDE_FLOW_ROUTER_MODEL_PATH=' + outPath + ' …'));
+    output.writeln(output.dim('Use: CLAUDE_FLOW_ROUTER_NEURAL=1 CLAUDE_FLOW_ROUTER_MODEL_PATH=' + outPath + ' â€¦'));
     output.writeln();
     return { success: true, data: { lambda, looQuality, trainMs: ms, modelPath: outPath, modelBytes: bytes } };
   },
 };
 
-// ADR-149 iter 19 — CLI surface for the iter 18 trajectory consumer. Pairs
+// ADR-149 iter 19 â€” CLI surface for the iter 18 trajectory consumer. Pairs
 // decision+outcome rows from the JSONL recorder into seed-rows-compatible
 // training rows that `neural router train` (above) can consume.
 const routerTrainFromTrajectoriesCommand: Command = {
@@ -1892,16 +1892,16 @@ const routerTrainFromTrajectoriesCommand: Command = {
   options: [
     { name: 'in', short: 'i', type: 'string', description: 'Trajectory JSONL path (default: $CLAUDE_FLOW_ROUTER_TRAJECTORY_PATH or .swarm/model-router-trajectories.jsonl)' },
     { name: 'write', short: 'w', type: 'string', description: 'Write paired rows to this path (seed-rows.json-compatible JSON array)' },
-    { name: 'union', short: 'u', type: 'string', description: 'Union paired rows with an existing seed-rows.json — production rows win on task-text collision' },
+    { name: 'union', short: 'u', type: 'string', description: 'Union paired rows with an existing seed-rows.json â€” production rows win on task-text collision' },
     { name: 'filter-source', type: 'string', description: 'Only keep outcomes whose source matches (e.g. llm-judge, agent-execute)' },
-    { name: 'min-quality', type: 'number', description: 'Drop pairs whose MAX outcome score is below this threshold (default 0 — keep failures, they are training signal)', default: '0' },
+    { name: 'min-quality', type: 'number', description: 'Drop pairs whose MAX outcome score is below this threshold (default 0 â€” keep failures, they are training signal)', default: '0' },
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router train-from-trajectories', description: 'Show pairing stats from default trajectory path' },
-    { command: 'claude-flow neural router train-from-trajectories -w production-rows.json', description: 'Emit a corpus to feed `router train`' },
-    { command: 'claude-flow neural router train-from-trajectories -u assets/model-router/seed-rows.json -w merged.json', description: 'Union production rows with the bundled seed corpus' },
-    { command: 'claude-flow neural router train-from-trajectories --filter-source llm-judge -w high-signal.json', description: 'Keep only judge-graded rows (drop coarse agent-execute baseline)' },
+    { command: 'ruflo neural router train-from-trajectories', description: 'Show pairing stats from default trajectory path' },
+    { command: 'ruflo neural router train-from-trajectories -w production-rows.json', description: 'Emit a corpus to feed `router train`' },
+    { command: 'ruflo neural router train-from-trajectories -u assets/model-router/seed-rows.json -w merged.json', description: 'Union production rows with the bundled seed corpus' },
+    { command: 'ruflo neural router train-from-trajectories --filter-source llm-judge -w high-signal.json', description: 'Keep only judge-graded rows (drop coarse agent-execute baseline)' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fs = await import('node:fs');
@@ -1913,7 +1913,7 @@ const routerTrainFromTrajectoriesCommand: Command = {
       ?? path.resolve(process.cwd(), '.swarm', 'model-router-trajectories.jsonl');
     const writePath = ctx.flags.write as string | undefined;
     const unionPath = ctx.flags.union as string | undefined;
-    // Argv parser may camelCase hyphenated flags — accept both spellings.
+    // Argv parser may camelCase hyphenated flags â€” accept both spellings.
     const filterSource = (ctx.flags['filter-source'] ?? ctx.flags.filterSource) as string | undefined;
     const minQuality = parseFloat((ctx.flags['min-quality'] ?? ctx.flags.minQuality) as string || '0') || 0;
     const fmt = (ctx.flags.format as string) || 'table';
@@ -1921,7 +1921,7 @@ const routerTrainFromTrajectoriesCommand: Command = {
     if (!fs.existsSync(inPath)) {
       const msg = `Trajectory file not found at ${inPath}`;
       if (fmt === 'json') {
-        output.writeln(JSON.stringify({ error: msg, hint: 'Set CLAUDE_FLOW_ROUTER_TRAJECTORY=1 and run any agent_spawn → executeAgentTask flow to accumulate rows.' }, null, 2));
+        output.writeln(JSON.stringify({ error: msg, hint: 'Set CLAUDE_FLOW_ROUTER_TRAJECTORY=1 and run any agent_spawn â†’ executeAgentTask flow to accumulate rows.' }, null, 2));
       } else {
         output.printError(msg);
         output.writeln(output.dim('  Set CLAUDE_FLOW_ROUTER_TRAJECTORY=1 to enable trajectory recording.'));
@@ -1990,8 +1990,8 @@ const routerTrainFromTrajectoriesCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.bold('Trajectory → Training-row pairing (ADR-149 iter 18/19)'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.bold('Trajectory â†’ Training-row pairing (ADR-149 iter 18/19)'));
+    output.writeln(output.dim('â”€'.repeat(60)));
     output.writeln(`  Input file:        ${inPath}`);
     output.writeln(`  Total rows:        ${stats.totalRows} (${stats.decisions} decision, ${stats.outcomes} outcome${malformed > 0 ? `, ${malformed} malformed` : ''})`);
     output.writeln(`  Paired:            ${stats.paired}`);
@@ -2006,7 +2006,7 @@ const routerTrainFromTrajectoriesCommand: Command = {
     if (stats.totalRows === 0) {
       output.writeln(output.dim('  Empty trajectory file. Enable recording with `export CLAUDE_FLOW_ROUTER_TRAJECTORY=1` and run agent_spawn flows.'));
     } else if (pairs.length > 0 && writePath) {
-      output.writeln(output.dim(`  Next: claude-flow neural router train -c ${writePath} -o router.krr.json`));
+      output.writeln(output.dim(`  Next: ruflo neural router train -c ${writePath} -o router.krr.json`));
     }
     output.writeln();
     return { success: true, data };
@@ -2018,20 +2018,20 @@ const routerReloadCommand: Command = {
   description: 'Force-reload the neural router (clears in-process backend cache; next call re-reads artifact/corpus)',
   options: [],
   examples: [
-    { command: 'claude-flow neural router reload', description: 'Refresh backend caches after retraining an artifact' },
+    { command: 'ruflo neural router reload', description: 'Refresh backend caches after retraining an artifact' },
   ],
   action: async (): Promise<CommandResult> => {
     const { __resetNeuralRouterForTests, neuralRouterStatus } = await import('../ruvector/neural-router.js');
     __resetNeuralRouterForTests();
     output.writeln(output.success('Neural router backend cache cleared.'));
     const status = await neuralRouterStatus();
-    output.writeln(output.dim(`  Active backend now: ${status.routedBy ?? '—'}  (${status.reason})`));
+    output.writeln(output.dim(`  Active backend now: ${status.routedBy ?? 'â€”'}  (${status.reason})`));
     return { success: true, data: status };
   },
 };
 
 /**
- * ADR-149 iter 8 — `neural router models`: list the candidate registry
+ * ADR-149 iter 8 â€” `neural router models`: list the candidate registry
  * with measured per-tier scores from the most recent seed-corpus bench,
  * latency, and cost. Reads:
  *   - assets/model-router/seed-rows.json (which model ids exist in the corpus)
@@ -2046,8 +2046,8 @@ const routerModelsCommand: Command = {
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router models', description: 'Show candidate registry with measured stats' },
-    { command: 'claude-flow neural router models -f json', description: 'Machine-readable JSON' },
+    { command: 'ruflo neural router models', description: 'Show candidate registry with measured stats' },
+    { command: 'ruflo neural router models -f json', description: 'Machine-readable JSON' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fmt = (ctx.flags.format as string) || 'table';
@@ -2137,18 +2137,18 @@ const routerModelsCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Cost-Optimal Router Registry (ADR-149)'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
     output.writeln(`  Source: ${seedPath}`);
     output.writeln(`  Candidates: ${rows.length}`);
     output.writeln();
     if (rows.length === 0) {
-      output.writeln(output.warning('  No candidates — corpus not generated or measurement not run.'));
+      output.writeln(output.warning('  No candidates â€” corpus not generated or measurement not run.'));
       output.writeln(output.dim('  Run: node scripts/gen-seed-corpus-v2.mjs && OPENROUTER_API_KEY=... node scripts/benchmark-seed-corpus.mjs --live'));
       return { success: true, data: { count: 0 } };
     }
-    const fmtPct = (v: number | undefined) => v == null ? '—'.padStart(6) : `${(v * 100).toFixed(1)}%`.padStart(6);
-    const fmtCost = (v: number | undefined) => v == null ? '—' : `$${v.toFixed(2)}`;
-    const fmtLat = (v: number | undefined) => v == null ? '—' : `${v.toFixed(0)}ms`;
+    const fmtPct = (v: number | undefined) => v == null ? 'â€”'.padStart(6) : `${(v * 100).toFixed(1)}%`.padStart(6);
+    const fmtCost = (v: number | undefined) => v == null ? 'â€”' : `$${v.toFixed(2)}`;
+    const fmtLat = (v: number | undefined) => v == null ? 'â€”' : `${v.toFixed(0)}ms`;
     output.writeln('  | Candidate                                  | Tier   |  Cheap |   Mid  | Strong | Overall | $/Mtok in/out | Latency |');
     output.writeln('  |--------------------------------------------|--------|--------|--------|--------|---------|---------------|---------|');
     for (const c of rows) {
@@ -2162,7 +2162,7 @@ const routerModelsCommand: Command = {
   },
 };
 
-// ADR-149 iter 28 — observability into recorded routing decisions. The
+// ADR-149 iter 28 â€” observability into recorded routing decisions. The
 // trajectory JSONL (iter 17+) records every decision the router makes;
 // this subcommand exposes that data as filtered + aggregated views so
 // operators don't have to grep the file.
@@ -2174,16 +2174,16 @@ const routerDecisionsCommand: Command = {
     { name: 'since', short: 's', type: 'string', description: 'Time window suffix: 1h, 24h, 7d, 30d (default: all)' },
     { name: 'routed-by', type: 'string', description: 'Filter by decision mechanism: hybrid | bandit-fallback | heuristic' },
     { name: 'model', short: 'm', type: 'string', description: 'Filter by chosen model id (substring match, e.g. haiku, gpt-4)' },
-    { name: 'bucket', type: 'string', description: 'Filter by complexity bucket: cheap (< 0.34) | mid (< 0.67) | strong (≥ 0.67) — iter 58' },
-    { name: 'task-hash', type: 'string', description: 'Filter by exact task_hash (FNV-1a-32). Use for incident investigation — iter 59' },
+    { name: 'bucket', type: 'string', description: 'Filter by complexity bucket: cheap (< 0.34) | mid (< 0.67) | strong (â‰¥ 0.67) â€” iter 58' },
+    { name: 'task-hash', type: 'string', description: 'Filter by exact task_hash (FNV-1a-32). Use for incident investigation â€” iter 59' },
     { name: 'limit', short: 'l', type: 'number', description: 'Max recent decisions to list (default 20)', default: '20' },
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router decisions', description: 'Aggregate stats + 20 most-recent decisions' },
-    { command: 'claude-flow neural router decisions --since 24h', description: 'Last 24 hours only' },
-    { command: 'claude-flow neural router decisions --routed-by bandit-fallback', description: 'Find decisions where neural backend failed' },
-    { command: 'claude-flow neural router decisions --model haiku --format json', description: 'All haiku picks, JSON output' },
+    { command: 'ruflo neural router decisions', description: 'Aggregate stats + 20 most-recent decisions' },
+    { command: 'ruflo neural router decisions --since 24h', description: 'Last 24 hours only' },
+    { command: 'ruflo neural router decisions --routed-by bandit-fallback', description: 'Find decisions where neural backend failed' },
+    { command: 'ruflo neural router decisions --model haiku --format json', description: 'All haiku picks, JSON output' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fs = await import('node:fs');
@@ -2203,7 +2203,7 @@ const routerDecisionsCommand: Command = {
       output.printError(`--bucket must be one of: cheap | mid | strong (got "${bucketFilterRaw}")`);
       return { success: false, exitCode: 1 };
     }
-    // iter 59 — task_hash filter for incident investigation. Accepts the 8-char
+    // iter 59 â€” task_hash filter for incident investigation. Accepts the 8-char
     // FNV-1a-32 hex format the trajectory recorder uses.
     const taskHashFilter = ((ctx.flags['task-hash'] ?? ctx.flags.taskHash) as string | undefined)?.toLowerCase();
     if (taskHashFilter && !/^[0-9a-f]{8}$/.test(taskHashFilter)) {
@@ -2224,7 +2224,7 @@ const routerDecisionsCommand: Command = {
       return { success: false, exitCode: 1 };
     }
 
-    // Parse JSONL — only decision rows are relevant here.
+    // Parse JSONL â€” only decision rows are relevant here.
     interface DecisionRow {
       v: number; type: 'decision'; ts: string; task_hash: string; task?: string;
       model: string; complexity: number; confidence: number; uncertainty: number;
@@ -2233,8 +2233,8 @@ const routerDecisionsCommand: Command = {
     const text = fs.readFileSync(inPath, 'utf8');
     const lines = text.split('\n').filter(l => l.trim().length > 0);
     const decisions: DecisionRow[] = [];
-    // iter 31 — pair outcomes by task_hash for cost-aggregate joins.
-    // iter 65 — outcomes now ARRAY (was Map). Same correctness fix as iter
+    // iter 31 â€” pair outcomes by task_hash for cost-aggregate joins.
+    // iter 65 â€” outcomes now ARRAY (was Map). Same correctness fix as iter
     // 62 applied to cost-savings: deduping by task_hash collapses multiple
     // runs of the same task into one, biasing cost aggregates toward the
     // LATEST outcome's cost counted N times instead of summing all N costs.
@@ -2300,12 +2300,12 @@ const routerDecisionsCommand: Command = {
     const byRoutedBy: Record<string, number> = {};
     const byModel: Record<string, number> = {};
     const byTier: Record<string, number> = { cheap: 0, mid: 0, strong: 0 };
-    // iter 31 — cost aggregation. Sum cost_usd from paired outcome rows.
+    // iter 31 â€” cost aggregation. Sum cost_usd from paired outcome rows.
     let costTotalUsd = 0;
     let costPairedCount = 0;
     const costByModel: Record<string, number> = {};
     const costByTier: Record<string, number> = { cheap: 0, mid: 0, strong: 0 };
-    // iter 65 — track per-hash decision-iteration so we can pair the N-th
+    // iter 65 â€” track per-hash decision-iteration so we can pair the N-th
     // decision for a hash with the N-th outcome (instead of always pulling
     // the latest outcome). Iter 17's recorder writes decision then outcome
     // in chronological order, so this index-pairing matches what the agent
@@ -2317,7 +2317,7 @@ const routerDecisionsCommand: Command = {
       byModel[id] = (byModel[id] ?? 0) + 1;
       const tier = d.complexity < 0.34 ? 'cheap' : d.complexity < 0.67 ? 'mid' : 'strong';
       byTier[tier]++;
-      // iter 31 + iter 65 — JOIN to the i-th OUTCOME row for this task_hash
+      // iter 31 + iter 65 â€” JOIN to the i-th OUTCOME row for this task_hash
       // (where i is the i-th DECISION for this hash). Avoids double-counting
       // costs when a task ran multiple times.
       const outcomeArr = outcomesByHash.get(d.task_hash);
@@ -2353,7 +2353,7 @@ const routerDecisionsCommand: Command = {
       aggregates: {
         byRoutedBy, byModel, byTier,
         fallbackRatePct: Math.round(fallbackRate * 100) / 100,
-        // iter 31 — cost aggregates. Only populated when outcome rows
+        // iter 31 â€” cost aggregates. Only populated when outcome rows
         // carry cost_usd (post-iter-31 trajectories).
         ...(costPairedCount > 0 ? {
           costTotalUsd: Math.round(costTotalUsd * 1000000) / 1000000,
@@ -2373,7 +2373,7 @@ const routerDecisionsCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Routing decisions (ADR-149 iter 17+, query iter 28)'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln(`  Input:           ${inPath}`);
     output.writeln(`  JSONL rows:      ${lines.length}  (${decisions.length} decision, ${malformed} malformed)`);
     if (since || routedByFilter || modelFilter || bucketFilter || taskHashFilter) {
@@ -2388,7 +2388,7 @@ const routerDecisionsCommand: Command = {
       return { success: true, data: payload };
     }
 
-    output.writeln(`  Fallback rate:   ${fallbackRate.toFixed(2)}%   (neural backend → bandit when prediction unusable)`);
+    output.writeln(`  Fallback rate:   ${fallbackRate.toFixed(2)}%   (neural backend â†’ bandit when prediction unusable)`);
     output.writeln('');
     output.writeln('  By routed_by:');
     for (const [k, v] of Object.entries(byRoutedBy).sort((a, b) => b[1] - a[1])) {
@@ -2408,7 +2408,7 @@ const routerDecisionsCommand: Command = {
       output.writeln(`    ${k.padEnd(8)}  ${String(v).padStart(6)}  ${pct}%`);
     }
     output.writeln('');
-    // iter 31 — cost block (only when outcome rows carry cost_usd).
+    // iter 31 â€” cost block (only when outcome rows carry cost_usd).
     if (costPairedCount > 0) {
       output.writeln('  Cost (USD, from paired outcomes):');
       output.writeln(`    Total:           $${costTotalUsd.toFixed(4)}  across ${costPairedCount} paired decisions`);
@@ -2423,17 +2423,17 @@ const routerDecisionsCommand: Command = {
       }
       output.writeln('');
     }
-    // iter 59 — incident detail mode. When --task-hash is set, render each
+    // iter 59 â€” incident detail mode. When --task-hash is set, render each
     // matching decision with FULL task text, paired outcome, complexity,
     // ab_pair, ensemble_disagreement. Operators investigating "why was
     // THIS task routed to X?" want maximum context per decision.
     if (taskHashFilter && filtered.length > 0) {
-      // iter 64 — sort occurrences newest-first by ts. JSONL insertion order
+      // iter 64 â€” sort occurrences newest-first by ts. JSONL insertion order
       // may not match chronological order after rotation or out-of-order writes.
       const incidentSorted = [...filtered].sort((a, b) => b.ts.localeCompare(a.ts));
       output.writeln(output.bold(`  Incident detail for task_hash=${taskHashFilter} (${filtered.length} occurrence(s), newest first):`));
       for (const d of incidentSorted) {
-        // iter 65 — outcomesByHash is now an array of all outcomes per hash.
+        // iter 65 â€” outcomesByHash is now an array of all outcomes per hash.
         // For the incident detail at this decision's timestamp, pick the
         // outcome closest in time (typically the corresponding one written
         // by iter 17's recorder immediately after the decision).
@@ -2462,7 +2462,7 @@ const routerDecisionsCommand: Command = {
           output.writeln(`    ensemble disagree:   ${ed.toFixed(4)}`);
         }
         if (out) {
-          output.writeln(`    outcome:             quality=${out.quality ?? '—'}  cost_usd=${out.cost_usd != null ? '$' + out.cost_usd.toFixed(6) : '—'}  source=${(out as unknown as { source?: string }).source ?? '—'}`);
+          output.writeln(`    outcome:             quality=${out.quality ?? 'â€”'}  cost_usd=${out.cost_usd != null ? '$' + out.cost_usd.toFixed(6) : 'â€”'}  source=${(out as unknown as { source?: string }).source ?? 'â€”'}`);
         } else {
           output.writeln(`    outcome:             ${output.warning('(no paired outcome row)')}`);
         }
@@ -2482,20 +2482,20 @@ const routerDecisionsCommand: Command = {
   },
 };
 
-// ADR-149 iter 30 — forward-direction observability. Pairs with iter 28's
+// ADR-149 iter 30 â€” forward-direction observability. Pairs with iter 28's
 // backward-direction `decisions` query. Lets operators inspect what the
 // router would pick for a hypothetical task WITHOUT actually dispatching.
 const routerDecideCommand: Command = {
   name: 'decide',
-  description: 'Show what the router would pick for a given task — no dispatch, just inspection (ADR-149 iter 30)',
+  description: 'Show what the router would pick for a given task â€” no dispatch, just inspection (ADR-149 iter 30)',
   options: [
     { name: 'task', short: 't', type: 'string', description: 'Task text (alternatively pass as positional arg)' },
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router decide "fix typo in cache.ts"', description: 'See the routing decision for a small task' },
-    { command: 'claude-flow neural router decide -t "design distributed consensus" -f json', description: 'JSON output for the routing decision' },
-    { command: 'CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK=5 claude-flow neural router decide -t "..."', description: 'See iter 29 cost-ceiling mode in action' },
+    { command: 'ruflo neural router decide "fix typo in cache.ts"', description: 'See the routing decision for a small task' },
+    { command: 'ruflo neural router decide -t "design distributed consensus" -f json', description: 'JSON output for the routing decision' },
+    { command: 'CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK=5 ruflo neural router decide -t "..."', description: 'See iter 29 cost-ceiling mode in action' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const task = (ctx.flags.task as string | undefined) ?? (ctx.args && ctx.args[0]) ?? null;
@@ -2515,7 +2515,7 @@ const routerDecideCommand: Command = {
     try { embedding = await embedTaskWithCache(task); } catch { /* embedder may be absent */ }
     const result = await routeToModelFull(task, embedding);
     const status = await neuralRouterStatus();
-    // iter 45 — also fetch the neural-layer result so we can surface the
+    // iter 45 â€” also fetch the neural-layer result so we can surface the
     // ensemble-disagreement diagnostic. Extra inference but `decide` is an
     // operator inspection tool, not the hot path.
     let neuralResult: Awaited<ReturnType<typeof tryCostOptimalRoute>> = null;
@@ -2528,7 +2528,7 @@ const routerDecideCommand: Command = {
     const ms = performance.now() - t0;
 
     const payload = {
-      task: task.length > 200 ? task.slice(0, 200) + '…' : task,
+      task: task.length > 200 ? task.slice(0, 200) + 'â€¦' : task,
       taskLength: task.length,
       hasEmbedding: !!embedding,
       embeddingDim: embedding?.length ?? null,
@@ -2549,7 +2549,7 @@ const routerDecideCommand: Command = {
         neuralBackend: result.neuralBackend,
         costMultiplier: result.costMultiplier,
         reasoning: result.reasoning,
-        // iter 45 — ensemble disagreement diagnostic (always set when both
+        // iter 45 â€” ensemble disagreement diagnostic (always set when both
         // unified KRR + bucket specialist are loaded; observable signal for
         // tuning iter 44's threshold). null when not applicable.
         ensembleDisagreement: neuralResult?.ensembleDisagreement ?? null,
@@ -2579,8 +2579,8 @@ const routerDecideCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.bold('Routing decision preview (ADR-149 iter 30 — no dispatch)'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.bold('Routing decision preview (ADR-149 iter 30 â€” no dispatch)'));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln(`  Task:        "${payload.task}"`);
     output.writeln(`  Length:      ${payload.taskLength} chars`);
     output.writeln(`  Embedding:   ${payload.hasEmbedding ? `${payload.embeddingDim} dims` : output.warning('not available (embedder absent / disabled)')}`);
@@ -2597,16 +2597,16 @@ const routerDecideCommand: Command = {
     output.writeln(`    model:        ${output.success(result.model)}${result.modelId ? `  (id=${result.modelId})` : ''}`);
     output.writeln(`    routed_by:    ${result.routedBy}${result.neuralBackend ? `  via ${result.neuralBackend}` : ''}`);
     output.writeln(`    confidence:   ${result.confidence.toFixed(3)}    uncertainty: ${result.uncertainty.toFixed(3)}`);
-    output.writeln(`    cost mult:    ${result.costMultiplier.toFixed(2)}×`);
+    output.writeln(`    cost mult:    ${result.costMultiplier.toFixed(2)}Ã—`);
     if (result.provider === 'openrouter' && result.openrouterModel) {
-      output.writeln(`    via:          openrouter → ${result.openrouterModel}`);
+      output.writeln(`    via:          openrouter â†’ ${result.openrouterModel}`);
     }
     output.writeln(`    reasoning:    ${result.reasoning}`);
     if (neuralResult?.ensembleDisagreement !== undefined) {
       const d = neuralResult.ensembleDisagreement;
-      const annotation = d > 0.20 ? output.warning(' ⚠ high — consider tuning iter 44 threshold')
+      const annotation = d > 0.20 ? output.warning(' âš  high â€” consider tuning iter 44 threshold')
         : d > 0.10 ? output.dim(' (moderate)')
-        : output.dim(' (low — predictions agree)');
+        : output.dim(' (low â€” predictions agree)');
       output.writeln(`    ensemble disagreement: ${d.toFixed(4)}${annotation}`);
     }
     output.writeln('');
@@ -2620,7 +2620,7 @@ const routerDecideCommand: Command = {
     output.writeln(output.bold('  Backend state:'));
     output.writeln(`    enabled:    ${status.enabled}`);
     output.writeln(`    available:  ${status.available}`);
-    output.writeln(`    routedBy:   ${status.routedBy ?? '—'}`);
+    output.writeln(`    routedBy:   ${status.routedBy ?? 'â€”'}`);
     output.writeln(`    reason:     ${status.reason}`);
     output.writeln('');
     const activeEnvKeys = Object.entries(payload.activeEnv).filter(([, v]) => v !== null);
@@ -2635,9 +2635,9 @@ const routerDecideCommand: Command = {
   },
 };
 
-// ADR-149 iter 32 — counterfactual cost-savings analysis. Iter 31 added
+// ADR-149 iter 32 â€” counterfactual cost-savings analysis. Iter 31 added
 // cost_usd to outcome rows; this subcommand consumes that and asks "what
-// would each decision have cost on the heuristic-only path?" — surfacing
+// would each decision have cost on the heuristic-only path?" â€” surfacing
 // the actual production savings the router delivers.
 const routerCostSavingsCommand: Command = {
   name: 'cost-savings',
@@ -2648,15 +2648,15 @@ const routerCostSavingsCommand: Command = {
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
     { name: 'top-n', type: 'number', description: 'Show top-N largest individual savings (default 5)', default: '5' },
     { name: 'baseline', short: 'b', type: 'string', description: 'Counterfactual baseline: heuristic | always-haiku | always-sonnet | always-opus | always-gpt-4.1 | all (default: all)', default: 'all' },
-    { name: 'window', short: 'w', type: 'string', description: 'Bin decisions into successive windows of this duration (e.g. 1h, 24h, 7d). Output adds a trend table — iter 34 drift detection.' },
-    { name: 'task-hash', type: 'string', description: 'Filter to specific task_hash (FNV-1a-32 hex). For per-task cost investigation — iter 61.' },
+    { name: 'window', short: 'w', type: 'string', description: 'Bin decisions into successive windows of this duration (e.g. 1h, 24h, 7d). Output adds a trend table â€” iter 34 drift detection.' },
+    { name: 'task-hash', type: 'string', description: 'Filter to specific task_hash (FNV-1a-32 hex). For per-task cost investigation â€” iter 61.' },
     { name: 'alert-on-drop-pct', type: 'number', description: 'Exit 1 if the most recent window\'s savings% falls > N points below the mean of prior windows. Requires --window. Default off. (ADR-149 iter 50)' },
   ],
   examples: [
-    { command: 'claude-flow neural router cost-savings', description: 'All-time, all baselines (heuristic + Sonnet-always + Opus-always)' },
-    { command: 'claude-flow neural router cost-savings --baseline always-sonnet', description: 'Compare only against Sonnet-always' },
-    { command: 'claude-flow neural router cost-savings --window 24h', description: 'Daily savings trend — iter 34 drift detection' },
-    { command: 'claude-flow neural router cost-savings --since 7d --format json | jq .baselines.heuristic.savings.totalUsd', description: 'Pipe-friendly headline' },
+    { command: 'ruflo neural router cost-savings', description: 'All-time, all baselines (heuristic + Sonnet-always + Opus-always)' },
+    { command: 'ruflo neural router cost-savings --baseline always-sonnet', description: 'Compare only against Sonnet-always' },
+    { command: 'ruflo neural router cost-savings --window 24h', description: 'Daily savings trend â€” iter 34 drift detection' },
+    { command: 'ruflo neural router cost-savings --since 7d --format json | jq .baselines.heuristic.savings.totalUsd', description: 'Pipe-friendly headline' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fs = await import('node:fs');
@@ -2690,7 +2690,7 @@ const routerCostSavingsCommand: Command = {
       cost_usd?: number; tokens?: { input: number; output: number }; model_id?: string;
     }
 
-    // iter 62 — preserve ALL outcomes (don't dedup by task_hash). Decisions
+    // iter 62 â€” preserve ALL outcomes (don't dedup by task_hash). Decisions
     // can still dedup because all occurrences of the same task have the
     // same embedding/complexity (it's the same task!), but different runs
     // produce different token counts and costs. The Array preserves those.
@@ -2717,13 +2717,13 @@ const routerCostSavingsCommand: Command = {
       }
     }
 
-    // iter 33 — multi-baseline counterfactuals. Each per-call row carries
+    // iter 33 â€” multi-baseline counterfactuals. Each per-call row carries
     // the actual cost AND a map of counterfactual costs (one per baseline),
     // so a single LOO over the trajectory data computes all baselines at once.
     const baselineArg = (ctx.flags.baseline as string | undefined) ?? 'all';
     const allBaselines = ['heuristic', 'always-haiku', 'always-sonnet', 'always-opus', 'always-gpt-4.1'];
     const baselines = baselineArg === 'all' ? allBaselines : [baselineArg];
-    // Map each baseline label → the modelId used for pricing.
+    // Map each baseline label â†’ the modelId used for pricing.
     const baselineModelFor = (baseline: string, dec: DecisionRow): string => {
       switch (baseline) {
         case 'heuristic':
@@ -2749,14 +2749,14 @@ const routerCostSavingsCommand: Command = {
     let droppedNoDecision = 0;
     let droppedNoTokens = 0;
 
-    // iter 61 — task-hash filter for per-task cost investigation.
+    // iter 61 â€” task-hash filter for per-task cost investigation.
     const taskHashFilter = ((ctx.flags['task-hash'] ?? ctx.flags.taskHash) as string | undefined)?.toLowerCase();
     if (taskHashFilter && !/^[0-9a-f]{8}$/.test(taskHashFilter)) {
       output.printError(`--task-hash must be an 8-char hex string (got "${taskHashFilter}")`);
       return { success: false, exitCode: 1 };
     }
 
-    // iter 62 — iterate ALL outcomes (Array), not just one per hash. Multiple
+    // iter 62 â€” iterate ALL outcomes (Array), not just one per hash. Multiple
     // occurrences of the same task contribute separately to the aggregate.
     for (const out of outcomes) {
       if (cutoffMs !== null && Date.parse(out.ts) < cutoffMs) continue;
@@ -2770,8 +2770,8 @@ const routerCostSavingsCommand: Command = {
       const actualModel = out.model_id ?? dec.openrouter_model ?? dec.model;
       const tier = dec.complexity < 0.34 ? 'cheap' : dec.complexity < 0.67 ? 'mid' : 'strong';
 
-      // Compute every baseline at once. Cost = (input × $/Mtok_in + output ×
-      // $/Mtok_out) / 1e6 — same formula iter 31's costUsd() uses.
+      // Compute every baseline at once. Cost = (input Ã— $/Mtok_in + output Ã—
+      // $/Mtok_out) / 1e6 â€” same formula iter 31's costUsd() uses.
       const counterfactuals: Record<string, { model: string; cost: number; savings: number }> = {};
       for (const b of baselines) {
         const m = baselineModelFor(b, dec);
@@ -2831,7 +2831,7 @@ const routerCostSavingsCommand: Command = {
       };
     }
 
-    // Top-N largest individual savings — use the first baseline's per-call savings.
+    // Top-N largest individual savings â€” use the first baseline's per-call savings.
     const primaryBaseline = baselines[0];
     const topSavings = [...perCall].sort((a, b) =>
       (b.counterfactuals[primaryBaseline]?.savings ?? 0) - (a.counterfactuals[primaryBaseline]?.savings ?? 0)
@@ -2847,7 +2847,7 @@ const routerCostSavingsCommand: Command = {
         byTier: v.byTier,
       }])),
       // Back-compat: top-level `savings` and `byTier` mirror the PRIMARY baseline
-      // (first in the requested list, which for --baseline all is "heuristic" — same
+      // (first in the requested list, which for --baseline all is "heuristic" â€” same
       // as iter 32's output shape). Iter 32 callers parsing the old shape keep working.
       savings: baselineAggs[primaryBaseline]
         ? { totalUsd: baselineAggs[primaryBaseline].totalUsd, savingsPct: baselineAggs[primaryBaseline].savingsPct, actualUsd: baselineAggs[primaryBaseline].actualUsd, counterfactualUsd: baselineAggs[primaryBaseline].counterfactualUsd }
@@ -2855,17 +2855,17 @@ const routerCostSavingsCommand: Command = {
       byTier: baselineAggs[primaryBaseline]?.byTier ?? {},
       topSavings: topSavings.map(t => ({
         ts: t.ts, actualModel: t.actualModel,
-        counterfactualModel: t.counterfactuals[primaryBaseline]?.model ?? '—',
+        counterfactualModel: t.counterfactuals[primaryBaseline]?.model ?? 'â€”',
         actualUsd: round6(t.actualCost),
         counterfactualUsd: round6(t.counterfactuals[primaryBaseline]?.cost ?? 0),
         savingsUsd: round6(t.counterfactuals[primaryBaseline]?.savings ?? 0),
       })),
     };
 
-    // iter 34 — windowed drift detection. When --window is set, bin the
+    // iter 34 â€” windowed drift detection. When --window is set, bin the
     // paired calls into successive duration windows and emit a trend table
     // (one row per window). Useful for "is the router degrading over time?"
-    // — a sudden drop in savings %% across windows surfaces calibration drift,
+    // â€” a sudden drop in savings %% across windows surfaces calibration drift,
     // workload shifts, or model deprecation.
     const windowArg = (ctx.flags.window as string | undefined);
     let windowedTrend: Array<{
@@ -2929,10 +2929,10 @@ const routerCostSavingsCommand: Command = {
       (payload as typeof payload & { windowedTrend?: typeof windowedTrend; windowConfig?: { duration: string; primaryBaseline: string } }).windowConfig = { duration: windowArg, primaryBaseline };
     }
 
-    // iter 50 — drift alert. When --alert-on-drop-pct is set AND --window
-    // produced ≥ 2 windows, compare the most-recent window's savings% to
+    // iter 50 â€” drift alert. When --alert-on-drop-pct is set AND --window
+    // produced â‰¥ 2 windows, compare the most-recent window's savings% to
     // the mean of prior windows'. If it dropped by > threshold, fail
-    // (exit 1) so monitoring catches it. Independent of fmt — alert
+    // (exit 1) so monitoring catches it. Independent of fmt â€” alert
     // state goes into the payload AND drives the exit code.
     const alertDropPctArg = (ctx.flags['alert-on-drop-pct'] ?? ctx.flags.alertOnDropPct) as string | number | undefined;
     let alertTriggered = false;
@@ -2944,7 +2944,7 @@ const routerCostSavingsCommand: Command = {
         return { success: false, exitCode: 1 };
       }
       if (!windowedTrend || windowedTrend.length < 2) {
-        alertReason = `not enough windows for drift detection (need ≥ 2, got ${windowedTrend?.length ?? 0}) — alert skipped`;
+        alertReason = `not enough windows for drift detection (need â‰¥ 2, got ${windowedTrend?.length ?? 0}) â€” alert skipped`;
       } else {
         const latest = windowedTrend[windowedTrend.length - 1];
         const prior = windowedTrend.slice(0, -1);
@@ -2954,7 +2954,7 @@ const routerCostSavingsCommand: Command = {
           alertTriggered = true;
           alertReason = `latest window savings ${latest.savingsPct.toFixed(2)}% is ${dropPct.toFixed(2)} points BELOW prior windows' mean ${priorMean.toFixed(2)}% (threshold ${dropThreshold})`;
         } else {
-          alertReason = `latest window savings ${latest.savingsPct.toFixed(2)}% within ${dropThreshold} points of prior mean ${priorMean.toFixed(2)}% — OK`;
+          alertReason = `latest window savings ${latest.savingsPct.toFixed(2)}% within ${dropThreshold} points of prior mean ${priorMean.toFixed(2)}% â€” OK`;
         }
       }
       (payload as typeof payload & { alert?: { triggered: boolean; reason: string | null; dropThreshold: number } }).alert = {
@@ -2973,7 +2973,7 @@ const routerCostSavingsCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Cost-savings analysis (ADR-149 iter 32)'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln(`  Input:           ${inPath}`);
     if (since) output.writeln(`  Time window:     since ${since}`);
     if (taskHashFilter) output.writeln(`  Task hash:       ${taskHashFilter}  (filtered to this task)`);
@@ -3004,34 +3004,34 @@ const routerCostSavingsCommand: Command = {
     output.writeln('');
     if (topSavings.length > 0) {
       output.writeln(output.bold(`  Top ${topSavings.length} largest individual savings (${primaryBaseline}):`));
-      output.writeln('    ts                  actual                                    → counterfactual                           saved');
+      output.writeln('    ts                  actual                                    â†’ counterfactual                           saved');
       for (const t of topSavings) {
-        const cfModel = t.counterfactuals[primaryBaseline]?.model ?? '—';
+        const cfModel = t.counterfactuals[primaryBaseline]?.model ?? 'â€”';
         const sv = t.counterfactuals[primaryBaseline]?.savings ?? 0;
-        output.writeln(`    ${t.ts.slice(0, 19)}  ${t.actualModel.padEnd(40)} → ${cfModel.padEnd(40)}  $${sv.toFixed(6)}`);
+        output.writeln(`    ${t.ts.slice(0, 19)}  ${t.actualModel.padEnd(40)} â†’ ${cfModel.padEnd(40)}  $${sv.toFixed(6)}`);
       }
       output.writeln('');
     }
-    // iter 34 — windowed trend table for drift detection.
+    // iter 34 â€” windowed trend table for drift detection.
     if (windowedTrend && windowedTrend.length > 0) {
       output.writeln(output.bold(`  Windowed trend (${windowArg} bins, baseline=${primaryBaseline}):`));
-      output.writeln('    window start         n    actual       counterfactual  savings      %       Δ% vs prior');
+      output.writeln('    window start         n    actual       counterfactual  savings      %       Î”% vs prior');
       for (const w of windowedTrend) {
         const arrow = w.deltaVsPriorPct === null ? ''
-          : w.deltaVsPriorPct > 0 ? output.success(`↑ +${w.deltaVsPriorPct.toFixed(2)}`)
-          : w.deltaVsPriorPct < 0 ? output.warning(`↓ ${w.deltaVsPriorPct.toFixed(2)}`)
-          : '·';
+          : w.deltaVsPriorPct > 0 ? output.success(`â†‘ +${w.deltaVsPriorPct.toFixed(2)}`)
+          : w.deltaVsPriorPct < 0 ? output.warning(`â†“ ${w.deltaVsPriorPct.toFixed(2)}`)
+          : 'Â·';
         output.writeln(`    ${w.windowStart.slice(0, 19)}  ${String(w.n).padStart(3)}  $${w.actualUsd.toFixed(6).padEnd(11)} $${w.counterfactualUsd.toFixed(6).padEnd(14)} $${w.savingsUsd.toFixed(6).padEnd(11)} ${w.savingsPct.toString().padStart(6)}%  ${arrow}`);
       }
       output.writeln('');
-      output.writeln(output.dim('    Δ% vs prior: change in savings % from the prior window. Large negative'));
+      output.writeln(output.dim('    Î”% vs prior: change in savings % from the prior window. Large negative'));
       output.writeln(output.dim('    deltas suggest router degradation, workload shift, or calibration drift.'));
       output.writeln('');
     }
-    // iter 50 — alert footer when --alert-on-drop-pct was used.
+    // iter 50 â€” alert footer when --alert-on-drop-pct was used.
     if (alertReason !== null) {
       if (alertTriggered) {
-        output.writeln(output.warning(`  ⚠ ALERT: ${alertReason}`));
+        output.writeln(output.warning(`  âš  ALERT: ${alertReason}`));
       } else {
         output.writeln(output.dim(`  ${alertReason}`));
       }
@@ -3043,9 +3043,9 @@ const routerCostSavingsCommand: Command = {
   },
 };
 
-// ADR-149 iter 36 — operational observability for the trajectory JSONL itself.
+// ADR-149 iter 36 â€” operational observability for the trajectory JSONL itself.
 // Iter 17 added the recorder with rotation. Iter 28/30/32 consume the data.
-// Nothing previously surfaced "is logging healthy?" — size vs cap, rotation
+// Nothing previously surfaced "is logging healthy?" â€” size vs cap, rotation
 // count, parse success rate, pair-join rate, time range. SREs need this view.
 const routerTrajectoryHealthCommand: Command = {
   name: 'trajectory-health',
@@ -3055,8 +3055,8 @@ const routerTrajectoryHealthCommand: Command = {
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router trajectory-health', description: 'Snapshot of trajectory log health' },
-    { command: 'claude-flow neural router trajectory-health --format json | jq .pairJoinRatePct', description: 'Pipe-friendly pair-join rate for dashboards' },
+    { command: 'ruflo neural router trajectory-health', description: 'Snapshot of trajectory log health' },
+    { command: 'ruflo neural router trajectory-health --format json | jq .pairJoinRatePct', description: 'Pipe-friendly pair-join rate for dashboards' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fs = await import('node:fs');
@@ -3079,14 +3079,14 @@ const routerTrajectoryHealthCommand: Command = {
         exists: false,
         message: 'No trajectory file at the configured path.',
         hint: recorderEnabled
-          ? 'Recorder is enabled — file should appear after the next routing decision.'
+          ? 'Recorder is enabled â€” file should appear after the next routing decision.'
           : 'Recorder is OFF. Set CLAUDE_FLOW_ROUTER_TRAJECTORY=1 to enable.',
       };
       if (fmt === 'json') output.writeln(JSON.stringify(payload, null, 2));
       else {
         output.writeln('');
         output.writeln(output.bold('Trajectory health'));
-        output.writeln(output.dim('─'.repeat(60)));
+        output.writeln(output.dim('â”€'.repeat(60)));
         output.writeln(`  Path:           ${inPath}`);
         output.writeln(`  Recorder gate:  ${recorderEnabled ? output.success('ON') : output.warning('OFF (CLAUDE_FLOW_ROUTER_TRAJECTORY=1 to enable)')}`);
         output.writeln(`  Status:         ${output.warning('file does not exist')}`);
@@ -3110,7 +3110,7 @@ const routerTrajectoryHealthCommand: Command = {
       }
     }
 
-    // Parse JSONL — count rows by type, malformed lines, time range.
+    // Parse JSONL â€” count rows by type, malformed lines, time range.
     interface MinimalRow { type?: string; ts?: string; task_hash?: string }
     const lines = fs.readFileSync(inPath, 'utf8').split('\n').filter(l => l.trim().length > 0);
     let decisions = 0, outcomes = 0, malformed = 0, otherType = 0;
@@ -3184,7 +3184,7 @@ const routerTrajectoryHealthCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Trajectory health (ADR-149 iter 36)'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
     output.writeln(`  Path:           ${inPath}`);
     output.writeln(`  Recorder gate:  ${recorderEnabled ? output.success('ON') : output.warning('OFF')}`);
     output.writeln('');
@@ -3206,12 +3206,12 @@ const routerTrajectoryHealthCommand: Command = {
     if (otherType > 0) output.writeln(`    other type:   ${otherType}`);
     output.writeln(`    malformed:    ${malformed}  (parse success ${parseSuccessPct}%)`);
     output.writeln('');
-    output.writeln(output.bold('  Pairing (decision ↔ outcome join by task_hash):'));
+    output.writeln(output.bold('  Pairing (decision â†” outcome join by task_hash):'));
     output.writeln(`    unique decision hashes:  ${decisionHashes.size}`);
     output.writeln(`    unique outcome hashes:   ${outcomeHashes.size}`);
     output.writeln(`    paired:                  ${pairedHashes} (${pairJoinRatePct}%)`);
     if (pairJoinRatePct < 50 && decisionHashes.size > 5) {
-      output.writeln(output.warning(`    ⚠ pair-join rate < 50% — outcome rows may not be wired through (iter 17/31).`));
+      output.writeln(output.warning(`    âš  pair-join rate < 50% â€” outcome rows may not be wired through (iter 17/31).`));
     }
     output.writeln('');
     if (oldestTs && newestTs) {
@@ -3225,7 +3225,7 @@ const routerTrajectoryHealthCommand: Command = {
   },
 };
 
-// ADR-149 iter 54 — consolidated env-var inspection. The router has ~15
+// ADR-149 iter 54 â€” consolidated env-var inspection. The router has ~15
 // CLAUDE_FLOW_ROUTER_* env vars accumulated across iters 12-53. Operators
 // need a single command that lists each with its current value (or default),
 // effect, and which iter introduced it. Color-coded: green = override set,
@@ -3238,9 +3238,9 @@ const routerConfigCommand: Command = {
     { name: 'only-overrides', type: 'boolean', description: 'Only show env vars that are explicitly set (hide defaults)', default: false },
   ],
   examples: [
-    { command: 'claude-flow neural router config', description: 'All router env vars with current values' },
-    { command: 'claude-flow neural router config --only-overrides', description: 'Just what the operator has set' },
-    { command: 'claude-flow neural router config --format json | jq', description: 'Audit / diff against another deployment' },
+    { command: 'ruflo neural router config', description: 'All router env vars with current values' },
+    { command: 'ruflo neural router config --only-overrides', description: 'Just what the operator has set' },
+    { command: 'ruflo neural router config --format json | jq', description: 'Audit / diff against another deployment' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fmt = (ctx.flags.format as string) || 'table';
@@ -3276,7 +3276,7 @@ const routerConfigCommand: Command = {
       { name: 'CLAUDE_FLOW_ROUTER_CALIBRATE',                    iter: 24, defaultValue: 'unset (default ON)', currentValue: process.env.CLAUDE_FLOW_ROUTER_CALIBRATE ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_CALIBRATE, effect: 'Isotonic calibration of KRR predictions. =0 opts out (recovers raw KRR). Default-on since iter 24 (OOS validated).' },
       { name: 'CLAUDE_FLOW_ROUTER_CALIBRATOR_PATH',              iter: 22, defaultValue: 'bundled seed-router.calibrator.json', currentValue: process.env.CLAUDE_FLOW_ROUTER_CALIBRATOR_PATH ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_CALIBRATOR_PATH, effect: 'Override the unified calibrator path. Per-tier files (low/med/high) load from the same dir.' },
       // Cost ceiling (iter 29)
-      { name: 'CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK',    iter: 29, defaultValue: '0 (disabled)', currentValue: process.env.CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK, effect: 'Orthogonal selector mode: pick BEST quality among candidates ≤ ceiling $/Mtok blended.' },
+      { name: 'CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK',    iter: 29, defaultValue: '0 (disabled)', currentValue: process.env.CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK, effect: 'Orthogonal selector mode: pick BEST quality among candidates â‰¤ ceiling $/Mtok blended.' },
       // A/B mode (iter 5/37)
       { name: 'CLAUDE_FLOW_ROUTER_AB',                           iter: 5,  defaultValue: 'unset (0)',   currentValue: process.env.CLAUDE_FLOW_ROUTER_AB ?? '',         isOverride: !!process.env.CLAUDE_FLOW_ROUTER_AB,                           effect: 'Legacy all-on A/B mode. Records bandit_pick + hybrid_pick on every decision.' },
       { name: 'CLAUDE_FLOW_ROUTER_AB_SAMPLE_RATE',               iter: 37, defaultValue: '0 (disabled)', currentValue: process.env.CLAUDE_FLOW_ROUTER_AB_SAMPLE_RATE ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_AB_SAMPLE_RATE, effect: 'Sampled A/B mode. 0..1 fraction of decisions to A/B (deterministic by task_hash). Overrides legacy AB=1.' },
@@ -3284,8 +3284,8 @@ const routerConfigCommand: Command = {
       { name: 'CLAUDE_FLOW_ROUTER_ENSEMBLE_UNCERTAINTY_THRESHOLD', iter: 44, defaultValue: '0 (disabled)', currentValue: process.env.CLAUDE_FLOW_ROUTER_ENSEMBLE_UNCERTAINTY_THRESHOLD ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_ENSEMBLE_UNCERTAINTY_THRESHOLD, effect: 'When > 0: if |unified_q - specialist_q| > threshold for picked model, fall back to bandit.' },
       // Bandit warmup (iter 52/53)
       { name: 'CLAUDE_FLOW_ROUTER_BANDIT_WARMUP_RANGE',          iter: 52, defaultValue: '8',           currentValue: process.env.CLAUDE_FLOW_ROUTER_BANDIT_WARMUP_RANGE ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_BANDIT_WARMUP_RANGE, effect: 'Continuous warmup denominator. Smaller = bandit ramps faster; larger = more conservative.' },
-      { name: 'CLAUDE_FLOW_ROUTER_BANDIT_FULL_INFLUENCE',        iter: 53, defaultValue: 'unset (0)',   currentValue: process.env.CLAUDE_FLOW_ROUTER_BANDIT_FULL_INFLUENCE ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_BANDIT_FULL_INFLUENCE, effect: 'Gate. =1 uses asymptotic curve (samples-2)/(samples+WARMUP) — bandit dominates at scale.' },
-      { name: 'CLAUDE_FLOW_ROUTER_BANDIT_SHRINKAGE_LAMBDA',      iter: 57, defaultValue: '4',           currentValue: process.env.CLAUDE_FLOW_ROUTER_BANDIT_SHRINKAGE_LAMBDA ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_BANDIT_SHRINKAGE_LAMBDA, effect: 'Cross-bucket shrinkage strength. λ=0 disables; higher λ = more bias toward marginal anchor for cold cells.' },
+      { name: 'CLAUDE_FLOW_ROUTER_BANDIT_FULL_INFLUENCE',        iter: 53, defaultValue: 'unset (0)',   currentValue: process.env.CLAUDE_FLOW_ROUTER_BANDIT_FULL_INFLUENCE ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_BANDIT_FULL_INFLUENCE, effect: 'Gate. =1 uses asymptotic curve (samples-2)/(samples+WARMUP) â€” bandit dominates at scale.' },
+      { name: 'CLAUDE_FLOW_ROUTER_BANDIT_SHRINKAGE_LAMBDA',      iter: 57, defaultValue: '4',           currentValue: process.env.CLAUDE_FLOW_ROUTER_BANDIT_SHRINKAGE_LAMBDA ?? '', isOverride: !!process.env.CLAUDE_FLOW_ROUTER_BANDIT_SHRINKAGE_LAMBDA, effect: 'Cross-bucket shrinkage strength. Î»=0 disables; higher Î» = more bias toward marginal anchor for cold cells.' },
     ];
 
     const visible = onlyOverrides ? rows.filter(r => r.isOverride) : rows;
@@ -3296,8 +3296,8 @@ const routerConfigCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.bold('Router config — ADR-149 iter 54 (env-var inventory)'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.bold('Router config â€” ADR-149 iter 54 (env-var inventory)'));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln(`  ${visible.length} of ${rows.length} entries  (${rows.filter(r => r.isOverride).length} overridden, ${rows.length - rows.filter(r => r.isOverride).length} default)`);
     output.writeln('');
     for (const r of visible) {
@@ -3307,29 +3307,29 @@ const routerConfigCommand: Command = {
       output.writeln('');
     }
     if (visible.length === 0 && onlyOverrides) {
-      output.writeln(output.dim('  No overrides — all router behavior is at defaults.'));
+      output.writeln(output.dim('  No overrides â€” all router behavior is at defaults.'));
       output.writeln('');
     }
     return { success: true, data: visible };
   },
 };
 
-// ADR-149 iter 55 — side-by-side comparison of the two selector modes.
+// ADR-149 iter 55 â€” side-by-side comparison of the two selector modes.
 // Iter 29 added quality-best-under-budget; iter 30 added `decide` for the
 // default cost-optimal mode. This subcommand runs BOTH on the same task
 // so operators can see which mode is right for their workload BEFORE
 // flipping CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK on for production.
 const routerCompareModesCommand: Command = {
   name: 'compare-modes',
-  description: 'Compare selector modes side-by-side for a hypothetical task (cost-optimal vs cost-ceiling) — ADR-149 iter 55',
+  description: 'Compare selector modes side-by-side for a hypothetical task (cost-optimal vs cost-ceiling) â€” ADR-149 iter 55',
   options: [
     { name: 'task', short: 't', type: 'string', description: 'Task text (or positional arg)' },
     { name: 'ceiling', type: 'number', description: 'Cost-ceiling $/Mtok for iter 29 mode (default 20)', default: '20' },
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router compare-modes "refactor strategy pattern"', description: 'Compare both modes for a task' },
-    { command: 'claude-flow neural router compare-modes -t "..." --ceiling 5', description: 'Cost-ceiling at $5 blended' },
+    { command: 'ruflo neural router compare-modes "refactor strategy pattern"', description: 'Compare both modes for a task' },
+    { command: 'ruflo neural router compare-modes -t "..." --ceiling 5', description: 'Cost-ceiling at $5 blended' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const task = (ctx.flags.task as string | undefined) ?? (ctx.args && ctx.args[0]) ?? null;
@@ -3350,11 +3350,11 @@ const routerCompareModesCommand: Command = {
     try { embedding = await embedTaskWithCache(task); } catch { /* */ }
 
     if (!embedding) {
-      output.printError('Embedder unavailable — cannot run neural routing for comparison');
+      output.printError('Embedder unavailable â€” cannot run neural routing for comparison');
       return { success: false, exitCode: 1 };
     }
 
-    // Mode 1: cost-optimal (default — no ceiling)
+    // Mode 1: cost-optimal (default â€” no ceiling)
     process.env.CLAUDE_FLOW_ROUTER_NEURAL = '1';
     delete process.env.CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK;
     __resetNeuralRouterForTests();
@@ -3370,7 +3370,7 @@ const routerCompareModesCommand: Command = {
     __resetNeuralRouterForTests();
 
     const payload = {
-      task: task.length > 200 ? task.slice(0, 200) + '…' : task,
+      task: task.length > 200 ? task.slice(0, 200) + 'â€¦' : task,
       complexity: complexity.score,
       bucket,
       modes: {
@@ -3402,35 +3402,35 @@ const routerCompareModesCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Selector mode comparison (ADR-149 iter 55)'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln(`  Task:        "${payload.task}"`);
     output.writeln(`  Complexity:  ${complexity.score.toFixed(3)} (bucket: ${bucket})`);
     output.writeln('');
-    output.writeln(output.bold('  Cost-optimal mode (default — cheapest above qualityBar):'));
+    output.writeln(output.bold('  Cost-optimal mode (default â€” cheapest above qualityBar):'));
     if (costOptimal) {
       const co = payload.modes.costOptimal!;
       output.writeln(`    picked:           ${output.success(co.modelId)}`);
       output.writeln(`    predicted Q:      ${co.predictedQuality.toFixed(4)}`);
       output.writeln(`    cost ($/Mtok):    $${co.costPerMTok?.toFixed(2)}`);
-      output.writeln(`    met quality bar:  ${co.metBar ? '✓' : '✗'}`);
+      output.writeln(`    met quality bar:  ${co.metBar ? 'âœ“' : 'âœ—'}`);
     } else {
-      output.writeln(`    ${output.warning('null (neural backend declined — would fall back to bandit)')}`);
+      output.writeln(`    ${output.warning('null (neural backend declined â€” would fall back to bandit)')}`);
     }
     output.writeln('');
-    output.writeln(output.bold(`  Cost-ceiling mode (iter 29 — best quality ≤ $${ceiling}/Mtok):`));
+    output.writeln(output.bold(`  Cost-ceiling mode (iter 29 â€” best quality â‰¤ $${ceiling}/Mtok):`));
     if (costCeiling) {
       const cc = payload.modes.costCeiling!;
       output.writeln(`    picked:           ${output.success(cc.modelId)}`);
       output.writeln(`    predicted Q:      ${cc.predictedQuality.toFixed(4)}`);
       output.writeln(`    cost ($/Mtok):    $${cc.costPerMTok?.toFixed(2)}`);
-      output.writeln(`    met quality bar:  ${cc.metBar ? '✓' : '✗'}`);
+      output.writeln(`    met quality bar:  ${cc.metBar ? 'âœ“' : 'âœ—'}`);
     } else {
       output.writeln(`    ${output.warning('null')}`);
     }
     output.writeln('');
     if (costOptimal && costCeiling) {
       if (payload.sameModel) {
-        output.writeln(output.dim('  Both modes picked the same model — selector choice irrelevant for this task.'));
+        output.writeln(output.dim('  Both modes picked the same model â€” selector choice irrelevant for this task.'));
       } else {
         const dq = payload.deltaQuality!;
         const dc = payload.deltaCost!;
@@ -3438,7 +3438,7 @@ const routerCompareModesCommand: Command = {
         const cSign = dc > 0 ? '+' : '';
         const qColor = dq > 0 ? output.success(`${qSign}${dq.toFixed(4)}`) : output.warning(`${dq.toFixed(4)}`);
         const cColor = dc > 0 ? output.warning(`${cSign}$${dc.toFixed(2)}`) : output.success(`$${dc.toFixed(2)}`);
-        output.writeln(`  Δ (ceiling − optimal):  predicted Q: ${qColor}    cost: ${cColor}`);
+        output.writeln(`  Î” (ceiling âˆ’ optimal):  predicted Q: ${qColor}    cost: ${cColor}`);
         output.writeln('');
         output.writeln(output.dim(`    Cost-ceiling pays extra cost for higher quality (or is forced cheap if ceiling is tight).`));
         output.writeln(output.dim(`    Cost-optimal accepts qualityBar threshold but minimizes spend.`));
@@ -3449,7 +3449,7 @@ const routerCompareModesCommand: Command = {
   },
 };
 
-// ADR-149 iter 49 — single-command SRE dashboard. The router has 13 subcommands
+// ADR-149 iter 49 â€” single-command SRE dashboard. The router has 13 subcommands
 // (iter 48); ops want ONE that says "is everything working AND saving money?".
 // Aggregates the most-asked signals into one terse screen.
 const routerStatsSummaryCommand: Command = {
@@ -3459,8 +3459,8 @@ const routerStatsSummaryCommand: Command = {
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router stats-summary', description: 'One-screen health check' },
-    { command: 'claude-flow neural router stats-summary --format json | jq .', description: 'Pipe to dashboards / alerting' },
+    { command: 'ruflo neural router stats-summary', description: 'One-screen health check' },
+    { command: 'ruflo neural router stats-summary --format json | jq .', description: 'Pipe to dashboards / alerting' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fs = await import('node:fs');
@@ -3594,13 +3594,13 @@ const routerStatsSummaryCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.bold('Router stats summary — ADR-149 iter 49 (one-screen SRE view)'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.bold('Router stats summary â€” ADR-149 iter 49 (one-screen SRE view)'));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln('');
     output.writeln(output.bold('  Backend:'));
     output.writeln(`    gate:           ${backend.enabled ? output.success('open (NEURAL=1)') : output.warning('closed')}`);
     output.writeln(`    available:      ${backend.available ? output.success('yes') : output.warning('no')}`);
-    output.writeln(`    active backend: ${backend.routedBy ?? '—'}`);
+    output.writeln(`    active backend: ${backend.routedBy ?? 'â€”'}`);
     output.writeln(`    reason:         ${backend.reason}`);
     output.writeln('');
     output.writeln(output.bold('  Process-local (since this server started):'));
@@ -3612,21 +3612,21 @@ const routerStatsSummaryCommand: Command = {
     output.writeln('');
     output.writeln(output.bold('  Trajectory log:'));
     if (!trajectory.exists) {
-      output.writeln(`    ${output.warning('file does not exist — recorder OFF or no decisions made')}`);
+      output.writeln(`    ${output.warning('file does not exist â€” recorder OFF or no decisions made')}`);
     } else {
       output.writeln(`    rows:           ${trajectory.rows}  (${trajectory.decisions} decisions / ${trajectory.outcomes} outcomes / ${trajectory.pairedWithCost} cost-bearing)`);
       if (trajectory.oldestTs && trajectory.newestTs) {
-        output.writeln(`    span:           ${trajectory.oldestTs.slice(0, 19)} → ${trajectory.newestTs.slice(0, 19)}`);
+        output.writeln(`    span:           ${trajectory.oldestTs.slice(0, 19)} â†’ ${trajectory.newestTs.slice(0, 19)}`);
       }
     }
     output.writeln('');
     if (recent24h) {
-      const rateStr = recent24h.fallbackRatePct > 30 ? output.warning(recent24h.fallbackRatePct + '% ⚠')
+      const rateStr = recent24h.fallbackRatePct > 30 ? output.warning(recent24h.fallbackRatePct + '% âš ')
         : recent24h.fallbackRatePct > 10 ? recent24h.fallbackRatePct + '%'
         : output.success(recent24h.fallbackRatePct + '%');
       output.writeln(output.bold(`  Last 24h:`));
       output.writeln(`    decisions:      ${recent24h.decisions}`);
-      output.writeln(`    fallback rate:  ${rateStr}  (neural backend → bandit when prediction unusable)`);
+      output.writeln(`    fallback rate:  ${rateStr}  (neural backend â†’ bandit when prediction unusable)`);
       output.writeln('');
     }
     if (cost7d) {
@@ -3642,7 +3642,7 @@ const routerStatsSummaryCommand: Command = {
     }
     if (warmestCell) {
       output.writeln(output.bold('  Bandit warmest cell:'));
-      output.writeln(`    ${warmestCell.bucket} × ${warmestCell.key}  →  ${warmestCell.samples} samples, meanQ=${warmestCell.meanQuality.toFixed(3)}`);
+      output.writeln(`    ${warmestCell.bucket} Ã— ${warmestCell.key}  â†’  ${warmestCell.samples} samples, meanQ=${warmestCell.meanQuality.toFixed(3)}`);
       output.writeln('');
     }
     output.writeln(output.dim('  For drill-down: `router decisions`, `router cost-savings`, `router bandit-state`'));
@@ -3651,22 +3651,22 @@ const routerStatsSummaryCommand: Command = {
   },
 };
 
-// ADR-149 iter 48 — bandit-state inspection. The persisted bandit posteriors
+// ADR-149 iter 48 â€” bandit-state inspection. The persisted bandit posteriors
 // (`.swarm/model-router-state.json`) accumulate across restarts but are
-// otherwise invisible. Surfacing the (bucket × model) prior matrix lets
+// otherwise invisible. Surfacing the (bucket Ã— model) prior matrix lets
 // operators see where bandit learning is thin (cold cells) and where it's
-// confident (large α+β).
+// confident (large Î±+Î²).
 const routerBanditStateCommand: Command = {
   name: 'bandit-state',
-  description: 'Inspect persisted bandit Beta priors per bucket × model (ADR-149 iter 48)',
+  description: 'Inspect persisted bandit Beta priors per bucket Ã— model (ADR-149 iter 48)',
   options: [
     { name: 'path', type: 'string', description: 'Path to model-router-state.json (default: .swarm/model-router-state.json)' },
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
-    { name: 'cold-threshold', type: 'number', description: 'Highlight cells with sample count below this (default 4 — matches iter 14 density guard)', default: '4' },
+    { name: 'cold-threshold', type: 'number', description: 'Highlight cells with sample count below this (default 4 â€” matches iter 14 density guard)', default: '4' },
   ],
   examples: [
-    { command: 'claude-flow neural router bandit-state', description: 'Show all Beta priors per bucket × tier + per bucket × modelId' },
-    { command: 'claude-flow neural router bandit-state --format json | jq .priorsById', description: 'Just the per-modelId matrix' },
+    { command: 'ruflo neural router bandit-state', description: 'Show all Beta priors per bucket Ã— tier + per bucket Ã— modelId' },
+    { command: 'ruflo neural router bandit-state --format json | jq .priorsById', description: 'Just the per-modelId matrix' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fs = await import('node:fs');
@@ -3755,7 +3755,7 @@ const routerBanditStateCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Bandit state inspection (ADR-149 iter 48)'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln(`  Path:               ${statePath}`);
     output.writeln(`  Schema version:     v${state.version ?? 2}  (v2=tier priors only; v3=adds priorsById)`);
     output.writeln(`  Total decisions:    ${state.totalDecisions ?? 0}`);
@@ -3765,31 +3765,31 @@ const routerBanditStateCommand: Command = {
 
     const renderTable = (label: string, rows: typeof tierCells) => {
       if (rows.length === 0) {
-        output.writeln(`  ${label}:  (empty — no outcomes recorded yet for this layer)`);
+        output.writeln(`  ${label}:  (empty â€” no outcomes recorded yet for this layer)`);
         output.writeln('');
         return;
       }
       output.writeln(output.bold(`  ${label}:`));
-      output.writeln('    bucket  key                                       α        β     samples  meanQ');
+      output.writeln('    bucket  key                                       Î±        Î²     samples  meanQ');
       for (const c of rows.sort((a, b) => (a.bucket.localeCompare(b.bucket)) || (b.samples - a.samples))) {
-        const coldMark = c.cold ? output.warning(' ❄ cold') : '';
+        const coldMark = c.cold ? output.warning(' â„ cold') : '';
         output.writeln(`    ${c.bucket.padEnd(6)}  ${c.key.padEnd(38)}  ${c.alpha.toFixed(1).padStart(5)}  ${c.beta.toFixed(1).padStart(5)}  ${String(c.samples).padStart(7)}  ${c.meanQuality.toFixed(3)}${coldMark}`);
       }
       output.writeln('');
     };
 
-    renderTable('Tier priors (bucket × tier label)', tierCells);
-    renderTable('Per-modelId priors (bucket × concrete modelId, iter 14)', idCells);
+    renderTable('Tier priors (bucket Ã— tier label)', tierCells);
+    renderTable('Per-modelId priors (bucket Ã— concrete modelId, iter 14)', idCells);
     output.writeln(output.bold('  Summary:'));
     output.writeln(`    tier cells:        ${tierCells.length}  (cold: ${coldTierCells.length})`);
     output.writeln(`    per-modelId cells: ${idCells.length}  (cold: ${coldIdCells.length})`);
     if (payload.summary.warmestIdCell) {
       const w = payload.summary.warmestIdCell;
-      output.writeln(`    warmest cell:      ${w.bucket} × ${w.key}  (${w.samples} samples, meanQ=${w.meanQuality.toFixed(3)})`);
+      output.writeln(`    warmest cell:      ${w.bucket} Ã— ${w.key}  (${w.samples} samples, meanQ=${w.meanQuality.toFixed(3)})`);
     }
     output.writeln('');
     if (coldIdCells.length > 0 && idCells.length > 0) {
-      output.writeln(output.dim(`  Cold cells suppress iter 14 per-modelId Thompson perturbation. Until α+β ≥ ${coldThreshold + 2},`));
+      output.writeln(output.dim(`  Cold cells suppress iter 14 per-modelId Thompson perturbation. Until Î±+Î² â‰¥ ${coldThreshold + 2},`));
       output.writeln(output.dim('  the neural prediction dominates that (bucket, modelId) pair without bandit correction.'));
       output.writeln('');
     }
@@ -3797,8 +3797,8 @@ const routerBanditStateCommand: Command = {
   },
 };
 
-// ADR-149 iter 38 — consumer for iter 37's sampled A/B mode. Aggregates
-// ab_pair from decision rows into a (bandit_pick × hybrid_pick) confusion
+// ADR-149 iter 38 â€” consumer for iter 37's sampled A/B mode. Aggregates
+// ab_pair from decision rows into a (bandit_pick Ã— hybrid_pick) confusion
 // matrix plus disagreement rate. Operators see WHERE the neural prior
 // moves the bandit's decisions.
 const routerAbStatsCommand: Command = {
@@ -3810,9 +3810,9 @@ const routerAbStatsCommand: Command = {
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router ab-stats', description: 'All A/B comparisons recorded so far' },
-    { command: 'claude-flow neural router ab-stats --since 7d --format json', description: 'Last 7 days, pipe-friendly' },
-    { command: 'CLAUDE_FLOW_ROUTER_AB_SAMPLE_RATE=0.05 ... && claude-flow neural router ab-stats', description: 'After running with iter 37 sampling on' },
+    { command: 'ruflo neural router ab-stats', description: 'All A/B comparisons recorded so far' },
+    { command: 'ruflo neural router ab-stats --since 7d --format json', description: 'Last 7 days, pipe-friendly' },
+    { command: 'CLAUDE_FLOW_ROUTER_AB_SAMPLE_RATE=0.05 ... && ruflo neural router ab-stats', description: 'After running with iter 37 sampling on' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fs = await import('node:fs');
@@ -3872,7 +3872,7 @@ const routerAbStatsCommand: Command = {
     const hybridTotals: Record<string, number> = {};
     for (const r of abRows) {
       const ap = r.ab_pair!;
-      const key = `${ap.bandit_pick}→${ap.hybrid_pick}`;
+      const key = `${ap.bandit_pick}â†’${ap.hybrid_pick}`;
       const cell = cells.get(key) ?? { bandit: ap.bandit_pick, hybrid: ap.hybrid_pick, count: 0 };
       cell.count++;
       cells.set(key, cell);
@@ -3889,11 +3889,11 @@ const routerAbStatsCommand: Command = {
     for (const b of allModels) {
       matrix[b] = {};
       for (const h of allModels) {
-        matrix[b][h] = cells.get(`${b}→${h}`)?.count ?? 0;
+        matrix[b][h] = cells.get(`${b}â†’${h}`)?.count ?? 0;
       }
     }
 
-    // Disagreement breakdown — off-diagonal cells sorted by count desc.
+    // Disagreement breakdown â€” off-diagonal cells sorted by count desc.
     const offDiag: Array<{ bandit: string; hybrid: string; count: number; pctOfDisagrees: number }> = [];
     for (const c of cells.values()) {
       if (c.bandit !== c.hybrid) {
@@ -3922,8 +3922,8 @@ const routerAbStatsCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.bold('A/B (bandit vs hybrid) stats — ADR-149 iter 37/38'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.bold('A/B (bandit vs hybrid) stats â€” ADR-149 iter 37/38'));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln(`  Input:              ${inPath}`);
     if (since) output.writeln(`  Time window:        since ${since}`);
     output.writeln(`  Total decisions:    ${totalDecisions}  (${malformed} malformed)`);
@@ -3948,10 +3948,10 @@ const routerAbStatsCommand: Command = {
     output.writeln(output.dim('    (Diagonal cells = agreement, off-diagonal = disagreement.)'));
     output.writeln('');
     if (offDiag.length > 0) {
-      output.writeln(output.bold('  Disagreement breakdown (bandit → hybrid):'));
+      output.writeln(output.bold('  Disagreement breakdown (bandit â†’ hybrid):'));
       output.writeln('    transition'.padEnd(40) + '  count  % of disagrees');
       for (const c of offDiag) {
-        output.writeln(`    ${(c.bandit + ' → ' + c.hybrid).padEnd(38)}  ${String(c.count).padStart(5)}  ${c.pctOfDisagrees.toString().padStart(6)}%`);
+        output.writeln(`    ${(c.bandit + ' â†’ ' + c.hybrid).padEnd(38)}  ${String(c.count).padStart(5)}  ${c.pctOfDisagrees.toString().padStart(6)}%`);
       }
       output.writeln('');
     }
@@ -3959,7 +3959,7 @@ const routerAbStatsCommand: Command = {
   },
 };
 
-// ADR-149 iter 43 — show the canonical price table that drives cost
+// ADR-149 iter 43 â€” show the canonical price table that drives cost
 // computations, blended-price routing, and counterfactual baselines.
 // Operators ask "what does the router think gpt-4.1 costs?" frequently;
 // previously the answer required reading src/ruvector/model-prices.ts.
@@ -3971,9 +3971,9 @@ const routerPricesCommand: Command = {
     { name: 'sort', type: 'string', description: 'Sort by: blended (default), input, output, name', default: 'blended' },
   ],
   examples: [
-    { command: 'claude-flow neural router prices', description: 'Show all models sorted by blended price' },
-    { command: 'claude-flow neural router prices --sort name', description: 'Sort alphabetically' },
-    { command: 'claude-flow neural router prices --format json | jq \'.[] | select(.id | contains("opus"))\'', description: 'Filter via jq' },
+    { command: 'ruflo neural router prices', description: 'Show all models sorted by blended price' },
+    { command: 'ruflo neural router prices --sort name', description: 'Sort alphabetically' },
+    { command: 'ruflo neural router prices --format json | jq \'.[] | select(.id | contains("opus"))\'', description: 'Filter via jq' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const { MODEL_PRICES, blendedPrice } = await import('../ruvector/model-prices.js');
@@ -4001,8 +4001,8 @@ const routerPricesCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.bold('Model price table (ADR-149 iter 31/43 — single source of truth)'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.bold('Model price table (ADR-149 iter 31/43 â€” single source of truth)'));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln(`  ${rows.length} entries, sorted by ${sortKey}`);
     output.writeln('');
     output.writeln('    model id                                      $/Mtok in   $/Mtok out   blended ($/Mtok)');
@@ -4010,14 +4010,14 @@ const routerPricesCommand: Command = {
       output.writeln(`    ${r.id.padEnd(44)}  ${('$' + r.inPerMtok.toFixed(2)).padStart(9)}  ${('$' + r.outPerMtok.toFixed(2)).padStart(11)}  ${('$' + r.blendedPerMtok.toFixed(2)).padStart(15)}`);
     }
     output.writeln('');
-    output.writeln(output.dim('  Blended = $/Mtok_in + 3 × $/Mtok_out (1 input : 3 output ratio for code tasks).'));
-    output.writeln(output.dim('  Unknown model ids fall back to $1/Mtok blended (1×in + 1×out).'));
+    output.writeln(output.dim('  Blended = $/Mtok_in + 3 Ã— $/Mtok_out (1 input : 3 output ratio for code tasks).'));
+    output.writeln(output.dim('  Unknown model ids fall back to $1/Mtok blended (1Ã—in + 1Ã—out).'));
     output.writeln('');
     return { success: true, data: rows };
   },
 };
 
-// ADR-149 iter 41 — forward-looking budget projection. Iter 32-34 measure
+// ADR-149 iter 41 â€” forward-looking budget projection. Iter 32-34 measure
 // past cost (actual vs counterfactual, per-window drift). This subcommand
 // extrapolates: given the measured rate and average cost per decision over
 // a recent window, what will routing cost over the next 7d / 30d / 90d /
@@ -4033,9 +4033,9 @@ const routerCostProjectionCommand: Command = {
     { name: 'format', short: 'f', type: 'string', description: 'Output format: table, json', default: 'table' },
   ],
   examples: [
-    { command: 'claude-flow neural router cost-projection', description: 'Project from last 7d of data → 7d/30d/90d/365d horizons' },
-    { command: 'claude-flow neural router cost-projection --window 24h --horizons 7d,30d', description: 'Project from last day only' },
-    { command: 'claude-flow neural router cost-projection --format json | jq .horizons[1].projectedSavingsUsd', description: '30-day savings projection for dashboards' },
+    { command: 'ruflo neural router cost-projection', description: 'Project from last 7d of data â†’ 7d/30d/90d/365d horizons' },
+    { command: 'ruflo neural router cost-projection --window 24h --horizons 7d,30d', description: 'Project from last day only' },
+    { command: 'ruflo neural router cost-projection --format json | jq .horizons[1].projectedSavingsUsd', description: '30-day savings projection for dashboards' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fs = await import('node:fs');
@@ -4079,7 +4079,7 @@ const routerCostProjectionCommand: Command = {
       cost_usd?: number; tokens?: { input: number; output: number }; model_id?: string;
     }
 
-    // iter 66 — outcomes now ARRAY (was Map). Same fix as iter 62/63/65:
+    // iter 66 â€” outcomes now ARRAY (was Map). Same fix as iter 62/63/65:
     // a Map keyed by task_hash collapses multiple runs of the same task to
     // the LATEST outcome only, biasing the rate downward (pairCount =
     // unique-tasks, not unique-calls). Production projections were
@@ -4184,14 +4184,14 @@ const routerCostProjectionCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Cost projection (ADR-149 iter 41)'));
-    output.writeln(output.dim('─'.repeat(72)));
+    output.writeln(output.dim('â”€'.repeat(72)));
     output.writeln(`  Input:             ${inPath}`);
     output.writeln(`  Measurement window: last ${windowSpec}  (${pairCount} paired calls)`);
     output.writeln('');
     output.writeln(output.bold('  Measured rate:'));
     output.writeln(`    Calls/day:                  ${payload.measurement.callsPerDay}`);
     output.writeln(`    Avg actual cost/call:       $${payload.measurement.avgActualPerCall.toFixed(6)}`);
-    output.writeln(`    Avg counterfactual/call:    $${payload.measurement.avgCounterfactualPerCall.toFixed(6)}  (heuristic: cheap→haiku, mid→sonnet, strong→opus)`);
+    output.writeln(`    Avg counterfactual/call:    $${payload.measurement.avgCounterfactualPerCall.toFixed(6)}  (heuristic: cheapâ†’haiku, midâ†’sonnet, strongâ†’opus)`);
     output.writeln(`    Avg tokens/call:            ${payload.measurement.avgInputTokensPerCall} in / ${payload.measurement.avgOutputTokensPerCall} out`);
     output.writeln('');
     output.writeln(output.bold('  Projections (linear extrapolation from measured rate):'));
@@ -4219,22 +4219,22 @@ const routerCommand: Command = {
   description: 'Cost-optimal neural router lifecycle (ADR-148/149): status, models, prices, config, train, train-from-trajectories, decide, compare-modes, decisions, cost-savings, cost-projection, trajectory-health, ab-stats, bandit-state, stats-summary, reload',
   subcommands: [routerStatusCommand, routerModelsCommand, routerPricesCommand, routerConfigCommand, routerTrainCommand, routerTrainFromTrajectoriesCommand, routerDecideCommand, routerCompareModesCommand, routerDecisionsCommand, routerCostSavingsCommand, routerCostProjectionCommand, routerTrajectoryHealthCommand, routerAbStatsCommand, routerBanditStateCommand, routerStatsSummaryCommand, routerReloadCommand],
   examples: [
-    { command: 'claude-flow neural router status', description: 'Show router state, gate, counters' },
-    { command: 'claude-flow neural router models', description: 'List candidate registry with measured stats (ADR-149)' },
-    { command: 'claude-flow neural router prices', description: 'Show the canonical $/Mtok price table (iter 43)' },
-    { command: 'claude-flow neural router config', description: 'Inventory all CLAUDE_FLOW_ROUTER_* env vars (iter 54)' },
-    { command: 'claude-flow neural router train -o ./router.krr.json', description: 'Train a KRR artifact' },
-    { command: 'claude-flow neural router train-from-trajectories -w production-rows.json', description: 'Pair production JSONL into a training corpus (iter 18)' },
-    { command: 'claude-flow neural router decide "fix typo in cache.ts"', description: 'Inspect decision for a hypothetical task (iter 30)' },
-    { command: 'claude-flow neural router compare-modes "task" --ceiling 5', description: 'Compare cost-optimal vs cost-ceiling side-by-side (iter 55)' },
-    { command: 'claude-flow neural router decisions --since 24h', description: 'Query recorded decisions (iter 28)' },
-    { command: 'claude-flow neural router cost-savings --since 7d', description: 'Actual vs heuristic-counterfactual spend (iter 32)' },
-    { command: 'claude-flow neural router trajectory-health', description: 'JSONL log health: size, rotations, parse + pair-join rate (iter 36)' },
-    { command: 'claude-flow neural router ab-stats', description: 'A/B disagreement matrix from sampled ab_pair (iter 37/38)' },
-    { command: 'claude-flow neural router bandit-state', description: 'Persisted Beta priors per (bucket × model) (iter 48)' },
-    { command: 'claude-flow neural router stats-summary', description: 'One-screen SRE dashboard (iter 49)' },
-    { command: 'claude-flow neural router cost-projection', description: 'Project monthly/quarterly spend from measured rate (iter 41)' },
-    { command: 'claude-flow neural router reload', description: 'Clear in-process backend cache' },
+    { command: 'ruflo neural router status', description: 'Show router state, gate, counters' },
+    { command: 'ruflo neural router models', description: 'List candidate registry with measured stats (ADR-149)' },
+    { command: 'ruflo neural router prices', description: 'Show the canonical $/Mtok price table (iter 43)' },
+    { command: 'ruflo neural router config', description: 'Inventory all CLAUDE_FLOW_ROUTER_* env vars (iter 54)' },
+    { command: 'ruflo neural router train -o ./router.krr.json', description: 'Train a KRR artifact' },
+    { command: 'ruflo neural router train-from-trajectories -w production-rows.json', description: 'Pair production JSONL into a training corpus (iter 18)' },
+    { command: 'ruflo neural router decide "fix typo in cache.ts"', description: 'Inspect decision for a hypothetical task (iter 30)' },
+    { command: 'ruflo neural router compare-modes "task" --ceiling 5', description: 'Compare cost-optimal vs cost-ceiling side-by-side (iter 55)' },
+    { command: 'ruflo neural router decisions --since 24h', description: 'Query recorded decisions (iter 28)' },
+    { command: 'ruflo neural router cost-savings --since 7d', description: 'Actual vs heuristic-counterfactual spend (iter 32)' },
+    { command: 'ruflo neural router trajectory-health', description: 'JSONL log health: size, rotations, parse + pair-join rate (iter 36)' },
+    { command: 'ruflo neural router ab-stats', description: 'A/B disagreement matrix from sampled ab_pair (iter 37/38)' },
+    { command: 'ruflo neural router bandit-state', description: 'Persisted Beta priors per (bucket Ã— model) (iter 48)' },
+    { command: 'ruflo neural router stats-summary', description: 'One-screen SRE dashboard (iter 49)' },
+    { command: 'ruflo neural router cost-projection', description: 'Project monthly/quarterly spend from measured rate (iter 41)' },
+    { command: 'ruflo neural router reload', description: 'Clear in-process backend cache' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln('Use a subcommand: status | models | prices | config | train | train-from-trajectories | decide | compare-modes | decisions | cost-savings | cost-projection | trajectory-health | ab-stats | bandit-state | stats-summary | reload');
@@ -4248,9 +4248,9 @@ export const neuralCommand: Command = {
   description: 'Neural pattern training, MoE, Flash Attention, pattern learning',
   subcommands: [trainCommand, statusCommand, patternsCommand, predictCommand, optimizeCommand, benchmarkCommand, listCommand, exportCommand, importCommand, routerCommand],
   examples: [
-    { command: 'claude-flow neural status', description: 'Check neural system status' },
-    { command: 'claude-flow neural train -p coordination', description: 'Train coordination patterns' },
-    { command: 'claude-flow neural patterns --action list', description: 'List learned patterns' },
+    { command: 'ruflo neural status', description: 'Check neural system status' },
+    { command: 'ruflo neural train -p coordination', description: 'Train coordination patterns' },
+    { command: 'ruflo neural patterns --action list', description: 'List learned patterns' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
@@ -4259,7 +4259,7 @@ export const neuralCommand: Command = {
     output.writeln();
     output.writeln('Use --help with subcommands for more info');
     output.writeln();
-    output.writeln(output.dim('Created with ❤️ by ruv.io'));
+    output.writeln(output.dim('Created with â¤ï¸ by ruv.io'));
     return { success: true };
   },
 };

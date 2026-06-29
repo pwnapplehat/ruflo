@@ -25,9 +25,9 @@ const pretrainCommand: Command = {
     { name: 'verbose', short: 'v', type: 'boolean', description: 'Verbose output', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow benchmark pretrain', description: 'Run pre-training benchmarks' },
-    { command: 'claude-flow benchmark pretrain -i 500 --save results.json', description: 'Extended benchmark with results saved' },
-    { command: 'claude-flow benchmark pretrain -o json', description: 'Output results as JSON' },
+    { command: 'ruflo benchmark pretrain', description: 'Run pre-training benchmarks' },
+    { command: 'ruflo benchmark pretrain -i 500 --save results.json', description: 'Extended benchmark with results saved' },
+    { command: 'ruflo benchmark pretrain -o json', description: 'Output results as JSON' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const iterations = parseInt(ctx.flags.iterations as string || '100', 10);
@@ -94,8 +94,8 @@ const neuralCommand: Command = {
     { name: 'output', short: 'o', type: 'string', description: 'Output format: text, json', default: 'text' },
   ],
   examples: [
-    { command: 'claude-flow benchmark neural', description: 'Run neural benchmarks' },
-    { command: 'claude-flow benchmark neural -d 768 -n 5000', description: 'Higher dimension, more vectors' },
+    { command: 'ruflo benchmark neural', description: 'Run neural benchmarks' },
+    { command: 'ruflo benchmark neural -d 768 -n 5000', description: 'Higher dimension, more vectors' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const iterations = parseInt(ctx.flags.iterations as string || '100', 10);
@@ -105,7 +105,7 @@ const neuralCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Neural Operations Benchmark'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
     output.writeln(`Iterations: ${iterations} | Dimension: ${dimension} | Vectors: ${numVectors}`);
     output.writeln();
 
@@ -235,10 +235,10 @@ const neuralCommand: Command = {
       // Display results
       output.writeln();
       output.writeln(output.bold('Results'));
-      output.writeln(output.dim('─'.repeat(60)));
+      output.writeln(output.dim('â”€'.repeat(60)));
 
       for (const r of results) {
-        const status = r.met ? output.success('✓') : output.error('✗');
+        const status = r.met ? output.success('âœ“') : output.error('âœ—');
         output.writeln(`${status} ${r.name}`);
         output.writeln(`   Mean: ${r.mean.toFixed(3)}ms | p95: ${r.p95.toFixed(3)}ms | p99: ${r.p99.toFixed(3)}ms`);
         output.writeln(`   Target: ${r.target}ms | Status: ${r.met ? 'Met' : 'Not met'}`);
@@ -278,7 +278,7 @@ const memoryCommand: Command = {
     { name: 'output', short: 'o', type: 'string', description: 'Output format: text, json', default: 'text' },
   ],
   examples: [
-    { command: 'claude-flow benchmark memory', description: 'Run memory benchmarks' },
+    { command: 'ruflo benchmark memory', description: 'Run memory benchmarks' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const iterations = parseInt(ctx.flags.iterations as string || '100', 10);
@@ -286,7 +286,7 @@ const memoryCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Memory Operations Benchmark'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
 
     const spinner = output.createSpinner({ text: 'Running memory benchmarks...', spinner: 'dots' });
     spinner.start();
@@ -310,7 +310,7 @@ const memoryCommand: Command = {
         storeEntry = memory.storeEntry;
         searchEntries = memory.searchEntries;
       } catch {
-        // @claude-flow/memory not available — return null metrics instead of fake numbers
+        // @claude-flow/memory not available â€” return null metrics instead of fake numbers
         storeEntry = async () => ({ success: true });
         searchEntries = async () => ({ results: [], searchTime: 0 }); // 0 = no-op fallback, not a real benchmark
       }
@@ -369,10 +369,10 @@ const memoryCommand: Command = {
       // Display results
       output.writeln();
       output.writeln(output.bold('Results'));
-      output.writeln(output.dim('─'.repeat(60)));
+      output.writeln(output.dim('â”€'.repeat(60)));
 
       for (const r of results) {
-        const status = r.met ? output.success('✓') : output.error('✗');
+        const status = r.met ? output.success('âœ“') : output.error('âœ—');
         output.writeln(`${status} ${r.name}`);
         output.writeln(`   Mean: ${r.mean.toFixed(3)}ms | p95: ${r.p95.toFixed(3)}ms | Target: ${r.target}ms`);
         output.writeln();
@@ -408,21 +408,21 @@ const allCommand: Command = {
     { name: 'save', short: 's', type: 'string', description: 'Save results to file' },
   ],
   examples: [
-    { command: 'claude-flow benchmark all', description: 'Run all benchmarks' },
-    { command: 'claude-flow benchmark all --save full-results.json', description: 'Run all and save results' },
+    { command: 'ruflo benchmark all', description: 'Run all benchmarks' },
+    { command: 'ruflo benchmark all --save full-results.json', description: 'Run all and save results' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
-    output.writeln(output.bold(output.highlight('═'.repeat(65))));
+    output.writeln(output.bold(output.highlight('â•'.repeat(65))));
     output.writeln(output.bold('  RuFlo V3 - Full Benchmark Suite'));
-    output.writeln(output.bold(output.highlight('═'.repeat(65))));
+    output.writeln(output.bold(output.highlight('â•'.repeat(65))));
 
     const startTime = Date.now();
     const allResults: Record<string, unknown> = {};
 
     // Run pretrain benchmarks
     output.writeln();
-    output.writeln(output.bold('▸ Pre-Training Benchmarks'));
+    output.writeln(output.bold('â–¸ Pre-Training Benchmarks'));
     if (pretrainCommand.action) {
       const pretrainResult = await pretrainCommand.action(ctx);
       allResults.pretrain = pretrainResult;
@@ -430,7 +430,7 @@ const allCommand: Command = {
 
     // Run neural benchmarks
     output.writeln();
-    output.writeln(output.bold('▸ Neural Benchmarks'));
+    output.writeln(output.bold('â–¸ Neural Benchmarks'));
     if (neuralCommand.action) {
       const neuralResult = await neuralCommand.action(ctx);
       allResults.neural = neuralResult;
@@ -438,7 +438,7 @@ const allCommand: Command = {
 
     // Run memory benchmarks
     output.writeln();
-    output.writeln(output.bold('▸ Memory Benchmarks'));
+    output.writeln(output.bold('â–¸ Memory Benchmarks'));
     if (memoryCommand.action) {
       const memoryResult = await memoryCommand.action(ctx);
       allResults.memory = memoryResult;
@@ -447,9 +447,9 @@ const allCommand: Command = {
     const totalDuration = Date.now() - startTime;
 
     output.writeln();
-    output.writeln(output.bold(output.highlight('═'.repeat(65))));
+    output.writeln(output.bold(output.highlight('â•'.repeat(65))));
     output.writeln(`  Total Duration: ${(totalDuration / 1000).toFixed(2)}s`);
-    output.writeln(output.bold(output.highlight('═'.repeat(65))));
+    output.writeln(output.bold(output.highlight('â•'.repeat(65))));
 
     // Save if requested
     const saveFile = ctx.flags.save as string | undefined;
@@ -485,15 +485,15 @@ export const benchmarkCommand: Command = {
     allCommand,
   ],
   examples: [
-    { command: 'claude-flow benchmark pretrain', description: 'Benchmark pre-training system' },
-    { command: 'claude-flow benchmark neural', description: 'Benchmark neural operations' },
-    { command: 'claude-flow benchmark memory', description: 'Benchmark memory operations' },
-    { command: 'claude-flow benchmark all', description: 'Run all benchmarks' },
+    { command: 'ruflo benchmark pretrain', description: 'Benchmark pre-training system' },
+    { command: 'ruflo benchmark neural', description: 'Benchmark neural operations' },
+    { command: 'ruflo benchmark memory', description: 'Benchmark memory operations' },
+    { command: 'ruflo benchmark all', description: 'Run all benchmarks' },
   ],
   action: async (_ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
     output.writeln(output.bold('RuFlo V3 Benchmark Suite'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
     output.writeln();
     output.writeln('Available subcommands:');
     output.writeln(`  ${output.highlight('pretrain')}  - Benchmark self-learning pre-training (SONA, EWC++, MoE)`);
@@ -502,8 +502,8 @@ export const benchmarkCommand: Command = {
     output.writeln(`  ${output.highlight('all')}       - Run all benchmark suites`);
     output.writeln();
     output.writeln('Examples:');
-    output.writeln('  claude-flow benchmark pretrain -i 200');
-    output.writeln('  claude-flow benchmark all --save results.json');
+    output.writeln('  ruflo benchmark pretrain -i 200');
+    output.writeln('  ruflo benchmark all --save results.json');
     output.writeln();
 
     return { success: true, message: 'Use a subcommand to run benchmarks' };

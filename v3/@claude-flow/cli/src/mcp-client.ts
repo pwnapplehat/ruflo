@@ -9,6 +9,8 @@
  */
 
 import type { MCPTool } from './mcp-tools/types.js';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
 // Import MCP tool handlers from local package
 import { agentTools } from './mcp-tools/agent-tools.js';
@@ -42,15 +44,16 @@ import { agentdbTools } from './mcp-tools/agentdb-tools.js';
 // RuVector WASM tools
 import { ruvllmWasmTools } from './mcp-tools/ruvllm-tools.js';
 import { wasmAgentTools } from './mcp-tools/wasm-agent-tools.js';
-// ADR-115: Anthropic Claude Managed Agents — a cloud agent runtime alongside
+// ADR-115: Anthropic Claude Managed Agents â€” a cloud agent runtime alongside
 // the local WASM-sandboxed `wasm_agent_*` (rvagent) tools. Lives in the
 // `ruflo-agent` plugin.
 import { managedAgentTools } from './mcp-tools/managed-agent-tools.js';
 import { guidanceTools } from './mcp-tools/guidance-tools.js';
 import { autopilotTools } from './mcp-tools/autopilot-tools.js';
-// ADR-150 — MetaHarness MCP tools (score / genome / mcp-scan / threat-model / oia-audit)
+// ADR-150 â€” MetaHarness MCP tools (score / genome / mcp-scan / threat-model / oia-audit)
 import { metaharnessTools } from './mcp-tools/metaharness-tools.js';
-// #1916: coverage-aware routing tools — defined in ruvector/coverage-tools.ts
+import { testgenTools } from './mcp-tools/testgen-tools.js';
+// #1916: coverage-aware routing tools â€” defined in ruvector/coverage-tools.ts
 // but were never registered, so the `ruflo hooks coverage-*` CLI subcommands
 // failed with `Tool not found: hooks_coverage-route`.
 import { coverageRouterTools } from './ruvector/coverage-tools.js';
@@ -71,8 +74,8 @@ function getBrowserTools(): MCPTool[] {
 
 /**
  * Lifecycle MCP tools for ruflo-browser session-as-skill architecture
- * (ADR-0001 ruflo-browser §7). Always registered: their handlers shell out
- * to ruvector + agent-browser + claude-flow memory and degrade gracefully
+ * (ADR-0001 ruflo-browser Â§7). Always registered: their handlers shell out
+ * to ruvector + agent-browser + ruflo memory and degrade gracefully
  * when those CLIs are missing.
  */
 function getBrowserSessionTools(): MCPTool[] {
@@ -132,8 +135,10 @@ registerTools([
   ...autopilotTools,
   // #1916: coverage-aware routing (hooks_coverage-route / -suggest / -gaps)
   ...coverageRouterTools,
-  // ADR-150 — MetaHarness static-analysis tools (5)
+  // ADR-150 â€” MetaHarness static-analysis tools (5)
   ...metaharnessTools,
+  // Test-generation tools (testgen_tdd_repair)
+  ...testgenTools,
 ]);
 
 /**
@@ -194,7 +199,7 @@ export async function callMCPTool<T = unknown>(
     const result = await tool.handler(input, context);
     // ADR-146 P2: scan every tool result for indirect-injection before it
     // returns to the caller. The screen is opt-in via env (default off in
-    // 3.10.34 — flip to default in v4) so existing pipelines keep their
+    // 3.10.34 â€” flip to default in v4) so existing pipelines keep their
     // exact behaviour while the call site is exercised by tests and
     // adopters. Telemetry from the screen lands in the shared
     // GuardrailEvent sink (P5).
@@ -210,7 +215,7 @@ export async function callMCPTool<T = unknown>(
 }
 
 /**
- * ADR-146 P2 — content-boundary screen on the MCP tool dispatch path.
+ * ADR-146 P2 â€” content-boundary screen on the MCP tool dispatch path.
  *
  * Default behaviour (3.10.34, legacy mode): returns the result unchanged.
  * With `CLAUDE_FLOW_STRICT_GUARDRAIL=true`, scans every string field of the
@@ -237,10 +242,10 @@ function applyContentBoundaryGuardrail(toolName: string, result: unknown): unkno
       if (sec?.createToolOutputGuardrail) {
         _guardrailInstance = sec.createToolOutputGuardrail();
       } else {
-        return result; // module shape unexpected — fail open
+        return result; // module shape unexpected â€” fail open
       }
     } catch {
-      return result; // security package not installed in this consumer — fail open
+      return result; // security package not installed in this consumer â€” fail open
     }
   }
 

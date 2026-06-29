@@ -66,13 +66,13 @@ const daemonCommand: Command = {
       name: 'pid-file',
       type: 'string',
       description: 'PID file location',
-      default: '.claude-flow/daemon.pid',
+      default: '.cursor-flow/daemon.pid',
     },
     {
       name: 'log-file',
       type: 'string',
       description: 'Log file location',
-      default: '.claude-flow/daemon.log',
+      default: '.cursor-flow/daemon.log',
     },
     {
       name: 'detach',
@@ -82,16 +82,16 @@ const daemonCommand: Command = {
     },
   ],
   examples: [
-    { command: 'claude-flow process daemon --action start', description: 'Start the daemon' },
-    { command: 'claude-flow process daemon --action stop', description: 'Stop the daemon' },
-    { command: 'claude-flow process daemon --action restart --port 3850', description: 'Restart on different port' },
-    { command: 'claude-flow process daemon --action status', description: 'Check daemon status' },
+    { command: 'ruflo process daemon --action start', description: 'Start the daemon' },
+    { command: 'ruflo process daemon --action stop', description: 'Stop the daemon' },
+    { command: 'ruflo process daemon --action restart --port 3850', description: 'Restart on different port' },
+    { command: 'ruflo process daemon --action status', description: 'Check daemon status' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const action = (ctx.flags?.action as string) || 'status';
     const port = (ctx.flags?.port as number) || 3847;
-    const pidFile = (ctx.flags?.['pid-file'] as string) || '.claude-flow/daemon.pid';
-    const logFile = (ctx.flags?.['log-file'] as string) || '.claude-flow/daemon.log';
+    const pidFile = (ctx.flags?.['pid-file'] as string) || '.cursor-flow/daemon.pid';
+    const logFile = (ctx.flags?.['log-file'] as string) || '.cursor-flow/daemon.log';
     const detach = ctx.flags?.detach !== false;
 
     // Check existing daemon state from PID file
@@ -107,14 +107,14 @@ const daemonCommand: Command = {
     switch (action) {
       case 'start':
         if (existingDaemon) {
-          console.log('\n⚠️  Daemon already running\n');
-          console.log(`  📍 PID: ${existingDaemon.pid}`);
-          console.log(`  🌐 Port: ${existingDaemon.port}`);
-          console.log(`  ⏱️  Started: ${existingDaemon.startedAt}`);
+          console.log('\nÃ¢Å¡Â Ã¯Â¸Â  Daemon already running\n');
+          console.log(`  Ã°Å¸â€œÂ PID: ${existingDaemon.pid}`);
+          console.log(`  Ã°Å¸Å’Â Port: ${existingDaemon.port}`);
+          console.log(`  Ã¢ÂÂ±Ã¯Â¸Â  Started: ${existingDaemon.startedAt}`);
           break;
         }
 
-        console.log('\n🚀 Starting claude-flow daemon...\n');
+        console.log('\nÃ°Å¸Å¡â‚¬ Starting ruflo daemon...\n');
         const newPid = process.pid; // Use actual process PID
         daemonState.status = 'running';
         daemonState.pid = newPid;
@@ -124,76 +124,76 @@ const daemonCommand: Command = {
         // Persist PID to file
         writePidFile(pidFile, newPid, port);
 
-        console.log('  ✅ Daemon started successfully');
-        console.log(`  📍 PID: ${daemonState.pid}`);
-        console.log(`  🌐 HTTP API: http://localhost:${port}`);
-        console.log(`  📄 PID file: ${resolve(pidFile)}`);
-        console.log(`  📝 Log file: ${logFile}`);
-        console.log(`  🔄 Mode: ${detach ? 'detached' : 'foreground'}`);
+        console.log('  Ã¢Å“â€¦ Daemon started successfully');
+        console.log(`  Ã°Å¸â€œÂ PID: ${daemonState.pid}`);
+        console.log(`  Ã°Å¸Å’Â HTTP API: http://localhost:${port}`);
+        console.log(`  Ã°Å¸â€œâ€ž PID file: ${resolve(pidFile)}`);
+        console.log(`  Ã°Å¸â€œÂ Log file: ${logFile}`);
+        console.log(`  Ã°Å¸â€â€ž Mode: ${detach ? 'detached' : 'foreground'}`);
         console.log('\n  Services:');
-        console.log('    ├─ MCP Server: listening');
-        console.log('    ├─ Agent Pool: initialized (0 agents)');
-        console.log('    ├─ Memory Service: connected');
-        console.log('    ├─ Task Queue: ready');
-        console.log('    └─ Swarm Coordinator: standby');
+        console.log('    Ã¢â€Å“Ã¢â€â‚¬ MCP Server: listening');
+        console.log('    Ã¢â€Å“Ã¢â€â‚¬ Agent Pool: initialized (0 agents)');
+        console.log('    Ã¢â€Å“Ã¢â€â‚¬ Memory Service: connected');
+        console.log('    Ã¢â€Å“Ã¢â€â‚¬ Task Queue: ready');
+        console.log('    Ã¢â€â€Ã¢â€â‚¬ Swarm Coordinator: standby');
         break;
 
       case 'stop':
         if (!existingDaemon) {
-          console.log('\n⚠️  No daemon running\n');
+          console.log('\nÃ¢Å¡Â Ã¯Â¸Â  No daemon running\n');
           break;
         }
-        console.log('\n🛑 Stopping claude-flow daemon...\n');
-        console.log(`  📍 Stopping PID ${existingDaemon.pid}...`);
+        console.log('\nÃ°Å¸â€ºâ€˜ Stopping ruflo daemon...\n');
+        console.log(`  Ã°Å¸â€œÂ Stopping PID ${existingDaemon.pid}...`);
 
         // Remove PID file
         removePidFile(pidFile);
         daemonState.status = 'stopped';
         daemonState.pid = null;
 
-        console.log('  ✅ Daemon stopped successfully');
-        console.log('  📍 PID file removed');
-        console.log('  🧹 Resources cleaned up');
+        console.log('  Ã¢Å“â€¦ Daemon stopped successfully');
+        console.log('  Ã°Å¸â€œÂ PID file removed');
+        console.log('  Ã°Å¸Â§Â¹ Resources cleaned up');
         break;
 
       case 'restart':
-        console.log('\n🔄 Restarting claude-flow daemon...\n');
+        console.log('\nÃ°Å¸â€â€ž Restarting ruflo daemon...\n');
         if (existingDaemon) {
-          console.log(`  🛑 Stopping PID ${existingDaemon.pid}...`);
+          console.log(`  Ã°Å¸â€ºâ€˜ Stopping PID ${existingDaemon.pid}...`);
           removePidFile(pidFile);
-          console.log('  ✅ Stopped');
+          console.log('  Ã¢Å“â€¦ Stopped');
         }
-        console.log('  🚀 Starting new instance...');
+        console.log('  Ã°Å¸Å¡â‚¬ Starting new instance...');
         const restartPid = process.pid;
         writePidFile(pidFile, restartPid, port);
         daemonState.pid = restartPid;
         daemonState.status = 'running';
-        console.log(`  ✅ Daemon restarted (PID: ${restartPid})`);
-        console.log(`  🌐 HTTP API: http://localhost:${port}`);
-        console.log(`  📄 PID file: ${resolve(pidFile)}`);
+        console.log(`  Ã¢Å“â€¦ Daemon restarted (PID: ${restartPid})`);
+        console.log(`  Ã°Å¸Å’Â HTTP API: http://localhost:${port}`);
+        console.log(`  Ã°Å¸â€œâ€ž PID file: ${resolve(pidFile)}`);
         break;
 
       case 'status':
-        console.log('\n📊 Daemon Status\n');
-        console.log('  ┌─────────────────────────────────────────┐');
-        console.log('  │ claude-flow daemon                      │');
-        console.log('  ├─────────────────────────────────────────┤');
+        console.log('\nÃ°Å¸â€œÅ  Daemon Status\n');
+        console.log('  Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â');
+        console.log('  Ã¢â€â€š ruflo daemon                      Ã¢â€â€š');
+        console.log('  Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤');
         if (existingDaemon) {
           const uptime = Math.floor((Date.now() - new Date(existingDaemon.startedAt).getTime()) / 1000);
           const uptimeStr = uptime < 60 ? `${uptime}s` : `${Math.floor(uptime / 60)}m ${uptime % 60}s`;
-          console.log('  │ Status:      🟢 running                │');
-          console.log(`  │ PID:         ${existingDaemon.pid.toString().padEnd(28)}│`);
-          console.log(`  │ Port:        ${existingDaemon.port.toString().padEnd(28)}│`);
-          console.log(`  │ Uptime:      ${uptimeStr.padEnd(28)}│`);
+          console.log('  Ã¢â€â€š Status:      Ã°Å¸Å¸Â¢ running                Ã¢â€â€š');
+          console.log(`  Ã¢â€â€š PID:         ${existingDaemon.pid.toString().padEnd(28)}Ã¢â€â€š`);
+          console.log(`  Ã¢â€â€š Port:        ${existingDaemon.port.toString().padEnd(28)}Ã¢â€â€š`);
+          console.log(`  Ã¢â€â€š Uptime:      ${uptimeStr.padEnd(28)}Ã¢â€â€š`);
         } else {
-          console.log('  │ Status:      ⚪ not running             │');
-          console.log(`  │ Port:        ${port.toString().padEnd(28)}│`);
-          console.log(`  │ PID file:    ${pidFile.substring(0, 26).padEnd(28)}│`);
-          console.log('  │ Uptime:      --                         │');
+          console.log('  Ã¢â€â€š Status:      Ã¢Å¡Âª not running             Ã¢â€â€š');
+          console.log(`  Ã¢â€â€š Port:        ${port.toString().padEnd(28)}Ã¢â€â€š`);
+          console.log(`  Ã¢â€â€š PID file:    ${pidFile.substring(0, 26).padEnd(28)}Ã¢â€â€š`);
+          console.log('  Ã¢â€â€š Uptime:      --                         Ã¢â€â€š');
         }
-        console.log('  └─────────────────────────────────────────┘');
+        console.log('  Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ');
         if (!existingDaemon) {
-          console.log('\n  To start: claude-flow process daemon --action start');
+          console.log('\n  To start: ruflo process daemon --action start');
         }
         break;
     }
@@ -242,10 +242,10 @@ const monitorCommand: Command = {
     },
   ],
   examples: [
-    { command: 'claude-flow process monitor', description: 'Show process dashboard' },
-    { command: 'claude-flow process monitor --watch --interval 5', description: 'Watch mode' },
-    { command: 'claude-flow process monitor --components agents,memory,tasks', description: 'Monitor specific components' },
-    { command: 'claude-flow process monitor --format json', description: 'JSON output' },
+    { command: 'ruflo process monitor', description: 'Show process dashboard' },
+    { command: 'ruflo process monitor --watch --interval 5', description: 'Watch mode' },
+    { command: 'ruflo process monitor --components agents,memory,tasks', description: 'Monitor specific components' },
+    { command: 'ruflo process monitor --format json', description: 'JSON output' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const interval = (ctx.flags?.interval as number) || 2;
@@ -265,7 +265,7 @@ const monitorCommand: Command = {
     let agentCount = 0;
     let taskCounts = { running: 0, queued: 0, completed: 0, failed: 0 };
     try {
-      const agentStorePath = resolve('.claude-flow/agents/store.json');
+      const agentStorePath = resolve('.cursor-flow/agents/store.json');
       if (existsSync(agentStorePath)) {
         const agentStore = JSON.parse(readFileSync(agentStorePath, 'utf-8'));
         const agents = Array.isArray(agentStore) ? agentStore : Object.values(agentStore.agents || agentStore || {});
@@ -273,7 +273,7 @@ const monitorCommand: Command = {
       }
     } catch { /* no agent store */ }
     try {
-      const taskStorePath = resolve('.claude-flow/tasks/store.json');
+      const taskStorePath = resolve('.cursor-flow/tasks/store.json');
       if (existsSync(taskStorePath)) {
         const taskStore = JSON.parse(readFileSync(taskStorePath, 'utf-8'));
         const tasks = Array.isArray(taskStore) ? taskStore : Object.values(taskStore.tasks || taskStore || {});
@@ -300,12 +300,12 @@ const monitorCommand: Command = {
       },
       agents: {
         total: agentCount,
-        _note: agentCount === 0 ? 'No agent store found at .claude-flow/agents/store.json' : null,
+        _note: agentCount === 0 ? 'No agent store found at .cursor-flow/agents/store.json' : null,
       },
       tasks: {
         ...taskCounts,
         _note: (taskCounts.running + taskCounts.queued + taskCounts.completed + taskCounts.failed) === 0
-          ? 'No task store found at .claude-flow/tasks/store.json' : null,
+          ? 'No task store found at .cursor-flow/tasks/store.json' : null,
       },
       memory: {
         vectorCount: null as number | null,
@@ -328,7 +328,7 @@ const monitorCommand: Command = {
     }
 
     if (format === 'compact') {
-      console.log('\n📊 Process Monitor (compact)\n');
+      console.log('\nÃ°Å¸â€œÅ  Process Monitor (compact)\n');
       const loadStr = metrics.system.cpuLoadAvg1m !== null ? `load ${metrics.system.cpuLoadAvg1m.toFixed(2)}` : 'n/a';
       console.log(`CPU: ${loadStr} (${metrics.system.cpuCount} cores) | Memory: ${metrics.system.memoryUsedMB}MB/${metrics.system.memoryTotalMB}MB`);
       console.log(`Agents: ${metrics.agents.total} total | Tasks: ${metrics.tasks.running} running, ${metrics.tasks.queued} queued`);
@@ -336,64 +336,64 @@ const monitorCommand: Command = {
     }
 
     // Dashboard format
-    console.log('\n╔══════════════════════════════════════════════════════════════╗');
-    console.log('║            🖥️  CLAUDE-FLOW PROCESS MONITOR                    ║');
-    console.log('╠══════════════════════════════════════════════════════════════╣');
+    console.log('\nÃ¢â€¢â€Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢â€”');
+    console.log('Ã¢â€¢â€˜            Ã°Å¸â€“Â¥Ã¯Â¸Â  ruflo PROCESS MONITOR                    Ã¢â€¢â€˜');
+    console.log('Ã¢â€¢Â Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â£');
 
     // System metrics
-    console.log('║  SYSTEM                                                      ║');
+    console.log('Ã¢â€¢â€˜  SYSTEM                                                      Ã¢â€¢â€˜');
     const cpuDisplay = metrics.system.cpuLoadAvg1m !== null ? metrics.system.cpuLoadAvg1m : 0;
     const cpuPercent = Math.min(100, (cpuDisplay / (metrics.system.cpuCount || 1)) * 100);
-    const cpuBar = '█'.repeat(Math.floor(cpuPercent / 5)) + '░'.repeat(20 - Math.floor(cpuPercent / 5));
+    const cpuBar = 'Ã¢â€“Ë†'.repeat(Math.floor(cpuPercent / 5)) + 'Ã¢â€“â€˜'.repeat(20 - Math.floor(cpuPercent / 5));
     const memPercent = (metrics.system.memoryUsedMB / metrics.system.memoryTotalMB) * 100;
-    const memBar = '█'.repeat(Math.floor(memPercent / 5)) + '░'.repeat(20 - Math.floor(memPercent / 5));
-    console.log(`║  CPU:    [${cpuBar}] load ${cpuDisplay.toFixed(2).padStart(5)}          ║`);
-    console.log(`║  Memory: [${memBar}] ${metrics.system.memoryUsedMB}MB/${metrics.system.memoryTotalMB}MB      ║`);
+    const memBar = 'Ã¢â€“Ë†'.repeat(Math.floor(memPercent / 5)) + 'Ã¢â€“â€˜'.repeat(20 - Math.floor(memPercent / 5));
+    console.log(`Ã¢â€¢â€˜  CPU:    [${cpuBar}] load ${cpuDisplay.toFixed(2).padStart(5)}          Ã¢â€¢â€˜`);
+    console.log(`Ã¢â€¢â€˜  Memory: [${memBar}] ${metrics.system.memoryUsedMB}MB/${metrics.system.memoryTotalMB}MB      Ã¢â€¢â€˜`);
 
-    console.log('╠══════════════════════════════════════════════════════════════╣');
+    console.log('Ã¢â€¢Â Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â£');
 
     // Agents
-    console.log('║  AGENTS                                                      ║');
-    console.log(`║  Total: ${metrics.agents.total.toString().padEnd(5)}                                              ║`);
+    console.log('Ã¢â€¢â€˜  AGENTS                                                      Ã¢â€¢â€˜');
+    console.log(`Ã¢â€¢â€˜  Total: ${metrics.agents.total.toString().padEnd(5)}                                              Ã¢â€¢â€˜`);
 
-    console.log('╠══════════════════════════════════════════════════════════════╣');
+    console.log('Ã¢â€¢Â Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â£');
 
     // Tasks
-    console.log('║  TASKS                                                       ║');
-    console.log(`║  Running: ${metrics.tasks.running.toString().padEnd(3)} Queued: ${metrics.tasks.queued.toString().padEnd(3)} Completed: ${metrics.tasks.completed.toString().padEnd(5)} Failed: ${metrics.tasks.failed.toString().padEnd(3)}║`);
+    console.log('Ã¢â€¢â€˜  TASKS                                                       Ã¢â€¢â€˜');
+    console.log(`Ã¢â€¢â€˜  Running: ${metrics.tasks.running.toString().padEnd(3)} Queued: ${metrics.tasks.queued.toString().padEnd(3)} Completed: ${metrics.tasks.completed.toString().padEnd(5)} Failed: ${metrics.tasks.failed.toString().padEnd(3)}Ã¢â€¢â€˜`);
 
-    console.log('╠══════════════════════════════════════════════════════════════╣');
+    console.log('Ã¢â€¢Â Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â£');
 
     // Memory service
-    console.log('║  MEMORY SERVICE                                              ║');
-    console.log('║  Metrics not available. Use "memory stats" command.          ║');
+    console.log('Ã¢â€¢â€˜  MEMORY SERVICE                                              Ã¢â€¢â€˜');
+    console.log('Ã¢â€¢â€˜  Metrics not available. Use "memory stats" command.          Ã¢â€¢â€˜');
 
-    console.log('╠══════════════════════════════════════════════════════════════╣');
+    console.log('Ã¢â€¢Â Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â£');
 
     // Network
-    console.log('║  NETWORK                                                     ║');
-    console.log('║  Metrics not available. Use "mcp status" command.            ║');
+    console.log('Ã¢â€¢â€˜  NETWORK                                                     Ã¢â€¢â€˜');
+    console.log('Ã¢â€¢â€˜  Metrics not available. Use "mcp status" command.            Ã¢â€¢â€˜');
 
-    console.log('╚══════════════════════════════════════════════════════════════╝');
+    console.log('Ã¢â€¢Å¡Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â');
 
     if (alerts) {
-      console.log('\n📢 Alerts:');
+      console.log('\nÃ°Å¸â€œÂ¢ Alerts:');
       if (cpuPercent > 80) {
-        console.log('  ⚠️  High CPU load detected');
+        console.log('  Ã¢Å¡Â Ã¯Â¸Â  High CPU load detected');
       }
       if (memPercent > 80) {
-        console.log('  ⚠️  High memory usage detected');
+        console.log('  Ã¢Å¡Â Ã¯Â¸Â  High memory usage detected');
       }
       if (metrics.tasks.failed > 10) {
-        console.log('  ⚠️  Elevated task failure rate');
+        console.log('  Ã¢Å¡Â Ã¯Â¸Â  Elevated task failure rate');
       }
       if (cpuPercent <= 80 && memPercent <= 80 && metrics.tasks.failed <= 10) {
-        console.log('  ✅ All systems nominal');
+        console.log('  Ã¢Å“â€¦ All systems nominal');
       }
     }
 
     if (watch) {
-      console.log(`\n🔄 Refresh: ${interval}s | Press Ctrl+C to exit`);
+      console.log(`\nÃ°Å¸â€â€ž Refresh: ${interval}s | Press Ctrl+C to exit`);
     }
 
     return { success: true, data: metrics };
@@ -433,10 +433,10 @@ const workersCommand: Command = {
     },
   ],
   examples: [
-    { command: 'claude-flow process workers --action list', description: 'List all workers' },
-    { command: 'claude-flow process workers --action spawn --type task --count 3', description: 'Spawn task workers' },
-    { command: 'claude-flow process workers --action kill --id worker-123', description: 'Kill specific worker' },
-    { command: 'claude-flow process workers --action scale --type memory --count 5', description: 'Scale memory workers' },
+    { command: 'ruflo process workers --action list', description: 'List all workers' },
+    { command: 'ruflo process workers --action spawn --type task --count 3', description: 'Spawn task workers' },
+    { command: 'ruflo process workers --action kill --id worker-123', description: 'Kill specific worker' },
+    { command: 'ruflo process workers --action scale --type memory --count 5', description: 'Scale memory workers' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const action = (ctx.flags?.action as string) || 'list';
@@ -454,56 +454,56 @@ const workersCommand: Command = {
 
     switch (action) {
       case 'list':
-        console.log('\n👷 Background Workers\n');
-        console.log('┌────────────────────┬─────────────┬──────────┬─────────┐');
-        console.log('│ ID                 │ Type        │ Status   │ Tasks   │');
-        console.log('├────────────────────┼─────────────┼──────────┼─────────┤');
+        console.log('\nÃ°Å¸â€˜Â· Background Workers\n');
+        console.log('Ã¢â€Å’Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â');
+        console.log('Ã¢â€â€š ID                 Ã¢â€â€š Type        Ã¢â€â€š Status   Ã¢â€â€š Tasks   Ã¢â€â€š');
+        console.log('Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¼Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¼Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¼Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â¤');
         for (const worker of workers) {
-          const statusIcon = worker.status === 'running' ? '🟢' : '🟡';
-          console.log(`│ ${worker.id.padEnd(18)} │ ${worker.type.padEnd(11)} │ ${statusIcon} ${worker.status.padEnd(6)} │ ${worker.tasks.toString().padEnd(7)} │`);
+          const statusIcon = worker.status === 'running' ? 'Ã°Å¸Å¸Â¢' : 'Ã°Å¸Å¸Â¡';
+          console.log(`Ã¢â€â€š ${worker.id.padEnd(18)} Ã¢â€â€š ${worker.type.padEnd(11)} Ã¢â€â€š ${statusIcon} ${worker.status.padEnd(6)} Ã¢â€â€š ${worker.tasks.toString().padEnd(7)} Ã¢â€â€š`);
         }
-        console.log('└────────────────────┴─────────────┴──────────┴─────────┘');
+        console.log('Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â´Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â´Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Â´Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€Ëœ');
         console.log(`\nTotal: ${workers.length} workers`);
         break;
 
       case 'spawn':
         if (!type) {
-          console.log('\n❌ Worker type required. Use --type <task|memory|coordinator|neural>');
+          console.log('\nÃ¢ÂÅ’ Worker type required. Use --type <task|memory|coordinator|neural>');
           return { success: false, message: 'Worker type required' };
         }
-        console.log(`\n🚀 Spawning ${count} ${type} worker(s)...\n`);
+        console.log(`\nÃ°Å¸Å¡â‚¬ Spawning ${count} ${type} worker(s)...\n`);
         for (let i = 0; i < count; i++) {
           const newId = `worker-${type}-${String(workers.length + i + 1).padStart(3, '0')}`;
-          console.log(`  ✅ Spawned: ${newId}`);
+          console.log(`  Ã¢Å“â€¦ Spawned: ${newId}`);
         }
         console.log(`\n  Total ${type} workers: ${workers.filter(w => w.type === type).length + count}`);
         break;
 
       case 'kill':
         if (!id) {
-          console.log('\n❌ Worker ID required. Use --id <worker-id>');
+          console.log('\nÃ¢ÂÅ’ Worker ID required. Use --id <worker-id>');
           return { success: false, message: 'Worker ID required' };
         }
-        console.log(`\n🛑 Killing worker: ${id}...\n`);
-        console.log('  ✅ Worker terminated');
-        console.log('  🧹 Resources released');
+        console.log(`\nÃ°Å¸â€ºâ€˜ Killing worker: ${id}...\n`);
+        console.log('  Ã¢Å“â€¦ Worker terminated');
+        console.log('  Ã°Å¸Â§Â¹ Resources released');
         break;
 
       case 'scale':
         if (!type) {
-          console.log('\n❌ Worker type required. Use --type <task|memory|coordinator|neural>');
+          console.log('\nÃ¢ÂÅ’ Worker type required. Use --type <task|memory|coordinator|neural>');
           return { success: false, message: 'Worker type required' };
         }
         const current = workers.filter(w => w.type === type).length;
-        console.log(`\n📊 Scaling ${type} workers: ${current} → ${count}\n`);
+        console.log(`\nÃ°Å¸â€œÅ  Scaling ${type} workers: ${current} Ã¢â€ â€™ ${count}\n`);
         if (count > current) {
-          console.log(`  🚀 Spawning ${count - current} new worker(s)...`);
+          console.log(`  Ã°Å¸Å¡â‚¬ Spawning ${count - current} new worker(s)...`);
         } else if (count < current) {
-          console.log(`  🛑 Terminating ${current - count} worker(s)...`);
+          console.log(`  Ã°Å¸â€ºâ€˜ Terminating ${current - count} worker(s)...`);
         } else {
-          console.log('  ℹ️  No scaling needed');
+          console.log('  Ã¢â€žÂ¹Ã¯Â¸Â  No scaling needed');
         }
-        console.log(`  ✅ Scaling complete`);
+        console.log(`  Ã¢Å“â€¦ Scaling complete`);
         break;
     }
 
@@ -539,9 +539,9 @@ const signalsCommand: Command = {
     },
   ],
   examples: [
-    { command: 'claude-flow process signals --target daemon --signal graceful-shutdown', description: 'Graceful shutdown' },
-    { command: 'claude-flow process signals --target workers --signal pause', description: 'Pause workers' },
-    { command: 'claude-flow process signals --target all --signal reload-config', description: 'Reload all configs' },
+    { command: 'ruflo process signals --target daemon --signal graceful-shutdown', description: 'Graceful shutdown' },
+    { command: 'ruflo process signals --target workers --signal pause', description: 'Pause workers' },
+    { command: 'ruflo process signals --target all --signal reload-config', description: 'Reload all configs' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const target = ctx.flags?.target as string;
@@ -549,25 +549,25 @@ const signalsCommand: Command = {
     const timeout = (ctx.flags?.timeout as number) || 30;
 
     if (!target) {
-      console.log('\n❌ Target required. Use --target <daemon|workers|all|process-id>');
+      console.log('\nÃ¢ÂÅ’ Target required. Use --target <daemon|workers|all|process-id>');
       return { success: false, message: 'Target required' };
     }
 
-    console.log(`\n📡 Sending signal: ${signal}\n`);
+    console.log(`\nÃ°Å¸â€œÂ¡ Sending signal: ${signal}\n`);
     console.log(`  Target: ${target}`);
     console.log(`  Timeout: ${timeout}s`);
     console.log('');
 
     const signalMessages: Record<string, string> = {
-      'graceful-shutdown': '🛑 Initiating graceful shutdown...',
-      'force-kill': '💀 Force killing process...',
-      'pause': '⏸️  Pausing process...',
-      'resume': '▶️  Resuming process...',
-      'reload-config': '🔄 Reloading configuration...',
+      'graceful-shutdown': 'Ã°Å¸â€ºâ€˜ Initiating graceful shutdown...',
+      'force-kill': 'Ã°Å¸â€™â‚¬ Force killing process...',
+      'pause': 'Ã¢ÂÂ¸Ã¯Â¸Â  Pausing process...',
+      'resume': 'Ã¢â€“Â¶Ã¯Â¸Â  Resuming process...',
+      'reload-config': 'Ã°Å¸â€â€ž Reloading configuration...',
     };
 
     console.log(`  ${signalMessages[signal] || 'Sending signal...'}`);
-    console.log('  ✅ Signal acknowledged');
+    console.log('  Ã¢Å“â€¦ Signal acknowledged');
 
     return { success: true, data: { target, signal, timeout } };
   },
@@ -618,10 +618,10 @@ const logsCommand: Command = {
     },
   ],
   examples: [
-    { command: 'claude-flow process logs', description: 'Show recent logs' },
-    { command: 'claude-flow process logs --source daemon --tail 100', description: 'Daemon logs' },
-    { command: 'claude-flow process logs --follow --level error', description: 'Follow error logs' },
-    { command: 'claude-flow process logs --since 1h --grep "error"', description: 'Search logs' },
+    { command: 'ruflo process logs', description: 'Show recent logs' },
+    { command: 'ruflo process logs --source daemon --tail 100', description: 'Daemon logs' },
+    { command: 'ruflo process logs --follow --level error', description: 'Follow error logs' },
+    { command: 'ruflo process logs --since 1h --grep "error"', description: 'Search logs' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const source = (ctx.flags?.source as string) || 'all';
@@ -631,19 +631,19 @@ const logsCommand: Command = {
     const since = ctx.flags?.since as string;
     const grep = ctx.flags?.grep as string;
 
-    console.log(`\n📜 Process Logs (${source})\n`);
+    console.log(`\nÃ°Å¸â€œÅ“ Process Logs (${source})\n`);
     console.log(`  Level: ${level}+ | Lines: ${tail}${since ? ` | Since: ${since}` : ''}${grep ? ` | Filter: ${grep}` : ''}`);
-    console.log('─'.repeat(70));
+    console.log('Ã¢â€â‚¬'.repeat(70));
 
-    // Read actual log files from .claude-flow/logs/ if they exist
-    const logsDir = resolve('.claude-flow/logs');
+    // Read actual log files from .cursor-flow/logs/ if they exist
+    const logsDir = resolve('.cursor-flow/logs');
     let logEntries: string[] = [];
 
     const levelIcons: Record<string, string> = {
-      debug: '🔍',
-      info: 'ℹ️ ',
-      warn: '⚠️ ',
-      error: '❌',
+      debug: 'Ã°Å¸â€Â',
+      info: 'Ã¢â€žÂ¹Ã¯Â¸Â ',
+      warn: 'Ã¢Å¡Â Ã¯Â¸Â ',
+      error: 'Ã¢ÂÅ’',
     };
     const levels = ['debug', 'info', 'warn', 'error'];
     const minLevelIdx = levels.indexOf(level);
@@ -685,10 +685,10 @@ const logsCommand: Command = {
       }
     }
 
-    console.log('─'.repeat(70));
+    console.log('Ã¢â€â‚¬'.repeat(70));
 
     if (follow) {
-      console.log('\n🔄 Following logs... (Ctrl+C to exit)');
+      console.log('\nÃ°Å¸â€â€ž Following logs... (Ctrl+C to exit)');
     }
 
     return { success: true, data: { source, tail, level } };
@@ -712,14 +712,14 @@ export const processCommand: Command = {
     },
   ],
   examples: [
-    { command: 'claude-flow process daemon --action start', description: 'Start daemon' },
-    { command: 'claude-flow process monitor --watch', description: 'Watch processes' },
-    { command: 'claude-flow process workers --action list', description: 'List workers' },
-    { command: 'claude-flow process logs --follow', description: 'Follow logs' },
+    { command: 'ruflo process daemon --action start', description: 'Start daemon' },
+    { command: 'ruflo process monitor --watch', description: 'Watch processes' },
+    { command: 'ruflo process workers --action list', description: 'List workers' },
+    { command: 'ruflo process logs --follow', description: 'Follow logs' },
   ],
   action: async (_ctx: CommandContext): Promise<CommandResult> => {
     // Show help if no subcommand
-    console.log('\n🔧 Process Management\n');
+    console.log('\nÃ°Å¸â€Â§ Process Management\n');
     console.log('Manage background processes, daemons, and workers.\n');
     console.log('Subcommands:');
     console.log('  daemon     - Manage background daemon process');
@@ -728,10 +728,10 @@ export const processCommand: Command = {
     console.log('  signals    - Send signals to processes');
     console.log('  logs       - View and manage process logs');
     console.log('\nExamples:');
-    console.log('  claude-flow process daemon --action start');
-    console.log('  claude-flow process monitor --watch');
-    console.log('  claude-flow process workers --action spawn --type task --count 3');
-    console.log('  claude-flow process logs --follow --level error');
+    console.log('  ruflo process daemon --action start');
+    console.log('  ruflo process monitor --watch');
+    console.log('  ruflo process workers --action spawn --type task --count 3');
+    console.log('  ruflo process logs --follow --level error');
 
     return { success: true, data: { help: true } };
   },

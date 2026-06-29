@@ -3,7 +3,7 @@
  *
  * V2 Compatibility - DAA agent management tools
  *
- * ⚠️ IMPORTANT: These tools provide LOCAL STATE MANAGEMENT.
+ * âš ï¸ IMPORTANT: These tools provide LOCAL STATE MANAGEMENT.
  * - Agent coordination is tracked locally
  * - No distributed network communication
  * - Useful for workflow orchestration and state tracking
@@ -88,7 +88,7 @@ function saveDAAStore(store: DAAStore): void {
 export const daaTools: MCPTool[] = [
   {
     name: 'daa_agent_create',
-    description: 'Create a decentralized autonomous agent Use when native Task is wrong because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
+    description: 'Create a decentralized autonomous agent Use when you need a specialized agent because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
     category: 'daa',
     inputSchema: {
       type: 'object',
@@ -159,7 +159,7 @@ export const daaTools: MCPTool[] = [
   },
   {
     name: 'daa_agent_adapt',
-    description: 'Trigger agent adaptation based on feedback Use when native Task is wrong because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
+    description: 'Trigger agent adaptation based on feedback Use when you need a specialized agent because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
     category: 'daa',
     inputSchema: {
       type: 'object',
@@ -221,7 +221,7 @@ export const daaTools: MCPTool[] = [
   },
   {
     name: 'daa_workflow_create',
-    description: 'Create an autonomous workflow Use when native Task is wrong because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
+    description: 'Create an autonomous workflow Use when you need a specialized agent because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
     category: 'daa',
     inputSchema: {
       type: 'object',
@@ -269,7 +269,7 @@ export const daaTools: MCPTool[] = [
   },
   {
     name: 'daa_workflow_execute',
-    description: 'Execute a DAA workflow Use when native Task is wrong because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
+    description: 'Execute a DAA workflow Use when you need a specialized agent because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
     category: 'daa',
     inputSchema: {
       type: 'object',
@@ -320,7 +320,7 @@ export const daaTools: MCPTool[] = [
   },
   {
     name: 'daa_knowledge_share',
-    description: 'Share knowledge between agents Use when native Task is wrong because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
+    description: 'Share knowledge between agents Use when you need a specialized agent because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
     category: 'daa',
     inputSchema: {
       type: 'object',
@@ -386,7 +386,7 @@ export const daaTools: MCPTool[] = [
   },
   {
     name: 'daa_learning_status',
-    description: 'Get learning status for DAA agents Use when native Task is wrong because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
+    description: 'Get learning status for DAA agents Use when you need a specialized agent because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
     category: 'daa',
     inputSchema: {
       type: 'object',
@@ -442,7 +442,7 @@ export const daaTools: MCPTool[] = [
   },
   {
     name: 'daa_cognitive_pattern',
-    description: 'Analyze or change cognitive patterns Use when native Task is wrong because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
+    description: 'Analyze or change cognitive patterns Use when you need a specialized agent because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
     category: 'daa',
     inputSchema: {
       type: 'object',
@@ -510,7 +510,7 @@ export const daaTools: MCPTool[] = [
   },
   {
     name: 'daa_performance_metrics',
-    description: 'Get DAA performance metrics Use when native Task is wrong because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
+    description: 'Get DAA performance metrics Use when you need a specialized agent because you need agents that adapt their cognitive pattern (convergent / divergent / lateral / systems / critical) per-task and share knowledge across the swarm. For static one-shot agents, native Task is fine.',
     category: 'daa',
     inputSchema: {
       type: 'object',

@@ -21,26 +21,26 @@ interface GateResult {
 // compile subcommand
 const compileCommand: Command = {
   name: 'compile',
-  description: 'Compile CLAUDE.md into a policy bundle (constitution + shards + manifest)',
+  description: 'Compile AGENTS.md into a policy bundle (constitution + shards + manifest)',
   options: [
-    { name: 'root', short: 'r', type: 'string', description: 'Root guidance file path', default: './CLAUDE.md' },
+    { name: 'root', short: 'r', type: 'string', description: 'Root guidance file path', default: './AGENTS.md' },
     { name: 'local', short: 'l', type: 'string', description: 'Local guidance overlay file path' },
     { name: 'output', short: 'o', type: 'string', description: 'Output directory for compiled bundle' },
     { name: 'json', type: 'boolean', description: 'Output as JSON', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow guidance compile', description: 'Compile default CLAUDE.md' },
-    { command: 'claude-flow guidance compile -r ./CLAUDE.md -l ./CLAUDE.local.md', description: 'Compile with local overlay' },
-    { command: 'claude-flow guidance compile --json', description: 'Output compiled bundle as JSON' },
+    { command: 'ruflo guidance compile', description: 'Compile default AGENTS.md' },
+    { command: 'ruflo guidance compile -r ./AGENTS.md -l ./CLAUDE.local.md', description: 'Compile with local overlay' },
+    { command: 'ruflo guidance compile --json', description: 'Output compiled bundle as JSON' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
-    const rootPath = ctx.flags.root as string || './CLAUDE.md';
+    const rootPath = ctx.flags.root as string || './AGENTS.md';
     const localPath = ctx.flags.local as string | undefined;
     const jsonOutput = ctx.flags.json === true;
 
     output.writeln();
     output.writeln(output.bold('Guidance Compiler'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(50)));
 
     try {
       const { readFile } = await import('node:fs/promises');
@@ -103,19 +103,19 @@ const retrieveCommand: Command = {
   description: 'Retrieve task-relevant guidance shards for a given task description',
   options: [
     { name: 'task', short: 't', type: 'string', description: 'Task description', required: true },
-    { name: 'root', short: 'r', type: 'string', description: 'Root guidance file path', default: './CLAUDE.md' },
+    { name: 'root', short: 'r', type: 'string', description: 'Root guidance file path', default: './AGENTS.md' },
     { name: 'local', short: 'l', type: 'string', description: 'Local overlay file path' },
     { name: 'max-shards', short: 'n', type: 'number', description: 'Maximum number of shards to retrieve', default: '5' },
     { name: 'intent', short: 'i', type: 'string', description: 'Override detected intent' },
     { name: 'json', type: 'boolean', description: 'Output as JSON', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow guidance retrieve -t "Fix SQL injection in user search"', description: 'Retrieve guidance for a security task' },
-    { command: 'claude-flow guidance retrieve -t "Add unit tests" -n 3', description: 'Retrieve top 3 shards for testing' },
+    { command: 'ruflo guidance retrieve -t "Fix SQL injection in user search"', description: 'Retrieve guidance for a security task' },
+    { command: 'ruflo guidance retrieve -t "Add unit tests" -n 3', description: 'Retrieve top 3 shards for testing' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const task = ctx.flags.task as string;
-    const rootPath = ctx.flags.root as string || './CLAUDE.md';
+    const rootPath = ctx.flags.root as string || './AGENTS.md';
     const localPath = ctx.flags.local as string | undefined;
     const maxShards = parseInt(ctx.flags['max-shards'] as string || '5', 10);
     const intentOverride = ctx.flags.intent as string | undefined;
@@ -128,7 +128,7 @@ const retrieveCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Guidance Retriever'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(50)));
 
     try {
       const { readFile } = await import('node:fs/promises');
@@ -205,8 +205,8 @@ const gatesCommand: Command = {
     { name: 'json', type: 'boolean', description: 'Output as JSON', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow guidance gates -c "rm -rf /tmp"', description: 'Check if a command is destructive' },
-    { command: 'claude-flow guidance gates --content "api_key=sk-abc123..."', description: 'Check content for secrets' },
+    { command: 'ruflo guidance gates -c "rm -rf /tmp"', description: 'Check if a command is destructive' },
+    { command: 'ruflo guidance gates --content "api_key=sk-abc123..."', description: 'Check content for secrets' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const command = ctx.flags.command as string | undefined;
@@ -216,7 +216,7 @@ const gatesCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Enforcement Gates'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(50)));
 
     try {
       const { EnforcementGates } = await import('@claude-flow/guidance/gates');
@@ -298,30 +298,30 @@ const statusCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Guidance Control Plane Status'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(50)));
 
     try {
 
-      const rootExists = existsSync('./CLAUDE.md');
+      const rootExists = existsSync('./AGENTS.md');
       const localExists = existsSync('./CLAUDE.local.md');
 
       const statusData = {
         rootGuidance: rootExists ? 'found' : 'not found',
         localOverlay: localExists ? 'found' : 'not configured',
-        dataDir: existsSync('./.claude-flow/guidance') ? 'exists' : 'not created',
+        dataDir: existsSync('./.cursor-flow/guidance') ? 'exists' : 'not created',
       };
 
       if (jsonOutput) {
         output.writeln(JSON.stringify(statusData, null, 2));
       } else {
-        output.writeln(`  Root guidance:  ${rootExists ? output.success('CLAUDE.md found') : output.warning('CLAUDE.md not found')}`);
+        output.writeln(`  Root guidance:  ${rootExists ? output.success('AGENTS.md found') : output.warning('AGENTS.md not found')}`);
         output.writeln(`  Local overlay:  ${localExists ? output.success('CLAUDE.local.md found') : output.dim('not configured')}`);
         output.writeln(`  Data directory: ${statusData.dataDir === 'exists' ? output.success('exists') : output.dim('not created')}`);
 
         if (rootExists) {
           const { readFile } = await import('node:fs/promises');
           const { GuidanceCompiler } = await import('@claude-flow/guidance/compiler');
-          const rootContent = await readFile('./CLAUDE.md', 'utf-8');
+          const rootContent = await readFile('./AGENTS.md', 'utf-8');
           const compiler = new GuidanceCompiler();
           const bundle = compiler.compile(rootContent);
 
@@ -346,9 +346,9 @@ const statusCommand: Command = {
 // optimize subcommand
 const optimizeCommand: Command = {
   name: 'optimize',
-  description: 'Analyze and optimize a CLAUDE.md file for structure, coverage, and enforceability',
+  description: 'Analyze and optimize a AGENTS.md file for structure, coverage, and enforceability',
   options: [
-    { name: 'root', short: 'r', type: 'string', description: 'Root guidance file path', default: './CLAUDE.md' },
+    { name: 'root', short: 'r', type: 'string', description: 'Root guidance file path', default: './AGENTS.md' },
     { name: 'local', short: 'l', type: 'string', description: 'Local overlay file path' },
     { name: 'apply', short: 'a', type: 'boolean', description: 'Apply optimizations to the file', default: 'false' },
     { name: 'context-size', short: 's', type: 'string', description: 'Target context size: compact, standard, full', default: 'standard' },
@@ -357,13 +357,13 @@ const optimizeCommand: Command = {
     { name: 'json', type: 'boolean', description: 'Output as JSON', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow guidance optimize', description: 'Analyze current CLAUDE.md and show suggestions' },
-    { command: 'claude-flow guidance optimize --apply', description: 'Apply optimizations to CLAUDE.md' },
-    { command: 'claude-flow guidance optimize -s compact --apply', description: 'Optimize for compact context window' },
-    { command: 'claude-flow guidance optimize --target-score 95', description: 'Optimize until score reaches 95' },
+    { command: 'ruflo guidance optimize', description: 'Analyze current AGENTS.md and show suggestions' },
+    { command: 'ruflo guidance optimize --apply', description: 'Apply optimizations to AGENTS.md' },
+    { command: 'ruflo guidance optimize -s compact --apply', description: 'Optimize for compact context window' },
+    { command: 'ruflo guidance optimize --target-score 95', description: 'Optimize until score reaches 95' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
-    const rootPath = ctx.flags.root as string || './CLAUDE.md';
+    const rootPath = ctx.flags.root as string || './AGENTS.md';
     const localPath = ctx.flags.local as string | undefined;
     const applyChanges = ctx.flags.apply === true;
     const contextSize = (ctx.flags['context-size'] as string || 'standard') as 'compact' | 'standard' | 'full';
@@ -373,7 +373,7 @@ const optimizeCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Guidance Optimizer'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(50)));
 
     try {
       const { readFile, writeFile } = await import('node:fs/promises');
@@ -443,13 +443,13 @@ const optimizeCommand: Command = {
       // Step 3: Apply if requested
       if (applyChanges) {
         await writeFile(rootPath, result.optimized, 'utf-8');
-        output.writeln(output.success(`Optimized CLAUDE.md written to ${rootPath}`));
+        output.writeln(output.success(`Optimized AGENTS.md written to ${rootPath}`));
         output.writeln(`  Before: ${analysis.compositeScore}/100 (${analysis.grade})`);
         output.writeln(`  After:  ${result.benchmark.after.compositeScore}/100 (${result.benchmark.after.grade})`);
         output.writeln(`  Delta:  ${result.benchmark.delta >= 0 ? '+' : ''}${result.benchmark.delta}`);
       } else {
         output.writeln(output.warning('Dry run - use --apply to write changes.'));
-        output.writeln(`  Projected: ${analysis.compositeScore} → ${result.benchmark.after.compositeScore}/100`);
+        output.writeln(`  Projected: ${analysis.compositeScore} ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ ${result.benchmark.after.compositeScore}/100`);
       }
 
       return { success: true, data: result };
@@ -464,30 +464,30 @@ const optimizeCommand: Command = {
 // ab-test subcommand
 const abTestCommand: Command = {
   name: 'ab-test',
-  description: 'Run A/B behavioral comparison between two CLAUDE.md versions',
+  description: 'Run A/B behavioral comparison between two AGENTS.md versions',
   options: [
-    { name: 'config-a', short: 'a', type: 'string', description: 'Path to Config A (baseline CLAUDE.md). Defaults to no guidance.' },
-    { name: 'config-b', short: 'b', type: 'string', description: 'Path to Config B (candidate CLAUDE.md)', default: './CLAUDE.md' },
+    { name: 'config-a', short: 'a', type: 'string', description: 'Path to Config A (baseline AGENTS.md). Defaults to no guidance.' },
+    { name: 'config-b', short: 'b', type: 'string', description: 'Path to Config B (candidate AGENTS.md)', default: './AGENTS.md' },
     { name: 'tasks', short: 't', type: 'string', description: 'Path to custom task JSON file (array of ABTask objects)' },
     { name: 'work-dir', short: 'w', type: 'string', description: 'Working directory for test execution' },
     { name: 'json', type: 'boolean', description: 'Output as JSON', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow guidance ab-test', description: 'Run default A/B test (no guidance vs ./CLAUDE.md)' },
-    { command: 'claude-flow guidance ab-test -a old.md -b new.md', description: 'Compare two CLAUDE.md versions' },
-    { command: 'claude-flow guidance ab-test --tasks custom-tasks.json', description: 'Run with custom test tasks' },
-    { command: 'claude-flow guidance ab-test --json', description: 'Output full report as JSON' },
+    { command: 'ruflo guidance ab-test', description: 'Run default A/B test (no guidance vs ./AGENTS.md)' },
+    { command: 'ruflo guidance ab-test -a old.md -b new.md', description: 'Compare two AGENTS.md versions' },
+    { command: 'ruflo guidance ab-test --tasks custom-tasks.json', description: 'Run with custom test tasks' },
+    { command: 'ruflo guidance ab-test --json', description: 'Output full report as JSON' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const configAPath = ctx.flags['config-a'] as string | undefined;
-    const configBPath = ctx.flags['config-b'] as string || './CLAUDE.md';
+    const configBPath = ctx.flags['config-b'] as string || './AGENTS.md';
     const tasksPath = ctx.flags.tasks as string | undefined;
     const workDir = ctx.flags['work-dir'] as string | undefined;
     const jsonOutput = ctx.flags.json === true;
 
     output.writeln();
     output.writeln(output.bold('A/B Behavioral Benchmark'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(50)));
 
     try {
       const { readFile } = await import('node:fs/promises');
@@ -597,27 +597,27 @@ export const guidanceCommand: Command = {
   ],
   options: [],
   examples: [
-    { command: 'claude-flow guidance compile', description: 'Compile CLAUDE.md into policy bundle' },
-    { command: 'claude-flow guidance retrieve -t "Fix auth bug"', description: 'Retrieve relevant guidance' },
-    { command: 'claude-flow guidance gates -c "rm -rf /"', description: 'Check enforcement gates' },
-    { command: 'claude-flow guidance status', description: 'Show control plane status' },
-    { command: 'claude-flow guidance optimize', description: 'Analyze and optimize CLAUDE.md' },
-    { command: 'claude-flow guidance ab-test', description: 'Run A/B behavioral comparison' },
+    { command: 'ruflo guidance compile', description: 'Compile AGENTS.md into policy bundle' },
+    { command: 'ruflo guidance retrieve -t "Fix auth bug"', description: 'Retrieve relevant guidance' },
+    { command: 'ruflo guidance gates -c "rm -rf /"', description: 'Check enforcement gates' },
+    { command: 'ruflo guidance status', description: 'Show control plane status' },
+    { command: 'ruflo guidance optimize', description: 'Analyze and optimize AGENTS.md' },
+    { command: 'ruflo guidance ab-test', description: 'Run A/B behavioral comparison' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
     output.writeln(output.bold('Guidance Control Plane'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(50)));
     output.writeln();
     output.writeln('Available subcommands:');
-    output.writeln(`  ${output.bold('compile')}   Compile CLAUDE.md into policy bundle`);
+    output.writeln(`  ${output.bold('compile')}   Compile AGENTS.md into policy bundle`);
     output.writeln(`  ${output.bold('retrieve')}  Retrieve task-relevant guidance shards`);
     output.writeln(`  ${output.bold('gates')}     Evaluate enforcement gates`);
     output.writeln(`  ${output.bold('status')}    Show control plane status`);
-    output.writeln(`  ${output.bold('optimize')}  Analyze and optimize CLAUDE.md`);
+    output.writeln(`  ${output.bold('optimize')}  Analyze and optimize AGENTS.md`);
     output.writeln(`  ${output.bold('ab-test')}   Run A/B behavioral comparison`);
     output.writeln();
-    output.writeln(output.dim('Use claude-flow guidance <subcommand> --help for details'));
+    output.writeln(output.dim('Use ruflo guidance <subcommand> --help for details'));
 
     return { success: true };
   },

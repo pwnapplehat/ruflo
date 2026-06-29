@@ -32,10 +32,10 @@ interface LegacyMemoryStore {
   version: string;
 }
 
-// #1604: Align with memory-initializer.ts — single source of truth is .swarm/memory.db
+// #1604: Align with memory-initializer.ts Ã¢â‚¬â€ single source of truth is .swarm/memory.db
 const MEMORY_DIR = '.swarm';
 const LEGACY_MEMORY_FILE = 'store.json';
-const LEGACY_MEMORY_DIR = '.claude-flow/memory';
+const LEGACY_MEMORY_DIR = '.cursor-flow/memory';
 const MIGRATION_MARKER = '.migrated-to-sqlite';
 
 function getMemoryDir(): string {
@@ -62,7 +62,7 @@ const MAX_KEY_LENGTH = 1024;
 const MAX_VALUE_SIZE = 1024 * 1024; // 1MB
 const MAX_QUERY_LENGTH = 4096;
 
-// #1425 — single source of truth for the dangerous-character set rejected by
+// #1425 Ã¢â‚¬â€ single source of truth for the dangerous-character set rejected by
 // validateMemoryInput. Imported by sanitizeMemoryKey so write-side sanitization
 // and read-side rejection can never drift apart (the symmetry bug behind #1884).
 const DANGEROUS_KEY_CHARS = /[;&|`$(){}[\]<>!#\\\0]|\.\.[/\\]/g;
@@ -87,22 +87,22 @@ function validateMemoryInput(key?: string, value?: string, query?: string, names
   }
 }
 
-// #1884 — sanitize a key produced from arbitrary input (markdown headings,
+// #1884 Ã¢â‚¬â€ sanitize a key produced from arbitrary input (markdown headings,
 // frontmatter names, file names) so it survives validateMemoryInput on the
 // read/delete path. Replaces every dangerous char with `_`. Truncates to
 // MAX_KEY_LENGTH so the bound check in validateMemoryInput also passes.
-// Keep this in sync with DANGEROUS_KEY_PATTERN — they share DANGEROUS_KEY_CHARS.
+// Keep this in sync with DANGEROUS_KEY_PATTERN Ã¢â‚¬â€ they share DANGEROUS_KEY_CHARS.
 function sanitizeMemoryKey(key: string): string {
   const safe = key.replace(DANGEROUS_KEY_CHARS, '_');
   return safe.length > MAX_KEY_LENGTH ? safe.slice(0, MAX_KEY_LENGTH) : safe;
 }
 
-// #1937 — minimal glob → RegExp helper for memory_import_claude exclusion
+// #1937 Ã¢â‚¬â€ minimal glob Ã¢â€ â€™ RegExp helper for memory_import_claude exclusion
 // patterns. Anchored. Supports the three operators the issue's voice-fidelity
 // workflow needs:
-//   `**` — any chars including path separators
-//   `*`  — any chars except path separators
-//   `?`  — exactly one char except a path separator
+//   `**` Ã¢â‚¬â€ any chars including path separators
+//   `*`  Ã¢â‚¬â€ any chars except path separators
+//   `?`  Ã¢â‚¬â€ exactly one char except a path separator
 // Everything else is regex-escaped. Used to match absolute file paths.
 function globToRegex(pattern: string): RegExp {
   // Tokenize so we can replace `**` before `*` without overlap.
@@ -125,7 +125,7 @@ function globToRegex(pattern: string): RegExp {
   return new RegExp('^' + out + '$');
 }
 
-// #1883 — resolve the Claude-Code project memory directory for the *current*
+// #1883 Ã¢â‚¬â€ resolve the Claude-Code project memory directory for the *current*
 // project. Claude Code hashes the project path differently per host OS, and
 // our previous logic only POSIX-slash-replaced cwd, which breaks for:
 //   - WSL bridges where cwd is `/mnt/<drive>/...` but Claude Code is on Windows
@@ -145,11 +145,11 @@ function resolveProjectMemoryDir(claudeProjectsDir: string, projectPathOverride?
   }
 
   for (const source of sources) {
-    // Candidate 1: legacy POSIX hash — what shipped before #1883
+    // Candidate 1: legacy POSIX hash Ã¢â‚¬â€ what shipped before #1883
     candidates.add(source.replace(/\//g, '-'));
 
     // Candidate 2: WSL `/mnt/<drive>/...` translated to Claude-Code Windows hash
-    // e.g. `/mnt/c/Users/x/Project Name` → `C--Users-x-Project-Name`
+    // e.g. `/mnt/c/Users/x/Project Name` Ã¢â€ â€™ `C--Users-x-Project-Name`
     const wsl = source.match(/^\/mnt\/([a-z])(\/.*)?$/i);
     if (wsl) {
       const drive = wsl[1].toUpperCase();
@@ -165,7 +165,7 @@ function resolveProjectMemoryDir(claudeProjectsDir: string, projectPathOverride?
     candidates.add(source.replace(/\//g, '-').replace(/ /g, '-'));
 
     // Candidate 5 (#1939): native Win32 path on a Win32 Claude Code install.
-    // `C:\Users\tobia\OneDrive\Desktop\Claude Stuff` →
+    // `C:\Users\tobia\OneDrive\Desktop\Claude Stuff` Ã¢â€ â€™
     // `C--Users-tobia-OneDrive-Desktop-Claude-Stuff`. Claude Code's on-disk
     // slug replaces drive-colon AND backslashes AND whitespace with `-`.
     // The earlier candidates only handled forward slashes, so a Win32+Win32
@@ -183,7 +183,7 @@ function resolveProjectMemoryDir(claudeProjectsDir: string, projectPathOverride?
 }
 
 /**
- * Check if legacy JSON store exists in old .claude-flow/memory/ location
+ * Check if legacy JSON store exists in old .cursor-flow/memory/ location
  */
 function hasLegacyStore(): boolean {
   const legacyPath = resolve(join(LEGACY_MEMORY_DIR, LEGACY_MEMORY_FILE));
@@ -259,7 +259,7 @@ async function ensureInitialized(): Promise<void> {
       await initializeMemoryDatabase({ force: false, verbose: false });
     }
 
-    // Migrate legacy JSON data if exists (from old .claude-flow/memory/ location)
+    // Migrate legacy JSON data if exists (from old .cursor-flow/memory/ location)
     if (hasLegacyStore()) {
       const legacyStore = loadLegacyStore();
       if (legacyStore && Object.keys(legacyStore.entries).length > 0) {
@@ -293,7 +293,7 @@ async function ensureInitialized(): Promise<void> {
 export const memoryTools: MCPTool[] = [
   {
     name: 'memory_store',
-    description: 'Persistent key-value store with vector embedding — survives across sessions and is searchable by meaning, not just by file path. Use when native Write is wrong because the data is not a file (e.g. a learned pattern, a decision, a budget config) AND you need to recall it later by semantic query, not by path. Defaults to namespace="default"; pass --upsert=true to update an existing key.',
+    description: 'Persistent key-value store with vector embedding Ã¢â‚¬â€ survives across sessions and is searchable by meaning, not just by file path. Use when native Write is wrong because the data is not a file (e.g. a learned pattern, a decision, a budget config) AND you need to recall it later by semantic query, not by path. Defaults to namespace="default"; pass --upsert=true to update an existing key.',
     category: 'memory',
     inputSchema: {
       type: 'object',
@@ -373,7 +373,7 @@ export const memoryTools: MCPTool[] = [
   },
   {
     name: 'memory_retrieve',
-    description: 'Read back a value previously stored via memory_store, by exact (namespace, key) — lossless, includes metadata. Use when native Read is wrong because the value is not a file (it lives in the .swarm/memory.db SQLite store) AND you know the exact key. For semantic lookup by meaning, use memory_search.',
+    description: 'Read back a value previously stored via memory_store, by exact (namespace, key) Ã¢â‚¬â€ lossless, includes metadata. Use when native Read is wrong because the value is not a file (it lives in the .swarm/memory.db SQLite store) AND you know the exact key. For semantic lookup by meaning, use memory_search.',
     category: 'memory',
     inputSchema: {
       type: 'object',
@@ -437,7 +437,7 @@ export const memoryTools: MCPTool[] = [
   },
   {
     name: 'memory_search',
-    description: 'Find stored memories by meaning (vector similarity), not by literal text — finds "JWT auth pattern" when you query "token-based login flow". Use when native Grep is wrong because Grep matches characters and you need to find conceptually-related entries across past sessions. Backed by HNSW index over ONNX embeddings; returns top-k with similarity scores. Pair with smart=true for query expansion + MMR diversity.',
+    description: 'Find stored memories by meaning (vector similarity), not by literal text Ã¢â‚¬â€ finds "JWT auth pattern" when you query "token-based login flow". Use when native Grep is wrong because Grep matches characters and you need to find conceptually-related entries across past sessions. Backed by HNSW index over ONNX embeddings; returns top-k with similarity scores. Pair with smart=true for query expansion + MMR diversity.',
     category: 'memory',
     inputSchema: {
       type: 'object',
@@ -446,7 +446,7 @@ export const memoryTools: MCPTool[] = [
         namespace: { type: 'string', description: 'Namespace to search (default: "default")' },
         limit: { type: 'number', description: 'Maximum results (default: 10)' },
         threshold: { type: 'number', description: 'Minimum similarity threshold 0-1 (default: 0.3)' },
-        smart: { type: 'boolean', description: 'Enable SmartRetrieval pipeline — query expansion, RRF fusion, recency boost, MMR diversity (default: false)' },
+        smart: { type: 'boolean', description: 'Enable SmartRetrieval pipeline Ã¢â‚¬â€ query expansion, RRF fusion, recency boost, MMR diversity (default: false)' },
       },
       required: ['query'],
     },
@@ -465,7 +465,7 @@ export const memoryTools: MCPTool[] = [
 
       try {
         // #1846: feature-detect smartSearch on the resolved memory package.
-        // The export landed in @claude-flow/memory@>3.0.0-alpha.14 — older
+        // The export landed in @claude-flow/memory@>3.0.0-alpha.14 Ã¢â‚¬â€ older
         // installs pin to a build that exposes search/store/retrieve but
         // not smartSearch. Throwing `is not a function` is hostile; instead
         // detect at runtime and gracefully fall through to plain semantic
@@ -536,10 +536,10 @@ export const memoryTools: MCPTool[] = [
           // smart=true but smartSearch unavailable on installed package.
           // Fall through to plain search with an explicit warning.
           smartFallbackReason = smartFallbackReason
-            ?? 'smartSearch is not exported by the installed @claude-flow/memory build (likely a release lag — see #1846). Falling back to standard semantic search.';
+            ?? 'smartSearch is not exported by the installed @claude-flow/memory build (likely a release lag Ã¢â‚¬â€ see #1846). Falling back to standard semantic search.';
         }
 
-        // Original non-smart path (unchanged) — also reached when smart was
+        // Original non-smart path (unchanged) Ã¢â‚¬â€ also reached when smart was
         // requested but unavailable. We attach `smartFallback` to the
         // response so callers can see the degradation explicitly.
         const result = await searchEntries({
@@ -588,7 +588,7 @@ export const memoryTools: MCPTool[] = [
   },
   {
     name: 'memory_delete',
-    description: 'Remove a stored memory entry by exact (namespace, key). Use when a previously stored decision is invalidated or contains stale data. No native equivalent — Write to a file does not affect the .swarm/memory.db SQLite store.',
+    description: 'Remove a stored memory entry by exact (namespace, key). Use when a previously stored decision is invalidated or contains stale data. No native equivalent Ã¢â‚¬â€ Write to a file does not affect the .swarm/memory.db SQLite store.',
     category: 'memory',
     inputSchema: {
       type: 'object',
@@ -631,7 +631,7 @@ export const memoryTools: MCPTool[] = [
   },
   {
     name: 'memory_list',
-    description: 'Enumerate stored memory entries (optionally filtered by namespace/tags) without semantic search. Use when native Glob is wrong because the entries are not files (they live in .swarm/memory.db). For inspection / audit / "what is in my memory" — pair with memory_search for retrieval-by-meaning.',
+    description: 'Enumerate stored memory entries (optionally filtered by namespace/tags) without semantic search. Use when native Glob is wrong because the entries are not files (they live in .swarm/memory.db). For inspection / audit / "what is in my memory" Ã¢â‚¬â€ pair with memory_search for retrieval-by-meaning.',
     category: 'memory',
     inputSchema: {
       type: 'object',
@@ -782,23 +782,23 @@ export const memoryTools: MCPTool[] = [
 
   {
     name: 'memory_import_claude',
-    description: 'Import Claude Code auto-memory files into AgentDB with ONNX vector embeddings. Reads ~/.claude/projects/*/memory/*.md files, parses YAML frontmatter, splits into sections, and stores with 384-dim embeddings for semantic search. Use allProjects=true to import from ALL Claude projects. Pass projectPath to override cwd-based detection (#1883 — required when Ruflo runs in WSL but Claude Code is on Windows). Pass excludeFilePatterns (glob list) or excludeFiles (absolute path list) to skip voice-load-bearing, PII, or persona-restricted files (#1937). Use when native Read/Write is wrong because you need (a) cross-session retrieval by semantic similarity (vector embeddings) not by file path, (b) namespacing across projects without managing directory layout, or (c) the .swarm/memory.db audit trail. For one-shot file I/O, native Read/Write is fine.',
+    description: 'Import legacy auto-memory files (Claude Code format) into AgentDB with ONNX vector embeddings. Reads ~/.claude/projects/*/memory/*.md files, parses YAML frontmatter, splits into sections, and stores with 384-dim embeddings for semantic search. Use allProjects=true to import from ALL Claude projects. Pass projectPath to override cwd-based detection (#1883 Ã¢â‚¬â€ required when Ruflo runs in WSL but Claude Code is on Windows). Pass excludeFilePatterns (glob list) or excludeFiles (absolute path list) to skip voice-load-bearing, PII, or persona-restricted files (#1937). Use when native Read/Write is wrong because you need (a) cross-session retrieval by semantic similarity (vector embeddings) not by file path, (b) namespacing across projects without managing directory layout, or (c) the .swarm/memory.db audit trail. For one-shot file I/O, native Read/Write is fine.',
     category: 'memory',
     inputSchema: {
       type: 'object',
       properties: {
         allProjects: { type: 'boolean', description: 'Import from all Claude projects (default: current project only)' },
         namespace: { type: 'string', description: 'Target namespace (default: "claude-memories")' },
-        projectPath: { type: 'string', description: '#1883 — explicit project path to hash, used when cwd does not match Claude Code\'s view (e.g. WSL bridge to Windows host). Pass the canonical project root as Claude Code sees it.' },
+        projectPath: { type: 'string', description: '#1883 Ã¢â‚¬â€ explicit project path to hash, used when cwd does not match Claude Code\'s view (e.g. WSL bridge to Windows host). Pass the canonical project root as Claude Code sees it.' },
         excludeFilePatterns: {
           type: 'array',
           items: { type: 'string' },
-          description: '#1937 — glob patterns matched against the absolute file path. Files matching ANY pattern are skipped. Supports `*` (any chars within a path segment), `**` (any chars including separators), and `?` (single char). Examples: `**/voice-*.md`, `**/persona-*.md`. Combine with excludeFiles for explicit paths.',
+          description: '#1937 Ã¢â‚¬â€ glob patterns matched against the absolute file path. Files matching ANY pattern are skipped. Supports `*` (any chars within a path segment), `**` (any chars including separators), and `?` (single char). Examples: `**/voice-*.md`, `**/persona-*.md`. Combine with excludeFiles for explicit paths.',
         },
         excludeFiles: {
           type: 'array',
           items: { type: 'string' },
-          description: '#1937 — absolute file paths to skip verbatim. Faster than a pattern when the list is known ahead of time (operator captured baselines). Combine with excludeFilePatterns.',
+          description: '#1937 Ã¢â‚¬â€ absolute file paths to skip verbatim. Faster than a pattern when the list is known ahead of time (operator captured baselines). Combine with excludeFilePatterns.',
         },
       },
     },
@@ -812,7 +812,7 @@ export const memoryTools: MCPTool[] = [
       const projectPathOverride = input.projectPath as string | undefined;
       const claudeProjectsDir = join(homedir(), '.claude', 'projects');
 
-      // #1937 — voice-fidelity / persona-restricted exclusion.
+      // #1937 Ã¢â‚¬â€ voice-fidelity / persona-restricted exclusion.
       const excludeFilePatterns = Array.isArray(input.excludeFilePatterns) ? input.excludeFilePatterns as string[] : [];
       const excludeFilesList = Array.isArray(input.excludeFiles) ? new Set(input.excludeFiles as string[]) : new Set<string>();
       const excludeRegexes = excludeFilePatterns.map(globToRegex);
@@ -843,7 +843,7 @@ export const memoryTools: MCPTool[] = [
           } catch { /* scan error */ }
         }
       } else {
-        // #1883 — current project: try multiple candidate hashes (POSIX, WSL-translated,
+        // #1883 Ã¢â‚¬â€ current project: try multiple candidate hashes (POSIX, WSL-translated,
         // leading-dash-stripped, space-replaced). Caller can pass projectPath to override.
         const resolved = resolveProjectMemoryDir(claudeProjectsDir, projectPathOverride);
         if (resolved) {
@@ -863,11 +863,11 @@ export const memoryTools: MCPTool[] = [
 
       let imported = 0;
       let skipped = 0;
-      // #1791.8 — Claude Code's `~/.claude/projects/` accumulates historical
+      // #1791.8 Ã¢â‚¬â€ Claude Code's `~/.claude/projects/` accumulates historical
       // project_id directories (truncated forms, sandbox cwds, renamed
       // workspaces) that all contain copies of the same memory files. The
       // previous import indexed each copy under a different `project_id`
-      // prefix, producing 5–8x duplication on long-lived homes. Dedupe by
+      // prefix, producing 5Ã¢â‚¬â€œ8x duplication on long-lived homes. Dedupe by
       // file content hash so the same memory is imported once even if it
       // appears under several project directories.
       const seenContentHashes = new Set<string>();
@@ -879,7 +879,7 @@ export const memoryTools: MCPTool[] = [
         try {
           const content = readFileSync(memFile.path, 'utf-8');
 
-          // #1791.8 — Skip if we've already imported this exact content under
+          // #1791.8 Ã¢â‚¬â€ Skip if we've already imported this exact content under
           // a different project_id directory.
           const contentHash = createHash('sha256').update(content).digest('hex').slice(0, 16);
           if (seenContentHashes.has(contentHash)) {
@@ -903,7 +903,7 @@ export const memoryTools: MCPTool[] = [
           const sections = body.split(/^(?=## )/m).filter(s => s.trim().length > 20);
 
           if (sections.length === 0 && body.length > 10) {
-            // #1884 — sanitize key so memory_delete can later remove it. Without
+            // #1884 Ã¢â‚¬â€ sanitize key so memory_delete can later remove it. Without
             // this, dangerous chars from frontmatter `name` strand the key.
             const key = sanitizeMemoryKey(`claude:${memFile.project}:${name}`);
             await storeEntry({ key, value: body.slice(0, 4096), namespace: ns, generateEmbeddingFlag: true });
@@ -914,7 +914,7 @@ export const memoryTools: MCPTool[] = [
               const sectionTitle = titleMatch ? titleMatch[1].trim() : name;
               const sectionBody = section.replace(/^##\s+.+\n/, '').trim();
               if (sectionBody.length < 10) continue;
-              // #1884 — sanitize so any dangerous chars in the heading don't
+              // #1884 Ã¢â‚¬â€ sanitize so any dangerous chars in the heading don't
               // produce keys memory_delete will reject.
               const key = sanitizeMemoryKey(`claude:${memFile.project}:${name}:${sectionTitle.slice(0, 50)}`);
               await storeEntry({ key, value: sectionBody.slice(0, 4096), namespace: ns, generateEmbeddingFlag: true });
@@ -926,7 +926,7 @@ export const memoryTools: MCPTool[] = [
         }
       }
 
-      // AUDIT #3: report the embedding backend truthfully — a hash-fallback
+      // AUDIT #3: report the embedding backend truthfully Ã¢â‚¬â€ a hash-fallback
       // import is NOT semantically searchable, so an operator must not read
       // "ONNX ... (384-dim)" when the vectors are mock.
       let importBackend: 'onnx' | 'mock' | 'unknown' = 'unknown';
@@ -934,7 +934,7 @@ export const memoryTools: MCPTool[] = [
         const { generateEmbedding } = await import('../memory/memory-initializer.js');
         const probe = await generateEmbedding('memory_import_claude backend probe');
         importBackend = probe.backend ?? 'unknown';
-      } catch { /* probe failed — leave 'unknown' */ }
+      } catch { /* probe failed Ã¢â‚¬â€ leave 'unknown' */ }
 
       return {
         success: true,
@@ -953,7 +953,7 @@ export const memoryTools: MCPTool[] = [
 
   {
     name: 'memory_bridge_status',
-    description: 'Show Claude Code memory bridge status — AgentDB vectors, SONA learning, intelligence patterns, and connection health. Use when native Read/Write is wrong because you need (a) cross-session retrieval by semantic similarity (vector embeddings) not by file path, (b) namespacing across projects without managing directory layout, or (c) the .swarm/memory.db audit trail. For one-shot file I/O, native Read/Write is fine.',
+    description: 'Show legacy memory bridge status Ã¢â‚¬â€ AgentDB vectors, SONA learning, intelligence patterns, and connection health. Use when native Read/Write is wrong because you need (a) cross-session retrieval by semantic similarity (vector embeddings) not by file path, (b) namespacing across projects without managing directory layout, or (c) the .swarm/memory.db audit trail. For one-shot file I/O, native Read/Write is fine.',
     category: 'memory',
     inputSchema: { type: 'object', properties: {} },
     handler: async () => {
@@ -994,7 +994,7 @@ export const memoryTools: MCPTool[] = [
         claudeMemoryEntries = (claudeEntries as { total?: number })?.total
           ?? claudeEntries?.entries?.length ?? 0;
         // Per-namespace counts for the namespaces the reporter referenced
-        // (#1940). Best-effort — a namespace with 0 entries is omitted.
+        // (#1940). Best-effort Ã¢â‚¬â€ a namespace with 0 entries is omitted.
         for (const ns of ['default', 'patterns', 'claude-memories', 'auto-memory', 'tasks', 'feedback', 'pretrain']) {
           try {
             const r = await listEntries({ namespace: ns });
@@ -1021,7 +1021,7 @@ export const memoryTools: MCPTool[] = [
         const { generateEmbedding } = await import('../memory/memory-initializer.js');
         const probe = await generateEmbedding('memory_bridge_status backend probe');
         embeddingBackend = probe.backend ?? 'unknown';
-      } catch { /* probe failed — leave 'unknown' */ }
+      } catch { /* probe failed Ã¢â‚¬â€ leave 'unknown' */ }
 
       const embeddingLabel = `all-MiniLM-L6-v2 (384-dim, backend=${embeddingBackend})`;
 
@@ -1036,7 +1036,7 @@ export const memoryTools: MCPTool[] = [
         },
         intelligence,
         // #1940: report 'connected' whenever ANY namespace has imported
-        // content, not just `claude-memories` — the bridge can be in active
+        // content, not just `claude-memories` Ã¢â‚¬â€ the bridge can be in active
         // use from other import paths (e.g. plugin namespaces, task memory).
         bridge: {
           status: agentdbEntries > 0 ? 'connected' : 'not-synced',
@@ -1095,7 +1095,7 @@ export const memoryTools: MCPTool[] = [
         namespaces = process.env.CLAUDE_FLOW_MEMORY_SEARCH_NAMESPACES.split(',').map(s => s.trim()).filter(Boolean);
         namespaceSource = 'env';
       } else {
-        // Dynamic enumeration — list all entries and collect distinct namespaces.
+        // Dynamic enumeration Ã¢â‚¬â€ list all entries and collect distinct namespaces.
         // Cap entries at 100k to bound memory; in practice this is fast (<200ms).
         try {
           const all = await listEntries({ limit: 100000 });
@@ -1142,7 +1142,7 @@ export const memoryTools: MCPTool[] = [
         results: deduplicated,
         total: deduplicated.length,
         searchedNamespaces: namespaces,
-        namespaceSource,        // #2246 — surface how the namespace list was resolved
+        namespaceSource,        // #2246 Ã¢â‚¬â€ surface how the namespace list was resolved
         searchTime: Date.now(),
       };
     },
@@ -1152,7 +1152,7 @@ export const memoryTools: MCPTool[] = [
     // unregistered `memory_detailed-stats` tool. memory_stats returns a
     // different shape; this returns what the CLI renders.
     name: 'memory_detailed-stats',
-    description: 'Detailed memory-store report — backend, entry count, total bytes, per-namespace counts, and (placeholder) perf metrics. Use when native Read/Glob is wrong because the data lives in .swarm/memory.db, not files, and you want an aggregate health view. For a quick count use memory_stats; for "what is in memory" use memory_list.',
+    description: 'Detailed memory-store report Ã¢â‚¬â€ backend, entry count, total bytes, per-namespace counts, and (placeholder) perf metrics. Use when native Read/Glob is wrong because the data lives in .swarm/memory.db, not files, and you want an aggregate health view. For a quick count use memory_stats; for "what is in memory" use memory_list.',
     category: 'memory',
     inputSchema: { type: 'object', properties: {} },
     handler: async () => {
@@ -1177,7 +1177,7 @@ export const memoryTools: MCPTool[] = [
   },
   {
     // #1916: `ruflo memory cleanup` referenced an unregistered `memory_cleanup`
-    // tool. Removes entries whose TTL has expired. Defaults to a dry run —
+    // tool. Removes entries whose TTL has expired. Defaults to a dry run Ã¢â‚¬â€
     // pass dryRun:false to actually delete.
     name: 'memory_cleanup',
     description: 'Prune memory entries whose TTL has expired (dry run by default; pass dryRun:false to delete). Use when native rm is wrong because the entries are rows in .swarm/memory.db, not files. For removing a specific known key use memory_delete. Stale/low-quality pruning is delegated to the agentdb consolidation curator (#1916 follow-up).',
@@ -1218,7 +1218,7 @@ export const memoryTools: MCPTool[] = [
         candidates: { expired: expired.length, stale: 0, lowQuality: 0, total: expired.length },
         deleted: { entries: dryRun ? 0 : deleted, vectors: 0, patterns: 0 },
         freed: { bytes: freedBytes },
-        note: dryRun ? 'dry run — re-run with dryRun:false to delete' : undefined,
+        note: dryRun ? 'dry run Ã¢â‚¬â€ re-run with dryRun:false to delete' : undefined,
       };
     },
   },
@@ -1226,7 +1226,7 @@ export const memoryTools: MCPTool[] = [
     // #1916: `ruflo memory compress` referenced an unregistered tool. The
     // sql.js backend has no on-disk compression; this reports current sizes.
     name: 'memory_compress',
-    description: 'Report memory-store size breakdown (the sql.js backend has no on-disk compression — entries are already stored compactly; quantized embeddings via RaBitQ are configured elsewhere). Use when native du is wrong because the data is in .swarm/memory.db. For pruning expired entries use memory_cleanup.',
+    description: 'Report memory-store size breakdown (the sql.js backend has no on-disk compression Ã¢â‚¬â€ entries are already stored compactly; quantized embeddings via RaBitQ are configured elsewhere). Use when native du is wrong because the data is in .swarm/memory.db. For pruning expired entries use memory_cleanup.',
     category: 'memory',
     inputSchema: { type: 'object', properties: {} },
     handler: async () => {
@@ -1256,7 +1256,7 @@ export const memoryTools: MCPTool[] = [
         outputPath: { type: 'string', description: 'File path to write the JSON export to' },
         format: { type: 'string', enum: ['json', 'csv'], description: 'Export format (csv falls back to json today)' },
         namespace: { type: 'string', description: 'Limit export to one namespace' },
-        includeVectors: { type: 'boolean', description: 'Include embedding vectors (advisory — not exported yet)' },
+        includeVectors: { type: 'boolean', description: 'Include embedding vectors (advisory Ã¢â‚¬â€ not exported yet)' },
       },
       required: ['outputPath'],
     },
@@ -1295,7 +1295,7 @@ export const memoryTools: MCPTool[] = [
         format: (input.format as string) || 'json',
         exported: { entries: all.entries.length, vectors: vectorsWithEmb, patterns: 0 },
         fileSize: `${Buffer.byteLength(JSON.stringify(payload))}B`,
-        note: input.format === 'csv' ? 'CSV not implemented yet — wrote JSON' : undefined,
+        note: input.format === 'csv' ? 'CSV not implemented yet Ã¢â‚¬â€ wrote JSON' : undefined,
       };
     },
   },

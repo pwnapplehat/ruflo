@@ -13,7 +13,7 @@ import { callMCPTool, MCPClientError } from '../mcp-client.js';
 function progressBar(percent: number, width: number = 20): string {
   const filled = Math.round((percent / 100) * width);
   const empty = width - filled;
-  const bar = output.success('█'.repeat(filled)) + output.dim('░'.repeat(empty));
+  const bar = output.success('Ã¢â€“Ë†'.repeat(filled)) + output.dim('Ã¢â€“â€˜'.repeat(empty));
   return `[${bar}] ${percent}%`;
 }
 
@@ -121,7 +121,7 @@ const syncCommand: Command = {
 
       output.writeln();
       output.printSuccess(`Progress synced: ${result.progress}%`);
-      output.writeln(output.dim(`  Persisted to .claude-flow/metrics/v3-progress.json`));
+      output.writeln(output.dim(`  Persisted to .cursor-flow/metrics/v3-progress.json`));
       output.writeln(output.dim(`  Last updated: ${result.lastUpdated}`));
 
       return { success: true, data: result };
@@ -197,7 +197,7 @@ const watchCommand: Command = {
         const currentProgress = result.overall ?? result.progress ?? 0;
 
         if (currentProgress !== lastProgress) {
-          output.writeln(`${output.warning('→')} Progress changed: ${lastProgress}% → ${output.success(currentProgress + '%')}`);
+          output.writeln(`${output.warning('Ã¢â€ â€™')} Progress changed: ${lastProgress}% Ã¢â€ â€™ ${output.success(currentProgress + '%')}`);
           lastProgress = currentProgress;
         } else {
           process.stdout.write(`\r${progressBar(currentProgress, 20)} ${output.dim(new Date().toLocaleTimeString())}`);
@@ -259,23 +259,23 @@ export const progressCommand: Command = {
   ],
   examples: [
     {
-      command: 'claude-flow progress',
+      command: 'ruflo progress',
       description: 'Check current progress',
     },
     {
-      command: 'claude-flow progress --detailed',
+      command: 'ruflo progress --detailed',
       description: 'Show detailed breakdown',
     },
     {
-      command: 'claude-flow progress sync',
+      command: 'ruflo progress sync',
       description: 'Sync and persist progress',
     },
     {
-      command: 'claude-flow progress watch',
+      command: 'ruflo progress watch',
       description: 'Watch for changes',
     },
     {
-      command: 'claude-flow progress --json',
+      command: 'ruflo progress --json',
       description: 'Output as JSON',
     },
   ],

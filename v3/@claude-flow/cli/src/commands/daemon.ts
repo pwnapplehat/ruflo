@@ -29,15 +29,15 @@ const startCommand: Command = {
     { name: 'ttl', type: 'string', description: 'Max daemon age in seconds before graceful self-shutdown (0 = run until stopped; default 43200 = 12h)' },
     // #1914: workspace root for this daemon. Set automatically when the
     // background launcher forks the foreground child so the daemon process
-    // carries its workspace path in argv — `killStaleDaemons` then only
+    // carries its workspace path in argv Ã¢â‚¬â€ `killStaleDaemons` then only
     // reaps daemons belonging to the current workspace (ADR-014 scope).
-    { name: 'workspace', type: 'string', description: 'Workspace root for this daemon (internal — set automatically when forking)' },
+    { name: 'workspace', type: 'string', description: 'Workspace root for this daemon (internal Ã¢â‚¬â€ set automatically when forking)' },
   ],
   examples: [
-    { command: 'claude-flow daemon start', description: 'Start daemon in background (default)' },
-    { command: 'claude-flow daemon start --foreground', description: 'Start in foreground (blocks terminal)' },
-    { command: 'claude-flow daemon start -w map,audit,optimize', description: 'Start with specific workers' },
-    { command: 'claude-flow daemon start --headless --sandbox strict', description: 'Start with headless workers in strict sandbox' },
+    { command: 'ruflo daemon start', description: 'Start daemon in background (default)' },
+    { command: 'ruflo daemon start --foreground', description: 'Start in foreground (blocks terminal)' },
+    { command: 'ruflo daemon start -w map,audit,optimize', description: 'Start with specific workers' },
+    { command: 'ruflo daemon start --headless --sandbox strict', description: 'Start with headless workers in strict sandbox' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const quiet = ctx.flags.quiet as boolean;
@@ -79,7 +79,7 @@ const startCommand: Command = {
       }
     }
 
-    // #2356: parse --ttl (seconds → ms). Integer-only so 0 (disable) is valid;
+    // #2356: parse --ttl (seconds Ã¢â€ â€™ ms). Integer-only so 0 (disable) is valid;
     // INT_RE forbids the decimals NUMERIC_RE allows, since a TTL is whole seconds.
     const rawTtl = ctx.flags.ttl as string | undefined;
     const INT_RE = /^\d+$/;
@@ -93,11 +93,11 @@ const startCommand: Command = {
 
     // Check if background daemon already running (skip if we ARE the daemon process)
     //
-    // #2407 — without an atomic lockfile, N concurrent `daemon start` calls
+    // #2407 Ã¢â‚¬â€ without an atomic lockfile, N concurrent `daemon start` calls
     // (devcontainer setup + VS Code task + MCP hook within ~500 ms) all see
     // an empty PID file in the same instant, all proceed past this dedup,
     // and all fork their own background daemon. One incident accumulated
-    // 39 zombie daemons holding ~8.5 GiB → kernel panic.
+    // 39 zombie daemons holding ~8.5 GiB Ã¢â€ â€™ kernel panic.
     //
     // Wrap the check + the subsequent fork in an O_EXCL lockfile so the
     // dedup is process-atomic. Lock holder gets to spawn; competing callers
@@ -128,7 +128,7 @@ const startCommand: Command = {
               return { success: true };
             }
           }
-          // Stale lockfile from a crashed prior attempt — clear it and
+          // Stale lockfile from a crashed prior attempt Ã¢â‚¬â€ clear it and
           // proceed without a held lock. Worst case we double-spawn ONCE
           // and the killStaleDaemons sweep below cleans up.
           try { fs.unlinkSync(lockFile); } catch { /* ignore */ }
@@ -159,7 +159,7 @@ const startCommand: Command = {
     }
 
     // Background mode (default): fork a detached process.
-    // #1968: previously only forwarded resource thresholds — `--workers`,
+    // #1968: previously only forwarded resource thresholds Ã¢â‚¬â€ `--workers`,
     // `--headless`, and `--sandbox` were dropped on the floor when the
     // launcher forked the foreground child, so `daemon start --workers map`
     // got the full default worker set instead.
@@ -184,7 +184,7 @@ const startCommand: Command = {
         fs.mkdirSync(stateDir, { recursive: true });
       }
 
-      // NOTE: Do NOT write PID file here — startDaemon() writes it internally.
+      // NOTE: Do NOT write PID file here Ã¢â‚¬â€ startDaemon() writes it internally.
       // Writing it before startDaemon() causes checkExistingDaemon() to detect
       // our own PID and return early, leaving no workers scheduled (#1478 Bug 1).
 
@@ -199,9 +199,9 @@ const startCommand: Command = {
       process.on('exit', cleanup);
       process.on('SIGINT', () => { cleanup(); process.exit(0); });
       process.on('SIGTERM', () => { cleanup(); process.exit(0); });
-      // Ignore SIGHUP on macOS/Linux — prevents daemon death when terminal closes (#1283)
+      // Ignore SIGHUP on macOS/Linux Ã¢â‚¬â€ prevents daemon death when terminal closes (#1283)
       if (process.platform !== 'win32') {
-        process.on('SIGHUP', () => { /* ignore — keep running */ });
+        process.on('SIGHUP', () => { /* ignore Ã¢â‚¬â€ keep running */ });
       }
 
       if (!quiet) {
@@ -266,7 +266,7 @@ const startCommand: Command = {
           output.writeln(output.error(`[daemon] Worker failed: ${type} - ${error}`));
         });
 
-        // Keep process alive — setInterval creates a ref'd handle that prevents
+        // Keep process alive Ã¢â‚¬â€ setInterval creates a ref'd handle that prevents
         // Node.js from exiting even when startDaemon's timers are unref'd (#1478 Bug 2).
         setInterval(() => {}, 60_000);
         await new Promise(() => {}); // Never resolves - daemon runs until killed
@@ -314,7 +314,7 @@ function validatePath(path: string, label: string): void {
 /**
  * #1914: Resolve the `--workspace` flag to an absolute path, or return null
  * if it is absent / not a usable string. Rejects values with null bytes or
- * shell metacharacters (defence-in-depth — the value is later embedded in a
+ * shell metacharacters (defence-in-depth Ã¢â‚¬â€ the value is later embedded in a
  * forked child's argv and compared against `ps`/`tasklist` output).
  */
 export function resolveWorkspaceFlag(raw: unknown): string | null {
@@ -330,11 +330,11 @@ export function resolveWorkspaceFlag(raw: unknown): string | null {
  * the tasklist Window Title column on Windows) belongs to a daemon started
  * for `workspaceRoot`. The launcher (`startBackgroundDaemon`) always appends
  * `--workspace <root>` as the FINAL argv entry, so an exact trailing match
- * after stripping trailing whitespace/quotes is unambiguous — even for
- * workspace paths containing spaces — and never a bare path-prefix match,
+ * after stripping trailing whitespace/quotes is unambiguous Ã¢â‚¬â€ even for
+ * workspace paths containing spaces Ã¢â‚¬â€ and never a bare path-prefix match,
  * so workspace `/a/proj` does not reap `/a/proj-other`'s daemon. A daemon
  * whose argv puts `--workspace` mid-list (only possible via a hand-rolled
- * invocation) simply won't be auto-reaped — `daemon stop` still handles it
+ * invocation) simply won't be auto-reaped Ã¢â‚¬â€ `daemon stop` still handles it
  * via the PID file.
  */
 export function daemonCommandLineBelongsToWorkspace(commandLine: string, workspaceRoot: string): boolean {
@@ -401,7 +401,7 @@ async function startBackgroundDaemon(projectRoot: string, quiet: boolean, forwar
   }
 
   // Platform-aware spawn flags. We use child_process.fork() because the daemon
-  // child is itself a Node script — fork() spawns Node directly and skips the
+  // child is itself a Node script Ã¢â‚¬â€ fork() spawns Node directly and skips the
   // cmd.exe interpretation pass that broke Windows + Node 25 when
   // process.execPath contained a space (#1691). It also avoids the [DEP0190]
   // shell:true security warning.
@@ -410,7 +410,7 @@ async function startBackgroundDaemon(projectRoot: string, quiet: boolean, forwar
     cwd: resolvedRoot,
     // detached: true on every platform (#1766). On Windows, leaving detached:false
     // kept the child in the parent's process group AND the IPC pipe held the
-    // child to npx — when npx exited, the IPC pipe tore down and the daemon
+    // child to npx Ã¢â‚¬â€ when npx exited, the IPC pipe tore down and the daemon
     // died within ~1s. detached:true + child.disconnect() (below) gives the
     // child its own session/pgid and breaks the IPC pipe so the daemon
     // genuinely survives parent exit. On POSIX, detached:true was already the
@@ -419,8 +419,8 @@ async function startBackgroundDaemon(projectRoot: string, quiet: boolean, forwar
     // Use 'ignore' for all stdio + 'ignore' for the IPC channel via silent:true off.
     // fork() defaults to creating an IPC channel; we don't need it here, so we
     // pass stdio explicitly. Passing fs.openSync() FDs causes the child to die
-    // on Windows when the parent exits and closes the FDs (#1478 Bug 3) — the
-    // daemon writes its own logs via appendFileSync to .claude-flow/logs/.
+    // on Windows when the parent exits and closes the FDs (#1478 Bug 3) Ã¢â‚¬â€ the
+    // daemon writes its own logs via appendFileSync to .cursor-flow/logs/.
     stdio: ['ignore', 'ignore', 'ignore', 'ipc'],
     windowsHide: true,
     env: {
@@ -444,14 +444,14 @@ async function startBackgroundDaemon(projectRoot: string, quiet: boolean, forwar
     forkArgs.push('--min-free-memory', minFreeMemory);
   }
   // #2356: forward the TTL so the background daemon enforces it too. Integer
-  // seconds only (incl. 0 to disable) — reject anything else before it hits argv.
+  // seconds only (incl. 0 to disable) Ã¢â‚¬â€ reject anything else before it hits argv.
   if (typeof ttl === 'string' && /^\d+$/.test(ttl)) {
     forkArgs.push('--ttl', ttl);
   }
   // #1968: forward worker-selection / sandbox flags. The previous launcher
   // dropped these, so `daemon start --workers map` ran with the default
   // five-worker set instead of just `map`. Validate each before passing
-  // through — argv goes straight to a forked process so reject anything
+  // through Ã¢â‚¬â€ argv goes straight to a forked process so reject anything
   // that doesn't look like a comma-separated worker-name list or one of
   // the allowed sandbox modes.
   const WORKERS_RE = /^[a-z][a-z0-9_-]*(,[a-z][a-z0-9_-]*)*$/;
@@ -478,7 +478,7 @@ async function startBackgroundDaemon(projectRoot: string, quiet: boolean, forwar
     return { success: false, exitCode: 1 };
   }
 
-  // Unref BEFORE writing PID file — prevents race where parent exits
+  // Unref BEFORE writing PID file Ã¢â‚¬â€ prevents race where parent exits
   // but child hasn't fully detached yet (fixes macOS daemon death #1283).
   child.unref();
   // #1766: also break the IPC pipe explicitly. unref() releases the libuv
@@ -504,7 +504,7 @@ async function startBackgroundDaemon(projectRoot: string, quiet: boolean, forwar
   if (!quiet) {
     output.printSuccess(`Daemon started in background (PID: ${pid})`);
     output.printInfo(`Logs: ${logFile}`);
-    output.printInfo(`Stop with: claude-flow daemon stop`);
+    output.printInfo(`Stop with: ruflo daemon stop`);
   }
 
   return { success: true };
@@ -518,7 +518,7 @@ const stopCommand: Command = {
     { name: 'quiet', short: 'Q', type: 'boolean', description: 'Suppress output' },
   ],
   examples: [
-    { command: 'claude-flow daemon stop', description: 'Stop the daemon' },
+    { command: 'ruflo daemon stop', description: 'Stop the daemon' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const quiet = ctx.flags.quiet as boolean;
@@ -636,7 +636,7 @@ async function killStaleDaemonsPosix(projectRoot: string, quiet: boolean): Promi
       if (!line.includes('daemon start --foreground')) continue;
       if (!line.includes('claude-flow') && !line.includes('@claude-flow/cli')) continue;
       // #1914: skip daemons from other workspaces (or pre-#1914 versions that
-      // didn't stamp --workspace — let `daemon stop` handle those via PID file).
+      // didn't stamp --workspace Ã¢â‚¬â€ let `daemon stop` handle those via PID file).
       if (!daemonCommandLineBelongsToWorkspace(line, resolvedRoot)) continue;
       const pidStr = line.trim().split(/\s+/)[0];
       const pid = parseInt(pidStr, 10);
@@ -648,21 +648,21 @@ async function killStaleDaemonsPosix(projectRoot: string, quiet: boolean): Promi
         if (!quiet) {
           output.printWarning(`Killed stale daemon process (PID: ${pid})`);
         }
-      } catch { /* ignore — may have exited between check and kill */ }
+      } catch { /* ignore Ã¢â‚¬â€ may have exited between check and kill */ }
     }
 
     if (killed > 0 && !quiet) {
       output.printInfo(`Cleaned up ${killed} stale daemon process(es)`);
     }
   } catch {
-    // ps not available or failed — skip stale cleanup
+    // ps not available or failed Ã¢â‚¬â€ skip stale cleanup
   }
 }
 
 /**
  * #1857: Windows replacement for the POSIX `ps -eo pid,command` path.
  * Uses `tasklist /v /fo csv` which returns CSV with the full Window
- * Title column (last field) — Node-spawned daemon processes carry
+ * Title column (last field) Ã¢â‚¬â€ Node-spawned daemon processes carry
  * their command line there. Best-effort like the POSIX path: any
  * tooling failure (tasklist missing, parse error, etc.) is swallowed
  * silently so cleanup doesn't break daemon start.
@@ -681,7 +681,7 @@ async function killStaleDaemonsWindows(projectRoot: string, quiet: boolean): Pro
 
     for (const line of lines) {
       if (!line.trim()) continue;
-      // Match daemon command line markers — the Window Title field
+      // Match daemon command line markers Ã¢â‚¬â€ the Window Title field
       // typically holds the full invocation. Skip rows that aren't ours.
       if (!line.includes('daemon start --foreground')) continue;
       if (!line.includes('claude-flow') && !line.includes('@claude-flow/cli')) continue;
@@ -690,14 +690,14 @@ async function killStaleDaemonsWindows(projectRoot: string, quiet: boolean): Pro
 
       // Parse CSV: tasklist quotes each field, so split on `","`
       const fields = line.split(/","/).map(f => f.replace(/^"|"$/g, ''));
-      // fields[0] = Image Name, fields[1] = PID, …
+      // fields[0] = Image Name, fields[1] = PID, Ã¢â‚¬Â¦
       const pidStr = fields[1];
       const pid = parseInt(pidStr ?? '', 10);
       if (isNaN(pid) || pid === currentPid || pid === trackedPid) continue;
       if (!isProcessRunning(pid)) continue;
 
       try {
-        // taskkill is the Windows equivalent of kill — /pid <n> /f forces.
+        // taskkill is the Windows equivalent of kill Ã¢â‚¬â€ /pid <n> /f forces.
         // Use SIGTERM-equivalent (no /f) first; the daemon's signal handler
         // catches and cleans up; force-kill is the next start's job.
         execFileSync('taskkill', ['/pid', String(pid), '/t'], { encoding: 'utf-8', timeout: 5000 });
@@ -705,14 +705,14 @@ async function killStaleDaemonsWindows(projectRoot: string, quiet: boolean): Pro
         if (!quiet) {
           output.printWarning(`Killed stale daemon process (PID: ${pid})`);
         }
-      } catch { /* taskkill failed — process may have exited; ignore */ }
+      } catch { /* taskkill failed Ã¢â‚¬â€ process may have exited; ignore */ }
     }
 
     if (killed > 0 && !quiet) {
       output.printInfo(`Cleaned up ${killed} stale daemon process(es)`);
     }
   } catch {
-    // tasklist not available or failed — skip stale cleanup. Defensive
+    // tasklist not available or failed Ã¢â‚¬â€ skip stale cleanup. Defensive
     // shape matches the POSIX path. Not tested on Windows by the
     // maintainer; please report regressions on the issue tracker.
   }
@@ -793,7 +793,7 @@ async function scanRunningDaemons(): Promise<Array<{ pid: number; workspace: str
  * #2356: render the global `daemon status --all` view. For each running daemon
  * it reads that workspace's daemon-state.json to show age + configured TTL,
  * and flags any daemon that has outlived its TTL (or 12h when TTL is unknown)
- * as stale — the visibility that was missing when leaked daemons ran for days.
+ * as stale Ã¢â‚¬â€ the visibility that was missing when leaked daemons ran for days.
  */
 async function renderAllDaemonsStatus(): Promise<CommandResult> {
   const daemons = await scanRunningDaemons();
@@ -822,7 +822,7 @@ async function renderAllDaemonsStatus(): Promise<CommandResult> {
           if (st?.startedAt) startedAt = new Date(st.startedAt);
           if (typeof st?.config?.ttlMs === 'number') ttlMs = st.config.ttlMs;
         }
-      } catch { /* unreadable/partial state — show what we have */ }
+      } catch { /* unreadable/partial state Ã¢â‚¬â€ show what we have */ }
     }
 
     const ageMs = startedAt ? now - startedAt.getTime() : undefined;
@@ -876,13 +876,13 @@ const statusCommand: Command = {
     // #2356: the default status reads only the CURRENT workspace, so a daemon
     // leaked in another project is invisible. --all scans every running ruflo
     // daemon across all workspaces (the global view that surfaces leaks).
-    { name: 'all', short: 'a', type: 'boolean', description: 'List ruflo daemons across ALL workspaces (global view — surfaces leaked daemons)' },
+    { name: 'all', short: 'a', type: 'boolean', description: 'List ruflo daemons across ALL workspaces (global view Ã¢â‚¬â€ surfaces leaked daemons)' },
   ],
   examples: [
-    { command: 'claude-flow daemon status', description: 'Show daemon status' },
-    { command: 'claude-flow daemon status -v', description: 'Show detailed status' },
-    { command: 'claude-flow daemon status --show-modes', description: 'Show worker execution modes' },
-    { command: 'claude-flow daemon status --all', description: 'List daemons across all workspaces' },
+    { command: 'ruflo daemon status', description: 'Show daemon status' },
+    { command: 'ruflo daemon status -v', description: 'Show detailed status' },
+    { command: 'ruflo daemon status --show-modes', description: 'Show worker execution modes' },
+    { command: 'ruflo daemon status --all', description: 'List daemons across all workspaces' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const verbose = ctx.flags.verbose as boolean;
@@ -907,7 +907,7 @@ const statusCommand: Command = {
       output.writeln();
 
       // Daemon status box
-      const statusIcon = isRunning ? output.success('●') : output.error('○');
+      const statusIcon = isRunning ? output.success('Ã¢â€”Â') : output.error('Ã¢â€”â€¹');
       const statusText = isRunning ? output.success('RUNNING') : output.error('STOPPED');
       const mode = bgRunning ? output.dim(' (background)') : status.running ? output.dim(' (foreground)') : '';
 
@@ -937,7 +937,7 @@ const statusCommand: Command = {
         const sandboxMode = (w as unknown as Record<string, unknown>).sandbox || (state as unknown as Record<string, unknown> | undefined)?.sandbox || null;
         return {
           type: w.enabled ? output.highlight(w.type) : output.dim(w.type),
-          enabled: w.enabled ? output.success('✓') : output.dim('○'),
+          enabled: w.enabled ? output.success('Ã¢Å“â€œ') : output.dim('Ã¢â€”â€¹'),
           status: state?.isRunning ? output.warning('running') :
                   w.enabled ? output.success('idle') : output.dim('disabled'),
           runs: state?.runCount ?? 0,
@@ -1000,9 +1000,9 @@ const statusCommand: Command = {
       output.writeln();
       output.printBox(
         [
-          `Status: ${output.error('○')} ${output.error('NOT INITIALIZED')}`,
+          `Status: ${output.error('Ã¢â€”â€¹')} ${output.error('NOT INITIALIZED')}`,
           '',
-          'Run "claude-flow daemon start" to start the daemon',
+          'Run "ruflo daemon start" to start the daemon',
         ].join('\n'),
         'RuFlo Daemon'
       );
@@ -1021,9 +1021,9 @@ const triggerCommand: Command = {
     { name: 'headless', type: 'boolean', description: 'Run triggered worker in headless mode (E2B sandbox)' },
   ],
   examples: [
-    { command: 'claude-flow daemon trigger -w map', description: 'Trigger the map worker' },
-    { command: 'claude-flow daemon trigger -w audit', description: 'Trigger security audit' },
-    { command: 'claude-flow daemon trigger -w audit --headless', description: 'Trigger audit in headless sandbox' },
+    { command: 'ruflo daemon trigger -w map', description: 'Trigger the map worker' },
+    { command: 'ruflo daemon trigger -w audit', description: 'Trigger security audit' },
+    { command: 'ruflo daemon trigger -w audit --headless', description: 'Trigger audit in headless sandbox' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const workerType = ctx.flags.worker as WorkerType;
@@ -1072,8 +1072,8 @@ const enableCommand: Command = {
     { name: 'disable', short: 'd', type: 'boolean', description: 'Disable instead of enable' },
   ],
   examples: [
-    { command: 'claude-flow daemon enable -w predict', description: 'Enable predict worker' },
-    { command: 'claude-flow daemon enable -w document --disable', description: 'Disable document worker' },
+    { command: 'ruflo daemon enable -w predict', description: 'Enable predict worker' },
+    { command: 'ruflo daemon enable -w document --disable', description: 'Disable document worker' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const workerType = ctx.flags.worker as WorkerType;
@@ -1131,9 +1131,9 @@ const installSupervisorCommand: Command = {
     { name: 'dry-run', type: 'boolean', description: 'Print the unit file content without writing', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow daemon install-supervisor', description: 'Install + load (auto-restart enabled)' },
-    { command: 'claude-flow daemon install-supervisor --no-load', description: 'Write unit file but do not enable yet' },
-    { command: 'claude-flow daemon install-supervisor --dry-run', description: 'Preview the unit file' },
+    { command: 'ruflo daemon install-supervisor', description: 'Install + load (auto-restart enabled)' },
+    { command: 'ruflo daemon install-supervisor --no-load', description: 'Write unit file but do not enable yet' },
+    { command: 'ruflo daemon install-supervisor --dry-run', description: 'Preview the unit file' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const force = ctx.flags.force === true;
@@ -1220,7 +1220,7 @@ const installSupervisorCommand: Command = {
           // unload first in case a previous version is loaded
           try { execFileSync('launchctl', ['unload', plistPath], { encoding: 'utf-8', timeout: 5000 }); } catch { /* ok */ }
           execFileSync('launchctl', ['load', '-w', plistPath], { encoding: 'utf-8', timeout: 5000 });
-          output.printSuccess('Supervisor loaded — daemon will auto-restart on crash and survive reboot.');
+          output.printSuccess('Supervisor loaded Ã¢â‚¬â€ daemon will auto-restart on crash and survive reboot.');
         } catch (err) {
           output.printWarning(`launchctl load failed: ${err instanceof Error ? err.message : String(err)}`);
           output.printInfo(`Run manually: launchctl load -w ${plistPath}`);
@@ -1271,7 +1271,7 @@ WantedBy=default.target
         const { execFileSync } = await import('child_process');
         execFileSync('systemctl', ['--user', 'daemon-reload'], { encoding: 'utf-8', timeout: 5000 });
         execFileSync('systemctl', ['--user', 'enable', '--now', 'ruflo-daemon.service'], { encoding: 'utf-8', timeout: 10000 });
-        output.printSuccess('Supervisor enabled — daemon will auto-restart on crash and survive reboot.');
+        output.printSuccess('Supervisor enabled Ã¢â‚¬â€ daemon will auto-restart on crash and survive reboot.');
         output.printInfo('Note: requires `loginctl enable-linger $USER` for restart-after-logout on some distros.');
       } catch (err) {
         output.printWarning(`systemctl --user enable failed: ${err instanceof Error ? err.message : String(err)}`);
@@ -1340,11 +1340,11 @@ export const daemonCommand: Command = {
   ],
   options: [],
   examples: [
-    { command: 'claude-flow daemon start', description: 'Start the daemon' },
-    { command: 'claude-flow daemon start --headless', description: 'Start with headless workers (E2B sandbox)' },
-    { command: 'claude-flow daemon status', description: 'Check daemon status' },
-    { command: 'claude-flow daemon stop', description: 'Stop the daemon' },
-    { command: 'claude-flow daemon trigger -w audit', description: 'Run security audit' },
+    { command: 'ruflo daemon start', description: 'Start the daemon' },
+    { command: 'ruflo daemon start --headless', description: 'Start with headless workers (E2B sandbox)' },
+    { command: 'ruflo daemon status', description: 'Check daemon status' },
+    { command: 'ruflo daemon stop', description: 'Stop the daemon' },
+    { command: 'ruflo daemon trigger -w audit', description: 'Run security audit' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
@@ -1385,7 +1385,7 @@ export const daemonCommand: Command = {
     ]);
 
     output.writeln();
-    output.writeln('Run "claude-flow daemon <subcommand> --help" for details');
+    output.writeln('Run "ruflo daemon <subcommand> --help" for details');
 
     return { success: true };
   },

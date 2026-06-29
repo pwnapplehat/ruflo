@@ -6,25 +6,51 @@
 import type { InitOptions } from './types.js';
 import { generateStatuslineScript, generateStatuslineHook } from './statusline-generator.js';
 
-// ADR-127 Phase 4 — attribution is opt-in (#1670 / #2089).
+// ADR-127 Phase 4 â€” attribution is opt-in (#1670 / #2089).
 // When the user passes --attribution (options.attribution === true),
 // this footer is available for injection into generated content such as
 // PR body templates and release notes.  It is NEVER hard-wired into the
-// static command-file templates — those are user-owned content.
+// static command-file templates â€” those are user-owned content.
 export const ATTRIBUTION_FOOTER =
-  '🤖 Generated with [RuFlo](https://github.com/ruvnet/ruflo)';
+  'ðŸ¤– Generated with [RuFlo](https://github.com/ruvnet/ruflo)';
 
 /**
- * Generate pre-commit hook script
+ * Generate pre-commit hook script. On Windows, emit a PowerShell script
+ * (.ps1); on POSIX, emit a bash script. Both are written to
+ * .cursor-flow/helpers/ (Cursor-fork) and are NOT invoked by Cursor's hook
+ * system (hooks use .cursor/hooks/*.cjs) â€” they're for manual `git hook` use.
  */
 export function generatePreCommitHook(): string {
+  if (process.platform === 'win32') {
+    return `# Ruflo Pre-Commit Hook (PowerShell, Windows-native)
+# Validates code quality before commit. Not invoked by Cursor hooks;
+# install manually: Copy-Item .cursor-flow/helpers/pre-commit.ps1 .git/hooks/pre-commit.ps1
+$ErrorActionPreference = 'Stop'
+Write-Host "[ruflo] Running pre-commit checks..." -ForegroundColor Cyan
+$staged = git diff --cached --name-only --diff-filter=ACM 2>$null
+foreach ($file in $staged) {
+  if ($file -match '\\.(ts|js|tsx|jsx)$') {
+    Write-Host "  Validating: $file"
+    npx @claude-flow/cli hooks pre-edit --file $file --validate-syntax 2>$null
+  }
+}
+if (Test-Path package.json) {
+  $hasTest = (Get-Content package.json -Raw) -match '"test"\\s*:'
+  if ($hasTest) {
+    Write-Host "[ruflo] Running tests..." -ForegroundColor Cyan
+    npm test --if-present 2>$null
+  }
+}
+Write-Host "[ruflo] Pre-commit checks complete." -ForegroundColor Green
+`;
+  }
   return `#!/bin/bash
 # Ruflo Pre-Commit Hook
 # Validates code quality before commit
 
 set -e
 
-echo "🔍 Running Ruflo pre-commit checks..."
+echo "[ruflo] Running pre-commit checks..."
 
 # Get staged files
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
@@ -39,18 +65,29 @@ done
 
 # Run tests if available
 if [ -f "package.json" ] && grep -q '"test"' package.json; then
-  echo "🧪 Running tests..."
+  echo "[ruflo] Running tests..."
   npm test --if-present 2>/dev/null || echo "  Tests skipped or failed"
 fi
 
-echo "✅ Pre-commit checks complete"
+echo "[ruflo] Pre-commit checks complete"
 `;
 }
 
 /**
- * Generate post-commit hook script
+ * Generate post-commit hook script. Windows-native PowerShell on win32.
  */
 export function generatePostCommitHook(): string {
+  if (process.platform === 'win32') {
+    return `# Ruflo Post-Commit Hook (PowerShell, Windows-native)
+# Records commit metrics and trains patterns.
+$ErrorActionPreference = 'Stop'
+$commitHash = git rev-parse HEAD 2>$null
+$commitMsg = git log -1 --pretty=%B 2>$null
+Write-Host "[ruflo] Recording commit metrics..." -ForegroundColor Cyan
+npx ruflo@latest hooks notify --message "Commit: $commitMsg" --level info --metadata "{\\"hash\\":\\"$commitHash\\"}" 2>$null
+Write-Host "[ruflo] Commit recorded." -ForegroundColor Green
+`;
+  }
   return `#!/bin/bash
 # Ruflo Post-Commit Hook
 # Records commit metrics and trains patterns
@@ -58,7 +95,7 @@ export function generatePostCommitHook(): string {
 COMMIT_HASH=$(git rev-parse HEAD)
 COMMIT_MSG=$(git log -1 --pretty=%B)
 
-echo "📊 Recording commit metrics..."
+echo "[ruflo] Recording commit metrics..."
 
 # Notify ruflo of commit
 npx ruflo@latest hooks notify \\
@@ -66,7 +103,7 @@ npx ruflo@latest hooks notify \\
   --level info \\
   --metadata '{"hash": "'$COMMIT_HASH'"}' 2>/dev/null || true
 
-echo "✅ Commit recorded"
+echo "[ruflo] Commit recorded"
 `;
 }
 
@@ -234,8 +271,8 @@ const AGENT_CAPABILITIES = {
   devops: ['ci-cd', 'docker', 'deployment', 'infrastructure'],
 };
 
-// Each entry has a token list. Single tokens get \\b…\\b boundaries so 'cd'
-// won't match inside 'decide'. Phrases (whitespace or '/') match literally —
+// Each entry has a token list. Single tokens get \\bâ€¦\\b boundaries so 'cd'
+// won't match inside 'decide'. Phrases (whitespace or '/') match literally â€”
 // the whitespace acts as a natural boundary.
 const TASK_PATTERNS = [
   { tokens: ['implement', 'create', 'build', 'add', 'write code', 'refactor', 'debug'], agent: 'coder' },
@@ -437,7 +474,7 @@ export function generateHookHandler(): string {
     '',
     'const [,, command, ...args] = process.argv;',
     '',
-    '// Read stdin with timeout — Claude Code sends hook data as JSON via stdin.',
+    '// Read stdin with timeout â€” Claude Code sends hook data as JSON via stdin.',
     '// Timeout prevents hanging when stdin is in an ambiguous state (not TTY, not pipe).',
     'async function readStdin() {',
     '  if (process.stdin.isTTY) return "";',
@@ -639,7 +676,7 @@ export function generateIntelligenceStub(): string {
     '#!/usr/bin/env node',
     '/**',
     ' * Intelligence Layer Stub (ADR-050)',
-    ' * Minimal fallback — full version is copied from package source.',
+    ' * Minimal fallback â€” full version is copied from package source.',
     ' * Provides: init, getContext, recordEdit, feedback, consolidate',
     ' */',
     "'use strict';",
@@ -855,7 +892,7 @@ export function generateIntelligenceStub(): string {
 export function generateAutoMemoryHook(): string {
   return `#!/usr/bin/env node
 /**
- * Auto Memory Bridge Hook (ADR-048/049) — Minimal Fallback
+ * Auto Memory Bridge Hook (ADR-048/049) â€” Minimal Fallback
  * Full version is copied from package source when available.
  *
  * Usage:
@@ -911,12 +948,12 @@ async function doImport() {
   const memPkg = await loadMemoryPackage();
 
   if (!memPkg || !memPkg.AutoMemoryBridge) {
-    dim('Memory package not available — auto memory import skipped (non-critical)');
+    dim('Memory package not available â€” auto memory import skipped (non-critical)');
     return;
   }
 
   // Full implementation deferred to copied version
-  dim('Auto memory import available — run init --upgrade for full support');
+  dim('Auto memory import available â€” run init --upgrade for full support');
 }
 
 async function doSync() {
@@ -928,11 +965,11 @@ async function doSync() {
   const memPkg = await loadMemoryPackage();
 
   if (!memPkg || !memPkg.AutoMemoryBridge) {
-    dim('Memory package not available — sync skipped (non-critical)');
+    dim('Memory package not available â€” sync skipped (non-critical)');
     return;
   }
 
-  dim('Auto memory sync available — run init --upgrade for full support');
+  dim('Auto memory sync available â€” run init --upgrade for full support');
 }
 
 function doStatus() {
@@ -1012,7 +1049,7 @@ function Start-SwarmMonitor {
     Write-Host "Starting swarm monitor..." -ForegroundColor Cyan
     $process = Start-Process -FilePath 'node' -ArgumentList @(
         '-e',
-        'setInterval(() => { require("fs").writeFileSync(".claude-flow/metrics/swarm-activity.json", JSON.stringify({swarm:{active:true,agent_count:0},timestamp:Date.now()})) }, 5000)'
+        'setInterval(() => { require("fs").writeFileSync(".cursor-flow/metrics/swarm-activity.json", JSON.stringify({swarm:{active:true,agent_count:0},timestamp:Date.now()})) }, 5000)'
     ) -PassThru -WindowStyle Hidden
 
     $process.Id | Out-File $pidFile
@@ -1224,7 +1261,7 @@ export function generateHelpers(options: InitOptions): Record<string, string> {
     helpers['daemon-manager.ps1'] = generateWindowsDaemonManager();
     helpers['daemon-manager.cmd'] = generateWindowsBatchWrapper();
 
-    // ADR-127 Phase 4 — expose the attribution footer as a helper file only
+    // ADR-127 Phase 4 â€” expose the attribution footer as a helper file only
     // when the user explicitly opts in. The file content is the single-line
     // string so init-generated PR templates can `cat .claude/helpers/attribution`
     // and append it conditionally without hard-wiring the string everywhere.
@@ -1253,13 +1290,13 @@ export function generateHelpers(options: InitOptions): Record<string, string> {
 export function generateRufloHookCjs(): string {
   return `#!/usr/bin/env node
 /**
- * ruflo-hook.cjs — cross-platform Node.js port of ruflo-hook.sh (#2132)
+ * ruflo-hook.cjs â€” cross-platform Node.js port of ruflo-hook.sh (#2132)
  *
  * Deployed to .claude/helpers/ during ruflo init. On Windows, the
  * generated .claude/settings.json hooks point here instead of the
  * plugin's bash-only ruflo-hook.sh.
  *
- * Always exits 0 — hook subcommands are best-effort telemetry and must
+ * Always exits 0 â€” hook subcommands are best-effort telemetry and must
  * never block a Claude Code turn.
  */
 

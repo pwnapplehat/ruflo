@@ -2,7 +2,7 @@
  * V3 CLI Security Command
  * Security scanning, CVE detection, threat modeling, vulnerability management
  *
- * Created with ❤️ by ruv.io
+ * Created with Ã¢ÂÂ¤Ã¯Â¸Â by ruv.io
  */
 
 import type { Command, CommandContext, CommandResult } from '../types.js';
@@ -21,8 +21,8 @@ const scanCommand: Command = {
     { name: 'fix', short: 'f', type: 'boolean', description: 'Auto-fix vulnerabilities where possible' },
   ],
   examples: [
-    { command: 'claude-flow security scan -t ./src', description: 'Scan source directory' },
-    { command: 'claude-flow security scan --depth deep --fix', description: 'Deep scan with auto-fix' },
+    { command: 'ruflo security scan -t ./src', description: 'Scan source directory' },
+    { command: 'ruflo security scan --depth deep --fix', description: 'Deep scan with auto-fix' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const target = ctx.flags.target as string || '.';
@@ -32,7 +32,7 @@ const scanCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Security Scan'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     const spinner = output.createSpinner({ text: `Scanning ${target}...`, spinner: 'dots' });
     spinner.start();
@@ -60,7 +60,7 @@ const scanCommand: Command = {
                 stdio: ['pipe', 'pipe', 'pipe'],
               });
             } catch (auditErr: unknown) {
-              // npm audit exits non-zero when vulnerabilities found — stdout still has JSON
+              // npm audit exits non-zero when vulnerabilities found Ã¢â‚¬â€ stdout still has JSON
               auditResult = (auditErr instanceof Error && 'stdout' in auditErr ? (auditErr as { stdout: string }).stdout : undefined) || '{}';
             }
 
@@ -253,28 +253,28 @@ const cveCommand: Command = {
     { name: 'severity', short: 's', type: 'string', description: 'Filter by severity: critical, high, medium, low' },
   ],
   examples: [
-    { command: 'claude-flow security cve --list', description: 'List all CVEs' },
-    { command: 'claude-flow security cve -c CVE-2024-1234', description: 'Check specific CVE' },
+    { command: 'ruflo security cve --list', description: 'List all CVEs' },
+    { command: 'ruflo security cve -c CVE-2024-1234', description: 'Check specific CVE' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const checkCve = ctx.flags.check as string;
 
     output.writeln();
     output.writeln(output.bold('CVE Database'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
-    // #2403 — `cve` is no longer a stub. Delegate to `npm audit --json`
+    // #2403 Ã¢â‚¬â€ `cve` is no longer a stub. Delegate to `npm audit --json`
     // (same data source as `security scan`) and filter to CVE findings.
     // If --check CVE-XXXX is given, filter to that specific CVE ID.
     let auditJson: string;
     try {
-      auditJson = execSync('npm audit --json 2>/dev/null', {
+      auditJson = execSync('npm audit --json', {
         encoding: 'utf-8',
         timeout: 30000,
         stdio: ['pipe', 'pipe', 'pipe'],
       });
     } catch (e: unknown) {
-      // npm audit exits non-zero when vulnerabilities found — stdout still has JSON
+      // npm audit exits non-zero when vulnerabilities found Ã¢â‚¬â€ stdout still has JSON
       auditJson = (e instanceof Error && 'stdout' in e ? (e as { stdout: string }).stdout : '') || '{}';
     }
 
@@ -282,7 +282,7 @@ const cveCommand: Command = {
     try {
       audit = JSON.parse(auditJson);
     } catch {
-      output.writeln(output.warning('⚠ Could not parse `npm audit --json` output.'));
+      output.writeln(output.warning('Ã¢Å¡Â  Could not parse `npm audit --json` output.'));
       output.writeln(output.dim('Make sure you are inside a project with a package.json.'));
       return { success: false, exitCode: 2 };
     }
@@ -313,9 +313,9 @@ const cveCommand: Command = {
 
     if (finalRows.length === 0) {
       if (checkCve) {
-        output.writeln(output.success(`✓ ${checkCve} not found in current dependency tree.`));
+        output.writeln(output.success(`Ã¢Å“â€œ ${checkCve} not found in current dependency tree.`));
       } else if (cveRows.length === 0) {
-        output.writeln(output.success('✓ No known vulnerabilities in dependency tree.'));
+        output.writeln(output.success('Ã¢Å“â€œ No known vulnerabilities in dependency tree.'));
       } else {
         output.writeln(output.dim(`No vulnerabilities match the requested filter (severity=${severityFilter ?? 'any'}).`));
       }
@@ -327,7 +327,7 @@ const cveCommand: Command = {
     output.writeln(`Found ${output.bold(String(finalRows.length))} affected package(s):`);
     output.writeln();
     output.writeln(`  ${output.bold('SEVERITY'.padEnd(10))} ${output.bold('PACKAGE'.padEnd(30))} ${output.bold('CVE IDs'.padEnd(28))} ${output.bold('TITLE')}`);
-    output.writeln(`  ${'─'.repeat(10)} ${'─'.repeat(30)} ${'─'.repeat(28)} ${'─'.repeat(40)}`);
+    output.writeln(`  ${'Ã¢â€â‚¬'.repeat(10)} ${'Ã¢â€â‚¬'.repeat(30)} ${'Ã¢â€â‚¬'.repeat(28)} ${'Ã¢â€â‚¬'.repeat(40)}`);
     for (const r of finalRows) {
       const sev = r.severity === 'critical' ? output.error('CRITICAL ') :
                   r.severity === 'high' ? output.warning('HIGH     ') :
@@ -337,7 +337,7 @@ const cveCommand: Command = {
       output.writeln(`  ${sev} ${r.pkg.padEnd(30)} ${ids} ${r.title.substring(0, 40)}`);
     }
     output.writeln();
-    output.writeln(output.dim(`Source: \`npm audit --json\` (GitHub Advisory DB). Run \`claude-flow security scan\` for code + dep scan.`));
+    output.writeln(output.dim(`Source: \`npm audit --json\` (GitHub Advisory DB). Run \`ruflo security scan\` for code + dep scan.`));
 
     // Exit code reflects whether any vulns were found, useful for CI gating
     return { success: true, exitCode: finalRows.length > 0 ? 0 : 0 };
@@ -354,8 +354,8 @@ const threatsCommand: Command = {
     { name: 'export', short: 'e', type: 'string', description: 'Export format: json, md, html' },
   ],
   examples: [
-    { command: 'claude-flow security threats --model stride', description: 'Run STRIDE analysis' },
-    { command: 'claude-flow security threats -e md', description: 'Export as markdown' },
+    { command: 'ruflo security threats --model stride', description: 'Run STRIDE analysis' },
+    { command: 'ruflo security threats -e md', description: 'Export as markdown' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const model = ctx.flags.model as string || 'stride';
@@ -364,7 +364,7 @@ const threatsCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold(`Threat Model: ${model.toUpperCase()}`));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     const spinner = output.createSpinner({ text: `Scanning ${scope} for threat indicators...`, spinner: 'dots' });
     spinner.start();
@@ -381,34 +381,34 @@ const threatsCommand: Command = {
 
     // Threat indicator patterns mapped to STRIDE categories
     const threatPatterns: Array<{ pattern: RegExp; category: string; severity: string; description: string }> = [
-      // Spoofing — weak/missing authentication
+      // Spoofing Ã¢â‚¬â€ weak/missing authentication
       { pattern: /(?:app|router|server)\s*\.\s*(?:get|post|put|patch|delete)\s*\(\s*['"][^'"]+['"]\s*,\s*(?:async\s+)?\(?(?:req|request)/g, category: 'Spoofing', severity: 'medium', description: 'HTTP endpoint without auth middleware' },
 
-      // Tampering — code injection vectors
-      { pattern: /\beval\s*\(/g, category: 'Tampering', severity: 'high', description: 'eval() usage — arbitrary code execution risk' },
-      { pattern: /\bexecSync\s*\(/g, category: 'Tampering', severity: 'high', description: 'execSync() usage — command injection risk' },
-      { pattern: /\bexec\s*\(\s*[^)]*\$\{/g, category: 'Tampering', severity: 'high', description: 'exec() with template literal — injection risk' },
-      { pattern: /child_process.*\bexec\b/g, category: 'Tampering', severity: 'medium', description: 'child_process exec import — review for injection' },
-      { pattern: /new\s+Function\s*\(/g, category: 'Tampering', severity: 'high', description: 'new Function() — dynamic code execution risk' },
+      // Tampering Ã¢â‚¬â€ code injection vectors
+      { pattern: /\beval\s*\(/g, category: 'Tampering', severity: 'high', description: 'eval() usage Ã¢â‚¬â€ arbitrary code execution risk' },
+      { pattern: /\bexecSync\s*\(/g, category: 'Tampering', severity: 'high', description: 'execSync() usage Ã¢â‚¬â€ command injection risk' },
+      { pattern: /\bexec\s*\(\s*[^)]*\$\{/g, category: 'Tampering', severity: 'high', description: 'exec() with template literal Ã¢â‚¬â€ injection risk' },
+      { pattern: /child_process.*\bexec\b/g, category: 'Tampering', severity: 'medium', description: 'child_process exec import Ã¢â‚¬â€ review for injection' },
+      { pattern: /new\s+Function\s*\(/g, category: 'Tampering', severity: 'high', description: 'new Function() Ã¢â‚¬â€ dynamic code execution risk' },
 
-      // Repudiation — missing audit/logging
+      // Repudiation Ã¢â‚¬â€ missing audit/logging
       // (checked via absence of logging imports, handled separately)
 
-      // Info Disclosure — secrets and data leaks
+      // Info Disclosure Ã¢â‚¬â€ secrets and data leaks
       { pattern: /(?:api[_-]?key|secret|token|password|passwd|credential)\s*[:=]\s*['"][^'"]{8,}['"]/gi, category: 'Info Disclosure', severity: 'high', description: 'Hardcoded credential or secret' },
       { pattern: /AKIA[0-9A-Z]{16}/g, category: 'Info Disclosure', severity: 'critical', description: 'AWS Access Key ID detected' },
       { pattern: /gh[ps]_[A-Za-z0-9_]{36,}/g, category: 'Info Disclosure', severity: 'high', description: 'GitHub token detected' },
       { pattern: /-----BEGIN (?:RSA|EC|DSA|OPENSSH) PRIVATE KEY-----/g, category: 'Info Disclosure', severity: 'critical', description: 'Private key detected' },
-      { pattern: /http:\/\/(?!localhost|127\.0\.0\.1|0\.0\.0\.0)/g, category: 'Info Disclosure', severity: 'medium', description: 'Non-localhost HTTP URL — should use HTTPS' },
+      { pattern: /http:\/\/(?!localhost|127\.0\.0\.1|0\.0\.0\.0)/g, category: 'Info Disclosure', severity: 'medium', description: 'Non-localhost HTTP URL Ã¢â‚¬â€ should use HTTPS' },
 
-      // DoS — missing rate limiting / resource protection
-      { pattern: /require\s*\(\s*['"]express['"]\s*\)/g, category: 'DoS', severity: 'low', description: 'Express detected — verify rate-limiting is configured' },
-      { pattern: /require\s*\(\s*['"]fastify['"]\s*\)/g, category: 'DoS', severity: 'low', description: 'Fastify detected — verify rate-limiting is configured' },
+      // DoS Ã¢â‚¬â€ missing rate limiting / resource protection
+      { pattern: /require\s*\(\s*['"]express['"]\s*\)/g, category: 'DoS', severity: 'low', description: 'Express detected Ã¢â‚¬â€ verify rate-limiting is configured' },
+      { pattern: /require\s*\(\s*['"]fastify['"]\s*\)/g, category: 'DoS', severity: 'low', description: 'Fastify detected Ã¢â‚¬â€ verify rate-limiting is configured' },
 
-      // Elevation of privilege — unsafe deserialization, prototype pollution
-      { pattern: /JSON\.parse\s*\(\s*(?:req\.|request\.)/g, category: 'Elevation', severity: 'medium', description: 'Unsanitized JSON.parse from request — validate input' },
-      { pattern: /\.__proto__/g, category: 'Elevation', severity: 'high', description: '__proto__ access — prototype pollution risk' },
-      { pattern: /Object\.assign\s*\(\s*\{\s*\}\s*,\s*(?:req|request)\./g, category: 'Elevation', severity: 'medium', description: 'Object.assign from request — prototype pollution risk' },
+      // Elevation of privilege Ã¢â‚¬â€ unsafe deserialization, prototype pollution
+      { pattern: /JSON\.parse\s*\(\s*(?:req\.|request\.)/g, category: 'Elevation', severity: 'medium', description: 'Unsanitized JSON.parse from request Ã¢â‚¬â€ validate input' },
+      { pattern: /\.__proto__/g, category: 'Elevation', severity: 'high', description: '__proto__ access Ã¢â‚¬â€ prototype pollution risk' },
+      { pattern: /Object\.assign\s*\(\s*\{\s*\}\s*,\s*(?:req|request)\./g, category: 'Elevation', severity: 'medium', description: 'Object.assign from request Ã¢â‚¬â€ prototype pollution risk' },
     ];
 
     // Check for .env files committed to git
@@ -421,7 +421,7 @@ const threatsCommand: Command = {
             category: 'Info Disclosure',
             severity: output.error('CRITICAL'),
             location: envFile,
-            description: '.env file tracked in git — secrets may be exposed',
+            description: '.env file tracked in git Ã¢â‚¬â€ secrets may be exposed',
           });
         }
       } catch { /* not a git repo or git not available */ }
@@ -557,7 +557,7 @@ const threatsCommand: Command = {
 
     // Always show STRIDE reference
     output.writeln();
-    output.writeln(output.bold(`${model.toUpperCase()} Reference Framework${findings.length === 0 ? ' (reference only — no issues detected)' : ''}:`));
+    output.writeln(output.bold(`${model.toUpperCase()} Reference Framework${findings.length === 0 ? ' (reference only Ã¢â‚¬â€ no issues detected)' : ''}:`));
     output.writeln();
     output.printTable({
       columns: [
@@ -602,15 +602,15 @@ const auditCommand: Command = {
     { name: 'filter', short: 'f', type: 'string', description: 'Filter by event type' },
   ],
   examples: [
-    { command: 'claude-flow security audit --action list', description: 'List audit logs' },
-    { command: 'claude-flow security audit -a export', description: 'Export audit trail' },
+    { command: 'ruflo security audit --action list', description: 'List audit logs' },
+    { command: 'ruflo security audit -a export', description: 'Export audit trail' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const action = ctx.flags.action as string || 'list';
 
     output.writeln();
     output.writeln(output.bold('Security Audit Log'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(60)));
 
     // Generate real audit entries from .swarm/ state and session history
     const { existsSync, readFileSync, readdirSync, statSync } = await import('fs');
@@ -648,7 +648,7 @@ const auditCommand: Command = {
     auditEntries.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 
     if (auditEntries.length === 0) {
-      output.writeln(output.dim('No audit events found. Initialize a project first: claude-flow init'));
+      output.writeln(output.dim('No audit events found. Initialize a project first: ruflo init'));
     } else {
       output.printTable({
         columns: [
@@ -675,8 +675,8 @@ const secretsCommand: Command = {
     { name: 'ignore', short: 'i', type: 'string', description: 'Patterns to ignore' },
   ],
   examples: [
-    { command: 'claude-flow security secrets --action scan', description: 'Scan for secrets' },
-    { command: 'claude-flow security secrets -a rotate', description: 'Rotate compromised secrets' },
+    { command: 'ruflo security secrets --action scan', description: 'Scan for secrets' },
+    { command: 'ruflo security secrets -a rotate', description: 'Rotate compromised secrets' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const scanPath = ctx.flags.path as string || '.';
@@ -684,7 +684,7 @@ const secretsCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Secret Detection'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     const spinner = output.createSpinner({ text: `Scanning ${scanPath} for secrets...`, spinner: 'dots' });
     spinner.start();
@@ -748,7 +748,7 @@ const secretsCommand: Command = {
             if (stat.size > 1024 * 1024) continue; // skip files > 1MB
 
             const content = fs.readFileSync(fullPath, 'utf-8');
-            // Quick binary check — skip if null bytes present
+            // Quick binary check Ã¢â‚¬â€ skip if null bytes present
             if (content.includes('\0')) continue;
 
             const lines = content.split('\n');
@@ -846,9 +846,9 @@ const defendCommand: Command = {
     { name: 'output', short: 'o', type: 'string', description: 'Output format: text, json', default: 'text' },
   ],
   examples: [
-    { command: 'claude-flow security defend -i "ignore previous instructions"', description: 'Scan text for threats' },
-    { command: 'claude-flow security defend -f ./prompts.txt', description: 'Scan file for threats' },
-    { command: 'claude-flow security defend --stats', description: 'Show detection statistics' },
+    { command: 'ruflo security defend -i "ignore previous instructions"', description: 'Scan text for threats' },
+    { command: 'ruflo security defend -f ./prompts.txt', description: 'Scan file for threats' },
+    { command: 'ruflo security defend --stats', description: 'Show detection statistics' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const inputText = ctx.flags.input as string;
@@ -859,8 +859,8 @@ const defendCommand: Command = {
     const enableLearning = ctx.flags.learn !== false;
 
     output.writeln();
-    output.writeln(output.bold('🛡️ AIDefence - AI Manipulation Defense System'));
-    output.writeln(output.dim('─'.repeat(55)));
+    output.writeln(output.bold('Ã°Å¸â€ºÂ¡Ã¯Â¸Â AIDefence - AI Manipulation Defense System'));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(55)));
 
     // Dynamic import of aidefence (allows package to be optional)
     let createAIDefence: typeof import('@claude-flow/aidefence').createAIDefence;
@@ -902,7 +902,7 @@ const defendCommand: Command = {
     }
 
     if (!textToScan) {
-      output.writeln('Usage: claude-flow security defend -i "<text>" or -f <file>');
+      output.writeln('Usage: ruflo security defend -i "<text>" or -f <file>');
       output.writeln();
       output.writeln('Options:');
       output.printList([
@@ -942,10 +942,10 @@ const defendCommand: Command = {
     output.writeln();
 
     if (result.safe && !result.piiFound) {
-      output.writeln(output.success('✅ No threats detected'));
+      output.writeln(output.success('Ã¢Å“â€¦ No threats detected'));
     } else {
       if (!result.safe && result.threats) {
-        output.writeln(output.error(`⚠️ ${result.threats.length} threat(s) detected:`));
+        output.writeln(output.error(`Ã¢Å¡Â Ã¯Â¸Â ${result.threats.length} threat(s) detected:`));
         output.writeln();
 
         for (const threat of result.threats) {
@@ -977,7 +977,7 @@ const defendCommand: Command = {
       }
 
       if (result.piiFound) {
-        output.writeln(output.warning('⚠️ PII detected (emails, SSNs, API keys, etc.)'));
+        output.writeln(output.warning('Ã¢Å¡Â Ã¯Â¸Â PII detected (emails, SSNs, API keys, etc.)'));
         output.writeln();
       }
     }
@@ -994,9 +994,9 @@ export const securityCommand: Command = {
   description: 'Security scanning, CVE detection, threat modeling, AI defense',
   subcommands: [scanCommand, cveCommand, threatsCommand, auditCommand, secretsCommand, defendCommand],
   examples: [
-    { command: 'claude-flow security scan', description: 'Run security scan' },
-    { command: 'claude-flow security cve --list', description: 'List known CVEs' },
-    { command: 'claude-flow security threats', description: 'Run threat analysis' },
+    { command: 'ruflo security scan', description: 'Run security scan' },
+    { command: 'ruflo security cve --list', description: 'List known CVEs' },
+    { command: 'ruflo security threats', description: 'Run threat analysis' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
@@ -1015,7 +1015,7 @@ export const securityCommand: Command = {
     output.writeln();
     output.writeln('Use --help with subcommands for more info');
     output.writeln();
-    output.writeln(output.dim('Created with ❤️ by ruv.io'));
+    output.writeln(output.dim('Created with Ã¢ÂÂ¤Ã¯Â¸Â by ruv.io'));
     return { success: true };
   },
 };

@@ -17,7 +17,7 @@ const __dirname = dirname(__filename);
 // From dist/src/mcp-tools or src/mcp-tools, navigate to v3 directory
 // CLI is at v3/@claude-flow/cli, so go up 2 levels from cli to get to v3
 const CLI_ROOT = join(__dirname, '../../..');
-const CLAUDE_FLOW_DIR = join(CLI_ROOT, '..'); // @claude-flow directory
+const CLAUDE_FLOW_DIR = join(CLI_ROOT, '..'); // @ruflo directory
 const V3_DIR = join(CLAUDE_FLOW_DIR, '..'); // v3 directory
 const PROJECT_ROOT = join(V3_DIR, '..');
 
@@ -215,7 +215,7 @@ async function syncProgress(): Promise<V3ProgressMetrics> {
   const metrics = await calculateProgress();
 
   // Persist to file
-  const metricsDir = join(PROJECT_ROOT, '.claude-flow/metrics');
+  const metricsDir = join(PROJECT_ROOT, '.cursor-flow/metrics');
   if (!existsSync(metricsDir)) {
     mkdirSync(metricsDir, { recursive: true });
   }
@@ -239,9 +239,9 @@ async function syncProgress(): Promise<V3ProgressMetrics> {
 
 function getSummary(metrics: V3ProgressMetrics): string {
   const lines = [
-    '═══════════════════════════════════════════════════',
+    'Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â',
     '           V3 Implementation Progress',
-    '═══════════════════════════════════════════════════',
+    'Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â',
     '',
     `  Overall Progress: ${metrics.overall}%`,
     '',
@@ -254,7 +254,7 @@ function getSummary(metrics: V3ProgressMetrics): string {
     `  Codebase: ${metrics.codebase.totalFiles} files, ${metrics.codebase.totalLines.toLocaleString()} lines`,
     '',
     `  Last Updated: ${metrics.lastUpdated}`,
-    '═══════════════════════════════════════════════════',
+    'Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â',
   ];
   return lines.join('\n');
 }

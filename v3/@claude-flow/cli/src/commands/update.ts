@@ -1,6 +1,6 @@
 /**
  * V3 CLI Update Command
- * Auto-update system for @claude-flow packages (ADR-025)
+ * Auto-update system for @ruflo packages (ADR-025)
  */
 
 import type { Command, CommandContext, CommandResult } from '../types.js';
@@ -53,7 +53,7 @@ function formatPriority(priority: string): string {
 // Subcommand: check
 const checkCommand: Command = {
   name: 'check',
-  description: 'Check for available @claude-flow package updates',
+  description: 'Check for available @ruflo package updates',
   options: [
     { name: 'force', description: 'Force check (ignore rate limit)', type: 'boolean' },
     { name: 'json', description: 'Output as JSON', type: 'boolean' },
@@ -80,12 +80,12 @@ const checkCommand: Command = {
       }
 
       if (results.length === 0) {
-        output.printSuccess('All @claude-flow packages are up to date!');
+        output.printSuccess('All @ruflo packages are up to date!');
         return { success: true };
       }
 
       output.writeln();
-      output.writeln(output.highlight('═══ Available Updates ═══'));
+      output.writeln(output.highlight('â•â•â• Available Updates â•â•â•'));
       output.writeln();
 
       output.printTable({
@@ -120,7 +120,7 @@ const checkCommand: Command = {
       if (manualUpdates.length > 0) {
         output.writeln();
         output.printInfo('To update manually, run:');
-        output.writeln('  claude-flow update all');
+        output.writeln('  ruflo update all');
       }
 
       return { success: true };
@@ -133,7 +133,7 @@ const checkCommand: Command = {
 // Subcommand: all
 const allCommand: Command = {
   name: 'all',
-  description: 'Update all @claude-flow packages',
+  description: 'Update all @ruflo packages',
   options: [
     { name: 'dry-run', description: 'Show what would be updated', type: 'boolean' },
     { name: 'include-major', description: 'Include major version updates', type: 'boolean' },
@@ -182,7 +182,7 @@ const allCommand: Command = {
       const failed = updateResults.filter((r) => !r.success);
 
       output.writeln();
-      output.writeln(output.highlight(flags['dry-run'] ? '═══ Dry Run - Would Update ═══' : '═══ Update Results ═══'));
+      output.writeln(output.highlight(flags['dry-run'] ? 'â•â•â• Dry Run - Would Update â•â•â•' : 'â•â•â• Update Results â•â•â•'));
       output.writeln();
 
       if (successful.length > 0) {
@@ -190,7 +190,7 @@ const allCommand: Command = {
           `${successful.length} package(s) ${flags['dry-run'] ? 'would be ' : ''}updated:`
         );
         for (const r of successful) {
-          output.writeln(`  ${output.success('✓')} ${r.package}@${r.version}`);
+          output.writeln(`  ${output.success('âœ“')} ${r.package}@${r.version}`);
         }
       }
 
@@ -198,7 +198,7 @@ const allCommand: Command = {
         output.writeln();
         output.printError(`${failed.length} package(s) failed:`);
         for (const r of failed) {
-          output.writeln(`  ${output.error('✗')} ${r.package}: ${r.error}`);
+          output.writeln(`  ${output.error('âœ—')} ${r.package}: ${r.error}`);
         }
       }
 
@@ -241,7 +241,7 @@ const historyCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.highlight('═══ Update History ═══'));
+    output.writeln(output.highlight('â•â•â• Update History â•â•â•'));
     output.writeln();
 
     output.printTable({
@@ -307,14 +307,14 @@ const clearCacheCommand: Command = {
 // Main update command
 const updateCommand: Command = {
   name: 'update',
-  description: 'Manage @claude-flow package updates (ADR-025)',
+  description: 'Manage @ruflo package updates (ADR-025)',
   subcommands: [checkCommand, allCommand, historyCommand, rollbackCommand, clearCacheCommand],
   async action(): Promise<CommandResult> {
     // Show help if no subcommand
     output.writeln();
-    output.writeln(output.highlight('═══ Update Command ═══'));
+    output.writeln(output.highlight('â•â•â• Update Command â•â•â•'));
     output.writeln();
-    output.writeln('Manage @claude-flow package updates with auto-update support.');
+    output.writeln('Manage @ruflo package updates with auto-update support.');
     output.writeln();
     output.writeln('Subcommands:');
     output.printList([
@@ -331,7 +331,7 @@ const updateCommand: Command = {
       `${output.dim('CLAUDE_FLOW_FORCE_UPDATE=true')} - Force update check`,
     ]);
     output.writeln();
-    output.writeln('Run "claude-flow update <subcommand> --help" for subcommand help');
+    output.writeln('Run "ruflo update <subcommand> --help" for subcommand help');
 
     return { success: true };
   },

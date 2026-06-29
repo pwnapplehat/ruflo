@@ -1,0 +1,14 @@
+---
+description: swarm-analysis
+globs: 
+alwaysApply: false
+---
+# swarm-analysis
+
+Command documentation for swarm-analysis in category swarm.
+
+Usage:
+```bash
+npx ruflo swarm swarm-analysis [options]
+```
+

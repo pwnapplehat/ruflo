@@ -1,0 +1,14 @@
+---
+description: swarm-background
+globs: 
+alwaysApply: false
+---
+# swarm-background
+
+Command documentation for swarm-background in category swarm.
+
+Usage:
+```bash
+npx ruflo swarm swarm-background [options]
+```
+

@@ -76,15 +76,15 @@ const storeCommand: Command = {
     DB_PATH_OPTION
   ],
   examples: [
-    { command: 'claude-flow memory store -k "api/auth" -v "JWT implementation"', description: 'Store text' },
-    { command: 'claude-flow memory store -k "pattern/singleton" --vector', description: 'Store vector' },
-    { command: 'claude-flow memory store -k "pattern" -v "updated" --upsert', description: 'Update existing' }
+    { command: 'ruflo memory store -k "api/auth" -v "JWT implementation"', description: 'Store text' },
+    { command: 'ruflo memory store -k "pattern/singleton" --vector', description: 'Store vector' },
+    { command: 'ruflo memory store -k "pattern" -v "updated" --upsert', description: 'Update existing' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const key = ctx.flags.key as string;
     let value = ctx.flags.value as string || ctx.args[0];
     // #2461: without `|| 'default'`, omitting -n stores under the literal
-    // string namespace "undefined" — silent data loss for first-time users.
+    // string namespace "undefined" Ã¢â‚¬â€ silent data loss for first-time users.
     const namespace = (ctx.flags.namespace as string) || 'default';
     const ttl = ctx.flags.ttl as number;
     const tags = ctx.flags.tags ? (ctx.flags.tags as string).split(',') : [];
@@ -332,10 +332,10 @@ const searchCommand: Command = {
     DB_PATH_OPTION
   ],
   examples: [
-    { command: 'claude-flow memory search -q "authentication patterns"', description: 'Semantic search' },
-    { command: 'claude-flow memory search -q "JWT" -t keyword', description: 'Keyword search' },
-    { command: 'claude-flow memory search -q "test" --build-hnsw', description: 'Build HNSW index and search' },
-    { command: 'claude-flow memory search -q "auth patterns" --smart', description: 'SmartRetrieval with RRF + MMR' }
+    { command: 'ruflo memory search -q "authentication patterns"', description: 'Semantic search' },
+    { command: 'ruflo memory search -q "JWT" -t keyword', description: 'Keyword search' },
+    { command: 'ruflo memory search -q "test" --build-hnsw', description: 'Build HNSW index and search' },
+    { command: 'ruflo memory search -q "auth patterns" --smart', description: 'SmartRetrieval with RRF + MMR' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const query = ctx.flags.query as string || ctx.args[0];
@@ -390,7 +390,7 @@ const searchCommand: Command = {
       let smartStats: Record<string, unknown> | undefined;
       let backendLabel = 'HNSW + sql.js';
 
-      // #1846: feature-detect smartSearch — older published builds of
+      // #1846: feature-detect smartSearch Ã¢â‚¬â€ older published builds of
       // @claude-flow/memory don't expose it. Fall through to plain
       // semantic search with a one-line warning instead of throwing.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -487,7 +487,7 @@ const searchCommand: Command = {
 
       if (results.length === 0) {
         output.printWarning('No results found');
-        output.writeln(output.dim('Try: claude-flow memory store -k "key" --value "data"'));
+        output.writeln(output.dim('Try: ruflo memory store -k "key" --value "data"'));
         return { success: true, data: [] };
       }
 
@@ -559,7 +559,7 @@ const listCommand: Command = {
         key: e.key,
         namespace: e.namespace,
         size: e.size + ' B',
-        vector: e.hasEmbedding ? '✓' : '-',
+        vector: e.hasEmbedding ? 'Ã¢Å“â€œ' : '-',
         accessCount: e.accessCount,
         updated: formatRelativeTime(e.updatedAt)
       }));
@@ -575,7 +575,7 @@ const listCommand: Command = {
 
       if (entries.length === 0) {
         output.printWarning('No entries found');
-        output.printInfo('Store data: claude-flow memory store -k "key" --value "data"');
+        output.printInfo('Store data: ruflo memory store -k "key" --value "data"');
         return { success: true, data: [] };
       }
 
@@ -648,9 +648,9 @@ const deleteCommand: Command = {
     DB_PATH_OPTION
   ],
   examples: [
-    { command: 'claude-flow memory delete -k "mykey"', description: 'Delete entry with default namespace' },
-    { command: 'claude-flow memory delete -k "lesson" -n "lessons"', description: 'Delete entry from specific namespace' },
-    { command: 'claude-flow memory delete mykey -f', description: 'Delete without confirmation' }
+    { command: 'ruflo memory delete -k "mykey"', description: 'Delete entry with default namespace' },
+    { command: 'ruflo memory delete -k "lesson" -n "lessons"', description: 'Delete entry from specific namespace' },
+    { command: 'ruflo memory delete mykey -f', description: 'Delete without confirmation' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     // Support both --key flag and positional argument
@@ -773,7 +773,7 @@ const statsCommand: Command = {
         ]
       });
 
-      // #1622 — Surface the active embedding provider in `memory stats` so
+      // #1622 Ã¢â‚¬â€ Surface the active embedding provider in `memory stats` so
       // users can tell which backend resolved at runtime (the 6-level
       // fallback chain in loadEmbeddingModel ranges from full ONNX to a
       // 128-dim hash that has no semantic understanding). Calling
@@ -784,7 +784,7 @@ const statsCommand: Command = {
         const { loadEmbeddingModel, getHNSWStatus } = await import('../memory/memory-initializer.js');
         const embedding = await loadEmbeddingModel({ verbose: false });
         const hnsw = getHNSWStatus();
-        // Map model name → semantic capability so users can spot the
+        // Map model name Ã¢â€ â€™ semantic capability so users can spot the
         // hash-fallback case without reading docs.
         const semanticProviders = new Set([
           'Xenova/all-MiniLM-L6-v2',
@@ -816,7 +816,7 @@ const statsCommand: Command = {
               metric: 'Semantic Search',
               value: isSemantic
                 ? output.success('yes')
-                : output.warning('no — using hash fallback'),
+                : output.warning('no Ã¢â‚¬â€ using hash fallback'),
             },
             {
               metric: 'HNSW Index',
@@ -841,7 +841,7 @@ const statsCommand: Command = {
           ]
         });
       } catch (e) {
-        // Don't fail the whole stats command if introspection breaks —
+        // Don't fail the whole stats command if introspection breaks Ã¢â‚¬â€
         // the rest of the dashboard is still useful.
         output.writeln();
         output.writeln(output.bold('Embedding'));
@@ -987,9 +987,9 @@ const cleanupCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow memory cleanup --dry-run', description: 'Preview cleanup' },
-    { command: 'claude-flow memory cleanup --older-than 30d', description: 'Delete entries older than 30 days' },
-    { command: 'claude-flow memory cleanup --expired-only', description: 'Clean expired entries' }
+    { command: 'ruflo memory cleanup --dry-run', description: 'Preview cleanup' },
+    { command: 'ruflo memory cleanup --older-than 30d', description: 'Delete entries older than 30 days' },
+    { command: 'ruflo memory cleanup --expired-only', description: 'Clean expired entries' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const dryRun = ctx.flags.dryRun as boolean;
@@ -1126,9 +1126,9 @@ const compressCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow memory compress', description: 'Balanced compression' },
-    { command: 'claude-flow memory compress --quantize --bits 4', description: '4-bit quantization (32x reduction)' },
-    { command: 'claude-flow memory compress -l max -t vectors', description: 'Max compression on vectors' }
+    { command: 'ruflo memory compress', description: 'Balanced compression' },
+    { command: 'ruflo memory compress --quantize --bits 4', description: '4-bit quantization (32x reduction)' },
+    { command: 'ruflo memory compress -l max -t vectors', description: 'Max compression on vectors' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const level = ctx.flags.level as string || 'balanced';
@@ -1223,7 +1223,7 @@ const compressCommand: Command = {
         output.writeln();
         output.writeln(output.bold('Performance Impact'));
         output.printList([
-          `Search latency: ${result.performance.searchLatencyBefore.toFixed(2)}ms → ${result.performance.searchLatencyAfter.toFixed(2)}ms`,
+          `Search latency: ${result.performance.searchLatencyBefore.toFixed(2)}ms Ã¢â€ â€™ ${result.performance.searchLatencyAfter.toFixed(2)}ms`,
           `Speedup: ${output.success(result.performance.searchSpeedup)}`
         ]);
       }
@@ -1275,8 +1275,8 @@ const exportCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow memory export -o ./backup.json', description: 'Export all to JSON' },
-    { command: 'claude-flow memory export -o ./data.csv -f csv', description: 'Export to CSV' }
+    { command: 'ruflo memory export -o ./backup.json', description: 'Export all to JSON' },
+    { command: 'ruflo memory export -o ./data.csv -f csv', description: 'Export to CSV' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const outputPath = ctx.flags.output as string;
@@ -1353,8 +1353,8 @@ const importCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow memory import -i ./backup.json', description: 'Import from file' },
-    { command: 'claude-flow memory import -i ./data.json -n archive', description: 'Import to namespace' }
+    { command: 'ruflo memory import -i ./backup.json', description: 'Import from file' },
+    { command: 'ruflo memory import -i ./data.json -n archive', description: 'Import to namespace' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const inputPath = ctx.flags.input as string || ctx.args[0];
@@ -1448,10 +1448,10 @@ const initMemoryCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow memory init', description: 'Initialize hybrid backend with all features' },
-    { command: 'claude-flow memory init -b agentdb', description: 'Initialize AgentDB backend' },
-    { command: 'claude-flow memory init -p ./data/memory.db --force', description: 'Reinitialize at custom path' },
-    { command: 'claude-flow memory init --verbose --verify', description: 'Initialize with full verification' }
+    { command: 'ruflo memory init', description: 'Initialize hybrid backend with all features' },
+    { command: 'ruflo memory init -b agentdb', description: 'Initialize AgentDB backend' },
+    { command: 'ruflo memory init -p ./data/memory.db --force', description: 'Reinitialize at custom path' },
+    { command: 'ruflo memory init --verbose --verify', description: 'Initialize with full verification' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const backend = (ctx.flags.backend as string) || 'hybrid';
@@ -1463,7 +1463,7 @@ const initMemoryCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Initializing Memory Database'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Initializing schema...', spinner: 'dots' });
     spinner.start();
@@ -1485,7 +1485,7 @@ const initMemoryCommand: Command = {
         return { success: false, exitCode: 1 };
       }
 
-      // #1791.6 — DB already initialized and --force not passed: friendly no-op.
+      // #1791.6 Ã¢â‚¬â€ DB already initialized and --force not passed: friendly no-op.
       if (result.alreadyExists) {
         spinner.succeed(`Memory database already initialized at ${result.dbPath}`);
         output.printInfo('Use `--force` to reinitialize from scratch (destructive).');
@@ -1517,11 +1517,11 @@ const initMemoryCommand: Command = {
         `Database Path:     ${result.dbPath}`,
         '',
         output.bold('Features:'),
-        `  Vector Embeddings: ${result.features.vectorEmbeddings ? output.success('✓ Enabled') : output.dim('✗ Disabled')}`,
-        `  Pattern Learning:  ${result.features.patternLearning ? output.success('✓ Enabled') : output.dim('✗ Disabled')}`,
-        `  Temporal Decay:    ${result.features.temporalDecay ? output.success('✓ Enabled') : output.dim('✗ Disabled')}`,
-        `  HNSW Indexing:     ${result.features.hnswIndexing ? output.success('✓ Enabled') : output.dim('✗ Disabled')}`,
-        `  Migration Tracking: ${result.features.migrationTracking ? output.success('✓ Enabled') : output.dim('✗ Disabled')}`
+        `  Vector Embeddings: ${result.features.vectorEmbeddings ? output.success('Ã¢Å“â€œ Enabled') : output.dim('Ã¢Å“â€” Disabled')}`,
+        `  Pattern Learning:  ${result.features.patternLearning ? output.success('Ã¢Å“â€œ Enabled') : output.dim('Ã¢Å“â€” Disabled')}`,
+        `  Temporal Decay:    ${result.features.temporalDecay ? output.success('Ã¢Å“â€œ Enabled') : output.dim('Ã¢Å“â€” Disabled')}`,
+        `  HNSW Indexing:     ${result.features.hnswIndexing ? output.success('Ã¢Å“â€œ Enabled') : output.dim('Ã¢Å“â€” Disabled')}`,
+        `  Migration Tracking: ${result.features.migrationTracking ? output.success('Ã¢Å“â€œ Enabled') : output.dim('Ã¢Å“â€” Disabled')}`
       ];
 
       if (verbose) {
@@ -1555,13 +1555,13 @@ const initMemoryCommand: Command = {
           if (verbose && activated.length > 0) {
             controllerLines.push('');
             for (const name of activated) {
-              controllerLines.push(`  ${output.success('✓')} ${name}`);
+              controllerLines.push(`  ${output.success('Ã¢Å“â€œ')} ${name}`);
             }
           }
           if (failed.length > 0 && verbose) {
             controllerLines.push('');
             for (const name of failed) {
-              controllerLines.push(`  ${output.dim('✗')} ${name}`);
+              controllerLines.push(`  ${output.dim('Ã¢Å“â€”')} ${name}`);
             }
           }
           output.printBox(controllerLines.join('\n'), 'Controller Registry (ADR-053)');
@@ -1623,7 +1623,7 @@ const initMemoryCommand: Command = {
               { key: 'duration', header: 'Time', width: 8, align: 'right' }
             ],
             data: verification.tests.map(t => ({
-              status: t.passed ? output.success('✓') : output.error('✗'),
+              status: t.passed ? output.success('Ã¢Å“â€œ') : output.error('Ã¢Å“â€”'),
               name: t.name,
               details: t.details || '',
               duration: t.duration ? `${t.duration}ms` : '-'
@@ -1637,13 +1637,13 @@ const initMemoryCommand: Command = {
       // Show next steps
       output.writeln(output.bold('Next Steps:'));
       output.printList([
-        `Store data: ${output.highlight('claude-flow memory store -k "key" --value "data"')}`,
-        `Search: ${output.highlight('claude-flow memory search -q "query"')}`,
-        `Train patterns: ${output.highlight('claude-flow neural train -p coordination')}`,
-        `View stats: ${output.highlight('claude-flow memory stats')}`
+        `Store data: ${output.highlight('ruflo memory store -k "key" --value "data"')}`,
+        `Search: ${output.highlight('ruflo memory search -q "query"')}`,
+        `Train patterns: ${output.highlight('ruflo neural train -p coordination')}`,
+        `View stats: ${output.highlight('ruflo memory stats')}`
       ]);
 
-      // Also sync to .claude directory
+      // Also sync to .cursor directory
       const fs = await import('fs');
       const path = await import('path');
       const claudeDir = path.join(process.cwd(), '.claude');
@@ -1686,15 +1686,15 @@ export const memoryCommand: Command = {
   subcommands: [initMemoryCommand, storeCommand, retrieveCommand, searchCommand, listCommand, deleteCommand, statsCommand, configureCommand, cleanupCommand, compressCommand, exportCommand, importCommand],
   options: [],
   examples: [
-    { command: 'claude-flow memory store -k "key" -v "value"', description: 'Store data' },
-    { command: 'claude-flow memory search -q "auth patterns"', description: 'Search memory' },
-    { command: 'claude-flow memory stats', description: 'Show statistics' }
+    { command: 'ruflo memory store -k "key" -v "value"', description: 'Store data' },
+    { command: 'ruflo memory search -q "auth patterns"', description: 'Search memory' },
+    { command: 'ruflo memory stats', description: 'Show statistics' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
     output.writeln(output.bold('Memory Management Commands'));
     output.writeln();
-    output.writeln('Usage: claude-flow memory <subcommand> [options]');
+    output.writeln('Usage: ruflo memory <subcommand> [options]');
     output.writeln();
     output.writeln('Subcommands:');
     output.printList([

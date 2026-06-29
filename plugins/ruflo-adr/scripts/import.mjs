@@ -16,7 +16,7 @@
 //   IMPORT_DRY_RUN=1 node scripts/import.mjs         # parse + summarize, skip memory_store
 //   ADR_ROOT=/path/to/repo node scripts/import.mjs   # override scan root (default: cwd)
 //
-// Why a script, not raw MCP calls: 70+ ADRs × multiple memory_store calls each
+// Why a script, not raw MCP calls: 70+ ADRs Ã— multiple memory_store calls each
 // is hundreds of MCP round-trips. spawnSync over the CLI is materially faster
 // and avoids shell-quoting pitfalls in the ADR titles.
 
@@ -24,7 +24,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
-// ADR-100 / #1748 Issue 3 — CLI_CORE=1 routes to lite cli-core (~2s cold-cache).
+// ADR-100 / #1748 Issue 3 â€” CLI_CORE=1 routes to lite cli-core (~2s cold-cache).
 // Note: cli-core's JsonMemoryBackend overwrites by default, so the
 // "exists" / UNIQUE-constraint detection below collapses to "ok" under CLI_CORE.
 // Re-running import in CLI_CORE mode is therefore idempotent (records refreshed)
@@ -36,20 +36,20 @@ const CLI_PKG = process.env.CLI_CORE === '1'
 
 const ROOT = process.env.ADR_ROOT || process.cwd();
 // #2474 bonus: \`.claude/worktrees/*\` mirrors the repo so every ADR was
-// indexed 2-3x. Skip the whole \`.claude\` tree — it's all ruflo runtime
+// indexed 2-3x. Skip the whole \`.claude\` tree â€” it's all ruflo runtime
 // state (worktrees, scheduled tasks, etc.), never authored content.
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'v2', '.next', '.turbo', 'build', '.claude']);
 
 // #2474 Bug 4: parseId padded ADR numbers, but extractAdrRefs's
 // padStart-then-strip pipeline produced different results for the same
-// numeric value. A repo mixing `0001-foo.md` (parseId → ADR-0001) with
-// a body line `Supersedes: ADR-0001` (extractAdrRefs → ADR-001) drops
+// numeric value. A repo mixing `0001-foo.md` (parseId â†’ ADR-0001) with
+// a body line `Supersedes: ADR-0001` (extractAdrRefs â†’ ADR-001) drops
 // every edge as dangling. Single normalizer keeps both paths in lockstep.
 function normalizeAdrId(raw) {
   const digits = String(raw).replace(/^ADR-?/i, '').trim();
   if (!/^\d+$/.test(digits)) return `ADR-${raw}`;
-  // Canonical form: ≤3 digits → zero-pad to 3 (legacy default);
-  // ≥4 digits → keep as-is. Either way, the same numeric input from
+  // Canonical form: â‰¤3 digits â†’ zero-pad to 3 (legacy default);
+  // â‰¥4 digits â†’ keep as-is. Either way, the same numeric input from
   // a filename and from a body reference now produce the same key.
   return digits.length >= 4 ? `ADR-${digits}` : `ADR-${digits.padStart(3, '0')}`;
 }
@@ -176,7 +176,7 @@ function parseLinks(text, selfId) {
   }
   // Body relationship lines. #2474 Bug 3: loosened to accept both colon
   // placements (`**Supersedes:**` and `**Supersedes**:`) and an optional
-  // parenthetical qualifier like `**Supersedes (partial):**` — same
+  // parenthetical qualifier like `**Supersedes (partial):**` â€” same
   // tolerance as parseStatus.
   const REL = (label) => new RegExp(`^\\*\\*${label}(?:\\s*\\([^)]*\\))?:?\\*\\*:?\\s*(.+)$`, 'mi');
   const supersedes = REL('Supersedes').exec(text);
@@ -210,14 +210,14 @@ function extractAdrRefs(s) {
 
 function memoryStore(namespace, key, value) {
   const valueStr = typeof value === 'string' ? value : JSON.stringify(value);
-  // #2474 Bug 1 (fatal): ADR titles like "ADR-005 — Repository …" contain
+  // #2474 Bug 1 (fatal): ADR titles like "ADR-005 â€” Repository â€¦" contain
   // a U+2014 em-dash. \`npm exec\` runs argv validation BEFORE handing args
   // to the underlying bin, and \`commander\`-style argv with a non-ASCII
   // dash that starts an arg makes it reject with:
-  //   npm error arg Argument starts with non-ascii dash, this is probably invalid: — …
-  // Result: every store failed → \`Records stored: 0/N\`.
+  //   npm error arg Argument starts with non-ascii dash, this is probably invalid: â€” â€¦
+  // Result: every store failed â†’ \`Records stored: 0/N\`.
   //
-  // Use the \`--flag=value\` form so npm sees a single \`--value=…\` token
+  // Use the \`--flag=value\` form so npm sees a single \`--value=â€¦\` token
   // and doesn't try to interpret the leading character of the value.
   // This works on both legacy and current npm; the underlying CLI accepts
   // \`--flag=value\` and \`--flag value\` equivalently.
@@ -251,7 +251,7 @@ const errors = [];
 if (!dryRun) {
   for (const a of adrs) {
     const r = memoryStore('adr-patterns', `${a.id}::${basename(a.file, '.md')}`,
-      `${a.title} — ${a.context || '(no context)'}\n\nfile: ${a.file}\nstatus: ${a.status}\ndate: ${a.date}\ntags: ${a.tags.join(',')}`);
+      `${a.title} â€” ${a.context || '(no context)'}\n\nfile: ${a.file}\nstatus: ${a.status}\ndate: ${a.date}\ntags: ${a.tags.join(',')}`);
     if (r === 'ok' || r === 'exists') storedRecords++;
     else errors.push(`${a.id} ${a.file}: ${r}`);
   }
@@ -311,8 +311,8 @@ console.log(`### Relationships: **${result.edges}** edges`);
 for (const [k, n] of Object.entries(byRelation).sort((a, b) => b[1] - a[1])) console.log(`- ${k}: ${n}`);
 console.log('');
 console.log('### Issues found');
-console.log(`- Dangling refs (edge → non-existent ADR): ${danglingRefs.length}`);
-for (const d of danglingRefs.slice(0, 10)) console.log(`  - ${d.relation} ${d.from} → ${d.to} (missing)`);
+console.log(`- Dangling refs (edge â†’ non-existent ADR): ${danglingRefs.length}`);
+for (const d of danglingRefs.slice(0, 10)) console.log(`  - ${d.relation} ${d.from} â†’ ${d.to} (missing)`);
 console.log(`- Status mismatches (superseded but not marked): ${statusMismatches.length}`);
 for (const m of statusMismatches.slice(0, 10)) console.log(`  - ${m.id} status='${m.status}' (${m.file})`);
 console.log(`- Storage errors: ${errors.length}`);

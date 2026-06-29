@@ -53,8 +53,8 @@ async function fetchNpmStats(packageName: string): Promise<{ downloads: number; 
 /**
  * Live IPFS Registry CID - Updated 2026-05-11
  * This is the current pinned registry on Pinata.
- * 2026-05-11: bumped agentic-qe→3.0.0-alpha.5, gastown-bridge→0.1.4,
- * legal-contracts/healthcare-clinical/perf-optimizer→3.0.0-alpha.2
+ * 2026-05-11: bumped agentic-qeâ†’3.0.0-alpha.5, gastown-bridgeâ†’0.1.4,
+ * legal-contracts/healthcare-clinical/perf-optimizerâ†’3.0.0-alpha.2
  * (republished to fix #1902/#1903/#1904 install breakage).
  */
 export const LIVE_REGISTRY_CID = 'QmeXmAdbWVvT84GfDXPD2Vg1HWhiTW2VdZfRLhkS96KkX2';
@@ -91,7 +91,7 @@ export const DEFAULT_PLUGIN_STORE_CONFIG: PluginStoreConfig = {
   defaultRegistry: 'claude-flow-official',
   gateway: 'https://gateway.pinata.cloud',
   timeout: 30000,
-  cacheDir: '.claude-flow/plugins/cache',
+  cacheDir: '.cursor-flow/plugins/cache',
   cacheExpiry: 3600000, // 1 hour
   requireVerification: true,
   requireSecurityAudit: false,
@@ -179,7 +179,7 @@ export class PluginDiscoveryService {
       }
 
       // Verify registry signature when required.
-      // Fail closed on missing/invalid signature — silently warning and using
+      // Fail closed on missing/invalid signature â€” silently warning and using
       // an unverified registry would let a compromised IPFS gateway (or any
       // on-path attacker) swap in attacker-mapped plugin entries that the
       // installer would then load unsandboxed.
@@ -236,7 +236,7 @@ export class PluginDiscoveryService {
         { id: 'integrations', name: 'Integrations', description: 'Third-party integrations', pluginCount: 2 },
         { id: 'agents', name: 'Agents', description: 'Custom agent types', pluginCount: 1 },
         { id: 'iot', name: 'IoT', description: 'IoT device management and fleet orchestration', pluginCount: 1 },
-        // ADR-150 — MetaHarness-generated standalone harnesses
+        // ADR-150 â€” MetaHarness-generated standalone harnesses
         // surface alongside plugins. Filter via `--type harness`.
         { id: 'harness', name: 'Harness', description: 'MetaHarness-generated standalone agent harnesses (ADR-150)', pluginCount: 0 },
       ],
@@ -1053,7 +1053,7 @@ export class PluginDiscoveryService {
         id: '@claude-flow/plugin-iot-cognitum',
         name: '@claude-flow/plugin-iot-cognitum',
         displayName: 'IoT Cognitum',
-        description: 'Cognitum Seed device-agent bridge — treat every Seed as a Ruflo agent with 5-tier trust scoring, Ed25519 witness chains, mesh networking, and fleet management.',
+        description: 'Cognitum Seed device-agent bridge â€” treat every Seed as a Ruflo agent with 5-tier trust scoring, Ed25519 witness chains, mesh networking, and fleet management.',
         version: '1.0.0-alpha.1',
         cid: 'bafybeiiotcognitumplugin2026',
         size: 340000,
@@ -1214,7 +1214,7 @@ export class PluginDiscoveryService {
    * removes registrySignature + registryPublicKey from the registry object
    * and signs JSON.stringify(rest). The verifier reproduces those bytes and
    * checks the signature against the registry config's pre-pinned
-   * publicKey — NOT registry.registryPublicKey, which is asserted by
+   * publicKey â€” NOT registry.registryPublicKey, which is asserted by
    * whoever served the registry and can be swapped by a compromised
    * gateway / on-path attacker.
    */

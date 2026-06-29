@@ -72,7 +72,7 @@ function loadSession(sessionId: string): SessionRecord | null {
 function saveSession(session: SessionRecord): void {
   ensureSessionDir();
   // audit_1776853149979: session JSON contains memory snapshots and agent
-  // prompts — restrict to owner read/write.
+  // prompts â€” restrict to owner read/write.
   // ADR-096 Phase 2: opt-in encrypt-at-rest. The encrypt flag is honored
   // only when CLAUDE_FLOW_ENCRYPT_AT_REST is set; otherwise the legacy
   // plaintext path runs unchanged.
@@ -140,7 +140,7 @@ function loadRelatedStores(options: { includeMemory?: boolean; includeTasks?: bo
 export const sessionTools: MCPTool[] = [
   {
     name: 'session_save',
-    description: 'Save current session state Use when native conversation memory is wrong because you need durable cross-session state — restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
+    description: 'Save current session state Use when native conversation memory is wrong because you need durable cross-session state â€” restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
     category: 'session',
     inputSchema: {
       type: 'object',
@@ -205,7 +205,7 @@ export const sessionTools: MCPTool[] = [
   },
   {
     name: 'session_restore',
-    description: 'Restore a saved session Use when native conversation memory is wrong because you need durable cross-session state — restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
+    description: 'Restore a saved session Use when native conversation memory is wrong because you need durable cross-session state â€” restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
     category: 'session',
     inputSchema: {
       type: 'object',
@@ -306,7 +306,7 @@ export const sessionTools: MCPTool[] = [
   },
   {
     name: 'session_list',
-    description: 'List saved sessions Use when native conversation memory is wrong because you need durable cross-session state — restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
+    description: 'List saved sessions Use when native conversation memory is wrong because you need durable cross-session state â€” restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
     category: 'session',
     inputSchema: {
       type: 'object',
@@ -317,8 +317,8 @@ export const sessionTools: MCPTool[] = [
     },
     handler: async (input) => {
       // ADR-093 F6: sessions on disk come from two writers with different
-      // shapes — `session_save` writes {sessionId, name, savedAt, stats},
-      // while the auto-session writer (claude-flow daemon) writes
+      // shapes â€” `session_save` writes {sessionId, name, savedAt, stats},
+      // while the auto-session writer (ruflo daemon) writes
       // {id, startedAt, ...}. The previous projection assumed only the
       // first shape, so the second shape collapsed to empty objects in
       // session_list output.
@@ -374,7 +374,7 @@ export const sessionTools: MCPTool[] = [
   },
   {
     name: 'session_delete',
-    description: 'Delete a saved session Use when native conversation memory is wrong because you need durable cross-session state — restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
+    description: 'Delete a saved session Use when native conversation memory is wrong because you need durable cross-session state â€” restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
     category: 'session',
     inputSchema: {
       type: 'object',
@@ -409,7 +409,7 @@ export const sessionTools: MCPTool[] = [
   },
   {
     name: 'session_info',
-    description: 'Get detailed session information Use when native conversation memory is wrong because you need durable cross-session state — restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
+    description: 'Get detailed session information Use when native conversation memory is wrong because you need durable cross-session state â€” restoring agent definitions, swarm topology, memory store, breaker history. For in-session continuation only, no tool needed. Pair with session_save before exiting and session_restore on resume.',
     category: 'session',
     inputSchema: {
       type: 'object',
@@ -456,7 +456,7 @@ export const sessionTools: MCPTool[] = [
     // #1916: `ruflo session current` referenced an unregistered
     // `session_current` tool. Returns the most-recently-saved session.
     name: 'session_current',
-    description: 'Return the most-recently-saved session (id, name, stats) — the de-facto "current" one. Use when native conversation memory is wrong because you need to know which durable session is active before exporting/restoring it. For in-session continuation only, no tool needed. Pair with session_export / session_restore.',
+    description: 'Return the most-recently-saved session (id, name, stats) â€” the de-facto "current" one. Use when native conversation memory is wrong because you need to know which durable session is active before exporting/restoring it. For in-session continuation only, no tool needed. Pair with session_export / session_restore.',
     category: 'session',
     inputSchema: { type: 'object', properties: {} },
     handler: async () => {
@@ -493,7 +493,7 @@ export const sessionTools: MCPTool[] = [
       properties: {
         sessionId: { type: 'string', description: 'Session ID to export' },
         outputPath: { type: 'string', description: 'File path to write the export to (optional)' },
-        includeMemory: { type: 'boolean', description: 'Include the memory snapshot (advisory — already in the saved record)' },
+        includeMemory: { type: 'boolean', description: 'Include the memory snapshot (advisory â€” already in the saved record)' },
       },
       required: ['sessionId'],
     },

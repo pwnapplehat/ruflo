@@ -101,34 +101,29 @@ export function generateMCPJson(options: InitOptions): string {
 }
 
 /**
- * Generate MCP server add commands for manual setup
+ * Generate MCP server setup instructions for the Cursor-native path.
+ *
+ * Cursor does not use a `claude mcp add` CLI — MCP servers are registered via
+ * `.cursor/mcp.json` (written by cursor-executor.ts using generateCursorMcpJson).
+ * This function returns plain-English instructions for users who need to
+ * register ruflo manually in Cursor Settings → Tools & MCP.
  */
 export function generateMCPCommands(options: InitOptions): string[] {
   const commands: string[] = [];
   const config = options.mcp;
 
-  if (isWindows()) {
-    if (config.claudeFlow) {
-      // #2206: registration name must be 'claude-flow' to match mcp__claude-flow__* tool naming
-      commands.push('claude mcp add claude-flow -- cmd /c npx -y ruflo@latest mcp start');
+  if (config.claudeFlow) {
+    if (isWindows()) {
+      commands.push('Cursor: add ruflo to .cursor/mcp.json with command "cmd" args ["/c","npx","-y","ruflo@latest","mcp","start"]  (or use Cursor Settings → Tools & MCP → New MCP Server)');
+    } else {
+      commands.push('Cursor: add ruflo to .cursor/mcp.json with command "npx" args ["-y","ruflo@latest","mcp","start"]  (or use Cursor Settings → Tools & MCP → New MCP Server)');
     }
-    if (config.ruvSwarm) {
-      commands.push('claude mcp add ruv-swarm -- cmd /c npx -y ruv-swarm mcp start');
-    }
-    if (config.flowNexus) {
-      commands.push('claude mcp add flow-nexus -- cmd /c npx -y flow-nexus@latest mcp start');
-    }
-  } else {
-    if (config.claudeFlow) {
-      // #2206: registration name must be 'claude-flow' to match mcp__claude-flow__* tool naming
-      commands.push("claude mcp add claude-flow -- npx -y ruflo@latest mcp start");
-    }
-    if (config.ruvSwarm) {
-      commands.push("claude mcp add ruv-swarm -- npx -y ruv-swarm mcp start");
-    }
-    if (config.flowNexus) {
-      commands.push("claude mcp add flow-nexus -- npx -y flow-nexus@latest mcp start");
-    }
+  }
+  if (config.ruvSwarm) {
+    commands.push('Cursor: add ruv-swarm to .cursor/mcp.json (npx -y ruv-swarm mcp start)');
+  }
+  if (config.flowNexus) {
+    commands.push('Cursor: add flow-nexus to .cursor/mcp.json (npx -y flow-nexus@latest mcp start)');
   }
 
   return commands;

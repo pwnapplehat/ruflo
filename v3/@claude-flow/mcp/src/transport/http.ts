@@ -8,6 +8,7 @@ import { EventEmitter } from 'events';
 import express, { Express, Request, Response, NextFunction } from 'express';
 import { createServer, Server } from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
+import * as crypto from 'node:crypto';
 import cors from 'cors';
 import helmet from 'helmet';
 import type {
@@ -476,7 +477,7 @@ export class HttpTransport extends EventEmitter implements ITransport {
    * SECURITY: Timing-safe token comparison to prevent timing attacks
    */
   private timingSafeCompare(a: string, b: string): boolean {
-    const crypto = require('crypto');
+    // crypto is imported at the top of the file as `node:crypto`
 
     // Ensure both strings are the same length for timing-safe comparison
     const bufA = Buffer.from(a, 'utf-8');

@@ -10,21 +10,21 @@ import path from 'path';
  * Components that can be initialized
  */
 export interface InitComponents {
-  /** Create .claude/settings.json with hooks */
+  /** Create .cursor/hooks.json with hooks */
   settings: boolean;
-  /** Copy skills to .claude/skills/ */
+  /** Copy skills to .cursor/skills/ */
   skills: boolean;
-  /** Copy commands to .claude/commands/ */
+  /** Copy commands to .cursor/rules/ */
   commands: boolean;
-  /** Copy agents to .claude/agents/ */
+  /** Copy agents to .cursor/agents/ */
   agents: boolean;
-  /** Create helper scripts in .claude/helpers/ */
+  /** Create helper scripts in .cursor/hooks/ */
   helpers: boolean;
   /** Configure statusline */
   statusline: boolean;
   /** Create MCP configuration */
   mcp: boolean;
-  /** Create .claude-flow/ directory (V3 runtime) */
+  /** Create .cursor-flow/ directory (V3 runtime) */
   runtime: boolean;
   /** Create CLAUDE.md with swarm guidance */
   claudeMd: boolean;
@@ -107,7 +107,7 @@ export interface CommandsConfig {
   optimization: boolean;
   /** Include SPARC commands */
   sparc: boolean;
-  // ADR-128 Phase 4 — substrate promotions (default true)
+  // ADR-128 Phase 4 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â substrate promotions (default true)
   /** Include agents commands */
   agents?: boolean;
   /** Include coordination commands */
@@ -120,7 +120,7 @@ export interface CommandsConfig {
   swarm?: boolean;
   /** Include workflows commands */
   workflows?: boolean;
-  // ADR-128 Phase 4 — opt-in categories (default false)
+  // ADR-128 Phase 4 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â opt-in categories (default false)
   /** Include pair programming commands (opt-in) */
   pair?: boolean;
   /** Include training commands (opt-in) */
@@ -189,7 +189,7 @@ export interface StatuslineConfig {
  * MCP configuration
  */
 export interface MCPConfig {
-  /** Include claude-flow MCP server */
+  /** Include ruflo MCP server */
   claudeFlow: boolean;
   /** Include ruv-swarm MCP server */
   ruvSwarm: boolean;
@@ -202,7 +202,7 @@ export interface MCPConfig {
 }
 
 /**
- * Runtime configuration (.claude-flow/)
+ * Runtime configuration (.cursor-flow/)
  */
 export interface RuntimeConfig {
   /** Swarm topology */
@@ -236,9 +236,9 @@ export interface EmbeddingsConfig {
   enabled: boolean;
   /** ONNX model ID */
   model: 'Xenova/all-MiniLM-L6-v2' | 'Xenova/all-mpnet-base-v2' | 'Xenova/bge-small-en-v1.5' | string;
-  /** Enable hyperbolic (Poincaré ball) embeddings */
+  /** Enable hyperbolic (PoincarÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© ball) embeddings */
   hyperbolic: boolean;
-  /** Poincaré ball curvature (negative value, typically -1) */
+  /** PoincarÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â© ball curvature (negative value, typically -1) */
   curvature: number;
   /** Pre-download model during init */
   predownload: boolean;
@@ -336,18 +336,24 @@ export interface InitOptions {
   /** Embeddings configuration */
   embeddings: EmbeddingsConfig;
   /**
-   * Skip the user-global ~/.claude/CLAUDE.md "Ruflo Integration" pointer block.
-   * Defaults to false (current behavior — block is appended once, idempotent).
+   * Skip the user-global ~/.cursor/AGENTS.md "Ruflo Integration" pointer block.
+   * Defaults to false (current behavior ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â block is appended once, idempotent).
    * Set true via --no-global to keep the global Claude rules file pristine (#1744).
    */
   skipGlobalClaudeMd?: boolean;
   /**
-   * #1670 — opt in to writing the `attribution` block in `.claude/settings.json`
+   * #1670 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â opt in to writing the `attribution` block in `.cursor/hooks.json`
    * (Co-Authored-By trailer + PR footer). Defaults to false: most users do not
    * want a third-party Co-Authored-By line silently added to their commits and
    * GitHub contributor graph. Pass `--attribution` to opt in.
    */
   attribution?: boolean;
+  /**
+   * Target host for init output. This Cursor-native fork always writes the
+   * .cursor/ tree ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â the field is retained for API stability but only 'cursor'
+   * is accepted. Claude Code integration has been fully removed.
+   */
+  host?: 'cursor';
 }
 
 /**
@@ -357,6 +363,10 @@ export const DEFAULT_INIT_OPTIONS: InitOptions = {
   targetDir: process.cwd(),
   force: false,
   interactive: true,
+  // Cursor-fork default: emit the .cursor/ tree (mcp.json, hooks.json, agents,
+  // skills, rules) + AGENTS.md. Set host: 'claude' to preserve the legacy
+  // .cursor/ tree (Claude Code integration removed).
+  host: 'cursor',
   components: {
     settings: true,
     skills: true,
@@ -400,14 +410,14 @@ export const DEFAULT_INIT_OPTIONS: InitOptions = {
     monitoring: true,
     optimization: true,
     sparc: true,
-    // ADR-128 Phase 4 substrate promotions (default true — core swarm substrate)
+    // ADR-128 Phase 4 substrate promotions (default true ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â core swarm substrate)
     agents: true,
     coordination: true,
     hiveMind: true,
     memory: true,
     swarm: true,
     workflows: true,
-    // ADR-128 Phase 4 opt-in (default false — not universal)
+    // ADR-128 Phase 4 opt-in (default false ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â not universal)
     pair: false,
     training: false,
     streamChain: false,

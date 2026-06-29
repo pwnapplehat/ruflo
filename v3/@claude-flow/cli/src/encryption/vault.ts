@@ -20,7 +20,7 @@
  * The magic distinguishes encrypted blobs from plaintext during the
  * incremental migration: readers call isEncryptedBlob() and either
  * decryptBuffer() or treat the bytes as plaintext, so existing
- * .claude-flow/sessions/*.json files keep working unchanged.
+ * .cursor-flow/sessions/*.json files keep working unchanged.
  */
 
 import {
@@ -30,9 +30,9 @@ import {
   timingSafeEqual,
 } from 'node:crypto';
 
-// ── Constants ────────────────────────────────────────────────────────────────
+// â”€â”€ Constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-/** ASCII "RFE1" — Ruflo File Encrypted v1. 4 bytes. */
+/** ASCII "RFE1" â€” Ruflo File Encrypted v1. 4 bytes. */
 export const MAGIC = Buffer.from([0x52, 0x46, 0x45, 0x31]); // "RFE1"
 const MAGIC_LEN = MAGIC.length; // 4
 const IV_LEN = 12;              // GCM-recommended nonce size
@@ -44,13 +44,13 @@ const MIN_BLOB_LEN = MAGIC_LEN + IV_LEN + TAG_LEN; // empty plaintext still has 
 const ENV_ENABLE_FLAG = 'CLAUDE_FLOW_ENCRYPT_AT_REST';
 const ENV_KEY_VAR = 'CLAUDE_FLOW_ENCRYPTION_KEY';
 
-// ── Public API ───────────────────────────────────────────────────────────────
+// â”€â”€ Public API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * True when at-rest encryption should be applied to writes.
  *
  * Truthy values: "1", "true", "yes", "on" (case-insensitive). Anything else
- * — including unset — keeps the legacy plaintext path. This is the gate
+ * â€” including unset â€” keeps the legacy plaintext path. This is the gate
  * that lets the 1865-test baseline keep passing unchanged while users opt
  * into encryption.
  */
@@ -74,7 +74,7 @@ export function isEncryptionEnabled(): boolean {
  *   - 44-char base64 (32 bytes + padding)
  *   - exactly 32 raw bytes (rare; for callers that pre-decode)
  *
- * Anything else is rejected — we'd rather fail loudly than encrypt with a
+ * Anything else is rejected â€” we'd rather fail loudly than encrypt with a
  * truncated key.
  */
 export function getKey(): Buffer {
@@ -96,11 +96,11 @@ export function getKey(): Buffer {
  */
 export function decodeKey(raw: string): Buffer {
   const trimmed = raw.trim();
-  // Hex first — strict 64 chars [0-9a-fA-F]
+  // Hex first â€” strict 64 chars [0-9a-fA-F]
   if (/^[0-9a-fA-F]{64}$/.test(trimmed)) {
     return Buffer.from(trimmed, 'hex');
   }
-  // Base64 — accept padded 44-char or unpadded 43-char forms
+  // Base64 â€” accept padded 44-char or unpadded 43-char forms
   if (/^[A-Za-z0-9+/]{43}=?$/.test(trimmed)) {
     const buf = Buffer.from(trimmed, 'base64');
     if (buf.length === KEY_LEN) return buf;
@@ -115,7 +115,7 @@ export function decodeKey(raw: string): Buffer {
  * blob: magic(4) || iv(12) || ciphertext(N) || tag(16).
  *
  * The IV is freshly randomized per call. Reusing a (key, iv) pair under
- * GCM is catastrophic — every call MUST produce a different IV. Node's
+ * GCM is catastrophic â€” every call MUST produce a different IV. Node's
  * randomBytes is csprng-backed so this is automatic; the function takes
  * no IV input deliberately.
  */
@@ -137,7 +137,7 @@ export function encryptBuffer(plaintext: Buffer, key: Buffer): Buffer {
  * Decrypt a wire-format blob. Verifies the magic byte (sanity), parses
  * iv + ciphertext + tag, runs AES-256-GCM decrypt, and lets the GCM
  * auth tag fail loudly on tamper (Node throws "Unsupported state or
- * unable to authenticate data" — we let that propagate).
+ * unable to authenticate data" â€” we let that propagate).
  *
  * Pre-condition: caller has already determined this is an encrypted
  * blob via isEncryptedBlob(). decryptBuffer throws on bad magic so a
@@ -161,7 +161,7 @@ export function decryptBuffer(blob: Buffer, key: Buffer): Buffer {
   // not strictly required (the magic isn't secret) but cheap and correct.
   if (!timingSafeEqual(magic, MAGIC)) {
     throw new Error(
-      'decryptBuffer: bad magic — blob is not Ruflo-encrypted (RFE1)',
+      'decryptBuffer: bad magic â€” blob is not Ruflo-encrypted (RFE1)',
     );
   }
   const iv = blob.subarray(MAGIC_LEN, MAGIC_LEN + IV_LEN);
@@ -180,7 +180,7 @@ export function decryptBuffer(blob: Buffer, key: Buffer): Buffer {
  * through the existing read path unchanged.
  *
  * Note: this is a heuristic. A plaintext file that happens to start with
- * "RFE1" would be misdetected — we accept that vanishingly small risk
+ * "RFE1" would be misdetected â€” we accept that vanishingly small risk
  * because (a) the four bytes 0x52,0x46,0x45,0x31 are an unusual prefix
  * for JSON (`{`, `[`) or SQLite (`SQLite format 3`), and (b) decryption
  * will then fail with a clear error rather than silently corrupt.

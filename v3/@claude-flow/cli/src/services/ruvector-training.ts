@@ -327,7 +327,7 @@ export async function initializeTraining(config: TrainingConfig = {}): Promise<{
     features.push(`MicroLoRA/WASM (${dim}-dim, <1μs adaptation)`);
 
     scopedLoRA = new learningWasm.WasmScopedLoRA(dim, alpha, lr);
-    scopedLoRA.set_category_fallback(true);
+    if (scopedLoRA) scopedLoRA.set_category_fallback(true);
     features.push('ScopedLoRA/WASM (17 operators)');
 
     trajectoryBuffer = new learningWasm.WasmTrajectoryBuffer(

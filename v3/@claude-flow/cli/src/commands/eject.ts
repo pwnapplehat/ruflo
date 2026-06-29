@@ -1,7 +1,7 @@
 /**
- * V3 CLI Eject Command — ADR-150 Phase-2 differentiator.
+ * V3 CLI Eject Command â€” ADR-150 Phase-2 differentiator.
  *
- * Lifts the calling ruflo/claude-flow project into a renamed standalone
+ * Lifts the calling ruflo/ruflo project into a renamed standalone
  * harness using `metaharness --from-existing <dir>`. Attribution to
  * ruflo is preserved via the upstream's `<!-- ruflo-attribution-block -->`
  * convention.
@@ -14,7 +14,7 @@
  *   1. Dry-run by default. `--confirm` required for any disk write.
  *   2. `--target` MUST resolve OUTSIDE the calling repo root. Default
  *      is `/tmp/ruflo-eject-<ts>-<name>/`. Writing to the calling repo
- *      is refused with exit 2 — protects the user from `cwd: $ruflo`
+ *      is refused with exit 2 â€” protects the user from `cwd: $ruflo`
  *      eject accidents.
  *   3. Refuses existing target dirs (no overwrites).
  *   4. Subprocess + 10-minute hard timeout. No library import; no
@@ -23,7 +23,7 @@
  * ADR-150 ARCHITECTURAL CONSTRAINT
  *   When metaharness is unavailable (offline, no network), the command
  *   exits 0 with a structured "feature not available" message. Ruflo
- *   continues to function — rule #3 (graceful degradation).
+ *   continues to function â€” rule #3 (graceful degradation).
  *
  * Created with ruv.io
  */
@@ -65,7 +65,7 @@ function runEject(targetDir: string, name: string): { exitCode: number; stderr: 
       shell: process.platform === 'win32',
     }
   );
-  const stderr = '';  // stdio: inherit — captured by terminal not by us
+  const stderr = '';  // stdio: inherit â€” captured by terminal not by us
   if (r.status === null) {
     return { exitCode: 124, stderr: 'subprocess timed out after 10 minutes', degraded: false };
   }
@@ -116,7 +116,7 @@ export const ejectCommand: Command = {
     },
   ],
   async action(context: CommandContext): Promise<CommandResult> {
-    // iter 128 — flags declared on the Command get parsed by the CLI parser
+    // iter 128 â€” flags declared on the Command get parsed by the CLI parser
     // and land in context.flags (NOT context.options or context.args).
     // Fall back to parseArgs(context.args) for programmatic invocations
     // where the parser wasn't used (e.g. unit tests).
@@ -151,7 +151,7 @@ export const ejectCommand: Command = {
       return { success: false, exitCode: 2, data: { error: 'target-inside-repo', target, repoRoot } };
     }
     if (existsSync(target)) {
-      output.writeln(output.error(`eject: target ${target} already exists — refusing to overwrite`));
+      output.writeln(output.error(`eject: target ${target} already exists â€” refusing to overwrite`));
       return { success: false, exitCode: 2, data: { error: 'target-exists', target } };
     }
 
@@ -182,13 +182,13 @@ export const ejectCommand: Command = {
     }
 
     // Actually run.
-    output.writeln(output.bold('# ruflo eject — running'));
+    output.writeln(output.bold('# ruflo eject â€” running'));
     output.writeln('');
-    output.writeln(`Ejecting ${repoRoot} → ${target} as "${opts.name}"...`);
+    output.writeln(`Ejecting ${repoRoot} â†’ ${target} as "${opts.name}"...`);
     output.writeln('');
     const r = runEject(target, opts.name);
     if (r.degraded) {
-      output.writeln(output.warning('eject: metaharness binary unavailable — feature degraded'));
+      output.writeln(output.warning('eject: metaharness binary unavailable â€” feature degraded'));
       output.writeln(output.dim('(ADR-150 graceful degradation: ruflo runs without it; install with `npm i -D metaharness`.)'));
       return { success: true, exitCode: 0, data: { ...plan, degraded: true, reason: 'metaharness-not-available' } };
     }
@@ -198,7 +198,7 @@ export const ejectCommand: Command = {
       return { success: false, exitCode: r.exitCode, data: { ...plan, exitCode: r.exitCode } };
     }
     output.writeln('');
-    output.writeln(output.bold(`✓ Ejected to ${target}`));
+    output.writeln(output.bold(`âœ“ Ejected to ${target}`));
     output.writeln('');
     output.writeln(output.dim('Next steps:'));
     output.writeln(output.dim(`  cd ${target}`));

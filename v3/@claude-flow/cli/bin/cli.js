@@ -2,7 +2,7 @@
 /**
  * @claude-flow/cli - CLI Entry Point
  *
- * Claude Flow V3 Command Line Interface
+ * Ruflo V3 Command Line Interface (Cursor-native)
  *
  * Auto-detects MCP mode when stdin is piped and no args provided.
  * This allows: echo '{"jsonrpc":"2.0",...}' | npx @claude-flow/cli
@@ -17,15 +17,15 @@ import { dirname, join } from 'path';
 //
 // 1. Suppress the cosmetic "[AgentDB Patch] Controller index not found"
 //    warning from agentic-flow (it expects agentdb v1.x but we use v3).
-//    Tight match — must include BOTH the prefix AND the specific text;
+//    Tight match â€” must include BOTH the prefix AND the specific text;
 //    other [AgentDB Patch] messages flow through. Audit log
 //    audit_1776483149979 flagged a broader filter as too aggressive.
 //
 // 2. Redirect noisy stdout writes from upstream embedder libraries
 //    (ruvector ONNX loader, ruvector-onnx-embeddings-wasm parallel
 //    embedder) to stderr. Those libraries use console.log for progress
-//    messages — "Loading model:", "  Downloading: …", "🚀 Initializing N
-//    workers" — which corrupts MCP JSON-RPC stdio (#2253) and is noise
+//    messages â€” "Loading model:", "  Downloading: â€¦", "ðŸš€ Initializing N
+//    workers" â€” which corrupts MCP JSON-RPC stdio (#2253) and is noise
 //    on stdout. stderr is the right channel for progress to a TTY user,
 //    and the MCP stdio framer reads stdout only.
 //
@@ -42,17 +42,17 @@ const _STDERR_REDIRECT_PREFIXES = [
   '  Cache hit: ',
   '  Disk cache hit: ',
   'Model cache cleared',
-  '🚀 Initializing ',
-  '✅ ',
+  'ðŸš€ Initializing ',
+  'âœ… ',
 ];
 // agentdb's EmbeddingService.initialize() prints this cluster when
 // `@xenova/transformers` fails to load (commonly: macOS arm64 without
-// `brew install vips` — sharp can't resolve libvips). The warnings claim
+// `brew install vips` â€” sharp can't resolve libvips). The warnings claim
 // agentdb is "falling back to mock embeddings", but memory-bridge.ts's
 // rescueAgentdbEmbedder swaps the embedder over to ruvector ONNX in
 // that exact case, so the user is NOT on mocks. The warnings are stale
 // and misleading; drop them. Match anchored to exact upstream prefixes
-// (agentdb/dist/controllers/EmbeddingService.js:48–56) so unrelated
+// (agentdb/dist/controllers/EmbeddingService.js:48â€“56) so unrelated
 // warnings always flow through.
 const _AGENTDB_MOCK_FALLBACK_DROP_PREFIXES = [
   'Transformers.js initialization failed:',
@@ -94,7 +94,7 @@ console.log = (...args) => {
 };
 
 // #2256 fast path: --version / -V / --help / -h must NOT trigger heavy
-// imports (agentic-flow, ruvector ONNX, etc.) — those eagerly download a
+// imports (agentic-flow, ruvector ONNX, etc.) â€” those eagerly download a
 // 23 MB ONNX model on cold cache, blocking 60+ s and causing SIGTERM
 // under common timeout windows (npx default, MCP stdio 30 s). Resolve
 // version directly from package.json and exit before any heavy import.
@@ -110,7 +110,7 @@ console.log = (...args) => {
     }
     process.exit(0);
   }
-  // --help / -h with no other args also stays lightweight — fall through
+  // --help / -h with no other args also stays lightweight â€” fall through
   // to the existing fast help path inside index.ts; we don't short-circuit
   // here because some users pass `<command> --help` which needs lazy command
   // loading. The version short-circuit is the only one safe to inline.
@@ -119,8 +119,8 @@ console.log = (...args) => {
 // Check if we should run in MCP server mode
 // Conditions:
 //   1. stdin is being piped AND no CLI arguments provided (auto-detect)
-//   2. stdin is being piped AND args are "mcp start" (explicit, e.g. npx claude-flow@alpha mcp start)
-//   3. EXCEPT — if the user explicitly passed --transport <non-stdio>
+//   2. stdin is being piped AND args are "mcp start" (explicit, e.g. npx ruflo@latest mcp start)
+//   3. EXCEPT â€” if the user explicitly passed --transport <non-stdio>
 //      (e.g. -t http), defer to the parser. Without this, every smoke
 //      test or non-TTY caller of `mcp start -t http` got force-routed
 //      into stdio mode and never hit the HTTP server (#1874 follow-up).
@@ -145,15 +145,15 @@ if (isMCPMode) {
   const sessionId = `mcp-${Date.now()}-${randomUUID().slice(0, 8)}`;
 
   console.error(
-    `[${new Date().toISOString()}] INFO [claude-flow-mcp] (${sessionId}) Starting in stdio mode`
+    `[${new Date().toISOString()}] INFO [ruflo-mcp] (${sessionId}) Starting in stdio mode`
   );
 
   // Audit-flagged DoS protection (audit_1776483149979): cap the
   // newline-buffered stdin parser so a malicious client cannot pipe
   // gigabytes of un-newlined data and exhaust memory before
   // JSON.parse runs. 10MB is far above any legitimate MCP message
-  // (the protocol's largest realistic payloads — tool descriptions,
-  // batch search results — top out at ~1MB).
+  // (the protocol's largest realistic payloads â€” tool descriptions,
+  // batch search results â€” top out at ~1MB).
   const MCP_MAX_BUFFER_BYTES = 10 * 1024 * 1024;
   let buffer = '';
   process.stdin.setEncoding('utf8');
@@ -231,7 +231,10 @@ if (isMCPMode) {
             serverInfo: { name: 'ruflo', version: VERSION },
             capabilities: {
               tools: { listChanged: true },
-              resources: { subscribe: true, listChanged: true },
+              // Resources/prompts are NOT implemented in the stdio path (no
+              // resources/list or resources/read handler below). Advertising
+              // them would lie to strict MCP clients like Cursor. Removed per
+              // the Cursor-fork verification pass (cursor.com/docs/mcp).
             },
           },
         };

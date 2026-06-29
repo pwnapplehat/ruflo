@@ -1,0 +1,14 @@
+---
+description: hive-mind-sessions
+globs: 
+alwaysApply: false
+---
+# hive-mind-sessions
+
+Command documentation for hive-mind-sessions in category hive-mind.
+
+Usage:
+```bash
+npx ruflo hive-mind hive-mind-sessions [options]
+```
+

@@ -56,7 +56,7 @@ interface WorkerState {
   isRunning: boolean;
   // #1856: track when the worker last *started* in addition to when it
   // last successfully completed (lastRun). On crash recovery we scan for
-  // workers where lastStartedAt > lastRun and count them as failed —
+  // workers where lastStartedAt > lastRun and count them as failed Ã¢â‚¬â€
   // otherwise their runCount drifts above successCount + failureCount
   // with no diagnostic trail.
   lastStartedAt?: Date;
@@ -116,11 +116,11 @@ const DEFAULT_WORKERS: WorkerConfigInternal[] = [
   { type: 'document', intervalMs: 60 * 60 * 1000, offsetMs: 0, priority: 'low', description: 'Auto-documentation', enabled: false },
 ];
 
-// Worker timeout — must exceed the longest per-worker headless timeout (15 min for audit/refactor).
+// Worker timeout Ã¢â‚¬â€ must exceed the longest per-worker headless timeout (15 min for audit/refactor).
 // Previously 5 min, which caused orphan processes when daemon timeout fired before executor timeout (#1117).
 const DEFAULT_WORKER_TIMEOUT_MS = 16 * 60 * 1000;
 
-// #2356 — Self-terminating lifecycle defaults. A background daemon with no
+// #2356 Ã¢â‚¬â€ Self-terminating lifecycle defaults. A background daemon with no
 // upper bound on its lifetime runs until the box reboots; in the field this
 // leaked tens of thousands of headless `claude --print` sweeps over many days
 // (one observed daemon ran 19 days). A 12h default age cap (matching the
@@ -166,7 +166,7 @@ export class WorkerDaemon extends EventEmitter {
   // Headless execution support
   private headlessExecutor: HeadlessWorkerExecutor | null = null;
   private headlessAvailable: boolean = false;
-  // #2251 — Promise that resolves once initHeadlessExecutor() has finished
+  // #2251 Ã¢â‚¬â€ Promise that resolves once initHeadlessExecutor() has finished
   // probing `claude --version` and constructed the executor. The constructor
   // kicks off init fire-and-forget; without awaiting this on the trigger
   // path, `ruflo daemon trigger -w <worker>` runs before headlessAvailable
@@ -184,14 +184,14 @@ export class WorkerDaemon extends EventEmitter {
 
     const claudeFlowDir = join(projectRoot, '.claude-flow');
 
-    // Read daemon config from .claude-flow/config.json (Layer B)
+    // Read daemon config from .cursor-flow/config.json (Layer B)
     const fileConfig = this.readDaemonConfigFromFile(claudeFlowDir);
 
     // CPU-proportional smart default instead of hardcoded 2.0
     const cpuCount = WorkerDaemon.getEffectiveCpuCount();
     let smartMaxCpuLoad = Math.max(cpuCount * 0.8, 2.0); // Floor of 2.0 for single-CPU machines
 
-    // #2110 — WSL2 reports `/proc/loadavg` values that include Windows-side
+    // #2110 Ã¢â‚¬â€ WSL2 reports `/proc/loadavg` values that include Windows-side
     // process counts mapped into the Linux kernel. Real load on a 4-CPU
     // WSL2 host can be 200-400 even when the Linux side is idle. The
     // default gate of `cpuCount * 0.8` always trips, deferring every
@@ -221,7 +221,7 @@ export class WorkerDaemon extends EventEmitter {
         maxCpuLoad: config?.resourceThresholds?.maxCpuLoad ?? fileConfig.maxCpuLoad ?? smartMaxCpuLoad,
         minFreeMemoryPercent: config?.resourceThresholds?.minFreeMemoryPercent ?? fileConfig.minFreeMemoryPercent ?? defaultMinFreeMemory,
       },
-      // #2356 — precedence: constructor arg > config.json (daemon.ttlSecs) >
+      // #2356 Ã¢â‚¬â€ precedence: constructor arg > config.json (daemon.ttlSecs) >
       // env (RUFLO_DAEMON_TTL_SECS) > built-in default. readEnvSecsAsMs folds
       // env-or-default and honors an explicit 0 (disable).
       ttlMs: config?.ttlMs ?? fileConfig.ttlMs ?? readEnvSecsAsMs('RUFLO_DAEMON_TTL_SECS', DEFAULT_DAEMON_TTL_MS),
@@ -247,7 +247,7 @@ export class WorkerDaemon extends EventEmitter {
     // Initialize worker states
     this.initializeWorkerStates();
 
-    // Initialize headless executor (async, non-blocking) — capture the
+    // Initialize headless executor (async, non-blocking) Ã¢â‚¬â€ capture the
     // promise so the trigger path (#2251) can await it before checking
     // `headlessAvailable`. Scheduled fires hit a long-running daemon and
     // are unaffected; the on-demand `trigger` path was racing this init.
@@ -257,7 +257,7 @@ export class WorkerDaemon extends EventEmitter {
   }
 
   /**
-   * Initialize headless executor if Claude Code is available
+   * Initialize headless executor if headless runtime is available
    */
   private async initHeadlessExecutor(): Promise<void> {
     try {
@@ -268,7 +268,8 @@ export class WorkerDaemon extends EventEmitter {
       this.headlessAvailable = await this.headlessExecutor.isAvailable();
 
       if (this.headlessAvailable) {
-        this.log('info', 'Claude Code headless mode available - AI workers enabled');
+        const backend = process.env.RUFLO_HOST === 'cursor' ? 'Cursor SDK (@cursor/sdk)' : 'headless agent runtime';
+        this.log('info', `${backend} available - AI workers enabled`);
 
         // Forward headless executor events. #1855: also snapshot the
         // active child PIDs to disk on every transition so the next
@@ -292,7 +293,7 @@ export class WorkerDaemon extends EventEmitter {
           this.emit('headless:output', data);
         });
       } else {
-        this.log('info', 'Claude Code not found - AI workers will run in local fallback mode');
+        this.log('info', 'Headless runtime not found - AI workers will run in local fallback mode');
       }
     } catch (error) {
       this.log('warn', `Failed to initialize headless executor: ${error}`);
@@ -318,12 +319,12 @@ export class WorkerDaemon extends EventEmitter {
    * Detect effective CPU count for the current environment.
    *
    * Inside Docker / K8s containers, os.cpus().length reports the HOST cpu
-   * count, not the container limit (Node.js #28762 — wontfix).  We read
+   * count, not the container limit (Node.js #28762 Ã¢â‚¬â€ wontfix).  We read
    * cgroup v2 / v1 quota files first so the maxCpuLoad threshold stays
    * meaningful under resource-limited containers.
    */
   /**
-   * #2110 — detect WSL2 / WSL1 so the CPU-load gate can use a sane
+   * #2110 Ã¢â‚¬â€ detect WSL2 / WSL1 so the CPU-load gate can use a sane
    * default. `/proc/loadavg` on WSL maps in Windows-side process counts
    * and routinely reports values 100-1000x larger than real Linux load.
    *
@@ -366,7 +367,7 @@ export class WorkerDaemon extends EventEmitter {
   }
 
   /**
-   * Read daemon-specific config from .claude-flow/config.{json,yaml,yml}.
+   * Read daemon-specific config from .cursor-flow/config.{json,yaml,yml}.
    * Supports dot-notation keys like 'daemon.resourceThresholds.maxCpuLoad'.
    * #1844: prefer JSON when both exist (existing behavior) but fall back
    * to YAML so operators using the v3 canonical YAML format aren't silently
@@ -430,7 +431,7 @@ export class WorkerDaemon extends EventEmitter {
       const rawMinMem = cfg['daemon.resourceThresholds.minFreeMemoryPercent'] ?? raw['daemon.resourceThresholds.minFreeMemoryPercent'];
       const rawMaxConcurrent = cfg['daemon.maxConcurrent'] ?? raw['daemon.maxConcurrent'];
       const rawTimeout = cfg['daemon.workerTimeoutMs'] ?? raw['daemon.workerTimeoutMs'];
-      // #2356 — lifecycle limits are configured in SECONDS in config.json
+      // #2356 Ã¢â‚¬â€ lifecycle limits are configured in SECONDS in config.json
       // (`daemon.ttlSecs` / `daemon.idleSecs`) for parity with the CLI flag
       // and env var; stored internally as ms. An explicit 0 disables.
       const rawTtl = cfg['daemon.ttlSecs'] ?? raw['daemon.ttlSecs'];
@@ -468,7 +469,7 @@ export class WorkerDaemon extends EventEmitter {
    * #1855: install crash handlers for uncaught exceptions and unhandled
    * rejections. Without these, a thrown error from any timer callback,
    * worker logic path, or transitive import crashes the daemon process
-   * silently — the PID file leaks and any in-flight child processes
+   * silently Ã¢â‚¬â€ the PID file leaks and any in-flight child processes
    * orphan. With these, we log a structured crash record, run stop()
    * to clean up, then exit 1 so the process actually dies (otherwise
    * Node would crash anyway after the handler returns).
@@ -480,7 +481,7 @@ export class WorkerDaemon extends EventEmitter {
         this.writeCrashRecord(kind, err);
       } catch { /* nothing more we can do */ }
       try {
-        // Synchronous stop — don't await; the process is dying. Just
+        // Synchronous stop Ã¢â‚¬â€ don't await; the process is dying. Just
         // remove the PID file and snapshot state so the next start
         // sees a clean slate.
         this.removePidFile();
@@ -497,7 +498,7 @@ export class WorkerDaemon extends EventEmitter {
   }
 
   /**
-   * Append a structured crash record to .claude-flow/logs/crash.log.
+   * Append a structured crash record to .cursor-flow/logs/crash.log.
    * Inspectable by hand or via `ruflo daemon status` follow-ups.
    */
   private writeCrashRecord(kind: string, err: unknown): void {
@@ -509,11 +510,11 @@ export class WorkerDaemon extends EventEmitter {
     const stack = err instanceof Error && err.stack ? err.stack : '<no stack>';
     const record = `[${ts}] [${kind}] pid=${process.pid} ${message}\n${stack}\n---\n`;
     appendFileSync(crashLog, record, 'utf-8');
-    this.log('warn', `Daemon crashed (${kind}): ${message} — see ${crashLog}`);
+    this.log('warn', `Daemon crashed (${kind}): ${message} Ã¢â‚¬â€ see ${crashLog}`);
   }
 
   /**
-   * Path to the on-disk children registry — list of headless worker
+   * Path to the on-disk children registry Ã¢â‚¬â€ list of headless worker
    * child PIDs the daemon currently owns. #1855: written on every
    * execution:start / :complete / :error transition; read by the next
    * lifetime to reap orphans after a hard crash.
@@ -536,11 +537,11 @@ export class WorkerDaemon extends EventEmitter {
     for (const [type, state] of this.workers.entries()) {
       const startedAt = state.lastStartedAt?.getTime() ?? 0;
       const lastRunAt = state.lastRun?.getTime() ?? 0;
-      // started after the last successful completion → was mid-flight
+      // started after the last successful completion Ã¢â€ â€™ was mid-flight
       if (startedAt > 0 && startedAt > lastRunAt) {
         state.failureCount++;
         state.isRunning = false;
-        // Don't bump runCount — it was already incremented at start
+        // Don't bump runCount Ã¢â‚¬â€ it was already incremented at start
         this.log(
           'info',
           `Worker ${type} was mid-flight at last crash (started ${state.lastStartedAt?.toISOString()}); counted as failure, will retry at next scheduled interval`,
@@ -573,7 +574,7 @@ export class WorkerDaemon extends EventEmitter {
 
   /**
    * #1855: reap orphan headless worker children left behind by a
-   * previous crashed lifetime. Reads `.claude-flow/daemon-children.json`,
+   * previous crashed lifetime. Reads `.cursor-flow/daemon-children.json`,
    * SIGTERMs any PID still alive that doesn't belong to the current
    * daemon, then truncates the file. Called at the top of `start()`
    * so the next lifetime starts with a clean process tree.
@@ -598,7 +599,7 @@ export class WorkerDaemon extends EventEmitter {
         process.kill(pid, 'SIGTERM');
         reaped++;
       } catch {
-        // already dead — fine
+        // already dead Ã¢â‚¬â€ fine
       }
     }
     if (reaped > 0) {
@@ -630,7 +631,7 @@ export class WorkerDaemon extends EventEmitter {
    * Process pending workers queue
    *
    * When executeWorkerWithConcurrencyControl defers a worker (returns null),
-   * we break immediately to avoid a busy-wait loop — the deferred worker is
+   * we break immediately to avoid a busy-wait loop Ã¢â‚¬â€ the deferred worker is
    * already back on the pendingWorkers queue by that point. If no workers are
    * currently running when we break, we schedule a backoff retry so the queue
    * does not get permanently stuck.
@@ -643,7 +644,7 @@ export class WorkerDaemon extends EventEmitter {
         const result = await this.executeWorkerWithConcurrencyControl(workerConfig);
         if (result === null) {
           // Worker was deferred (resource pressure or concurrency limit).
-          // Break to avoid tight-looping — the next executeWorker() completion
+          // Break to avoid tight-looping Ã¢â‚¬â€ the next executeWorker() completion
           // will call processPendingWorkers() again via the finally block.
           if (this.runningWorkers.size === 0) {
             // No workers running means nobody will trigger the finally-block
@@ -744,7 +745,7 @@ export class WorkerDaemon extends EventEmitter {
    * fallback after a 500ms wait. If the child reaches `start()` slower
    * than the parent's 500ms wait (observed on Node 25 / macOS 26), the
    * child reads its own PID back from the file and concludes "another
-   * daemon is already running" — so it exits before scheduling workers
+   * daemon is already running" Ã¢â‚¬â€ so it exits before scheduling workers
    * and `daemon status` reports STOPPED forever. A daemon process is
    * never "another instance" of itself; treat self-match as absence.
    */
@@ -760,7 +761,7 @@ export class WorkerDaemon extends EventEmitter {
       process.kill(pid, 0);
       return pid; // Process is alive
     } catch {
-      // Process is dead — clean up stale PID file
+      // Process is dead Ã¢â‚¬â€ clean up stale PID file
       try { unlinkSync(this.pidFile); } catch { /* ignore */ }
       return null;
     }
@@ -808,7 +809,7 @@ export class WorkerDaemon extends EventEmitter {
     // #1856: detect workers that were mid-flight at the previous crash
     // and count them as failures so runCount/successCount/failureCount
     // stay consistent. Workers retry naturally at their next scheduled
-    // interval — we don't immediately re-run them, which avoids a
+    // interval Ã¢â‚¬â€ we don't immediately re-run them, which avoids a
     // freshly-recovered daemon hammering the same code path that just
     // killed it.
     this.detectMidFlightFailures();
@@ -848,9 +849,9 @@ export class WorkerDaemon extends EventEmitter {
 
   /**
    * #1845: ingest queue entries written by mcp__hooks_worker-dispatch.
-   * Each entry is a JSON file at `.claude-flow/daemon-queue/<id>.json`
+   * Each entry is a JSON file at `.cursor-flow/daemon-queue/<id>.json`
    * with `{ workerId, trigger, context, enqueuedAt }`. We move processed
-   * files to `.claude-flow/daemon-queue/.processed/` so the daemon never
+   * files to `.cursor-flow/daemon-queue/.processed/` so the daemon never
    * re-runs the same dispatch and operators can inspect history.
    */
   private async processDispatchQueue(): Promise<void> {
@@ -880,7 +881,7 @@ export class WorkerDaemon extends EventEmitter {
       try {
         payload = JSON.parse(fs.readFileSync(src, 'utf-8'));
       } catch {
-        // Malformed entry — quarantine so we don't loop on it
+        // Malformed entry Ã¢â‚¬â€ quarantine so we don't loop on it
         try { fs.renameSync(src, join(processedDir, `bad-${entry}`)); } catch { /* nothing more we can do */ }
         continue;
       }
@@ -938,7 +939,7 @@ export class WorkerDaemon extends EventEmitter {
   }
 
   /**
-   * #2356 — Self-terminating lifecycle monitor. A daemon with no upper bound
+   * #2356 Ã¢â‚¬â€ Self-terminating lifecycle monitor. A daemon with no upper bound
    * on its lifetime is the documented root cause of multi-day token leaks:
    * each interval worker spawns a headless `claude --print` sweep, so a daemon
    * left running for days dispatches tens of thousands of sessions invisibly.
@@ -951,7 +952,7 @@ export class WorkerDaemon extends EventEmitter {
     const ttlMs = this.config.ttlMs;
     const idleMs = this.config.idleShutdownMs;
     if ((!ttlMs || ttlMs <= 0) && (!idleMs || idleMs <= 0)) {
-      return; // both limits disabled — preserve legacy run-until-stopped behavior
+      return; // both limits disabled Ã¢â‚¬â€ preserve legacy run-until-stopped behavior
     }
 
     const CHECK_INTERVAL_MS = 60_000;
@@ -1003,14 +1004,14 @@ export class WorkerDaemon extends EventEmitter {
    * signal-handler path (`stop()` then `process.exit(0)`) because the
    * foreground keep-alive in the daemon command is a *ref'd* `setInterval`
    * that would otherwise hold the process open after `stop()` clears the
-   * service timers — leaving a zombie that reports stopped but never exits.
+   * service timers Ã¢â‚¬â€ leaving a zombie that reports stopped but never exits.
    */
   private async selfShutdown(reason: string): Promise<void> {
     this.log('info', `Daemon self-shutdown: ${reason}`);
     this.emit('self-shutdown', { reason });
     try {
       await this.stop();
-    } catch { /* best-effort — we are exiting regardless */ }
+    } catch { /* best-effort Ã¢â‚¬â€ we are exiting regardless */ }
     process.exit(0);
   }
 
@@ -1224,10 +1225,10 @@ export class WorkerDaemon extends EventEmitter {
     // Check if this is a headless worker type and headless execution is available
     if (isHeadlessWorker(workerConfig.type) && this.headlessAvailable && this.headlessExecutor) {
       try {
-        this.log('info', `Running ${workerConfig.type} in headless mode (Claude Code AI)`);
+        this.log('info', `Running ${workerConfig.type} in headless mode (Cursor SDK AI)`);
         const result = await this.headlessExecutor.execute(workerConfig.type as HeadlessWorkerType);
 
-        // #2110 — `HeadlessWorkerExecutor.execute()` returns
+        // #2110 Ã¢â‚¬â€ `HeadlessWorkerExecutor.execute()` returns
         // `createErrorResult(...)` with `success: false` when
         // `isAvailable()` is false, instead of throwing. The previous
         // try/catch never fired in that path, and the result was
@@ -1249,8 +1250,8 @@ export class WorkerDaemon extends EventEmitter {
         } else {
           // #1793: persist the headless result to the same metrics files the
           // local workers write to. Without this, AI-mode runs produced rich
-          // parsedOutput that lived only in `.claude-flow/logs/headless/*` and
-          // never reached `.claude-flow/metrics/<name>.json` — `memory stats`
+          // parsedOutput that lived only in `.cursor-flow/logs/headless/*` and
+          // never reached `.cursor-flow/metrics/<name>.json` Ã¢â‚¬â€ `memory stats`
           // and downstream consumers saw nothing despite successful runs.
           try {
             this.persistHeadlessResult(workerConfig.type as HeadlessWorkerType, result);
@@ -1307,7 +1308,7 @@ export class WorkerDaemon extends EventEmitter {
    * #1793: persist a headless worker result to the same metrics file the
    * local fallback writes to. Without this, AI-mode workers produced rich
    * structured output (audit findings, perf signals, test-gap analysis)
-   * that lived only in `.claude-flow/logs/headless/*_result.log` and was
+   * that lived only in `.cursor-flow/logs/headless/*_result.log` and was
    * invisible to `npx ruflo memory stats` or the metrics consumers.
    *
    * The mapping mirrors the `*Local` worker implementations below so a
@@ -1405,7 +1406,7 @@ export class WorkerDaemon extends EventEmitter {
       },
       riskLevel: 'low',
       recommendations: [],
-      note: 'Install Claude Code CLI for AI-powered security analysis',
+      note: 'Set CURSOR_API_KEY for AI-powered security analysis',
     };
 
     writeFileSync(auditFile, JSON.stringify(audit, null, 2));
@@ -1433,7 +1434,7 @@ export class WorkerDaemon extends EventEmitter {
         cacheHitRate: 0.78,
         avgResponseTime: 45,
       },
-      note: 'Install Claude Code CLI for AI-powered optimization suggestions',
+      note: 'Set CURSOR_API_KEY for AI-powered optimization suggestions',
     };
 
     writeFileSync(optimizeFile, JSON.stringify(perf, null, 2));
@@ -1478,7 +1479,7 @@ export class WorkerDaemon extends EventEmitter {
       hasTestDir: existsSync(join(this.projectRoot, 'tests')) || existsSync(join(this.projectRoot, '__tests__')),
       estimatedCoverage: 'unknown',
       gaps: [],
-      note: 'Install Claude Code CLI for AI-powered test gap analysis',
+      note: 'Set CURSOR_API_KEY for AI-powered test gap analysis',
     };
 
     writeFileSync(testGapsFile, JSON.stringify(result, null, 2));
@@ -1494,7 +1495,7 @@ export class WorkerDaemon extends EventEmitter {
       mode: 'local',
       predictions: [],
       preloaded: [],
-      note: 'Install Claude Code CLI for AI-powered predictions',
+      note: 'Set CURSOR_API_KEY for AI-powered predictions',
     };
   }
 
@@ -1507,7 +1508,7 @@ export class WorkerDaemon extends EventEmitter {
       mode: 'local',
       filesDocumented: 0,
       suggestedDocs: [],
-      note: 'Install Claude Code CLI for AI-powered documentation generation',
+      note: 'Set CURSOR_API_KEY for AI-powered documentation generation',
     };
   }
 
@@ -1520,7 +1521,7 @@ export class WorkerDaemon extends EventEmitter {
       mode: 'local',
       patternsLearned: 0,
       insightsGained: [],
-      note: 'Install Claude Code CLI for AI-powered deep learning',
+      note: 'Set CURSOR_API_KEY for AI-powered deep learning',
     };
   }
 
@@ -1533,7 +1534,7 @@ export class WorkerDaemon extends EventEmitter {
       mode: 'local',
       suggestions: [],
       duplicatesFound: 0,
-      note: 'Install Claude Code CLI for AI-powered refactoring suggestions',
+      note: 'Set CURSOR_API_KEY for AI-powered refactoring suggestions',
     };
   }
 
@@ -1546,7 +1547,7 @@ export class WorkerDaemon extends EventEmitter {
       mode: 'local',
       analysisDepth: 'shallow',
       findings: [],
-      note: 'Install Claude Code CLI for AI-powered deep code analysis',
+      note: 'Set CURSOR_API_KEY for AI-powered deep code analysis',
     };
   }
 
@@ -1595,7 +1596,7 @@ export class WorkerDaemon extends EventEmitter {
     if (!workerConfig) {
       throw new Error(`Unknown worker type: ${type}`);
     }
-    // #2251 — wait for headless probe to settle before running. Without
+    // #2251 Ã¢â‚¬â€ wait for headless probe to settle before running. Without
     // this, on-demand `daemon trigger -w <worker>` races the constructor's
     // fire-and-forget init and ALWAYS falls through to local mode even
     // when `claude` is on PATH and scheduled fires of the same worker

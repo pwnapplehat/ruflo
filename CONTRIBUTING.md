@@ -1,10 +1,10 @@
-# Contributing to Claude Flow
+# Contributing to Ruflo
 
 We welcome contributions! See the [docs/](docs/) directory for development guides and architecture decisions.
 
 ## Workflow
 
-1. Open an issue or discussion at [GitHub Issues](https://github.com/ruvnet/claude-flow/issues)
+1. Open an issue or discussion at [GitHub Issues](https://github.com/pwnapplehat/ruflo/issues)
 2. Fork and create a feature branch
 3. Run `npm test` to validate
 4. Submit a pull request with clear description
@@ -13,7 +13,7 @@ We welcome contributions! See the [docs/](docs/) directory for development guide
 
 - Node.js 20+, npm 9+
 - `npm install` then `npm run build`
-- See [CLAUDE.md](CLAUDE.md) for agent-driven workflows
+- See [AGENTS.md](AGENTS.md) for agent-driven workflows (Cursor-native)
 - Architecture decisions documented in [docs/adr/](docs/adr/)
 
 ## Code of Conduct

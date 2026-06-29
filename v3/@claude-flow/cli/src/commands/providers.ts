@@ -2,7 +2,7 @@
  * V3 CLI Providers Command
  * Manage AI providers, models, and configurations
  *
- * Created with ❤️ by ruv.io
+ * Created with â¤ï¸ by ruv.io
  */
 
 import type { Command, CommandContext, CommandResult } from '../types.js';
@@ -23,7 +23,7 @@ const PROVIDER_CATALOG: ProviderCatalogEntry[] = [
   { name: 'OpenAI', type: 'LLM', models: 'gpt-4o, gpt-4-turbo', envVar: 'OPENAI_API_KEY', configName: 'openai' },
   { name: 'OpenAI', type: 'Embedding', models: 'text-embedding-3-small/large', envVar: 'OPENAI_API_KEY', configName: 'openai' },
   { name: 'Google', type: 'LLM', models: 'gemini-pro, gemini-ultra', envVar: 'GOOGLE_API_KEY', configName: 'google' },
-  // #1725: Ollama Cloud — Tier-2 default per ADR-026 (~$100/mo flat-rate alternative
+  // #1725: Ollama Cloud â€” Tier-2 default per ADR-026 (~$100/mo flat-rate alternative
   // to per-token pricing). OpenAI-compat API at https://ollama.com/v1/chat/completions.
   { name: 'Ollama', type: 'LLM', models: 'gpt-oss:120b-cloud, llama3:70b-cloud, qwen2.5-coder:32b-cloud', envVar: 'OLLAMA_API_KEY', configName: 'ollama' },
   { name: 'Transformers.js', type: 'Embedding', models: 'Xenova/all-MiniLM-L6-v2' },
@@ -52,7 +52,7 @@ function resolveApiKey(
     anthropic: 'ANTHROPIC_API_KEY',
     openai: 'OPENAI_API_KEY',
     google: 'GOOGLE_API_KEY',
-    ollama: 'OLLAMA_API_KEY', // #1725 — Tier-2 routing
+    ollama: 'OLLAMA_API_KEY', // #1725 â€” Tier-2 routing
   };
   const envVar = envMapping[providerName.toLowerCase()];
   if (envVar && process.env[envVar]) {
@@ -88,7 +88,7 @@ async function testProviderConnectivity(
       url: `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`,
       headers: {},
     },
-    // #1725 — Ollama Cloud uses an OpenAI-compatible /v1 surface.
+    // #1725 â€” Ollama Cloud uses an OpenAI-compatible /v1 surface.
     ollama: {
       url: 'https://ollama.com/api/tags',
       headers: {
@@ -118,7 +118,7 @@ async function testProviderConnectivity(
     if (res.status === 401 || res.status === 403) {
       return { ok: false, reason: `Authentication failed (HTTP ${res.status})` };
     }
-    // A non-auth error but the server responded — key format may be fine
+    // A non-auth error but the server responded â€” key format may be fine
     return { ok: false, reason: `Unexpected response (HTTP ${res.status})` };
   } catch (err: unknown) {
     if (err instanceof Error && err.name === 'AbortError') {
@@ -138,8 +138,8 @@ const listCommand: Command = {
     { name: 'active', short: 'a', type: 'boolean', description: 'Show only active providers' },
   ],
   examples: [
-    { command: 'claude-flow providers list', description: 'List all providers' },
-    { command: 'claude-flow providers list -t embedding', description: 'List embedding providers' },
+    { command: 'ruflo providers list', description: 'List all providers' },
+    { command: 'ruflo providers list -t embedding', description: 'List embedding providers' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const type = ctx.flags.type as string || 'all';
@@ -182,7 +182,7 @@ const listCommand: Command = {
       } else if (entry.name === 'Mock') {
         status = output.dim('Dev only');
       } else {
-        // Local-only providers (Transformers.js, Agentic Flow) — always available
+        // Local-only providers (Transformers.js, Agentic Flow) â€” always available
         status = output.success('Available (local)');
       }
 
@@ -217,7 +217,7 @@ const listCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Providers'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
 
     if (rows.length === 0) {
       output.writeln(output.dim('  No providers match the current filter.'));
@@ -251,8 +251,8 @@ const configureCommand: Command = {
     { name: 'endpoint', short: 'e', type: 'string', description: 'Custom endpoint URL' },
   ],
   examples: [
-    { command: 'claude-flow providers configure -p openai -k sk-...', description: 'Set OpenAI key' },
-    { command: 'claude-flow providers configure -p anthropic -m claude-3.5-sonnet', description: 'Set default model' },
+    { command: 'ruflo providers configure -p openai -k sk-...', description: 'Set OpenAI key' },
+    { command: 'ruflo providers configure -p anthropic -m claude-3.5-sonnet', description: 'Set default model' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     try {
@@ -293,7 +293,7 @@ const configureCommand: Command = {
 
       output.writeln();
       output.writeln(output.bold(`Configured: ${provider}`));
-      output.writeln(output.dim('─'.repeat(40)));
+      output.writeln(output.dim('â”€'.repeat(40)));
 
       if (apiKey) output.writeln(`  API Key : ${apiKey.slice(0, 6)}...${apiKey.slice(-4)}`);
       if (model) output.writeln(`  Model   : ${model}`);
@@ -322,8 +322,8 @@ const testCommand: Command = {
     { name: 'all', short: 'a', type: 'boolean', description: 'Test all configured providers' },
   ],
   examples: [
-    { command: 'claude-flow providers test -p openai', description: 'Test OpenAI connection' },
-    { command: 'claude-flow providers test --all', description: 'Test all providers' },
+    { command: 'ruflo providers test -p openai', description: 'Test OpenAI connection' },
+    { command: 'ruflo providers test --all', description: 'Test all providers' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     try {
@@ -332,7 +332,7 @@ const testCommand: Command = {
 
       output.writeln();
       output.writeln(output.bold('Provider Connectivity Test'));
-      output.writeln(output.dim('─'.repeat(50)));
+      output.writeln(output.dim('â”€'.repeat(50)));
 
       const cwd = process.cwd();
       const config = configManager.getConfig(cwd);
@@ -452,13 +452,13 @@ const modelsCommand: Command = {
     { name: 'capability', short: 'c', type: 'string', description: 'Filter by capability: chat, completion, embedding' },
   ],
   examples: [
-    { command: 'claude-flow providers models', description: 'List all models' },
-    { command: 'claude-flow providers models -p anthropic', description: 'List Anthropic models' },
+    { command: 'ruflo providers models', description: 'List all models' },
+    { command: 'ruflo providers models -p anthropic', description: 'List Anthropic models' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
     output.writeln(output.bold('Available Models'));
-    output.writeln(output.dim('─'.repeat(70)));
+    output.writeln(output.dim('â”€'.repeat(70)));
 
     output.printTable({
       columns: [
@@ -492,15 +492,15 @@ const usageCommand: Command = {
     { name: 'timeframe', short: 't', type: 'string', description: 'Timeframe: 24h, 7d, 30d', default: '7d' },
   ],
   examples: [
-    { command: 'claude-flow providers usage', description: 'View all usage' },
-    { command: 'claude-flow providers usage -t 30d', description: 'View 30-day usage' },
+    { command: 'ruflo providers usage', description: 'View all usage' },
+    { command: 'ruflo providers usage -t 30d', description: 'View 30-day usage' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const timeframe = ctx.flags.timeframe as string || '7d';
 
     output.writeln();
     output.writeln(output.bold(`Provider Usage (${timeframe})`));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
 
     output.printTable({
       columns: [
@@ -511,10 +511,10 @@ const usageCommand: Command = {
         { key: 'trend', header: 'Trend', width: 12 },
       ],
       data: [
-        { provider: 'Anthropic', requests: '12,847', tokens: '4.2M', cost: '$12.60', trend: output.warning('↑ 15%') },
-        { provider: 'OpenAI (LLM)', requests: '3,421', tokens: '1.1M', cost: '$5.50', trend: output.success('↓ 8%') },
-        { provider: 'OpenAI (Embed)', requests: '89,234', tokens: '12.4M', cost: '$0.25', trend: output.success('↓ 12%') },
-        { provider: 'Transformers.js', requests: '234,567', tokens: '45.2M', cost: output.success('$0.00'), trend: '→' },
+        { provider: 'Anthropic', requests: '12,847', tokens: '4.2M', cost: '$12.60', trend: output.warning('â†‘ 15%') },
+        { provider: 'OpenAI (LLM)', requests: '3,421', tokens: '1.1M', cost: '$5.50', trend: output.success('â†“ 8%') },
+        { provider: 'OpenAI (Embed)', requests: '89,234', tokens: '12.4M', cost: '$0.25', trend: output.success('â†“ 12%') },
+        { provider: 'Transformers.js', requests: '234,567', tokens: '45.2M', cost: output.success('$0.00'), trend: 'â†’' },
       ],
     });
 
@@ -537,9 +537,9 @@ export const providersCommand: Command = {
   description: 'Manage AI providers, models, and configurations',
   subcommands: [listCommand, configureCommand, testCommand, modelsCommand, usageCommand],
   examples: [
-    { command: 'claude-flow providers list', description: 'List all providers' },
-    { command: 'claude-flow providers configure -p openai', description: 'Configure OpenAI' },
-    { command: 'claude-flow providers test --all', description: 'Test all providers' },
+    { command: 'ruflo providers list', description: 'List all providers' },
+    { command: 'ruflo providers configure -p openai', description: 'Configure OpenAI' },
+    { command: 'ruflo providers test --all', description: 'Test all providers' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
@@ -563,7 +563,7 @@ export const providersCommand: Command = {
       'Agentic Flow (optimized ONNX with SIMD)',
     ]);
     output.writeln();
-    output.writeln(output.dim('Created with ❤️ by ruv.io'));
+    output.writeln(output.dim('Created with â¤ï¸ by ruv.io'));
     return { success: true };
   },
 };

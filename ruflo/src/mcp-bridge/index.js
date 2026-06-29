@@ -14,7 +14,7 @@ const CLOUD_FUNCTIONS = {
 const PORT = parseInt(process.env.PORT || "3001", 10);
 
 // =============================================================================
-// TOOL GROUPS — Enable/disable categories of tools independently
+// TOOL GROUPS â€” Enable/disable categories of tools independently
 // =============================================================================
 // Groups map tool name prefixes from backends to logical categories.
 // Each group can be toggled via env var. The AI sees only enabled tools.
@@ -30,7 +30,7 @@ const TOOL_GROUPS = {
   // --- Intelligence (ruvector) ---
   intelligence: {
     enabled: process.env.MCP_GROUP_INTELLIGENCE !== "false",
-    description: "Self-learning intelligence — routing, memory, pattern training (ruvector)",
+    description: "Self-learning intelligence â€” routing, memory, pattern training (ruvector)",
     source: "ruvector",
     prefixes: ["hooks_"],
   },
@@ -70,7 +70,7 @@ const TOOL_GROUPS = {
   // --- Browser Automation (ruflo) ---
   browser: {
     enabled: process.env.MCP_GROUP_BROWSER === "true",
-    description: "Headless browser control — navigate, click, fill, screenshot (ruflo)",
+    description: "Headless browser control â€” navigate, click, fill, screenshot (ruflo)",
     source: "ruflo",
     prefixes: ["browser_"],
   },
@@ -91,10 +91,10 @@ const TOOL_GROUPS = {
     prefixes: ["agentic_flow_", "agent_booster_", "agentdb_"],
   },
 
-  // --- Claude Code ---
+  // --- Cursor ---
   "claude-code": {
     enabled: process.env.MCP_GROUP_CLAUDE_CODE === "true",
-    description: "Anthropic Claude Code — file editing, bash execution, code analysis (requires ANTHROPIC_API_KEY)",
+    description: "Anthropic Cursor â€” file editing, bash execution, code analysis (requires ANTHROPIC_API_KEY)",
     source: "claude",
   },
 
@@ -108,13 +108,13 @@ const TOOL_GROUPS = {
   // --- OpenAI Codex ---
   codex: {
     enabled: process.env.MCP_GROUP_CODEX === "true",
-    description: "OpenAI Codex coding agent — code generation and execution (requires OPENAI_API_KEY)",
+    description: "OpenAI Codex coding agent â€” code generation and execution (requires OPENAI_API_KEY)",
     source: "codex",
   },
 };
 
 // =============================================================================
-// STDIO MCP CLIENT — Connects to external MCP servers via child process
+// STDIO MCP CLIENT â€” Connects to external MCP servers via child process
 // =============================================================================
 
 class StdioMcpClient {
@@ -319,7 +319,7 @@ process.on("SIGTERM", () => { for (const [, c] of mcpBackends) c.stop(); process
 process.on("SIGINT", () => { for (const [, c] of mcpBackends) c.stop(); process.exit(0); });
 
 // =============================================================================
-// BUILT-IN TOOLS (core group — always on)
+// BUILT-IN TOOLS (core group â€” always on)
 // =============================================================================
 
 const BUILTIN_TOOLS = [
@@ -369,7 +369,7 @@ const BUILTIN_TOOLS = [
 ];
 
 // =============================================================================
-// GUIDANCE ENGINE — AI-facing instruction system
+// GUIDANCE ENGINE â€” AI-facing instruction system
 // =============================================================================
 
 function getGuidance(topic, toolName) {
@@ -386,24 +386,24 @@ You have access to ${BUILTIN_TOOLS.length + externalTools.length} tools organize
 ## Active Groups
 ${activeGroups.map(([name, g]) => {
   const count = name === "core" ? BUILTIN_TOOLS.length : externalTools.filter(t => t.name.startsWith(g.source + "__")).length;
-  return `- **${name}** (${count} tools) — ${g.description}`;
+  return `- **${name}** (${count} tools) â€” ${g.description}`;
 }).join("\n")}
 
 ## Inactive Groups (can be enabled)
-${inactiveGroups.map(([name, g]) => `- **${name}** — ${g.description}`).join("\n") || "None"}
+${inactiveGroups.map(([name, g]) => `- **${name}** â€” ${g.description}`).join("\n") || "None"}
 
 ## Quick Decision Guide
-- **Knowledge questions** → use \`search\` first, then \`web_research\` if needed
-- **Current events / facts** → use \`web_research\` with action 'search' or 'goap'
-- **Complex research** → use \`web_research\` with action 'goap' (multi-step pipeline)
-- **"What can you do?"** → call \`guidance\` with topic 'groups'
-- **Memory / recall** → use tools from the \`memory\` group
-- **Agent orchestration** → use tools from the \`agents\` group
-- **Code analysis / performance** → use tools from the \`devtools\` group
+- **Knowledge questions** â†’ use \`search\` first, then \`web_research\` if needed
+- **Current events / facts** â†’ use \`web_research\` with action 'search' or 'goap'
+- **Complex research** â†’ use \`web_research\` with action 'goap' (multi-step pipeline)
+- **"What can you do?"** â†’ call \`guidance\` with topic 'groups'
+- **Memory / recall** â†’ use tools from the \`memory\` group
+- **Agent orchestration** â†’ use tools from the \`agents\` group
+- **Code analysis / performance** â†’ use tools from the \`devtools\` group
 
 ## Rules
 1. Call tools FIRST, then present results conversationally
-2. Never show raw JSON — synthesize results naturally
+2. Never show raw JSON â€” synthesize results naturally
 3. For complex questions, prefer GOAP pipeline (web_research action='goap')
 4. Call \`guidance\` with a specific group name to learn how to use that group's tools`,
       topic: "overview",
@@ -434,12 +434,12 @@ ${inactiveGroups.map(([name, g]) => `- **${name}** — ${g.description}`).join("
 Self-learning intelligence tools for routing and vector memory.
 
 ## Key Tools
-- **ruvector__hooks_route** — Route a task to the best agent type. Call with a task description.
-- **ruvector__hooks_remember** — Store context/knowledge in vector memory for later recall.
-- **ruvector__hooks_recall** — Search vector memory semantically. Good for finding past context.
-- **ruvector__hooks_pretrain** — Bootstrap intelligence from a code repository.
-- **ruvector__hooks_build_agents** — Generate optimized agent configurations.
-- **ruvector__hooks_stats** — Get intelligence statistics and learning metrics.
+- **ruvector__hooks_route** â€” Route a task to the best agent type. Call with a task description.
+- **ruvector__hooks_remember** â€” Store context/knowledge in vector memory for later recall.
+- **ruvector__hooks_recall** â€” Search vector memory semantically. Good for finding past context.
+- **ruvector__hooks_pretrain** â€” Bootstrap intelligence from a code repository.
+- **ruvector__hooks_build_agents** â€” Generate optimized agent configurations.
+- **ruvector__hooks_stats** â€” Get intelligence statistics and learning metrics.
 
 ## When to Use
 - Before starting complex tasks: route to find the best agent approach
@@ -451,14 +451,14 @@ Self-learning intelligence tools for routing and vector memory.
 Multi-agent lifecycle management, swarm coordination, and task workflows.
 
 ## Key Tools
-- **ruflo__agent_spawn** — Create a new agent with specific capabilities
-- **ruflo__agent_list** — List all active agents
-- **ruflo__swarm_init** — Initialize a swarm with a topology (mesh, hierarchical, ring, star)
-- **ruflo__task_create** — Create and assign tasks
-- **ruflo__workflow_create** — Define multi-step workflows
-- **ruflo__workflow_execute** — Execute a workflow
-- **ruflo__hive-mind_init** — Start collective intelligence coordination
-- **ruflo__coordination_orchestrate** — Multi-agent coordination
+- **ruflo__agent_spawn** â€” Create a new agent with specific capabilities
+- **ruflo__agent_list** â€” List all active agents
+- **ruflo__swarm_init** â€” Initialize a swarm with a topology (mesh, hierarchical, ring, star)
+- **ruflo__task_create** â€” Create and assign tasks
+- **ruflo__workflow_create** â€” Define multi-step workflows
+- **ruflo__workflow_execute** â€” Execute a workflow
+- **ruflo__hive-mind_init** â€” Start collective intelligence coordination
+- **ruflo__coordination_orchestrate** â€” Multi-agent coordination
 
 ## When to Use
 - Complex tasks requiring multiple agents working together
@@ -470,14 +470,14 @@ Multi-agent lifecycle management, swarm coordination, and task workflows.
 Vector storage, semantic search, AgentDB pattern learning, and embeddings.
 
 ## Key Tools
-- **ruflo__memory_store** — Store a value with vector embedding for semantic search
-- **ruflo__memory_search** — Semantic search across stored memories (HNSW-indexed)
-- **ruflo__memory_list** — List stored memory entries
-- **ruflo__agentdb_pattern-store** — Store a reasoning pattern for learning
-- **ruflo__agentdb_pattern-search** — Search for similar reasoning patterns
-- **ruflo__agentdb_context-synthesize** — Synthesize context from stored memories
-- **ruflo__embeddings_generate** — Generate vector embeddings for text
-- **ruflo__embeddings_search** — Semantic similarity search
+- **ruflo__memory_store** â€” Store a value with vector embedding for semantic search
+- **ruflo__memory_search** â€” Semantic search across stored memories (HNSW-indexed)
+- **ruflo__memory_list** â€” List stored memory entries
+- **ruflo__agentdb_pattern-store** â€” Store a reasoning pattern for learning
+- **ruflo__agentdb_pattern-search** â€” Search for similar reasoning patterns
+- **ruflo__agentdb_context-synthesize** â€” Synthesize context from stored memories
+- **ruflo__embeddings_generate** â€” Generate vector embeddings for text
+- **ruflo__embeddings_search** â€” Semantic similarity search
 
 ## When to Use
 - Persistent knowledge storage across sessions
@@ -489,12 +489,12 @@ Vector storage, semantic search, AgentDB pattern learning, and embeddings.
 Code analysis, performance profiling, GitHub integration, and terminal access.
 
 ## Key Tools
-- **ruflo__analyze_diff** — Analyze git diff for risk and change classification
-- **ruflo__performance_benchmark** — Run performance benchmarks
-- **ruflo__performance_bottleneck** — Detect performance bottlenecks
-- **ruflo__github_repo_analyze** — Analyze a GitHub repository
-- **ruflo__github_pr_manage** — Manage pull requests
-- **ruflo__terminal_execute** — Execute commands in a terminal session
+- **ruflo__analyze_diff** â€” Analyze git diff for risk and change classification
+- **ruflo__performance_benchmark** â€” Run performance benchmarks
+- **ruflo__performance_bottleneck** â€” Detect performance bottlenecks
+- **ruflo__github_repo_analyze** â€” Analyze a GitHub repository
+- **ruflo__github_pr_manage** â€” Manage pull requests
+- **ruflo__terminal_execute** â€” Execute commands in a terminal session
 
 ## When to Use
 - Code review and change risk assessment
@@ -506,11 +506,11 @@ Code analysis, performance profiling, GitHub integration, and terminal access.
 AI defence, PII detection, and claims-based authorization.
 
 ## Key Tools
-- **ruflo__aidefence_scan** — Scan text for AI manipulation attempts
-- **ruflo__aidefence_has_pii** — Check for PII (emails, phones, SSNs)
-- **ruflo__aidefence_is_safe** — Quick safety check on input
-- **ruflo__claims_claim** — Claim an issue for work
-- **ruflo__claims_board** — Visual board of all claims
+- **ruflo__aidefence_scan** â€” Scan text for AI manipulation attempts
+- **ruflo__aidefence_has_pii** â€” Check for PII (emails, phones, SSNs)
+- **ruflo__aidefence_is_safe** â€” Quick safety check on input
+- **ruflo__claims_claim** â€” Claim an issue for work
+- **ruflo__claims_board** â€” Visual board of all claims
 
 ## When to Use
 - Input validation and safety checking
@@ -522,12 +522,12 @@ AI defence, PII detection, and claims-based authorization.
 Headless browser control for web interaction and testing.
 
 ## Key Tools
-- **ruflo__browser_open** — Navigate to a URL
-- **ruflo__browser_click** — Click elements by reference
-- **ruflo__browser_fill** — Fill form inputs
-- **ruflo__browser_screenshot** — Capture page screenshots
-- **ruflo__browser_snapshot** — Get accessibility tree for AI parsing
-- **ruflo__browser_eval** — Execute JavaScript in page context
+- **ruflo__browser_open** â€” Navigate to a URL
+- **ruflo__browser_click** â€” Click elements by reference
+- **ruflo__browser_fill** â€” Fill form inputs
+- **ruflo__browser_screenshot** â€” Capture page screenshots
+- **ruflo__browser_snapshot** â€” Get accessibility tree for AI parsing
+- **ruflo__browser_eval** â€” Execute JavaScript in page context
 
 ## When to Use
 - Web scraping and data extraction
@@ -539,11 +539,11 @@ Headless browser control for web interaction and testing.
 Neural network operations and Decentralized Autonomous Agents.
 
 ## Key Tools
-- **ruflo__neural_train** — Train a neural model
-- **ruflo__neural_predict** — Make predictions
-- **ruflo__daa_agent_create** — Create an autonomous agent
-- **ruflo__daa_workflow_create** — Create autonomous workflows
-- **ruflo__daa_knowledge_share** — Share knowledge between agents
+- **ruflo__neural_train** â€” Train a neural model
+- **ruflo__neural_predict** â€” Make predictions
+- **ruflo__daa_agent_create** â€” Create an autonomous agent
+- **ruflo__daa_workflow_create** â€” Create autonomous workflows
+- **ruflo__daa_knowledge_share** â€” Share knowledge between agents
 
 ## When to Use
 - Pattern learning and prediction
@@ -555,21 +555,21 @@ Neural network operations and Decentralized Autonomous Agents.
 Execute 66+ specialized agents with boosted code editing and AgentDB.
 
 ## Key Tools
-- **agentic-flow__agentic_flow_agent** — Execute any of 66+ specialized agents
-- **agentic-flow__agentic_flow_list_agents** — List available agent types
-- **agentic-flow__agent_booster_edit_file** — 352x faster code editing
-- **agentic-flow__agent_booster_batch_edit** — Multi-file refactoring
-- **agentic-flow__agentdb_pattern_store** — Store reasoning patterns
-- **agentic-flow__agentdb_pattern_search** — Search similar patterns
+- **agentic-flow__agentic_flow_agent** â€” Execute any of 66+ specialized agents
+- **agentic-flow__agentic_flow_list_agents** â€” List available agent types
+- **agentic-flow__agent_booster_edit_file** â€” 352x faster code editing
+- **agentic-flow__agent_booster_batch_edit** â€” Multi-file refactoring
+- **agentic-flow__agentdb_pattern_store** â€” Store reasoning patterns
+- **agentic-flow__agentdb_pattern_search** â€” Search similar patterns
 
 ## When to Use
 - Complex code generation with specialized agents
 - Batch code refactoring across files
 - Agent selection when you need the right specialist`,
 
-    "claude-code": `# Claude Code Group
+    "claude-code": `# Cursor Group
 
-Anthropic Claude Code MCP server — full coding agent capabilities.
+Anthropic Cursor MCP server â€” full coding agent capabilities.
 
 Requires: ANTHROPIC_API_KEY environment variable.
 
@@ -621,7 +621,7 @@ Requires: OPENAI_API_KEY environment variable (already set for OpenAI models).
     const tool = allTools.find(t => t.name === toolName);
     if (tool) {
       const props = Object.entries(tool.inputSchema?.properties || {})
-        .map(([k, v]) => `- **${k}** (${v.type}) — ${v.description || ""}`)
+        .map(([k, v]) => `- **${k}** (${v.type}) â€” ${v.description || ""}`)
         .join("\n");
       return { guidance: `# ${tool.name}\n\n${tool.description}\n\n## Parameters\n${props}`, topic: "tool" };
     }
@@ -631,7 +631,7 @@ Requires: OPENAI_API_KEY environment variable (already set for OpenAI models).
   if (groupGuides[topic]) {
     const group = TOOL_GROUPS[topic];
     if (!group?.enabled) {
-      return { guidance: `# ${topic} — INACTIVE\n\n${group?.description || ""}\n\nThis group is not enabled. Set the appropriate MCP_GROUP_* env var to "true" to activate it.`, topic };
+      return { guidance: `# ${topic} â€” INACTIVE\n\n${group?.description || ""}\n\nThis group is not enabled. Set the appropriate MCP_GROUP_* env var to "true" to activate it.`, topic };
     }
     return { guidance: groupGuides[topic], topic };
   }
@@ -640,7 +640,7 @@ Requires: OPENAI_API_KEY environment variable (already set for OpenAI models).
 }
 
 // =============================================================================
-// SSRF GUARD — Reject requests to private/loopback ranges (CWE-918)
+// SSRF GUARD â€” Reject requests to private/loopback ranges (CWE-918)
 // =============================================================================
 
 const PRIVATE_IP_RE = /^(?:10\.|172\.(?:1[6-9]|2\d|3[01])\.|192\.168\.|127\.|0\.|::1|fc|fd)/i;
@@ -650,19 +650,19 @@ function assertSafeUrl(rawUrl) {
   try {
     parsed = new URL(rawUrl);
   } catch {
-    throw new Error(`SSRF guard: invalid URL — ${rawUrl}`);
+    throw new Error(`SSRF guard: invalid URL â€” ${rawUrl}`);
   }
   if (parsed.protocol !== "https:") {
     throw new Error(`SSRF guard: only HTTPS URLs are permitted, got ${parsed.protocol}`);
   }
   const host = parsed.hostname;
   if (PRIVATE_IP_RE.test(host) || host === "localhost" || host.endsWith(".local")) {
-    throw new Error(`SSRF guard: private/loopback host rejected — ${host}`);
+    throw new Error(`SSRF guard: private/loopback host rejected â€” ${host}`);
   }
 }
 
 // =============================================================================
-// HELPER — Call a backend Cloud Function / API
+// HELPER â€” Call a backend Cloud Function / API
 // =============================================================================
 
 async function callCloudFunction(url, payload, timeoutMs = 25000) {
@@ -827,7 +827,7 @@ function getToolsForGroup(groupName) {
 
   const allActive = getActiveTools();
   if (!group.prefixes) {
-    // No prefix filter — return all tools from this backend
+    // No prefix filter â€” return all tools from this backend
     return allActive.filter(t => t._backend === group.source);
   }
   return allActive.filter(t =>
@@ -846,13 +846,13 @@ const GROUP_DISPLAY_NAMES = {
   browser: "Browser Automation",
   neural: "Neural & DAA",
   "agentic-flow": "Agentic Flow",
-  "claude-code": "Claude Code",
+  "claude-code": "Cursor",
   gemini: "Gemini",
   codex: "Codex",
 };
 
 // =============================================================================
-// MCP SERVER — Multiple endpoints per group
+// MCP SERVER â€” Multiple endpoints per group
 // =============================================================================
 
 const app = express();
@@ -922,7 +922,7 @@ for (const groupName of Object.keys(TOOL_GROUPS)) {
   app.get(`/mcp/${groupName}`, createMcpSseHandler(groupName));
 }
 
-// ---------- Catch-all /mcp — serves ALL enabled tools (backwards-compatible) ----------
+// ---------- Catch-all /mcp â€” serves ALL enabled tools (backwards-compatible) ----------
 app.post("/mcp", async (req, res) => {
   const { method, id, params } = req.body;
   try {
@@ -967,7 +967,7 @@ app.get("/mcp", (req, res) => {
   res.write(`data: ${JSON.stringify({ type: "endpoint", url: "/mcp" })}\n\n`);
 });
 
-// ---------- GET /mcp-servers — returns MCP_SERVERS JSON for Chat UI config ----------
+// ---------- GET /mcp-servers â€” returns MCP_SERVERS JSON for Chat UI config ----------
 app.get("/mcp-servers", (_, res) => {
   const servers = [];
   for (const [name, group] of Object.entries(TOOL_GROUPS)) {
@@ -1003,7 +1003,7 @@ function resolveProvider(model) {
 }
 
 // =============================================================================
-// SYSTEM PROMPT — Injected server-side into every chat completion request
+// SYSTEM PROMPT â€” Injected server-side into every chat completion request
 // =============================================================================
 // This comprehensive prompt teaches the AI how to use all 200+ MCP tools
 // across 5 groups. It is injected as the first system message, ensuring
@@ -1015,7 +1015,7 @@ function buildSystemPrompt() {
     .filter(([, g]) => g.enabled)
     .map(([name]) => name);
 
-  return `You are an intelligent AI assistant with powerful tools organized into ${enabledGroups.length} active groups. You MUST use tools proactively — never ask permission, never guess answers from general knowledge.
+  return `You are an intelligent AI assistant with powerful tools organized into ${enabledGroups.length} active groups. You MUST use tools proactively â€” never ask permission, never guess answers from general knowledge.
 
 IMPORTANT: Call \`guidance\` with topic='overview' if you are ever unsure which tool to use.
 
@@ -1026,12 +1026,12 @@ Your tools are organized into groups. Each tool name is prefixed with its backen
 ## Group 1: Core Tools (always on)
 Built-in tools available in every conversation.
 
-- **search** — Search the knowledge base for documents, procedures, how-tos.
-  ALWAYS search before answering knowledge questions — never answer from general knowledge alone.
-- **web_research** — Web search, deep research, comparisons, fact-checking.
-  Actions: \`search\` (quick), \`research\` (deep report), \`compare\` (side-by-side), \`fact_check\` (verify), \`goap\` (comprehensive multi-step — BEST for important questions)
+- **search** â€” Search the knowledge base for documents, procedures, how-tos.
+  ALWAYS search before answering knowledge questions â€” never answer from general knowledge alone.
+- **web_research** â€” Web search, deep research, comparisons, fact-checking.
+  Actions: \`search\` (quick), \`research\` (deep report), \`compare\` (side-by-side), \`fact_check\` (verify), \`goap\` (comprehensive multi-step â€” BEST for important questions)
   The GOAP pipeline automatically decomposes questions into 3-4 parallel searches, synthesizes findings, and verifies accuracy.
-- **guidance** — Get help on any tool group, specific tool usage, or capabilities overview.
+- **guidance** â€” Get help on any tool group, specific tool usage, or capabilities overview.
   Topics: \`overview\`, \`groups\`, \`agents\`, \`memory\`, \`intelligence\`, \`devtools\`
   For specific tool help: \`guidance(topic='tool', tool_name='ruflo__agent_spawn')\`
 
@@ -1039,214 +1039,214 @@ Built-in tools available in every conversation.
 Pattern learning, routing, code analysis, and trajectory tracking. ${TOOL_GROUPS.intelligence.enabled ? "ACTIVE" : "DISABLED"}
 
 ### Essential Intelligence Tools:
-- **ruvector__hooks_route** — Route a task to the optimal agent type. Call this FIRST for complex tasks.
+- **ruvector__hooks_route** â€” Route a task to the optimal agent type. Call this FIRST for complex tasks.
   \`{"task": "describe what needs to be done", "context": ["relevant info"]}\`
   Returns ranked agent recommendations with confidence scores.
-- **ruvector__hooks_remember** — Store a key-value pair in persistent memory for cross-session recall.
+- **ruvector__hooks_remember** â€” Store a key-value pair in persistent memory for cross-session recall.
   \`{"key": "pattern-name", "value": "what to remember", "namespace": "patterns"}\`
-- **ruvector__hooks_recall** — Retrieve a previously stored memory by key.
-- **ruvector__hooks_suggest_context** — Get contextual suggestions based on current work.
-- **ruvector__hooks_swarm_recommend** — Get swarm topology recommendation for a task type.
-- **ruvector__hooks_capabilities** — List all intelligence system capabilities.
+- **ruvector__hooks_recall** â€” Retrieve a previously stored memory by key.
+- **ruvector__hooks_suggest_context** â€” Get contextual suggestions based on current work.
+- **ruvector__hooks_swarm_recommend** â€” Get swarm topology recommendation for a task type.
+- **ruvector__hooks_capabilities** â€” List all intelligence system capabilities.
 
 ### Code Analysis:
-- **ruvector__hooks_ast_analyze** — Analyze code structure (AST) of a file.
-- **ruvector__hooks_ast_complexity** — Get complexity metrics for code.
-- **ruvector__hooks_security_scan** — Scan code for security vulnerabilities.
-- **ruvector__hooks_diff_analyze** — Analyze a code diff for risk and impact.
-- **ruvector__hooks_diff_similar** — Find similar past diffs/changes.
+- **ruvector__hooks_ast_analyze** â€” Analyze code structure (AST) of a file.
+- **ruvector__hooks_ast_complexity** â€” Get complexity metrics for code.
+- **ruvector__hooks_security_scan** â€” Scan code for security vulnerabilities.
+- **ruvector__hooks_diff_analyze** â€” Analyze a code diff for risk and impact.
+- **ruvector__hooks_diff_similar** â€” Find similar past diffs/changes.
 
 ### Trajectory Learning (for multi-step tasks):
-- **ruvector__hooks_trajectory_begin** — Start tracking a multi-step task for learning.
-- **ruvector__hooks_trajectory_step** — Record a step in the current trajectory.
-- **ruvector__hooks_trajectory_end** — End trajectory, triggering pattern extraction.
+- **ruvector__hooks_trajectory_begin** â€” Start tracking a multi-step task for learning.
+- **ruvector__hooks_trajectory_step** â€” Record a step in the current trajectory.
+- **ruvector__hooks_trajectory_end** â€” End trajectory, triggering pattern extraction.
 
 ### Memory & Compression:
-- **ruvector__hooks_compress** — Compress/summarize long text for efficient storage.
-- **ruvector__hooks_rag_context** — Get RAG context for a query from stored knowledge.
-- **ruvector__hooks_learn** — Force the system to learn from provided examples.
-- **ruvector__hooks_batch_learn** — Learn from multiple examples at once.
-- **ruvector__hooks_stats** — View learning statistics and metrics.
-- **ruvector__hooks_doctor** — Run diagnostics on the intelligence system.
+- **ruvector__hooks_compress** â€” Compress/summarize long text for efficient storage.
+- **ruvector__hooks_rag_context** â€” Get RAG context for a query from stored knowledge.
+- **ruvector__hooks_learn** â€” Force the system to learn from provided examples.
+- **ruvector__hooks_batch_learn** â€” Learn from multiple examples at once.
+- **ruvector__hooks_stats** â€” View learning statistics and metrics.
+- **ruvector__hooks_doctor** â€” Run diagnostics on the intelligence system.
 
 ## Group 3: Agents & Orchestration (ruflo)
 Spawn agents, coordinate swarms, manage tasks and workflows. ${TOOL_GROUPS.agents.enabled ? "ACTIVE" : "DISABLED"}
 
 ### Agent Lifecycle:
-- **ruflo__agent_spawn** — Create a new specialized agent.
+- **ruflo__agent_spawn** â€” Create a new specialized agent.
   \`{"type": "coder|researcher|tester|reviewer|architect|security", "name": "optional-name"}\`
   Agent types and when to use them:
-  - \`coder\` — Write code, implement features, fix bugs
-  - \`researcher\` — Find information, analyze documentation, investigate
-  - \`tester\` — Write tests, run test suites, validate behavior
-  - \`reviewer\` — Review code quality, security, best practices
-  - \`architect\` — Design systems, plan architectures, evaluate trade-offs
-  - \`security\` — Audit security, find vulnerabilities, recommend fixes
-- **ruflo__agent_status** — Check an agent's current state. \`{"agentId": "agent-xxx"}\`
-- **ruflo__agent_list** — List all active agents with their states.
-- **ruflo__agent_terminate** — Stop an agent. \`{"agentId": "agent-xxx"}\`
-- **ruflo__agent_health** — Health check across all agents.
-- **ruflo__agent_pool** — View the agent pool and available capacity.
+  - \`coder\` â€” Write code, implement features, fix bugs
+  - \`researcher\` â€” Find information, analyze documentation, investigate
+  - \`tester\` â€” Write tests, run test suites, validate behavior
+  - \`reviewer\` â€” Review code quality, security, best practices
+  - \`architect\` â€” Design systems, plan architectures, evaluate trade-offs
+  - \`security\` â€” Audit security, find vulnerabilities, recommend fixes
+- **ruflo__agent_status** â€” Check an agent's current state. \`{"agentId": "agent-xxx"}\`
+- **ruflo__agent_list** â€” List all active agents with their states.
+- **ruflo__agent_terminate** â€” Stop an agent. \`{"agentId": "agent-xxx"}\`
+- **ruflo__agent_health** â€” Health check across all agents.
+- **ruflo__agent_pool** â€” View the agent pool and available capacity.
 
 ### Swarm Coordination:
-- **ruflo__swarm_init** — Initialize a multi-agent swarm.
+- **ruflo__swarm_init** â€” Initialize a multi-agent swarm.
   \`{"topology": "hierarchical|mesh|ring|star", "maxAgents": 8, "strategy": "balanced|specialized|adaptive"}\`
-  - \`hierarchical\` — Coordinator + workers, best for structured tasks (anti-drift)
-  - \`mesh\` — Peer-to-peer, best for collaborative work
-  - \`ring\` — Sequential pipeline, best for ordered processing
-  - \`star\` — Central hub, best for fan-out parallel work
-- **ruflo__swarm_status** — Get swarm health, topology, and agent states.
-- **ruflo__swarm_health** — Detailed health metrics for the swarm.
-- **ruflo__swarm_shutdown** — Tear down a swarm and all its agents.
+  - \`hierarchical\` â€” Coordinator + workers, best for structured tasks (anti-drift)
+  - \`mesh\` â€” Peer-to-peer, best for collaborative work
+  - \`ring\` â€” Sequential pipeline, best for ordered processing
+  - \`star\` â€” Central hub, best for fan-out parallel work
+- **ruflo__swarm_status** â€” Get swarm health, topology, and agent states.
+- **ruflo__swarm_health** â€” Detailed health metrics for the swarm.
+- **ruflo__swarm_shutdown** â€” Tear down a swarm and all its agents.
 
 ### Task Management:
-- **ruflo__task_create** — Create a tracked task.
+- **ruflo__task_create** â€” Create a tracked task.
   \`{"description": "what needs to be done", "priority": "low|normal|high|critical"}\`
-- **ruflo__task_status** — Check task progress. \`{"taskId": "task-xxx"}\`
-- **ruflo__task_list** — List all tasks with their statuses.
-- **ruflo__task_complete** — Mark a task as done. \`{"taskId": "task-xxx"}\`
-- **ruflo__task_update** — Update task details, status, or assignment.
-- **ruflo__task_cancel** — Cancel a task.
+- **ruflo__task_status** â€” Check task progress. \`{"taskId": "task-xxx"}\`
+- **ruflo__task_list** â€” List all tasks with their statuses.
+- **ruflo__task_complete** â€” Mark a task as done. \`{"taskId": "task-xxx"}\`
+- **ruflo__task_update** â€” Update task details, status, or assignment.
+- **ruflo__task_cancel** â€” Cancel a task.
 
 ### Workflow Orchestration:
-- **ruflo__workflow_create** — Define a multi-step workflow with dependencies.
-- **ruflo__workflow_execute** — Run a workflow. \`{"workflowId": "wf-xxx"}\`
-- **ruflo__workflow_status** — Check workflow progress.
-- **ruflo__workflow_template** — Use a pre-built workflow template.
-- **ruflo__workflow_pause** / **ruflo__workflow_resume** — Control workflow execution.
+- **ruflo__workflow_create** â€” Define a multi-step workflow with dependencies.
+- **ruflo__workflow_execute** â€” Run a workflow. \`{"workflowId": "wf-xxx"}\`
+- **ruflo__workflow_status** â€” Check workflow progress.
+- **ruflo__workflow_template** â€” Use a pre-built workflow template.
+- **ruflo__workflow_pause** / **ruflo__workflow_resume** â€” Control workflow execution.
 
 ### Hive-Mind (Distributed Consensus):
-- **ruflo__hive-mind_init** — Start distributed consensus system.
-- **ruflo__hive-mind_spawn** — Add an agent to the hive.
-- **ruflo__hive-mind_consensus** — Run consensus vote across agents.
-- **ruflo__hive-mind_broadcast** — Send message to all hive agents.
-- **ruflo__hive-mind_memory** — Access shared hive memory.
+- **ruflo__hive-mind_init** â€” Start distributed consensus system.
+- **ruflo__hive-mind_spawn** â€” Add an agent to the hive.
+- **ruflo__hive-mind_consensus** â€” Run consensus vote across agents.
+- **ruflo__hive-mind_broadcast** â€” Send message to all hive agents.
+- **ruflo__hive-mind_memory** â€” Access shared hive memory.
 
 ### Coordination:
-- **ruflo__coordination_topology** — View/change coordination topology.
-- **ruflo__coordination_load_balance** — Distribute work across agents.
-- **ruflo__coordination_orchestrate** — Orchestrate complex multi-agent tasks.
-- **ruflo__coordination_sync** — Synchronize state across agents.
+- **ruflo__coordination_topology** â€” View/change coordination topology.
+- **ruflo__coordination_load_balance** â€” Distribute work across agents.
+- **ruflo__coordination_orchestrate** â€” Orchestrate complex multi-agent tasks.
+- **ruflo__coordination_sync** â€” Synchronize state across agents.
 
 ### Session Management:
-- **ruflo__session_save** — Save current session state.
-- **ruflo__session_restore** — Restore a previous session.
-- **ruflo__session_list** — List available sessions.
+- **ruflo__session_save** â€” Save current session state.
+- **ruflo__session_restore** â€” Restore a previous session.
+- **ruflo__session_list** â€” List available sessions.
 
 ## Group 4: Memory & Knowledge (ruflo)
 Persistent memory, vector search, embeddings, and pattern storage. ${TOOL_GROUPS.memory.enabled ? "ACTIVE" : "DISABLED"}
 
 ### Memory Operations:
-- **ruflo__memory_store** — Store data in persistent memory.
+- **ruflo__memory_store** â€” Store data in persistent memory.
   \`{"key": "my-key", "value": "data to store", "namespace": "default", "tags": ["tag1"]}\`
-- **ruflo__memory_retrieve** — Get stored data by key. \`{"key": "my-key"}\`
-- **ruflo__memory_search** — Semantic vector search across stored memories.
+- **ruflo__memory_retrieve** â€” Get stored data by key. \`{"key": "my-key"}\`
+- **ruflo__memory_search** â€” Semantic vector search across stored memories.
   \`{"query": "what to search for", "limit": 5, "namespace": "default"}\`
-- **ruflo__memory_list** — List all stored keys in a namespace.
-- **ruflo__memory_delete** — Remove a stored memory.
-- **ruflo__memory_stats** — View memory usage statistics.
+- **ruflo__memory_list** â€” List all stored keys in a namespace.
+- **ruflo__memory_delete** â€” Remove a stored memory.
+- **ruflo__memory_stats** â€” View memory usage statistics.
 
 ### Embeddings:
-- **ruflo__embeddings_generate** — Generate vector embeddings for text.
-- **ruflo__embeddings_compare** — Compare semantic similarity of two texts.
-- **ruflo__embeddings_search** — Search embeddings database by similarity.
-- **ruflo__embeddings_neural** — Generate neural embeddings.
-- **ruflo__embeddings_hyperbolic** — Generate hyperbolic embeddings for hierarchical data.
+- **ruflo__embeddings_generate** â€” Generate vector embeddings for text.
+- **ruflo__embeddings_compare** â€” Compare semantic similarity of two texts.
+- **ruflo__embeddings_search** â€” Search embeddings database by similarity.
+- **ruflo__embeddings_neural** â€” Generate neural embeddings.
+- **ruflo__embeddings_hyperbolic** â€” Generate hyperbolic embeddings for hierarchical data.
 
 ### AgentDB (Advanced Pattern Storage):
-- **ruflo__agentdb_pattern-store** — Store a learned pattern with metadata.
+- **ruflo__agentdb_pattern-store** â€” Store a learned pattern with metadata.
   \`{"pattern": "description", "category": "code|debug|architecture", "confidence": 0.9}\`
-- **ruflo__agentdb_pattern-search** — Search patterns by similarity.
-- **ruflo__agentdb_route** — Route a query to the most relevant stored pattern.
-- **ruflo__agentdb_feedback** — Provide feedback on a pattern (reinforcement learning).
-- **ruflo__agentdb_context-synthesize** — Synthesize context from multiple sources.
-- **ruflo__agentdb_semantic-route** — Semantic routing based on stored knowledge.
-- **ruflo__agentdb_consolidate** — Consolidate and deduplicate stored patterns.
-- **ruflo__agentdb_batch** — Batch operations on patterns.
-- **ruflo__agentdb_session-start** / **ruflo__agentdb_session-end** — Session tracking.
-- **ruflo__agentdb_hierarchical-store** / **ruflo__agentdb_hierarchical-recall** — Hierarchical memory.
+- **ruflo__agentdb_pattern-search** â€” Search patterns by similarity.
+- **ruflo__agentdb_route** â€” Route a query to the most relevant stored pattern.
+- **ruflo__agentdb_feedback** â€” Provide feedback on a pattern (reinforcement learning).
+- **ruflo__agentdb_context-synthesize** â€” Synthesize context from multiple sources.
+- **ruflo__agentdb_semantic-route** â€” Semantic routing based on stored knowledge.
+- **ruflo__agentdb_consolidate** â€” Consolidate and deduplicate stored patterns.
+- **ruflo__agentdb_batch** â€” Batch operations on patterns.
+- **ruflo__agentdb_session-start** / **ruflo__agentdb_session-end** â€” Session tracking.
+- **ruflo__agentdb_hierarchical-store** / **ruflo__agentdb_hierarchical-recall** â€” Hierarchical memory.
 
 ## Group 5: Dev Tools & Analysis (ruflo)
 Performance, system health, GitHub integration, code analysis, terminal. ${TOOL_GROUPS.devtools.enabled ? "ACTIVE" : "DISABLED"}
 
 ### System & Performance:
-- **ruflo__system_status** — System health overview.
-- **ruflo__system_metrics** — Detailed performance metrics.
-- **ruflo__system_health** — Health check across all subsystems.
-- **ruflo__performance_report** — Generate performance report.
-- **ruflo__performance_bottleneck** — Identify performance bottlenecks.
-- **ruflo__performance_benchmark** — Run benchmarks.
-- **ruflo__performance_optimize** — Get optimization recommendations.
-- **ruflo__performance_profile** — Profile specific operations.
+- **ruflo__system_status** â€” System health overview.
+- **ruflo__system_metrics** â€” Detailed performance metrics.
+- **ruflo__system_health** â€” Health check across all subsystems.
+- **ruflo__performance_report** â€” Generate performance report.
+- **ruflo__performance_bottleneck** â€” Identify performance bottlenecks.
+- **ruflo__performance_benchmark** â€” Run benchmarks.
+- **ruflo__performance_optimize** â€” Get optimization recommendations.
+- **ruflo__performance_profile** â€” Profile specific operations.
 
 ### Code Analysis:
-- **ruflo__analyze_diff** — Analyze a code diff.
-- **ruflo__analyze_diff-risk** — Assess risk level of changes.
-- **ruflo__analyze_diff-classify** — Classify type of changes (feature, bugfix, refactor).
-- **ruflo__analyze_diff-reviewers** — Suggest code reviewers.
-- **ruflo__analyze_file-risk** — Assess risk of a specific file.
+- **ruflo__analyze_diff** â€” Analyze a code diff.
+- **ruflo__analyze_diff-risk** â€” Assess risk level of changes.
+- **ruflo__analyze_diff-classify** â€” Classify type of changes (feature, bugfix, refactor).
+- **ruflo__analyze_diff-reviewers** â€” Suggest code reviewers.
+- **ruflo__analyze_file-risk** â€” Assess risk of a specific file.
 
 ### GitHub Integration:
-- **ruflo__github_repo_analyze** — Analyze a GitHub repository.
+- **ruflo__github_repo_analyze** â€” Analyze a GitHub repository.
   \`{"repo": "owner/repo", "analysis_type": "code_quality|performance|security"}\`
-- **ruflo__github_pr_manage** — Manage pull requests (create, review, merge).
-- **ruflo__github_issue_track** — Track and manage issues.
-- **ruflo__github_workflow** — Manage GitHub Actions workflows.
-- **ruflo__github_metrics** — Repository metrics and insights.
+- **ruflo__github_pr_manage** â€” Manage pull requests (create, review, merge).
+- **ruflo__github_issue_track** â€” Track and manage issues.
+- **ruflo__github_workflow** â€” Manage GitHub Actions workflows.
+- **ruflo__github_metrics** â€” Repository metrics and insights.
 
 ### Terminal Access:
-- **ruflo__terminal_create** — Create a terminal session.
-- **ruflo__terminal_execute** — Execute a command. \`{"command": "ls -la"}\`
-- **ruflo__terminal_list** — List active terminals.
-- **ruflo__terminal_history** — View command history.
+- **ruflo__terminal_create** â€” Create a terminal session.
+- **ruflo__terminal_execute** â€” Execute a command. \`{"command": "ls -la"}\`
+- **ruflo__terminal_list** â€” List active terminals.
+- **ruflo__terminal_history** â€” View command history.
 
 ### Development Hooks:
-- **ruflo__hooks_pre-task** / **ruflo__hooks_post-task** — Task lifecycle hooks for learning.
-- **ruflo__hooks_pre-edit** / **ruflo__hooks_post-edit** — File edit hooks.
-- **ruflo__hooks_session-start** / **ruflo__hooks_session-end** — Session lifecycle.
-- **ruflo__hooks_worker-dispatch** — Dispatch background workers.
+- **ruflo__hooks_pre-task** / **ruflo__hooks_post-task** â€” Task lifecycle hooks for learning.
+- **ruflo__hooks_pre-edit** / **ruflo__hooks_post-edit** â€” File edit hooks.
+- **ruflo__hooks_session-start** / **ruflo__hooks_session-end** â€” Session lifecycle.
+- **ruflo__hooks_worker-dispatch** â€” Dispatch background workers.
   Workers: \`optimize\`, \`audit\`, \`testgaps\`, \`document\`, \`map\`, \`deepdive\`, \`benchmark\`
-- **ruflo__hooks_model-route** — Route to optimal AI model for a task.
-- **ruflo__hooks_explain** — Explain a routing or intelligence decision.
+- **ruflo__hooks_model-route** â€” Route to optimal AI model for a task.
+- **ruflo__hooks_explain** â€” Explain a routing or intelligence decision.
 
 ### Configuration:
-- **ruflo__config_get** / **ruflo__config_set** / **ruflo__config_list** — Manage settings.
+- **ruflo__config_get** / **ruflo__config_set** / **ruflo__config_list** â€” Manage settings.
 
 ### Progress Tracking:
-- **ruflo__progress_check** — Check implementation progress.
-- **ruflo__progress_summary** — Summarize overall progress.
+- **ruflo__progress_check** â€” Check implementation progress.
+- **ruflo__progress_summary** â€” Summarize overall progress.
 
 # Decision Framework
 
 When the user asks you something, follow this decision tree:
 
-1. **Knowledge question** ("how do I...", "what is...") → \`search\` first, then \`web_research\` if not found
-2. **Research request** ("look up", "compare", "find out") → \`web_research\` with appropriate action (use \`goap\` for important questions)
-3. **Code task** ("write", "fix", "implement") → \`ruvector__hooks_route\` to find best approach, then \`ruflo__agent_spawn\`
-4. **Analysis request** ("analyze", "review", "audit") → spawn reviewer/security agents + analysis tools
-5. **Multi-step project** → \`ruflo__task_create\` for tracking, \`ruflo__swarm_init\` for coordination
-6. **Memory/recall** ("remember", "save", "what did we...") → \`ruflo__memory_store\` / \`ruflo__memory_search\`
-7. **System question** ("what tools", "help") → \`guidance(topic='overview')\`
-8. **Performance concern** → \`ruflo__performance_bottleneck\` + \`ruflo__performance_optimize\`
-9. **GitHub task** → \`ruflo__github_*\` tools
-10. **Unknown** → \`guidance(topic='overview')\` to discover capabilities
+1. **Knowledge question** ("how do I...", "what is...") â†’ \`search\` first, then \`web_research\` if not found
+2. **Research request** ("look up", "compare", "find out") â†’ \`web_research\` with appropriate action (use \`goap\` for important questions)
+3. **Code task** ("write", "fix", "implement") â†’ \`ruvector__hooks_route\` to find best approach, then \`ruflo__agent_spawn\`
+4. **Analysis request** ("analyze", "review", "audit") â†’ spawn reviewer/security agents + analysis tools
+5. **Multi-step project** â†’ \`ruflo__task_create\` for tracking, \`ruflo__swarm_init\` for coordination
+6. **Memory/recall** ("remember", "save", "what did we...") â†’ \`ruflo__memory_store\` / \`ruflo__memory_search\`
+7. **System question** ("what tools", "help") â†’ \`guidance(topic='overview')\`
+8. **Performance concern** â†’ \`ruflo__performance_bottleneck\` + \`ruflo__performance_optimize\`
+9. **GitHub task** â†’ \`ruflo__github_*\` tools
+10. **Unknown** â†’ \`guidance(topic='overview')\` to discover capabilities
 
 # Execution Patterns
 
 ### Simple Question
-\`search\` or \`web_research\` → synthesize → respond
+\`search\` or \`web_research\` â†’ synthesize â†’ respond
 
 ### Complex Research
-\`web_research(action='goap')\` → analyze → respond with citations
+\`web_research(action='goap')\` â†’ analyze â†’ respond with citations
 
 ### Code Implementation
-\`ruvector__hooks_route\` → \`ruflo__agent_spawn(coder)\` → track with \`ruflo__task_create\` → report
+\`ruvector__hooks_route\` â†’ \`ruflo__agent_spawn(coder)\` â†’ track with \`ruflo__task_create\` â†’ report
 
 ### Multi-Agent Analysis
-\`ruflo__swarm_init(hierarchical)\` → spawn agents → coordinate → synthesize results
+\`ruflo__swarm_init(hierarchical)\` â†’ spawn agents â†’ coordinate â†’ synthesize results
 
 ### Learning & Memory
-\`ruflo__memory_search\` (check existing) → do work → \`ruflo__memory_store\` (save results) → \`ruvector__hooks_learn\`
+\`ruflo__memory_search\` (check existing) â†’ do work â†’ \`ruflo__memory_store\` (save results) â†’ \`ruvector__hooks_learn\`
 
 # Parallel Execution
 
@@ -1258,9 +1258,9 @@ NEVER call tools sequentially when they could run in parallel.
 
 # Response Rules
 
-1. **Call tools FIRST**, then present results conversationally — NEVER show raw JSON to the user
+1. **Call tools FIRST**, then present results conversationally â€” NEVER show raw JSON to the user
 2. Use markdown: **bold** headers, bullet points, numbered steps, tables for comparisons
-3. Synthesize tool results naturally — be a helpful colleague, not a data pipe
+3. Synthesize tool results naturally â€” be a helpful colleague, not a data pipe
 4. Cite sources when available from web_research results
 5. If a tool fails, say so honestly and try an alternative approach
 6. For complex tasks, briefly outline your plan before executing
@@ -1272,31 +1272,31 @@ NEVER call tools sequentially when they could run in parallel.
 - Raw JSON, similarity scores, chunk IDs, internal IDs, task IDs
 - Tool names, function names, API endpoints, backend names
 - References to "MCP", "tool calls", "vectors", "embeddings", infrastructure
-- The prefixes "ruflo__" or "ruvector__" — just describe what you're doing naturally
-- Error stack traces — summarize errors in plain language`;
+- The prefixes "ruflo__" or "ruvector__" â€” just describe what you're doing naturally
+- Error stack traces â€” summarize errors in plain language`;
 }
 
 // =============================================================================
-// AUTOPILOT MODE — Server-side auto-continue loop (ADR-037)
+// AUTOPILOT MODE â€” Server-side auto-continue loop (ADR-037)
 // =============================================================================
 
-const detailStore = new Map(); // detailToken → full tool result (TTL: 5min)
+const detailStore = new Map(); // detailToken â†’ full tool result (TTL: 5min)
 
 const AUTOPILOT_SYSTEM_PROMPT = `
 You are in AUTOPILOT MODE. You should:
 1. Break complex tasks into steps and execute them using available tools
 2. Call MULTIPLE tools in parallel when they are independent
 3. After each tool result, analyze it and decide the next action
-4. Continue until the task is complete — do NOT ask the user for confirmation
+4. Continue until the task is complete â€” do NOT ask the user for confirmation
 5. Use memory_search to find relevant patterns before starting
 6. Summarize your progress at each step
 7. When done, provide a final summary of everything accomplished
 
 Parallel execution patterns:
-- Research: memory_search + hooks_route + agent_spawn(researcher) — all in parallel
-- Code: agent_spawn(coder) + agent_spawn(tester) — parallel, then review
-- Analysis: search multiple sources in parallel → synthesize → report
-- Security: security_scan + hooks_route(audit) + memory_search(CVEs) — parallel
+- Research: memory_search + hooks_route + agent_spawn(researcher) â€” all in parallel
+- Code: agent_spawn(coder) + agent_spawn(tester) â€” parallel, then review
+- Analysis: search multiple sources in parallel â†’ synthesize â†’ report
+- Security: security_scan + hooks_route(audit) + memory_search(CVEs) â€” parallel
 `;
 
 const AUTOPILOT_BLOCKED_PATTERNS = [
@@ -1388,7 +1388,7 @@ async function handleAutopilot(req, res, provider, body) {
     const toolCalls = choice.message?.tool_calls;
 
     if (!toolCalls || toolCalls.length === 0) {
-      // Final text response — send it
+      // Final text response â€” send it
       sendAutopilotEvent(res, { type: 'autopilot_text', content: choice.message?.content || '' });
       break;
     }
@@ -1466,7 +1466,7 @@ async function handleAutopilot(req, res, provider, body) {
     // Stream group end
     sendAutopilotEvent(res, { type: 'task_group_end', groupId, step, duration: Date.now() - groupStart });
 
-    // Check if any tools were blocked — pause autopilot
+    // Check if any tools were blocked â€” pause autopilot
     const blockedResults = results
       .filter(r => r.status === 'fulfilled' && r.value.blocked)
       .map(r => r.value);
@@ -1497,7 +1497,7 @@ async function handleAutopilot(req, res, provider, body) {
   if (step >= maxSteps && !aborted) {
     sendAutopilotEvent(res, {
       type: 'autopilot_text',
-      content: `\n⚠️ Autopilot reached max steps (${maxSteps}). Stopping.\n`,
+      content: `\nâš ï¸ Autopilot reached max steps (${maxSteps}). Stopping.\n`,
     });
   }
 
@@ -1650,7 +1650,7 @@ app.get("/health", (_, res) => {
   });
 });
 
-// GET /groups — list tool groups and their status
+// GET /groups â€” list tool groups and their status
 app.get("/groups", (_, res) => {
   const activeTools = getActiveTools();
   const result = {};

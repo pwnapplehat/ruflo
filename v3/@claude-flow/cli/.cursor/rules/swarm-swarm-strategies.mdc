@@ -1,0 +1,14 @@
+---
+description: swarm-strategies
+globs: 
+alwaysApply: false
+---
+# swarm-strategies
+
+Command documentation for swarm-strategies in category swarm.
+
+Usage:
+```bash
+npx ruflo swarm swarm-strategies [options]
+```
+

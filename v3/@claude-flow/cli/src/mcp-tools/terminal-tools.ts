@@ -83,7 +83,7 @@ function saveTerminalStore(store: TerminalStore): void {
 export const terminalTools: MCPTool[] = [
   {
     name: 'terminal_create',
-    description: 'Create a new terminal session Use when native Bash is wrong because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
+    description: 'Create a new terminal session Use when you need a persistent terminal session because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
     category: 'terminal',
     inputSchema: {
       type: 'object',
@@ -104,7 +104,7 @@ export const terminalTools: MCPTool[] = [
         if (!v.valid) return { success: false, error: v.error };
       }
       // env is merged into execSync's process env on every command; reject
-      // loader/runtime hijack vars (LD_PRELOAD, NODE_OPTIONS, …) and enforce
+      // loader/runtime hijack vars (LD_PRELOAD, NODE_OPTIONS, â€¦) and enforce
       // POSIX-shaped names + null-byte-free values.
       const vEnv = validateEnv(input.env, 'env');
       if (!vEnv.valid) return { success: false, error: vEnv.error };
@@ -138,7 +138,7 @@ export const terminalTools: MCPTool[] = [
   },
   {
     name: 'terminal_execute',
-    description: 'Execute a command in a terminal session Use when native Bash is wrong because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
+    description: 'Execute a command in a terminal session Use when you need a persistent terminal session because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
     category: 'terminal',
     inputSchema: {
       type: 'object',
@@ -231,7 +231,7 @@ export const terminalTools: MCPTool[] = [
   },
   {
     name: 'terminal_list',
-    description: 'List all terminal sessions Use when native Bash is wrong because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
+    description: 'List all terminal sessions Use when you need a persistent terminal session because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
     category: 'terminal',
     inputSchema: {
       type: 'object',
@@ -266,7 +266,7 @@ export const terminalTools: MCPTool[] = [
   },
   {
     name: 'terminal_close',
-    description: 'Close a terminal session Use when native Bash is wrong because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
+    description: 'Close a terminal session Use when you need a persistent terminal session because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
     category: 'terminal',
     inputSchema: {
       type: 'object',
@@ -301,7 +301,7 @@ export const terminalTools: MCPTool[] = [
   },
   {
     name: 'terminal_history',
-    description: 'Get command history for a terminal session Use when native Bash is wrong because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
+    description: 'Get command history for a terminal session Use when you need a persistent terminal session because you need a persistent terminal session across turns/agents with output capture and replay. For one-shot shell commands, native Bash is fine.',
     category: 'terminal',
     inputSchema: {
       type: 'object',

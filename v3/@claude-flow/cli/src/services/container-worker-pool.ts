@@ -123,7 +123,7 @@ export interface ContainerPoolStatus {
 const DEFAULT_CONFIG: ContainerPoolConfig = {
   maxContainers: 3,
   minContainers: 1,
-  image: 'ghcr.io/ruvnet/claude-flow-headless:latest',
+  image: 'ghcr.io/pwnapplehat/ruflo-headless:latest',
   resources: {
     cpus: '2',
     memory: '4g',
@@ -131,7 +131,7 @@ const DEFAULT_CONFIG: ContainerPoolConfig = {
   healthCheckIntervalMs: 30000,
   idleTimeoutMs: 300000, // 5 minutes
   workspacePath: '/workspace',
-  statePath: '.claude-flow/container-pool',
+  statePath: '.cursor-flow/container-pool',
   defaultSandbox: 'strict',
 };
 
@@ -421,9 +421,9 @@ export class ContainerWorkerPool extends EventEmitter {
       // Add environment variables
       const env = {
         ...this.config.env,
-        ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || '',
-        CLAUDE_CODE_HEADLESS: 'true',
-        CLAUDE_CODE_SANDBOX_MODE: this.config.defaultSandbox,
+        CURSOR_API_KEY: process.env.CURSOR_API_KEY || '',
+        RUFLO_HEADLESS: 'true',
+        RUFLO_SANDBOX_MODE: this.config.defaultSandbox,
       };
 
       for (const [key, value] of Object.entries(env)) {

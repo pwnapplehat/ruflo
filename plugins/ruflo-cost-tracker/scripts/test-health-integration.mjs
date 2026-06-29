@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// test-health-integration — runtime integration test for cost-health.
+// test-health-integration â€” runtime integration test for cost-health.
 //
 // The iter-75 bug (BUDGET_QUIET=1 silently swallowing HARD_STOP) was a
 // classic test-pyramid gap: each subcheck's smoke contract passed
 // (anomaly.mjs / burn.mjs / budget.mjs each correctly exit 1 on alert),
-// but the COMPOSITE behavior was wrong — cost-health spawned budget.mjs
+// but the COMPOSITE behavior was wrong â€” cost-health spawned budget.mjs
 // with BUDGET_QUIET=1 and budget.mjs returned exit 0 in that mode.
 //
 // Structural source-grep smoke can detect the pattern in one file, but
@@ -38,10 +38,10 @@ const failures = [];
 
 function assert(cond, label) {
   if (cond) {
-    console.log(`  ✓ ${label}`);
+    console.log(`  âœ“ ${label}`);
     passed++;
   } else {
-    console.log(`  ✗ ${label}`);
+    console.log(`  âœ— ${label}`);
     failures.push(label);
     failed++;
   }
@@ -83,7 +83,7 @@ async function main() {
   console.log(`# cost-health integration test (fixture: ${fixture})\n`);
 
   // -----------------------------------------------------------------------
-  // Case 1: empty namespace → cost-health overall OK, exit 0.
+  // Case 1: empty namespace â†’ cost-health overall OK, exit 0.
   // Validates each subcheck handles empty input gracefully (the iter-75 fix
   // CI step is exactly this case, but for a clean cwd).
   // -----------------------------------------------------------------------
@@ -94,15 +94,15 @@ async function main() {
     mkdirSync(join(cwd, '.swarm'), { recursive: true });
     const r = await runHealth(cwd);
     if (!r.json) {
-      console.error('  → no JSON output; CLI likely unavailable');
+      console.error('  â†’ no JSON output; CLI likely unavailable');
       process.exit(2);
     }
-    assert(r.exitCode === 0, 'empty input → exit 0');
-    assert(r.json.overall.ok === true, 'empty input → overall.ok === true');
+    assert(r.exitCode === 0, 'empty input â†’ exit 0');
+    assert(r.json.overall.ok === true, 'empty input â†’ overall.ok === true');
   }
 
   // -----------------------------------------------------------------------
-  // Case 2: budget HARD_STOP → cost-health overall ⚠, exit 1.
+  // Case 2: budget HARD_STOP â†’ cost-health overall âš , exit 1.
   // EXACT REGRESSION TARGET FOR ITER 75. If budget.mjs ever again
   // short-circuits process.exit(1) when BUDGET_QUIET=1 is set, this
   // assertion fails.
@@ -111,24 +111,24 @@ async function main() {
   {
     const cwd = join(fixture, 'case-2-hardstop');
     mkdirSync(join(cwd, '.swarm'), { recursive: true });
-    // 5 sessions × $0.10 = $0.50 spend
+    // 5 sessions Ã— $0.10 = $0.50 spend
     for (let i = 0; i < 5; i++) {
       const ts = new Date(Date.now() - (i + 2) * 86_400_000).toISOString();
       const ok = memStore(cwd, `session-baseline-${i}`, {
         sessionId: `baseline-${i}`, capturedAt: ts,
         total_cost_usd: 0.10, messageCount: 5, byModel: {},
       });
-      if (!ok) { console.error('  → fixture write failed'); process.exit(2); }
+      if (!ok) { console.error('  â†’ fixture write failed'); process.exit(2); }
     }
-    // Set $0.20 budget → 250% utilization → HARD_STOP
+    // Set $0.20 budget â†’ 250% utilization â†’ HARD_STOP
     if (runBudget(cwd, 'set', '0.20') !== 0) {
-      console.error('  → budget set failed');
+      console.error('  â†’ budget set failed');
       process.exit(2);
     }
     const r = await runHealth(cwd);
-    if (!r.json) { console.error('  → no JSON output'); process.exit(2); }
-    assert(r.exitCode === 1, 'HARD_STOP → exit 1 (iter-75 regression target)');
-    assert(r.json.overall.ok === false, 'HARD_STOP → overall.ok === false');
+    if (!r.json) { console.error('  â†’ no JSON output'); process.exit(2); }
+    assert(r.exitCode === 1, 'HARD_STOP â†’ exit 1 (iter-75 regression target)');
+    assert(r.json.overall.ok === false, 'HARD_STOP â†’ overall.ok === false');
     const budgetCheck = r.json.checks.find((c) => c.name === 'budget');
     assert(budgetCheck && budgetCheck.exitCode === 1,
       'subcheck budget exit code propagated as 1 (was bypassed by BUDGET_QUIET=1 in iter 75)');
@@ -150,7 +150,7 @@ async function main() {
     const m = /\{[\s\S]*\}/.exec(stdout);
     const json = m ? JSON.parse(m[0]) : null;
     assert(json && json.checks.length === 2,
-      `--skip burn,projection → only 2 checks ran (budget+anomaly), got ${json?.checks?.length}`);
+      `--skip burn,projection â†’ only 2 checks ran (budget+anomaly), got ${json?.checks?.length}`);
     assert(json && json.config.skipped.includes('burn') && json.config.skipped.includes('projection'),
       'config.skipped reflects CLI args');
   }

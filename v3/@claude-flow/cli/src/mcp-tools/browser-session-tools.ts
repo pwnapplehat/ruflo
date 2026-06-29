@@ -1,5 +1,5 @@
 /**
- * Browser Session Lifecycle MCP Tools (ADR-0001 ruflo-browser §7).
+ * Browser Session Lifecycle MCP Tools (ADR-0001 ruflo-browser Â§7).
  *
  * Five lifecycle tools that wrap the 23 raw `browser_*` interaction tools
  * with RVF cognitive containers, ruvector trajectory recording, AgentDB
@@ -7,7 +7,7 @@
  * `plugins/ruflo-browser/docs/adrs/0001-browser-skills-architecture.md`.
  *
  * Design notes:
- *   - These tools orchestrate at the *primitive* level — they shell out to
+ *   - These tools orchestrate at the *primitive* level â€” they shell out to
  *     the existing `agent-browser` CLI (for browser actions), `ruvector` CLI
  *     (for trajectory hooks + RVF), and the bridged `memory` namespace (for
  *     AgentDB index). They do not inline a replay engine; replay
@@ -79,11 +79,11 @@ function fail(error: string, extra: Record<string, unknown> = {}): MCPToolResult
 
 export const browserSessionTools: MCPTool[] = [
   // ==========================================================================
-  // browser_session_record — open a recorded session
+  // browser_session_record â€” open a recorded session
   // ==========================================================================
   {
     name: 'browser_session_record',
-    description: 'Open a named, traced browser session: allocate an RVF cognitive container, begin a ruvector trajectory, then open the URL via agent-browser. Returns the session id and rvf path. Use when native WebFetch is wrong because you need real browser automation — JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
+    description: 'Open a named, traced browser session: allocate an RVF cognitive container, begin a ruvector trajectory, then open the URL via agent-browser. Returns the session id and rvf path. Use when native WebFetch is wrong because you need real browser automation â€” JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
     category: 'browser-session',
     tags: ['session', 'rvf', 'trajectory', 'lifecycle'],
     inputSchema: {
@@ -119,7 +119,7 @@ export const browserSessionTools: MCPTool[] = [
       // omitted `--dimension`, so commander hit the required-option
       // check first and the wrapper returned `rvf create failed` for
       // every call. The second round of the fix strips the bogus
-      // `--kind` flag — when round 1 only added `--dimension`, the
+      // `--kind` flag â€” when round 1 only added `--dimension`, the
       // next call surfaced `error: unknown option '--kind'`.
       //
       // 384 matches the MiniLM-L6 default used elsewhere in the
@@ -162,11 +162,11 @@ export const browserSessionTools: MCPTool[] = [
   },
 
   // ==========================================================================
-  // browser_session_end — commit a recorded session
+  // browser_session_end â€” commit a recorded session
   // ==========================================================================
   {
     name: 'browser_session_end',
-    description: 'End a recorded browser session: trajectory-end with verdict, rvf compact, AIDefence pre-store gate (best-effort), and AgentDB index in the browser-sessions namespace. Use when native WebFetch is wrong because you need real browser automation — JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
+    description: 'End a recorded browser session: trajectory-end with verdict, rvf compact, AIDefence pre-store gate (best-effort), and AgentDB index in the browser-sessions namespace. Use when native WebFetch is wrong because you need real browser automation â€” JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
     category: 'browser-session',
     tags: ['session', 'rvf', 'trajectory', 'lifecycle', 'agentdb'],
     inputSchema: {
@@ -197,7 +197,7 @@ export const browserSessionTools: MCPTool[] = [
       const compact = await shell('npx', ['-y', RUVECTOR_PIN, 'rvf', 'compact', input.rvf_path as string]);
       if (!compact.success) return fail('rvf compact failed', { detail: compact.error, stderr: compact.stderr });
 
-      // 3. AgentDB index — best-effort via memory store (claude-flow bridges)
+      // 3. AgentDB index â€” best-effort via memory store (ruflo bridges)
       const indexValue = JSON.stringify({
         rvf_id: input.session,
         rvf_path: input.rvf_path,
@@ -211,7 +211,7 @@ export const browserSessionTools: MCPTool[] = [
         '--namespace', 'browser-sessions',
         '--key', input.session as string,
         '--value', indexValue], { timeout: 60000 });
-      // Index failure is non-fatal — the RVF container is the source of truth.
+      // Index failure is non-fatal â€” the RVF container is the source of truth.
 
       return ok({
         sessionId: input.session,
@@ -224,11 +224,11 @@ export const browserSessionTools: MCPTool[] = [
   },
 
   // ==========================================================================
-  // browser_session_replay — load a trajectory for caller-level dispatch
+  // browser_session_replay â€” load a trajectory for caller-level dispatch
   // ==========================================================================
   {
     name: 'browser_session_replay',
-    description: 'Load a recorded session trajectory and return its steps so the caller can dispatch them through the 23 browser_* tools. Does NOT itself drive the browser — replay execution is caller-orchestrated to keep this tool a primitive (ADR-0001 §7). Use when native WebFetch is wrong because you need real browser automation — JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
+    description: 'Load a recorded session trajectory and return its steps so the caller can dispatch them through the 23 browser_* tools. Does NOT itself drive the browser â€” replay execution is caller-orchestrated to keep this tool a primitive (ADR-0001 Â§7). Use when native WebFetch is wrong because you need real browser automation â€” JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
     category: 'browser-session',
     tags: ['session', 'replay', 'trajectory', 'lifecycle'],
     inputSchema: {
@@ -262,7 +262,7 @@ export const browserSessionTools: MCPTool[] = [
         if (!dr.success) return fail('rvf derive failed', { detail: dr.error, stderr: dr.stderr });
       }
 
-      // 3. Surface the trajectory steps from the segments listing — the caller is
+      // 3. Surface the trajectory steps from the segments listing â€” the caller is
       //    expected to read trajectory.ndjson from the RVF container and dispatch.
       const segments = await shell('npx', ['-y', RUVECTOR_PIN, 'rvf', 'segments', input.rvf_path as string]);
 
@@ -280,11 +280,11 @@ export const browserSessionTools: MCPTool[] = [
   },
 
   // ==========================================================================
-  // browser_template_apply — fetch a stored template
+  // browser_template_apply â€” fetch a stored template
   // ==========================================================================
   {
     name: 'browser_template_apply',
-    description: 'Fetch a recipe from the browser-templates AgentDB namespace and return it for caller-level execution. Use when native WebFetch is wrong because you need real browser automation — JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
+    description: 'Fetch a recipe from the browser-templates AgentDB namespace and return it for caller-level execution. Use when native WebFetch is wrong because you need real browser automation â€” JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
     category: 'browser-session',
     tags: ['template', 'agentdb', 'extract'],
     inputSchema: {
@@ -310,11 +310,11 @@ export const browserSessionTools: MCPTool[] = [
   },
 
   // ==========================================================================
-  // browser_cookie_use — fetch a vaulted cookie handle
+  // browser_cookie_use â€” fetch a vaulted cookie handle
   // ==========================================================================
   {
     name: 'browser_cookie_use',
-    description: 'Fetch a vault handle for a host from the browser-cookies AgentDB namespace. Raw cookie values are NEVER returned — only the opaque handle plus expiry / AIDefence verdict. Use when native WebFetch is wrong because you need real browser automation — JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
+    description: 'Fetch a vault handle for a host from the browser-cookies AgentDB namespace. Raw cookie values are NEVER returned â€” only the opaque handle plus expiry / AIDefence verdict. Use when native WebFetch is wrong because you need real browser automation â€” JS-heavy SPA scraping, login flows with cookie reuse, replay against DOM-drifted versions, AIDefence PII gating before content reaches Claude. For static HTML pages, native WebFetch is faster and free.',
     category: 'browser-session',
     tags: ['cookie', 'agentdb', 'aidefence', 'auth'],
     inputSchema: {

@@ -142,7 +142,7 @@ const statusCommand: Command = {
     const needsMigration = components.some(c => c.migrationNeeded === 'yes');
     output.writeln();
     if (needsMigration) {
-      output.printInfo('V2 artifacts detected. Run "claude-flow migrate run" to migrate.');
+      output.printInfo('V2 artifacts detected. Run "ruflo migrate run" to migrate.');
     } else {
       output.printSuccess('No migration needed.');
     }
@@ -198,11 +198,11 @@ const runCommand: Command = {
     output.writeln();
     output.writeln(output.bold('V2 to V3 Migration'));
     if (dryRun) {
-      output.printWarning('Dry run mode — no changes will be made.');
+      output.printWarning('Dry run mode Ã¢â‚¬â€ no changes will be made.');
     }
     output.writeln();
 
-    // Ensure .claude-flow directory exists
+    // Ensure .ruflo directory exists
     if (!dryRun) {
       fs.mkdirSync(v3Dir, { recursive: true });
     }
@@ -251,11 +251,11 @@ const runCommand: Command = {
           }
           migrated.push('config');
         } else {
-          output.printInfo('Config already at v3 — skipping.');
+          output.printInfo('Config already at v3 Ã¢â‚¬â€ skipping.');
           skipped.push('config');
         }
       } else {
-        output.writeln(output.dim('No v2 config found — skipping config migration.'));
+        output.writeln(output.dim('No v2 config found Ã¢â‚¬â€ skipping config migration.'));
         skipped.push('config');
       }
     } catch (err) {
@@ -287,15 +287,15 @@ const runCommand: Command = {
               }
             }
             output.printSuccess(`Memory files backed up (${jsonFiles.length} JSON, ${hasDb ? '1 DB' : '0 DB'}).`);
-            output.printInfo('Run "claude-flow memory init --force" to import v2 memory into v3 AgentDB.');
+            output.printInfo('Run "ruflo memory init --force" to import v2 memory into v3 AgentDB.');
           }
           migrated.push('memory');
         } else {
-          output.writeln(output.dim('No v2 memory files found — skipping.'));
+          output.writeln(output.dim('No v2 memory files found Ã¢â‚¬â€ skipping.'));
           skipped.push('memory');
         }
       } else {
-        output.writeln(output.dim('No v2 memory directory found — skipping.'));
+        output.writeln(output.dim('No v2 memory directory found Ã¢â‚¬â€ skipping.'));
         skipped.push('memory');
       }
     } catch (err) {
@@ -338,11 +338,11 @@ const runCommand: Command = {
           }
           migrated.push('sessions');
         } else {
-          output.writeln(output.dim('No v2 session files found — skipping.'));
+          output.writeln(output.dim('No v2 session files found Ã¢â‚¬â€ skipping.'));
           skipped.push('sessions');
         }
       } else {
-        output.writeln(output.dim('No v2 sessions directory found — skipping.'));
+        output.writeln(output.dim('No v2 sessions directory found Ã¢â‚¬â€ skipping.'));
         skipped.push('sessions');
       }
     } catch (err) {
@@ -370,7 +370,7 @@ const runCommand: Command = {
       output.printInfo(`Dry run complete. ${migrated.length} component(s) would be migrated.`);
     } else if (migrated.length > 0) {
       output.printSuccess(`Migration complete. ${migrated.length} component(s) migrated: ${migrated.join(', ')}`);
-      output.printInfo('Run "claude-flow migrate verify" to validate the migration.');
+      output.printInfo('Run "ruflo migrate verify" to validate the migration.');
     } else {
       output.printInfo('Nothing to migrate.');
     }
@@ -510,7 +510,7 @@ const verifyCommand: Command = {
       output.printSuccess('All verification checks passed.');
     } else {
       output.printError('Some verification checks failed.');
-      output.printInfo('Run "claude-flow migrate run" to re-run the migration, or "migrate rollback" to restore from backup.');
+      output.printInfo('Run "ruflo migrate run" to re-run the migration, or "migrate rollback" to restore from backup.');
     }
 
     return { success: allPassed, data: { checks, allPassed }, exitCode: allPassed ? 0 : 1 };
@@ -653,7 +653,7 @@ const breakingCommand: Command = {
         changes: [
           { change: 'Backend option changed', from: 'memory: { type }', to: 'memory: { backend }' },
           { change: 'HNSW enabled by default', from: 'Manual opt-in', to: 'Auto-enabled' },
-          { change: 'Storage path changed', from: '.claude-flow/memory', to: 'data/memory' }
+          { change: 'Storage path changed', from: '.cursor-flow/memory', to: 'data/memory' }
         ]
       },
       {
@@ -676,7 +676,7 @@ const breakingCommand: Command = {
         category: 'Embeddings',
         changes: [
           { change: 'Provider changed', from: 'OpenAI API / TF.js', to: 'ONNX Runtime (local)' },
-          { change: 'Geometry support', from: 'Euclidean only', to: 'Hyperbolic (Poincaré ball)' },
+          { change: 'Geometry support', from: 'Euclidean only', to: 'Hyperbolic (PoincarÃƒÂ© ball)' },
           { change: 'Cache system', from: 'Memory-only', to: 'sql.js persistent cache' },
           { change: 'Neural substrate', from: 'None', to: 'RuVector integration' }
         ]
@@ -706,7 +706,7 @@ const breakingCommand: Command = {
       output.writeln();
     }
 
-    output.printInfo('Run "claude-flow migrate run" to automatically handle these changes');
+    output.printInfo('Run "ruflo migrate run" to automatically handle these changes');
 
     return { success: true, data: changes };
   }
@@ -719,15 +719,15 @@ export const migrateCommand: Command = {
   subcommands: [statusCommand, runCommand, verifyCommand, rollbackCommand, breakingCommand],
   options: [],
   examples: [
-    { command: 'claude-flow migrate status', description: 'Check migration status' },
-    { command: 'claude-flow migrate run --dry-run', description: 'Preview migration' },
-    { command: 'claude-flow migrate run -t all', description: 'Run full migration' }
+    { command: 'ruflo migrate status', description: 'Check migration status' },
+    { command: 'ruflo migrate run --dry-run', description: 'Preview migration' },
+    { command: 'ruflo migrate run -t all', description: 'Run full migration' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
     output.writeln(output.bold('V2 to V3 Migration Tools'));
     output.writeln();
-    output.writeln('Usage: claude-flow migrate <subcommand> [options]');
+    output.writeln('Usage: ruflo migrate <subcommand> [options]');
     output.writeln();
     output.writeln('Subcommands:');
     output.printList([
@@ -768,11 +768,11 @@ function formatMigrationStatus(status: string): string {
 function getMigrationSteps(target: string): Array<{ name: string; description: string; source: string; dest: string }> {
   const allSteps = [
     { name: 'Configuration Files', description: 'Migrate config schema to V3 format', source: './claude-flow.json', dest: './claude-flow.config.json' },
-    { name: 'Memory Backend', description: 'Upgrade to hybrid backend with AgentDB', source: './.claude-flow/memory', dest: './data/memory' },
-    { name: 'Agent Definitions', description: 'Convert agent configs to V3 format', source: './.claude-flow/agents', dest: './v3/agents' },
+    { name: 'Memory Backend', description: 'Upgrade to hybrid backend with AgentDB', source: './.cursor-flow/memory', dest: './data/memory' },
+    { name: 'Agent Definitions', description: 'Convert agent configs to V3 format', source: './.cursor-flow/agents', dest: './v3/agents' },
     { name: 'Hook Registry', description: 'Migrate hooks to V3 hook system', source: './src/hooks', dest: './v3/hooks' },
-    { name: 'Workflow Definitions', description: 'Convert workflows to event-sourced format', source: './.claude-flow/workflows', dest: './data/workflows' },
-    { name: 'Embeddings System', description: 'Migrate to ONNX with hyperbolic (Poincaré ball)', source: 'OpenAI/TF.js embeddings', dest: '.claude-flow/embeddings.json' }
+    { name: 'Workflow Definitions', description: 'Convert workflows to event-sourced format', source: './.cursor-flow/workflows', dest: './data/workflows' },
+    { name: 'Embeddings System', description: 'Migrate to ONNX with hyperbolic (PoincarÃƒÂ© ball)', source: 'OpenAI/TF.js embeddings', dest: '.cursor-flow/embeddings.json' }
   ];
 
   if (target === 'all') return allSteps;

@@ -7,9 +7,9 @@
   "bin": {
     "ruflo": "./bin/ruflo.js"
   },
-  "homepage": "https://github.com/ruvnet/claude-flow#readme",
+  "homepage": "https://github.com/pwnapplehat/ruflo#readme",
   "bugs": {
-    "url": "https://github.com/ruvnet/claude-flow/issues",
+    "url": "https://github.com/pwnapplehat/ruflo/issues",
     "email": "support@ruv.io"
   },
   "funding": {
@@ -24,7 +24,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "prepublishOnly": "cp ../README.md ./README.md",
+    "prepublishOnly": "node -e \"const fs=require('fs');fs.copyFileSync('../README.md','./README.md')\"",
     "dev": "node src/mcp-bridge/index.js",
     "dev:bridge": "node --watch src/mcp-bridge/index.js",
     "dev:test": "node src/mcp-bridge/test-harness.js",
@@ -36,8 +36,8 @@
     "install:bridge": "cd src/mcp-bridge && npm install",
     "generate:config": "node src/scripts/generate-config.js",
     "generate:welcome": "node src/scripts/generate-welcome.js",
-    "deploy": "bash src/scripts/deploy.sh",
-    "package:rvf": "bash src/scripts/package-rvf.sh"
+    "deploy": "node src/scripts/deploy.js",
+    "package:rvf": "node src/scripts/package-rvf.js"
   },
   "dependencies": {
     "@claude-flow/cli": "^3.10.3"
@@ -86,14 +86,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ruvnet/claude-flow.git",
+    "url": "https://github.com/pwnapplehat/ruflo.git",
     "directory": "ruflo"
   },
   "keywords": [
     "ruflo",
     "claude-flow",
-    "claude",
-    "claude-code",
+        "cursor",
     "anthropic",
     "ai",
     "ai-agents",

@@ -72,8 +72,8 @@ const DEFAULT_OPTIONS: Required<MCPServerOptions> = {
   transport: 'stdio',
   host: 'localhost',
   port: 3000,
-  pidFile: path.join(os.tmpdir(), 'claude-flow-mcp.pid'),
-  logFile: path.join(os.tmpdir(), 'claude-flow-mcp.log'),
+  pidFile: path.join(os.tmpdir(), 'ruflo-mcp.pid'),
+  logFile: path.join(os.tmpdir(), 'ruflo-mcp.log'),
   tools: 'all',
   daemonize: false,
   timeout: 30000,
@@ -100,7 +100,7 @@ export class MCPServerManager extends EventEmitter {
    * Start the MCP server
    */
   async start(): Promise<MCPServerStatus> {
-    // Check if already running (skip if status reports our own PID —
+    // Check if already running (skip if status reports our own PID ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â
     // getStatus() returns running=true for the current process in stdio mode
     // even before the server is actually started)
     const status = await this.getStatus();
@@ -205,7 +205,7 @@ export class MCPServerManager extends EventEmitter {
 
     if (!pid) {
       // No PID file found. Detect if we are running in stdio mode
-      // (e.g., launched by Claude Code via `claude mcp add`).
+      // (e.g., launched by Cursor via .cursor/mcp.json`).
       const isStdio = !process.stdin.isTTY;
       const envTransport = process.env.CLAUDE_FLOW_MCP_TRANSPORT;
       if (isStdio || envTransport === 'stdio' || this.options.transport === 'stdio') {
@@ -309,7 +309,7 @@ export class MCPServerManager extends EventEmitter {
    * Handles stdin/stdout directly like V2 implementation
    */
   private async startStdioServer(): Promise<void> {
-    // ruflo#1910 — protect the JSON-RPC stdout from any stray
+    // ruflo#1910 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â protect the JSON-RPC stdout from any stray
     // console.log/info/debug emitted by lazily-loaded modules
     // (@ruvector/router, @claude-flow/neural, transformers.js, ONNX,
     // semantic-router init, etc.). Codex closes the MCP transport
@@ -323,11 +323,11 @@ export class MCPServerManager extends EventEmitter {
     // hijack can't accidentally redirect protocol frames too.
     process.env.MCP_STDIO_MODE = '1';
     const originalLog = console.log;  // eslint-disable-line no-console
-    console.log = (...args: unknown[]) => process.stderr.write('[stdout→stderr] ' + args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ') + '\n');
-    console.info = (...args: unknown[]) => process.stderr.write('[stdout→stderr] ' + args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ') + '\n');
-    console.debug = (...args: unknown[]) => process.stderr.write('[stdout→stderr] ' + args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ') + '\n');
+    console.log = (...args: unknown[]) => process.stderr.write('[stdoutÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢stderr] ' + args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ') + '\n');
+    console.info = (...args: unknown[]) => process.stderr.write('[stdoutÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢stderr] ' + args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ') + '\n');
+    console.debug = (...args: unknown[]) => process.stderr.write('[stdoutÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢stderr] ' + args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ') + '\n');
 
-    // #2426 — Force blocking writes on stdout so JSON-RPC frames larger than
+    // #2426 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Force blocking writes on stdout so JSON-RPC frames larger than
     // the OS pipe buffer (64KB on macOS) are delivered atomically. Without
     // this, `process.stdout.write()` returns after a partial write when the
     // pipe buffer is full; the truncated frame is unparseable JSON and the
@@ -342,7 +342,7 @@ export class MCPServerManager extends EventEmitter {
     if (stdoutHandle && typeof stdoutHandle.setBlocking === 'function') {
       stdoutHandle.setBlocking(true);
     }
-    // Same for stderr — long structured error messages can also exceed the
+    // Same for stderr ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â long structured error messages can also exceed the
     // pipe buffer and tearing those mid-message corrupts the client's log view.
     const stderrHandle = (process.stderr as unknown as {
       _handle?: { setBlocking?: (b: boolean) => void };
@@ -356,7 +356,7 @@ export class MCPServerManager extends EventEmitter {
     const writeFrame = (msg: unknown): void => {
       process.stdout.write(JSON.stringify(msg) + '\n');
     };
-    // Reference originalLog to keep the eslint-disable meaningful — also
+    // Reference originalLog to keep the eslint-disable meaningful ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â also
     // gives us an escape hatch if a test wants to verify it was replaced.
     void originalLog;
 
@@ -377,7 +377,7 @@ export class MCPServerManager extends EventEmitter {
 
     // Log to stderr to not corrupt stdout
     console.error(
-      `[${new Date().toISOString()}] INFO [claude-flow-mcp] (${sessionId}) Starting in stdio mode`
+      `[${new Date().toISOString()}] INFO [ruflo-mcp] (${sessionId}) Starting in stdio mode`
     );
 
     // Auto-initialize memory database before tools are registered (#1524)
@@ -388,28 +388,28 @@ export class MCPServerManager extends EventEmitter {
       const status = await checkMemoryInitialization();
       if (!status.initialized) {
         console.error(
-          `[${new Date().toISOString()}] INFO [claude-flow-mcp] (${sessionId}) Auto-initializing memory database...`
+          `[${new Date().toISOString()}] INFO [ruflo-mcp] (${sessionId}) Auto-initializing memory database...`
         );
         const result = await initializeMemoryDatabase({ force: false, verbose: false });
         if (result.success) {
           console.error(
-            `[${new Date().toISOString()}] INFO [claude-flow-mcp] (${sessionId}) Memory database initialized at ${result.dbPath}`
+            `[${new Date().toISOString()}] INFO [ruflo-mcp] (${sessionId}) Memory database initialized at ${result.dbPath}`
           );
         } else if (result.error && !result.error.includes('already exists')) {
           console.error(
-            `[${new Date().toISOString()}] WARN [claude-flow-mcp] (${sessionId}) Memory database init returned: ${result.error}`
+            `[${new Date().toISOString()}] WARN [ruflo-mcp] (${sessionId}) Memory database init returned: ${result.error}`
           );
         }
       } else {
         console.error(
-          `[${new Date().toISOString()}] INFO [claude-flow-mcp] (${sessionId}) Memory database already initialized (v${status.version || 'unknown'})`
+          `[${new Date().toISOString()}] INFO [ruflo-mcp] (${sessionId}) Memory database already initialized (v${status.version || 'unknown'})`
         );
       }
     } catch (memInitError) {
       // Graceful degradation: server continues even if memory init fails.
       // Memory tools will attempt lazy init on first call via ensureInitialized().
       console.error(
-        `[${new Date().toISOString()}] WARN [claude-flow-mcp] (${sessionId}) Memory auto-init failed (tools will retry on first call): ${memInitError instanceof Error ? memInitError.message : String(memInitError)}`
+        `[${new Date().toISOString()}] WARN [ruflo-mcp] (${sessionId}) Memory auto-init failed (tools will retry on first call): ${memInitError instanceof Error ? memInitError.message : String(memInitError)}`
       );
     }
     console.error(JSON.stringify({
@@ -448,7 +448,7 @@ export class MCPServerManager extends EventEmitter {
 
       if (buffer.length > MAX_BUFFER_SIZE) {
         console.error(
-          `[${new Date().toISOString()}] ERROR [claude-flow-mcp] Buffer exceeded ${MAX_BUFFER_SIZE} bytes, rejecting`
+          `[${new Date().toISOString()}] ERROR [ruflo-mcp] Buffer exceeded ${MAX_BUFFER_SIZE} bytes, rejecting`
         );
         buffer = '';
         writeFrame({
@@ -472,7 +472,7 @@ export class MCPServerManager extends EventEmitter {
             }
           } catch (error) {
             console.error(
-              `[${new Date().toISOString()}] ERROR [claude-flow-mcp] Failed to parse message:`,
+              `[${new Date().toISOString()}] ERROR [ruflo-mcp] Failed to parse message:`,
               error instanceof Error ? error.message : String(error)
             );
           }
@@ -482,7 +482,7 @@ export class MCPServerManager extends EventEmitter {
 
     process.stdin.on('end', () => {
       console.error(
-        `[${new Date().toISOString()}] INFO [claude-flow-mcp] (${sessionId}) stdin closed, shutting down...`
+        `[${new Date().toISOString()}] INFO [ruflo-mcp] (${sessionId}) stdin closed, shutting down...`
       );
       process.exit(0);
     });
@@ -490,14 +490,14 @@ export class MCPServerManager extends EventEmitter {
     // Handle process termination
     process.on('SIGINT', () => {
       console.error(
-        `[${new Date().toISOString()}] INFO [claude-flow-mcp] (${sessionId}) Received SIGINT, shutting down...`
+        `[${new Date().toISOString()}] INFO [ruflo-mcp] (${sessionId}) Received SIGINT, shutting down...`
       );
       process.exit(0);
     });
 
     process.on('SIGTERM', () => {
       console.error(
-        `[${new Date().toISOString()}] INFO [claude-flow-mcp] (${sessionId}) Received SIGTERM, shutting down...`
+        `[${new Date().toISOString()}] INFO [ruflo-mcp] (${sessionId}) Received SIGTERM, shutting down...`
       );
       process.exit(0);
     });
@@ -590,7 +590,7 @@ export class MCPServerManager extends EventEmitter {
         case 'notifications/initialized':
           // Client notification - no response needed
           console.error(
-            `[${new Date().toISOString()}] INFO [claude-flow-mcp] (${sessionId}) Client initialized`
+            `[${new Date().toISOString()}] INFO [ruflo-mcp] (${sessionId}) Client initialized`
           );
           return null;
 
@@ -610,7 +610,7 @@ export class MCPServerManager extends EventEmitter {
       }
     } catch (error) {
       console.error(
-        `[${new Date().toISOString()}] ERROR [claude-flow-mcp] Error handling ${message.method}:`,
+        `[${new Date().toISOString()}] ERROR [ruflo-mcp] Error handling ${message.method}:`,
         error
       );
       return {
@@ -641,7 +641,7 @@ export class MCPServerManager extends EventEmitter {
 
     const mcpServer = createMCPServer(
       {
-        name: 'Claude-Flow MCP Server V3',
+        name: 'Ruflo MCP Server V3',
         version: '3.0.0',
         transport: this.options.transport as 'http' | 'websocket',
         host: this.options.host,
@@ -754,12 +754,12 @@ export class MCPServerManager extends EventEmitter {
         await fs.promises.unlink(legacyPath);
       }
     } catch {
-      // Ignore — file may not exist
+      // Ignore ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â file may not exist
     }
   }
 
   /**
-   * Check if process is running AND is a node/claude-flow process.
+   * Check if process is running AND is a node/ruflo process.
    * Plain `kill -0` returns true for any process with the same owner,
    * which causes false positives when the OS recycles the PID.
    */
@@ -786,12 +786,12 @@ export class MCPServerManager extends EventEmitter {
             timeout: 1000,
           }).trim();
         } catch {
-          // ps failed — fall through
+          // ps failed ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â fall through
         }
       }
       if (!cmdline) return true; // Can't inspect, fall back to kill check
       // Must be a node process to be our MCP server
-      return cmdline.includes('node') || cmdline.includes('claude-flow') || cmdline.includes('npx');
+      return cmdline.includes('node') || cmdline.includes('ruflo') || cmdline.includes('claude-flow') || cmdline.includes('npx');
     } catch {
       // If we can't inspect the process (macOS, Windows, permissions), fall back to kill check
       return true;

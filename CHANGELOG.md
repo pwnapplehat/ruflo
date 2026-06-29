@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Cursor-Native Fork (pwnapplehat/ruflo)
+
+This fork fully replaces Claude Code and Codex integration with a Cursor-native
+integration layer. All changes are verified against cursor.com/docs (2026-06-29).
+
+- **`npx ruflo init` now writes the `.cursor/` tree** (Cursor-only, no `.claude/` fallback):
+  - `.cursor/mcp.json` — ruflo MCP server registration (~330 tools, schema identical to Claude's)
+  - `.cursor/hooks.json` — 7 Cursor hook event mappings (beforeShellExecution, afterFileEdit, beforeSubmitPrompt, sessionStart, stop, preCompact, subagentStop) using Cursor's verified stdin/stdout JSON contract
+  - `.cursor/hooks/cursor-hook-handler.cjs` + `cursor-memory-hook.cjs` — hook dispatchers
+  - `.cursor/agents/*.md` — 106 Cursor-native subagents (5-field frontmatter: name, description, model, readonly, is_background)
+  - `.cursor/skills/*/SKILL.md` — 38 skills (format identical to Cursor's)
+  - `.cursor/rules/*.mdc` — 168 project rules (converted from slash commands)
+  - `AGENTS.md` — project memory (Cursor reads natively, always applied)
+  - `.cursor-flow/` — runtime data (sessions, intelligence, memory, helpers)
+- **Headless workers rewritten to `@cursor/sdk`** — `spawn('claude', ['--print'])` replaced with `Agent.prompt()` / `Agent.create()` + `agent.send()` (Phase 4). Requires `CURSOR_API_KEY` for the headless agent path; the 12 daemon workers' local logic runs without it.
+- **`CursorMemoryBridge`** — replaces the Claude-Code-specific `~/.claude/projects/<key>/memory/` reader with a Cursor-native `.cursor-flow/memory/<project-hash>/` adapter.
+- **Windows-native installer** — `scripts/install.ps1` (PowerShell). `agentdb@3.0.0-alpha.17` verified pure-JS (no native bindings, no build tools needed on Windows).
+- **MCP server fix** — removed the false `resources` capability advertisement from the `initialize` response (stdio path has no resources handler).
+- **Agent frontmatter converter** — `scripts/convert-agents-to-cursor.mjs` (197 scanned, 106 unique converted, 0 Claude-Code-only fields).
+- **Hook contract smoke test** — `scripts/smoke-cursor-hooks.mjs` (29 assertions, all passing).
+
+### Removed
+
+- Claude Code integration (`.claude/` tree, `CLAUDE.md` as primary, `claude mcp add` strings, `$CLAUDE_PROJECT_DIR` hooks, `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`, `agentTeams` config, `statusLine` block, `attribution` block).
+- Codex integration as a primary target (`--codex` / `--dual` flags still exist in code but the default init path is Cursor-only).
+- `claude --print` headless spawn path (replaced by `@cursor/sdk`).
+
+### Verified
+
+- `npx tsc --noEmit`: 0 errors in all new/modified files (9 pre-existing errors in unrelated optional modules: `@ruvector/learning-wasm`, `@metaharness/router`).
+- `npx ruflo init` end-to-end on Windows: produces 106 agents, 168 rules, 38 skills, 2 hooks, 5 helper CJS modules, 7 hooks enabled, `success: true`, `.claude/` NOT created.
+- MCP server: 306 tools over stdio JSON-RPC, `resources` capability correctly removed.
+- Hook contract: 29/29 smoke assertions pass (Cursor JSON stdout: `permission`/`additional_context`/`{}`, no `followup_message` on stop/subagentStop).
+- `@cursor/sdk@1.0.22` installed and verified (`Agent` + `CursorAgentError` constructors present).
+
 ### Added
 
 - Configurable statusline cost segment via two environment variables (defaults unchanged):

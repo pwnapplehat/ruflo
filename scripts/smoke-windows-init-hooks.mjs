@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Smoke test for ruvnet/ruflo#2132 — Windows-compatible init hook generation.
+ * Smoke test for ruvnet/ruflo#2132 â€” Windows-compatible init hook generation.
  *
- * Verifies that `ruflo init` generates a .claude/settings.json containing
+ * Verifies that `ruflo init` generates a .cursor/hooks.json containing
  * node-based hook commands (no /bin/bash, no POSIX pipelines), and that the
  * platform detection correctly distinguishes Windows from POSIX.
  *
@@ -59,12 +59,12 @@ const result = spawnSync(
       FORCE_COLOR: '0',
     },
     encoding: 'utf8',
-    // iter 123 → 131 — bumped from 180s to 300s. macos-latest observed
+    // iter 123 â†’ 131 â€” bumped from 180s to 300s. macos-latest observed
     // running exactly 180s before the timer fired (CI cold ONNX download
     // + agentic-flow init + MCP server spawn). 300s leaves room for the
     // smoke's assertion phase under the job's 10-min cap.
     timeout: 300_000,
-    // Don't fail if the command exits non-zero — init may partially succeed
+    // Don't fail if the command exits non-zero â€” init may partially succeed
   }
 );
 
@@ -150,11 +150,11 @@ if (IS_WINDOWS) {
 
   // Check that hook-handler.cjs was deployed
   const handlerPath = join(tmpDir, '.claude', 'helpers', 'hook-handler.cjs');
-  assert(existsSync(handlerPath), '.claude/helpers/hook-handler.cjs exists');
+  assert(existsSync(handlerPath), '.cursor/hooks/hook-handler.cjs exists');
 
   // Check that ruflo-hook.cjs was deployed (new in #2132)
   const shimPath = join(tmpDir, '.claude', 'helpers', 'ruflo-hook.cjs');
-  assert(existsSync(shimPath), '.claude/helpers/ruflo-hook.cjs exists (#2132)');
+  assert(existsSync(shimPath), '.cursor/hooks/ruflo-hook.cjs exists (#2132)');
 
 } else {
   console.log('\n--- POSIX (Mac/Linux) assertions ---');
@@ -170,11 +170,11 @@ if (IS_WINDOWS) {
 
   // hook-handler.cjs must still be deployed on POSIX
   const handlerPath = join(tmpDir, '.claude', 'helpers', 'hook-handler.cjs');
-  assert(existsSync(handlerPath), '.claude/helpers/hook-handler.cjs exists');
+  assert(existsSync(handlerPath), '.cursor/hooks/hook-handler.cjs exists');
 
   // ruflo-hook.cjs is always deployed now (cross-platform shim always available)
   const shimPath = join(tmpDir, '.claude', 'helpers', 'ruflo-hook.cjs');
-  assert(existsSync(shimPath), '.claude/helpers/ruflo-hook.cjs exists (#2132)');
+  assert(existsSync(shimPath), '.cursor/hooks/ruflo-hook.cjs exists (#2132)');
 }
 
 console.log(`\nResults: ${passed} passed, ${failed} failed`);

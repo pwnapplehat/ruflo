@@ -1,7 +1,7 @@
 {
   "name": "ruflo-arena",
   "version": "0.1.0-alpha.1",
-  "description": "Competitive ruliology for Ruflo swarms — arenas, tournaments, and adaptive co-evolution of program strategies (ADR-147/148).",
+  "description": "Competitive ruliology for Ruflo swarms â€” arenas, tournaments, and adaptive co-evolution of program strategies (ADR-147/148).",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,7 @@
     "eslint": "^9.10.0",
     "typescript": "^5.3.0",
     "typescript-eslint": "^8.5.0",
-    "vitest": "^4.0.16"
+    "vitest": "^1.6.0"
   },
   "keywords": ["ruflo", "arena", "tournament", "ruliology", "co-evolution"],
   "author": "ruvnet",

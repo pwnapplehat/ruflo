@@ -204,7 +204,7 @@ const createCommand: Command = {
           { property: 'Priority', value: formatPriority(result.priority) },
           { property: 'Status', value: formatStatus(result.status) },
           { property: 'Assigned To', value: result.assignedTo?.join(', ') || 'Unassigned' },
-          { property: 'Tags', value: result.tags?.join(', ') || 'None' }, // #1863 — guard undefined array
+          { property: 'Tags', value: result.tags?.join(', ') || 'None' }, // #1863 â€” guard undefined array
           { property: 'Created', value: new Date(result.createdAt).toLocaleString() }
         ]
       });
@@ -436,7 +436,7 @@ const statusCommand: Command = {
           { key: 'value', header: 'Value', width: 40 }
         ],
         data: [
-          // #1863 — tasks created via task_create or loaded from an older
+          // #1863 â€” tasks created via task_create or loaded from an older
           // store schema may not have these arrays populated; guard each
           // `.join()` so `task status` never throws "Cannot read properties
           // of undefined (reading 'join')".
@@ -762,20 +762,20 @@ export const taskCommand: Command = {
   subcommands: [createCommand, listCommand, statusCommand, cancelCommand, assignCommand, retryCommand],
   options: [],
   examples: [
-    { command: 'claude-flow task create -t implementation -d "Add user auth"', description: 'Create a task' },
-    { command: 'claude-flow task list', description: 'List pending/running tasks' },
-    { command: 'claude-flow task list --all', description: 'List all tasks' },
-    { command: 'claude-flow task status task-123', description: 'Get task details' },
-    { command: 'claude-flow task cancel task-123', description: 'Cancel a task' },
-    { command: 'claude-flow task assign task-123 --agent coder-1', description: 'Assign task to agent' },
-    { command: 'claude-flow task retry task-123', description: 'Retry a failed task' }
+    { command: 'ruflo task create -t implementation -d "Add user auth"', description: 'Create a task' },
+    { command: 'ruflo task list', description: 'List pending/running tasks' },
+    { command: 'ruflo task list --all', description: 'List all tasks' },
+    { command: 'ruflo task status task-123', description: 'Get task details' },
+    { command: 'ruflo task cancel task-123', description: 'Cancel a task' },
+    { command: 'ruflo task assign task-123 --agent coder-1', description: 'Assign task to agent' },
+    { command: 'ruflo task retry task-123', description: 'Retry a failed task' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     // Show help if no subcommand
     output.writeln();
     output.writeln(output.bold('Task Management Commands'));
     output.writeln();
-    output.writeln('Usage: claude-flow task <subcommand> [options]');
+    output.writeln('Usage: ruflo task <subcommand> [options]');
     output.writeln();
     output.writeln('Subcommands:');
     output.printList([
@@ -787,7 +787,7 @@ export const taskCommand: Command = {
       `${output.highlight('retry')}   - Retry a failed task`
     ]);
     output.writeln();
-    output.writeln('Run "claude-flow task <subcommand> --help" for subcommand help');
+    output.writeln('Run "ruflo task <subcommand> --help" for subcommand help');
 
     return { success: true };
   }

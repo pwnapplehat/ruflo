@@ -22,7 +22,7 @@ import { dirname, join } from 'node:path';
 
 /**
  * Get the data directory for neural pattern persistence
- * Uses .claude-flow/neural in the current working directory,
+ * Uses .cursor-flow/neural in the current working directory,
  * falling back to home directory
  */
 function getDataDir(): string {
@@ -30,7 +30,7 @@ function getDataDir(): string {
   const localDir = join(cwd, '.claude-flow', 'neural');
   const homeDir = join(homedir(), '.claude-flow', 'neural');
 
-  // Prefer local directory if .claude-flow exists
+  // Prefer local directory if .ruflo exists
   if (existsSync(join(cwd, '.claude-flow'))) {
     return localDir;
   }
@@ -721,7 +721,7 @@ let ruvllmLoaded = false;
 /**
  * Synchronously load the @ruvector/ruvllm SonaCoordinator. Used both by the
  * async init path (initializeIntelligence) and by sync stat readers like
- * getIntelligenceStats — the dashboard would otherwise report "unavailable"
+ * getIntelligenceStats Ã¢â‚¬â€ the dashboard would otherwise report "unavailable"
  * when stats are queried before any async init has fired (#1770).
  */
 function loadRuvllmCoordinatorSync(): any {
@@ -776,7 +776,7 @@ function loadPersistedStats(): void {
     if (existsSync(path)) {
       const data = JSON.parse(readFileSync(path, 'utf-8'));
       if (data && typeof data === 'object') {
-        // #2245: previously only restored trajectoriesRecorded — patternsLearned
+        // #2245: previously only restored trajectoriesRecorded Ã¢â‚¬â€ patternsLearned
         // and signalsProcessed reset to zero on every restart, masking real
         // learning progress in the dashboards.
         globalStats.trajectoriesRecorded = data.trajectoriesRecorded ?? 0;
@@ -836,7 +836,7 @@ export function flushIntelligenceStats(): void {
 /**
  * The four historical stat sources (globalStats / memory_bridge_status /
  * hooks metrics / neural_patterns count) genuinely measure different things,
- * so we don't merge them — we expose ONE call that returns all four sub-views
+ * so we don't merge them Ã¢â‚¬â€ we expose ONE call that returns all four sub-views
  * with the *source path* of each, plus a `consistency` block that spot-checks
  * the relationships the system maintains.
  *
@@ -916,17 +916,17 @@ export async function getUnifiedLearningStats(): Promise<UnifiedLearningStats> {
     neuralStats = nt.getNeuralStoreStats();
   } catch { /* neural module not loadable */ }
 
-  // Consistency notes — describe (don't enforce) the cross-store relationships
+  // Consistency notes Ã¢â‚¬â€ describe (don't enforce) the cross-store relationships
   const sonaTracksGlobalDelta = sonaStats.trajectoriesTotal - intel.trajectoriesRecorded;
   const notes: string[] = [];
   if (sonaAvailable && Math.abs(sonaTracksGlobalDelta) > 2) {
-    notes.push(`sona.trajectoriesTotal (${sonaStats.trajectoriesTotal}) drifts from globalStats.trajectoriesRecorded (${intel.trajectoriesRecorded}) by ${sonaTracksGlobalDelta} — expected to track within ±1`);
+    notes.push(`sona.trajectoriesTotal (${sonaStats.trajectoriesTotal}) drifts from globalStats.trajectoriesRecorded (${intel.trajectoriesRecorded}) by ${sonaTracksGlobalDelta} Ã¢â‚¬â€ expected to track within Ã‚Â±1`);
   }
   if (intel.patternsLearned > 0 && neuralStats.patternCount === 0) {
-    notes.push(`globalStats reports ${intel.patternsLearned} patterns learned but neural_patterns store is empty — pretrain has not written here, or trajectory-end isn't promoting patterns to the neural store yet`);
+    notes.push(`globalStats reports ${intel.patternsLearned} patterns learned but neural_patterns store is empty Ã¢â‚¬â€ pretrain has not written here, or trajectory-end isn't promoting patterns to the neural store yet`);
   }
   if (!bridgeStats.reachable) {
-    notes.push('memory-bridge unreachable — bridge-dependent counters (post-edit/-command persistence, pretrain bundle) will show 0');
+    notes.push('memory-bridge unreachable Ã¢â‚¬â€ bridge-dependent counters (post-edit/-command persistence, pretrain bundle) will show 0');
   }
 
   return {
@@ -935,7 +935,7 @@ export async function getUnifiedLearningStats(): Promise<UnifiedLearningStats> {
       trajectoriesRecorded: intel.trajectoriesRecorded,
       signalsProcessed: intel.signalsProcessed,
       lastAdaptation: intel.lastAdaptation,
-      source: '.claude-flow/neural/stats.json (globalStats)',
+      source: '.cursor-flow/neural/stats.json (globalStats)',
     },
     sona: {
       ...sonaStats,
@@ -1255,7 +1255,7 @@ export function getIntelligenceStats(): IntelligenceStats & {
   // dashboard (`hooks_intelligence_stats`) hits this path before any
   // initializeIntelligence() call has fired, so the coordinator field would
   // otherwise stay null and the dashboard would report "unavailable" even
-  // when @ruvector/ruvllm is fully resolvable. Sync require — cheap, idempotent.
+  // when @ruvector/ruvllm is fully resolvable. Sync require Ã¢â‚¬â€ cheap, idempotent.
   if (!ruvllmLoaded) {
     loadRuvllmCoordinatorSync();
   }
@@ -1265,7 +1265,7 @@ export function getIntelligenceStats(): IntelligenceStats & {
   let contrastiveTrainer: { triplets: number; agents: number } | string = 'unavailable';
   let trainingBackend = 'unavailable';
   try {
-    // Synchronous check — contrastiveTrainer is module-level in sona-optimizer
+    // Synchronous check Ã¢â‚¬â€ contrastiveTrainer is module-level in sona-optimizer
     // We read it via the SONAOptimizer singleton if available
     const sonaModule = (globalThis as any).__claudeFlowSonaStats;
     if (sonaModule) {

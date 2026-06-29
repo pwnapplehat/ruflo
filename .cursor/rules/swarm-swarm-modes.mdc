@@ -1,0 +1,14 @@
+---
+description: swarm-modes
+globs: 
+alwaysApply: false
+---
+# swarm-modes
+
+Command documentation for swarm-modes in category swarm.
+
+Usage:
+```bash
+npx ruflo swarm swarm-modes [options]
+```
+

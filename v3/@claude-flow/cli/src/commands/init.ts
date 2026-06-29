@@ -134,7 +134,7 @@ async function initCodexAction(
     if (result.warnings && result.warnings.length > 0) {
       output.printWarning('Warnings:');
       for (const warning of result.warnings.slice(0, 5)) {
-        output.printInfo(`  • ${warning}`);
+        output.printInfo(`  ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ ${warning}`);
       }
       if (result.warnings.length > 5) {
         output.printInfo(`  ... and ${result.warnings.length - 5} more`);
@@ -161,7 +161,7 @@ async function initCodexAction(
       output.printError('The @claude-flow/codex package is not installed.');
       output.printInfo('Install it with: npm install @claude-flow/codex');
       output.writeln();
-      output.printInfo('Alternatively, copy skills manually from .claude/skills/ to .agents/skills/');
+      output.printInfo('Alternatively, copy skills manually from .cursor/skills/ to .agents/skills/');
     } else {
       output.printError(`Failed to initialize: ${errorMessage}`);
     }
@@ -171,11 +171,11 @@ async function initCodexAction(
 }
 
 // Check if project is already initialized with ruflo.
-// #2207: .claude/settings.json alone is NOT a ruflo marker — it's created by
+// #2207: .cursor/hooks.json alone is NOT a ruflo marker ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â it's created by
 // Claude Code itself and exists in every Claude Code project. We require a
 // ruflo-specific signal: either a claudeFlow section in settings.json, OR a
 // .mcp.json with a 'claude-flow' or 'ruflo' server key, OR the ruflo-only
-// .claude-flow/config.yaml. Using the bare file-existence check was causing
+// .cursor-flow/config.yaml. Using the bare file-existence check was causing
 // false-positives for new users whose only existing file was Claude Code's own
 // settings.json.
 function isInitialized(cwd: string): { claude: boolean; claudeFlow: boolean } {
@@ -183,10 +183,10 @@ function isInitialized(cwd: string): { claude: boolean; claudeFlow: boolean } {
   const mcpJsonPath = path.join(cwd, '.mcp.json');
   const settingsPath = path.join(cwd, '.claude', 'settings.json');
 
-  // Check .claude-flow/config.yaml — ruflo-specific, always reliable
+  // Check .cursor-flow/config.yaml ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ruflo-specific, always reliable
   const hasClaudeFlow = fs.existsSync(claudeFlowPath);
 
-  // Check .claude/settings.json for ruflo-specific content (claudeFlow section)
+  // Check .cursor/hooks.json for ruflo-specific content (claudeFlow section)
   let hasRufloSettings = false;
   if (fs.existsSync(settingsPath)) {
     try {
@@ -195,10 +195,10 @@ function isInitialized(cwd: string): { claude: boolean; claudeFlow: boolean } {
         parsed != null &&
         typeof parsed === 'object' &&
         'claudeFlow' in parsed;
-    } catch { /* malformed — ignore */ }
+    } catch { /* malformed ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ignore */ }
   }
 
-  // Check .mcp.json for ruflo/claude-flow server key
+  // Check .mcp.json for ruflo/ruflo server key
   let hasRufloMcp = false;
   if (fs.existsSync(mcpJsonPath)) {
     try {
@@ -210,7 +210,7 @@ function isInitialized(cwd: string): { claude: boolean; claudeFlow: boolean } {
         typeof parsed.mcpServers === 'object' &&
         ('claude-flow' in (parsed.mcpServers as Record<string, unknown>) ||
          'ruflo' in (parsed.mcpServers as Record<string, unknown>));
-    } catch { /* malformed — ignore */ }
+    } catch { /* malformed ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ignore */ }
   }
 
   return {
@@ -226,12 +226,12 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
   const full = ctx.flags.full as boolean;
   const skipClaude = ctx.flags['skip-claude'] as boolean;
   const onlyClaude = ctx.flags['only-claude'] as boolean;
-  // #2098A — the parser handles `--no-foo` by stripping the prefix and
+  // #2098A ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â the parser handles `--no-foo` by stripping the prefix and
   // storing `flags.foo = false` (parser.ts:291-294), not by storing
   // `flags['no-foo'] = true`. So `--no-global` lands as
   // `ctx.flags.global === false`. The old read of `flags['no-global']`
-  // was always undefined and silently no-op'd — every user with the flag
-  // set still got `~/.claude/CLAUDE.md` modified. Read the real key.
+  // was always undefined and silently no-op'd ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â every user with the flag
+  // set still got `~/.cursor/AGENTS.md` modified. Read the real key.
   const noGlobal = ctx.flags['no-global'] === true || ctx.flags['global'] === false;
   const allAgents = ctx.flags['all-agents'] as boolean;
   const cloudMcp = ctx.flags['cloud-mcp'] as boolean;
@@ -250,8 +250,8 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
 
   if (hasExisting && !force) {
     output.printWarning('RuFlo appears to be already initialized');
-    if (initialized.claude) output.printInfo('  Found: .claude/settings.json');
-    if (initialized.claudeFlow) output.printInfo('  Found: .claude-flow/config.yaml');
+    if (initialized.claude) output.printInfo('  Found: .cursor/hooks.json');
+    if (initialized.claudeFlow) output.printInfo('  Found: .cursor-flow/config.yaml');
     output.printInfo('Use --force to reinitialize');
 
     if (ctx.interactive) {
@@ -305,14 +305,14 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
     options.components.runtime = false;
   }
 
-  // ADR-128 Phase 3 — restore full agent set (98 agents) when user explicitly
+  // ADR-128 Phase 3 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â restore full agent set (98 agents) when user explicitly
   // requests it. Default is the ~24-agent substrate (core, consensus, swarm,
   // sparc, testing). Pass --all-agents to get the old behavior.
   if (allAgents) {
     options.agents.all = true;
   }
 
-  // #1744 — opt-out of the user-global ~/.claude/CLAUDE.md "Ruflo Integration"
+  // #1744 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â opt-out of the user-global ~/.cursor/AGENTS.md "Ruflo Integration"
   // pointer block. Default behavior (off) preserves current install for users
   // who rely on it; opting in via --no-global keeps the global file pristine.
   if (noGlobal) {
@@ -356,19 +356,19 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
     output.printBox(summary.join('\n'), 'Summary');
     output.writeln();
 
-    // Show what was created
+    // Show what was created ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Cursor-native (Claude Code integration removed)
     if (options.components.claudeMd || options.components.settings || options.components.skills || options.components.commands || options.components.agents) {
       output.printBox(
         [
-          options.components.claudeMd ? `CLAUDE.md:   Swarm guidance & configuration` : '',
-          options.components.settings ? `Settings:    .claude/settings.json` : '',
-          options.components.skills ? `Skills:      .claude/skills/ (${result.summary.skillsCount} skills)` : '',
-          options.components.commands ? `Commands:    .claude/commands/ (${result.summary.commandsCount} commands)` : '',
-          options.components.agents ? `Agents:      .claude/agents/ (${result.summary.agentsCount} agents)` : '',
-          options.components.helpers ? `Helpers:     .claude/helpers/` : '',
-          options.components.mcp ? `MCP:         .mcp.json` : '',
+          options.components.claudeMd ? 'AGENTS.md:    Project memory (Cursor reads natively)' : '',
+          options.components.settings ? 'Settings:    .cursor/hooks.json (7 Cursor hook events)' : '',
+          options.components.skills ? `Skills:      .cursor/skills/ (${result.summary.skillsCount} skills)` : '',
+          options.components.commands ? `Rules:       .cursor/rules/ (${result.summary.commandsCount} .mdc rules)` : '',
+          options.components.agents ? `Agents:      .cursor/agents/ (${result.summary.agentsCount} agents, 5-field frontmatter)` : '',
+          options.components.helpers ? 'Hooks:       .cursor/hooks/ + .cursor-flow/helpers/ (7 CJS modules)' : '',
+          options.components.mcp ? 'MCP:         .cursor/mcp.json (ruflo MCP server, ~330 tools)' : '',
         ].filter(Boolean).join('\n'),
-        'Claude Code Integration'
+        'Cursor Integration'
       );
       output.writeln();
     }
@@ -376,19 +376,19 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
     if (options.components.runtime) {
       output.printBox(
         [
-          `Config:      .claude-flow/config.yaml`,
-          `Data:        .claude-flow/data/`,
-          `Logs:        .claude-flow/logs/`,
-          `Sessions:    .claude-flow/sessions/`,
+          `Data:        .cursor-flow/data/`,
+          `Sessions:    .cursor-flow/sessions/`,
+          `Memory:      .cursor-flow/memory/`,
+          `Helpers:     .cursor-flow/helpers/`,
         ].join('\n'),
-        'V3 Runtime'
+        'Ruflo Runtime'
       );
       output.writeln();
     }
 
     // Hooks summary
     if (result.summary.hooksEnabled > 0) {
-      output.printInfo(`Hooks: ${result.summary.hooksEnabled} hook types enabled in settings.json`);
+      output.printInfo(`Hooks: ${result.summary.hooksEnabled} hook types enabled in .cursor/hooks.json`);
       output.writeln();
     }
 
@@ -406,25 +406,25 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
       if (startAll) {
         try {
           output.writeln(output.dim('  Initializing memory database...'));
-          execSync('npx @claude-flow/cli@latest memory init 2>/dev/null', {
+          execSync('npx ruflo@latest memory init', {
             stdio: 'pipe',
             cwd: ctx.cwd,
             timeout: 30000
           });
-          output.writeln(output.success('  ✓ Memory initialized'));
+          output.writeln(output.success('  ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Memory initialized'));
         } catch {
           output.writeln(output.dim('  Memory database already exists'));
         }
       }
 
-      // Start daemon — #2407 fix
+      // Start daemon ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â #2407 fix
       //
       // The previous version used `daemon start ... &` (shell background)
       // which made execSync return as soon as the shell forked, BEFORE the
       // daemon process wrote its PID file. Concurrent init runs
       // (devcontainer setup + VS Code task + MCP hook firing within ~500 ms)
       // all saw an empty PID file via getBackgroundDaemonPid(), so
-      // daemon.ts:99-103's dedup short-circuit didn't fire — every caller
+      // daemon.ts:99-103's dedup short-circuit didn't fire ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â every caller
       // spawned its own daemon. One incident accumulated 39 zombie daemons
       // holding ~8.5 GiB resident, which together with macOS compressor
       // pressure (27 GiB compressed) caused the configd watchdog timeout
@@ -439,12 +439,12 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
       if (startDaemon) {
         try {
           output.writeln(output.dim('  Starting daemon...'));
-          execSync('npx @claude-flow/cli@latest daemon start 2>/dev/null', {
+          execSync('npx ruflo@latest daemon start', {
             stdio: 'pipe',
             cwd: ctx.cwd,
             timeout: 30000
           });
-          output.writeln(output.success('  ✓ Daemon started'));
+          output.writeln(output.success('  ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Daemon started'));
         } catch {
           // Daemon dedup hit (already running) OR spawn timed out.
           // Either way the worst case is a single retry on next init,
@@ -457,12 +457,12 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
       if (startAll) {
         try {
           output.writeln(output.dim('  Initializing swarm...'));
-          execSync('npx @claude-flow/cli@latest swarm init --topology hierarchical 2>/dev/null', {
+          execSync('npx ruflo@latest swarm init --topology hierarchical', {
             stdio: 'pipe',
             cwd: ctx.cwd,
             timeout: 30000
           });
-          output.writeln(output.success('  ✓ Swarm initialized'));
+          output.writeln(output.success('  ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Swarm initialized'));
         } catch {
           output.writeln(output.dim('  Swarm initialization skipped'));
         }
@@ -489,7 +489,7 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
 
       try {
         output.writeln(output.dim(`  Model: ${embeddingModel}`));
-        output.writeln(output.dim('  Hyperbolic: Enabled (Poincaré ball)'));
+        output.writeln(output.dim('  Hyperbolic: Enabled (PoincarÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© ball)'));
         execFileInit('npx', [
           '@claude-flow/cli@latest', 'embeddings', 'init',
           '--model', embeddingModel,
@@ -499,7 +499,7 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
           cwd: ctx.cwd,
           timeout: 30000,
         });
-        output.writeln(output.success('  ✓ Embeddings initialized'));
+        output.writeln(output.success('  ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Embeddings initialized'));
         output.writeln(output.dim('    Run "embeddings init --download" to download model'));
       } catch (err) {
         output.writeln(output.warning('  Embedding initialization skipped (run manually)'));
@@ -507,17 +507,17 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
     }
 
     if (!startDaemon && !startAll) {
-      const bin = (process.argv[1] || '').includes('ruflo') ? 'ruflo' : 'claude-flow';
       output.writeln(output.bold('Next steps:'));
       output.printList([
-        `Run ${output.highlight(`${bin} daemon start`)} to start background workers`,
-        `Run ${output.highlight(`${bin} memory init`)} to initialize memory database`,
-        `Run ${output.highlight(`${bin} swarm init`)} to initialize a swarm`,
-        `Or use ${output.highlight(`${bin} init --start-all`)} to do all of the above`,
-        options.components.settings ? `Review ${output.highlight('.claude/settings.json')} for hook configurations` : '',
-        // ADR-150 — surface the new metaharness scorecard to every new user.
+        `Run ${output.highlight('ruflo daemon start')} to start background workers`,
+        `Run ${output.highlight('ruflo memory init')} to initialize memory database`,
+        `Run ${output.highlight('ruflo swarm init')} to initialize a swarm`,
+        `Or use ${output.highlight('ruflo init --start-all')} to do all of the above`,
+        options.components.settings ? `Review ${output.highlight('.cursor/hooks.json')} for hook configurations` : '',
+        `Reload Cursor (${output.highlight('Developer: Reload Window')}) to load .cursor/mcp.json and the ~330 MCP tools`,
+        // ADR-150 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â surface the new metaharness scorecard to every new user.
         // Optional dep; the command degrades gracefully when not installed.
-        `Run ${output.highlight(`${bin} metaharness score`)} for a 5-dim harness readiness scorecard (ADR-150)`,
+        `Run ${output.highlight('ruflo metaharness score')} for a 5-dim harness readiness scorecard (ADR-150)`,
       ].filter(Boolean));
     }
 
@@ -569,15 +569,15 @@ const wizardCommand: Command = {
         const components = await multiSelect({
           message: 'Select components to initialize:',
           options: [
-            { value: 'claudeMd', label: 'CLAUDE.md', hint: 'Swarm guidance and project configuration', selected: true },
-            { value: 'settings', label: 'settings.json', hint: 'Claude Code hooks configuration', selected: true },
-            { value: 'skills', label: 'Skills', hint: 'Claude Code skills in .claude/skills/', selected: true },
-            { value: 'commands', label: 'Commands', hint: 'Claude Code commands in .claude/commands/', selected: true },
-            { value: 'agents', label: 'Agents', hint: 'Agent definitions in .claude/agents/', selected: true },
-            { value: 'helpers', label: 'Helpers', hint: 'Utility scripts in .claude/helpers/', selected: true },
+            { value: 'claudeMd', label: 'AGENTS.md', hint: 'Cursor project memory', selected: true },
+            { value: 'settings', label: 'hooks.json', hint: 'Cursor hooks configuration', selected: true },
+            { value: 'skills', label: 'Skills', hint: 'Cursor skills in .cursor/skills/', selected: true },
+            { value: 'commands', label: 'Rules', hint: 'Cursor rules in .cursor/rules/', selected: true },
+            { value: 'agents', label: 'Agents', hint: 'Agent definitions in .cursor/agents/', selected: true },
+            { value: 'helpers', label: 'Hooks', hint: 'Hook scripts in .cursor/hooks/', selected: true },
             { value: 'statusline', label: 'Statusline', hint: 'Shell statusline integration', selected: false },
             { value: 'mcp', label: 'MCP', hint: '.mcp.json for MCP server configuration', selected: true },
-            { value: 'runtime', label: 'Runtime', hint: '.claude-flow/ directory for V3 runtime', selected: true },
+            { value: 'runtime', label: 'Runtime', hint: '.cursor-flow/ directory for V3 runtime', selected: true },
           ],
         });
 
@@ -622,7 +622,7 @@ const wizardCommand: Command = {
               { value: 'sessionStart', label: 'SessionStart', hint: 'Session initialization', selected: true },
               { value: 'stop', label: 'Stop', hint: 'Task completion evaluation', selected: true },
               { value: 'notification', label: 'Notification', hint: 'Swarm notifications', selected: true },
-              { value: 'permissionRequest', label: 'PermissionRequest', hint: 'Auto-allow claude-flow tools', selected: true },
+              { value: 'permissionRequest', label: 'PermissionRequest', hint: 'Auto-allow ruflo tools', selected: true },
             ],
           });
 
@@ -757,7 +757,7 @@ const wizardCommand: Command = {
             cwd: ctx.cwd,
             timeout: 30000,
           });
-          output.writeln(output.success('  ✓ Embeddings configured'));
+          output.writeln(output.success('  ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Embeddings configured'));
           embeddingsInitialized = true;
         } catch {
           output.writeln(output.dim('  Embeddings will be configured on first use'));
@@ -824,10 +824,10 @@ const checkCommand: Command = {
     if (result.initialized) {
       output.printSuccess('RuFlo is initialized');
       if (initialized.claude) {
-        output.printInfo(`  Claude Code: .claude/settings.json`);
+        output.printInfo(`  Claude Code: .cursor/hooks.json`);
       }
       if (initialized.claudeFlow) {
-        output.printInfo(`  V3 Runtime: .claude-flow/config.yaml`);
+        output.printInfo(`  V3 Runtime: .cursor-flow/config.yaml`);
       }
     } else {
       output.printWarning('RuFlo is not initialized in this directory');
@@ -916,9 +916,9 @@ const hooksCommand: Command = {
         commands: false,
         agents: false,
         // #2350: helpers MUST ship with the hooks subcommand. The hook entries
-        // in settings.json point at `.claude/helpers/hook-handler.cjs`; if
+        // in settings.json point at `.cursor/hooks/hook-handler.cjs`; if
         // that file doesn't exist, settings-generator (#1744 fix) drops the
-        // hooks block entirely — so the one subcommand whose stated purpose
+        // hooks block entirely ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â so the one subcommand whose stated purpose
         // is "Initialize only hooks configuration" produced settings.json
         // with no `hooks` key while reporting "N hooks enabled".
         helpers: true,
@@ -1031,7 +1031,7 @@ const upgradeCommand: Command = {
       // Show what was updated
       if (result.updated.length > 0) {
         output.printBox(
-          result.updated.map(f => `✓ ${f}`).join('\n'),
+          result.updated.map(f => `ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ ${f}`).join('\n'),
           'Updated (latest version)'
         );
         output.writeln();
@@ -1049,7 +1049,7 @@ const upgradeCommand: Command = {
       // Show what was preserved
       if (result.preserved.length > 0 && ctx.flags.verbose) {
         output.printBox(
-          result.preserved.map(f => `• ${f}`).join('\n'),
+          result.preserved.map(f => `ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ ${f}`).join('\n'),
           'Preserved (existing data kept)'
         );
         output.writeln();
@@ -1161,19 +1161,19 @@ export const initCommand: Command = {
     },
     {
       name: 'skip-claude',
-      description: 'Skip .claude/ directory creation (runtime only)',
+      description: 'Skip .cursor/ directory creation (runtime only)',
       type: 'boolean',
       default: false,
     },
     {
       name: 'only-claude',
-      description: 'Only create .claude/ directory (skip runtime)',
+      description: 'Only create .cursor/ directory (skip runtime)',
       type: 'boolean',
       default: false,
     },
     {
       name: 'no-global',
-      description: 'Skip the ~/.claude/CLAUDE.md "Ruflo Integration" pointer block (#1744)',
+      description: 'Skip the global AGENTS.md pointer block (#1744)',
       type: 'boolean',
       default: false,
     },
@@ -1222,26 +1222,26 @@ export const initCommand: Command = {
     },
   ],
   examples: [
-    { command: 'claude-flow init', description: 'Initialize with default configuration' },
-    { command: 'claude-flow init --start-all', description: 'Initialize and start daemon, memory, swarm' },
-    { command: 'claude-flow init --start-daemon', description: 'Initialize and start daemon only' },
-    { command: 'claude-flow init --minimal', description: 'Initialize with minimal configuration' },
-    { command: 'claude-flow init --full', description: 'Initialize with all components' },
-    { command: 'claude-flow init --force', description: 'Reinitialize and overwrite existing config' },
-    { command: 'claude-flow init --only-claude', description: 'Only create Claude Code integration' },
-    { command: 'claude-flow init --skip-claude', description: 'Only create V3 runtime' },
-    { command: 'claude-flow init wizard', description: 'Interactive setup wizard' },
-    { command: 'claude-flow init --with-embeddings', description: 'Initialize with ONNX embeddings' },
-    { command: 'claude-flow init --with-embeddings --embedding-model Xenova/all-mpnet-base-v2', description: 'Use larger embedding model' },
-    { command: 'claude-flow init skills --all', description: 'Install all available skills' },
-    { command: 'claude-flow init hooks --minimal', description: 'Create minimal hooks configuration' },
-    { command: 'claude-flow init upgrade', description: 'Update helpers while preserving data' },
-    { command: 'claude-flow init upgrade --settings', description: 'Update helpers and merge new settings (Agent Teams)' },
-    { command: 'claude-flow init upgrade --verbose', description: 'Show detailed upgrade info' },
-    { command: 'claude-flow init --codex', description: 'Initialize for OpenAI Codex (AGENTS.md)' },
-    { command: 'claude-flow init --codex --full', description: 'Codex init with all 137+ skills' },
-    { command: 'claude-flow init --dual', description: 'Initialize for both Claude Code and Codex' },
-    { command: 'claude-flow init --all-agents', description: 'Install all agent categories (~89 agents; ADR-128 opt-in)' },
+    { command: 'ruflo init', description: 'Initialize with default configuration' },
+    { command: 'ruflo init --start-all', description: 'Initialize and start daemon, memory, swarm' },
+    { command: 'ruflo init --start-daemon', description: 'Initialize and start daemon only' },
+    { command: 'ruflo init --minimal', description: 'Initialize with minimal configuration' },
+    { command: 'ruflo init --full', description: 'Initialize with all components' },
+    { command: 'ruflo init --force', description: 'Reinitialize and overwrite existing config' },
+    { command: 'ruflo init --only-claude', description: 'Only create Claude Code integration' },
+    { command: 'ruflo init --skip-claude', description: 'Only create V3 runtime' },
+    { command: 'ruflo init wizard', description: 'Interactive setup wizard' },
+    { command: 'ruflo init --with-embeddings', description: 'Initialize with ONNX embeddings' },
+    { command: 'ruflo init --with-embeddings --embedding-model Xenova/all-mpnet-base-v2', description: 'Use larger embedding model' },
+    { command: 'ruflo init skills --all', description: 'Install all available skills' },
+    { command: 'ruflo init hooks --minimal', description: 'Create minimal hooks configuration' },
+    { command: 'ruflo init upgrade', description: 'Update helpers while preserving data' },
+    { command: 'ruflo init upgrade --settings', description: 'Update helpers and merge new settings (Agent Teams)' },
+    { command: 'ruflo init upgrade --verbose', description: 'Show detailed upgrade info' },
+    { command: 'ruflo init --codex', description: 'Initialize for OpenAI Codex (AGENTS.md)' },
+    { command: 'ruflo init --codex --full', description: 'Codex init with all 137+ skills' },
+    { command: 'ruflo init --dual', description: 'Initialize for both Claude Code and Codex' },
+    { command: 'ruflo init --all-agents', description: 'Install all agent categories (~89 agents; ADR-128 opt-in)' },
   ],
   action: initAction,
 };

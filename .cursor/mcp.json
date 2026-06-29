@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ruflo": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "ruflo@latest", "mcp", "start"],
+      "env": {
+        "RUFLO_MODE": "v3",
+        "RUFLO_HOST": "cursor",
+        "CLAUDE_FLOW_HOOKS_ENABLED": "true"
+      }
+    }
+  }
+}

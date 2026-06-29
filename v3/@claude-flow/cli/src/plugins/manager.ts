@@ -13,7 +13,7 @@ const execFileAsync = promisify(execFile);
 
 // On Windows, `npm` is a shell script (no `.exe`) and `npm.cmd` is a batch
 // wrapper. Since Node 18.20.2 / 20.12.2 (CVE-2024-27980) the runtime refuses
-// to spawn `.cmd`/`.bat` files directly and throws `spawn EINVAL` — the only
+// to spawn `.cmd`/`.bat` files directly and throws `spawn EINVAL` â€” the only
 // supported invocation is via a real `.exe` shell. We wrap every npm call
 // through `cmd.exe /d /s /c npm <args>`, which keeps Node's safe array-form
 // argument escaping intact and avoids both ENOENT and EINVAL.
@@ -187,7 +187,7 @@ export class PluginManager {
         const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
         installedVersion = pkg.version;
 
-        // Check for claude-flow plugin metadata
+        // Check for ruflo plugin metadata
         if (pkg['claude-flow']) {
           commands = pkg['claude-flow'].commands || [];
           hooks = pkg['claude-flow'].hooks || [];

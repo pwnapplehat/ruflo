@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Smoke test for ruvnet/ruflo#2132 — Windows end-to-end hook execution.
+ * Smoke test for ruvnet/ruflo#2132 â€” Windows end-to-end hook execution.
  *
  * This is the real validation: simulates a Claude Code PostToolUse hook
  * firing against the generated settings.json on Windows. The original
  * bug (#2132) produced exit code 126 ("cannot execute binary file") because
- * the hook command was "/bin/bash -c '...'" — a binary that does not exist
+ * the hook command was "/bin/bash -c '...'" â€” a binary that does not exist
  * on native Windows.
  *
  * This test:
@@ -58,7 +58,7 @@ const initResult = spawnSync(
     cwd: tmpDir,
     env: { ...process.env, CI: 'true', FORCE_COLOR: '0' },
     encoding: 'utf8',
-    // iter 131 — bumped from 180s to 300s (5 min). macos-latest in this
+    // iter 131 â€” bumped from 180s to 300s (5 min). macos-latest in this
     // matrix observed `init` running exactly 180s before the timer fired
     // (CI cold ONNX download + agentic-flow init + MCP server spawn).
     // The CI job's timeout-minutes is 10, so 300s leaves room for the
@@ -105,7 +105,7 @@ console.log(`PreToolUse  (edit) cmd: ${preEditCmd  ? preEditCmd.slice(0, 100)  :
 // Step 3: Validate the commands are free of Windows-breaking patterns
 function validateCommand(cmd, label) {
   if (!cmd) {
-    console.log(`  skip: ${label} — command not found`);
+    console.log(`  skip: ${label} â€” command not found`);
     return;
   }
 
@@ -149,15 +149,15 @@ if (postEditCmd) {
     tool_response: { success: true },
   });
 
-  // Set CLAUDE_PROJECT_DIR to our tmp dir so helpers/ can be found
+  // Set CURSOR_PROJECT_DIR to our tmp dir so helpers/ can be found
   const env = {
     ...process.env,
-    CLAUDE_PROJECT_DIR: tmpDir,
+    CURSOR_PROJECT_DIR: tmpDir,
     HOME: tmpDir,
     USERPROFILE: tmpDir,   // Windows fallback
     CI: 'true',
     // The .cjs shim's priority-3 fallback is `npx --prefer-offline --yes
-    // ruflo@latest` — that takes 30+s on a cold CI runner and exceeds
+    // ruflo@latest` â€” that takes 30+s on a cold CI runner and exceeds
     // our 30s timeout, producing a spurious failure. We're testing the
     // shim's exit-0 contract under the original #2132 conditions
     // (no `/bin/bash` invocation, no exit 126), not the CLI dispatch.
@@ -201,7 +201,7 @@ if (postEditCmd) {
     'Hook exit code is NOT 126 (the "cannot execute binary file" Windows error)'
   );
 
-  // Should not crash — accept any non-126 exit. Exit 0 is preferred (hooks
+  // Should not crash â€” accept any non-126 exit. Exit 0 is preferred (hooks
   // exit 0 by design) but the smoke double-wraps cmd.exe /c on Windows so
   // a quoting-induced exit 1 from the outer cmd is acceptable as long as
   // the underlying hook itself doesn't 126. The "no exit 126" + "no

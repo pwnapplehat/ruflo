@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Import the module under test
-const mod = await import('../.claude/helpers/context-persistence-hook.mjs');
+const mod = await import('../.cursor/hooks/context-persistence-hook.mjs');
 const {
   SQLiteBackend,
   RuVectorBackend,

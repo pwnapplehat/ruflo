@@ -1,0 +1,14 @@
+---
+description: hive-mind-wizard
+globs: 
+alwaysApply: false
+---
+# hive-mind-wizard
+
+Command documentation for hive-mind-wizard in category hive-mind.
+
+Usage:
+```bash
+npx ruflo hive-mind hive-mind-wizard [options]
+```
+

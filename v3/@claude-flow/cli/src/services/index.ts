@@ -62,3 +62,13 @@ export type { default as WorkerDaemonType, DaemonConfig } from './worker-daemon.
 export type { default as HeadlessWorkerExecutorType } from './headless-worker-executor.js';
 export type { default as ContainerWorkerPoolType } from './container-worker-pool.js';
 export type { default as WorkerQueueType } from './worker-queue.js';
+
+// Cursor SDK Executor (Phase 4 — @cursor/sdk headless worker path)
+export {
+  executeCursorSdk,
+  executeCursorSdkMultiTurn,
+  checkCursorSdkAvailability,
+  type CursorSdkExecOptions,
+  type CursorSdkExecResult,
+  type CursorSdkAvailability,
+} from './cursor-sdk-executor.js';

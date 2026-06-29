@@ -3,7 +3,7 @@
  *
  * V2 Compatibility - System monitoring tools: status, metrics, health
  *
- * ✅ Uses REAL system metrics via Node.js APIs:
+ * Ã¢Å“â€¦ Uses REAL system metrics via Node.js APIs:
  * - process.memoryUsage() for real memory stats
  * - process.cpuUsage() for real CPU stats
  * - os module for system information
@@ -101,7 +101,7 @@ function saveMetrics(metrics: SystemMetrics): void {
 export const systemTools: MCPTool[] = [
   {
     name: 'system_status',
-    description: 'Get overall system status Use when native Bash is wrong because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) — those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
+    description: 'Get overall system status Use when you need a persistent terminal session because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) Ã¢â‚¬â€ those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
     category: 'system',
     inputSchema: {
       type: 'object',
@@ -112,7 +112,7 @@ export const systemTools: MCPTool[] = [
     },
     handler: async (input) => {
       const metrics = loadMetrics();
-      // #2235(B) — live process uptime, not the persisted metrics.startTime
+      // #2235(B) Ã¢â‚¬â€ live process uptime, not the persisted metrics.startTime
       // (which is the file's creation timestamp and survived across restarts,
       // making system_status report stale ~8.8-day uptime on a fresh server).
       const uptime = Math.floor(process.uptime() * 1000);
@@ -124,9 +124,9 @@ export const systemTools: MCPTool[] = [
         version: PKG_VERSION,
         components: {
           swarm: { status: 'running', health: metrics.health },
-          memory: { status: 'unknown', _note: 'Health not measured — use system_health for real checks' },
-          neural: { status: 'unknown', _note: 'Health not measured — use system_health for real checks' },
-          mcp: { status: 'unknown', _note: 'Health not measured — use system_health for real checks' },
+          memory: { status: 'unknown', _note: 'Health not measured Ã¢â‚¬â€ use system_health for real checks' },
+          neural: { status: 'unknown', _note: 'Health not measured Ã¢â‚¬â€ use system_health for real checks' },
+          mcp: { status: 'unknown', _note: 'Health not measured Ã¢â‚¬â€ use system_health for real checks' },
         },
         lastCheck: new Date().toISOString(),
       };
@@ -148,7 +148,7 @@ export const systemTools: MCPTool[] = [
   },
   {
     name: 'system_metrics',
-    description: 'Get system metrics and performance data Use when native Bash is wrong because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) — those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
+    description: 'Get system metrics and performance data Use when you need a persistent terminal session because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) Ã¢â‚¬â€ those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
     category: 'system',
     inputSchema: {
       type: 'object',
@@ -169,7 +169,7 @@ export const systemTools: MCPTool[] = [
       const totalMem = os.totalmem();
       const freeMem = os.freemem();
 
-      // Read real agent/task counts — try AgentDB first, fallback to JSON stores
+      // Read real agent/task counts Ã¢â‚¬â€ try AgentDB first, fallback to JSON stores
       let agentCounts = { active: 0, total: 0 };
       let taskCounts = { pending: 0, completed: 0, failed: 0 };
       let _metricsSource: 'agentdb' | 'json-store' | 'none' = 'none';
@@ -252,10 +252,10 @@ export const systemTools: MCPTool[] = [
             if (live.total > 0) {
               return { total: live.total, success: live.success, errors: live.errors };
             }
-          } catch { /* tracker not available — fall back to stored value */ }
+          } catch { /* tracker not available Ã¢â‚¬â€ fall back to stored value */ }
           return store.requests;
         })(),
-        uptime: Math.floor(process.uptime() * 1000), // #2235(B) — live process uptime
+        uptime: Math.floor(process.uptime() * 1000), // #2235(B) Ã¢â‚¬â€ live process uptime
         lastCheck: new Date().toISOString(),
       };
 
@@ -301,7 +301,7 @@ export const systemTools: MCPTool[] = [
   },
   {
     name: 'system_health',
-    description: 'Perform system health check Use when native Bash is wrong because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) — those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
+    description: 'Perform system health check Use when you need a persistent terminal session because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) Ã¢â‚¬â€ those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
     category: 'system',
     inputSchema: {
       type: 'object',
@@ -316,9 +316,9 @@ export const systemTools: MCPTool[] = [
       const checks: Array<{ name: string; status: string; latency?: number; message?: string }> = [];
       const projectCwd = getProjectCwd();
 
-      // Memory DB check — verify any supported store file exists.
+      // Memory DB check Ã¢â‚¬â€ verify any supported store file exists.
       // #1843: cover sql.js / HNSW / .swarm and root-level rvf/db paths,
-      // not just the legacy `.claude-flow/memory/*` triple.
+      // not just the legacy `.cursor-flow/memory/*` triple.
       {
         const t0 = performance.now();
         const memoryCandidates = [
@@ -336,12 +336,12 @@ export const systemTools: MCPTool[] = [
           name: 'memory',
           status: memoryExists ? 'healthy' : 'degraded',
           latency: Math.round(elapsed * 100) / 100,
-          message: memoryExists ? undefined : 'Memory store not found — run memory init',
+          message: memoryExists ? undefined : 'Memory store not found Ã¢â‚¬â€ run memory init',
         });
       }
 
-      // Config check — verify config file exists.
-      // #1843: also accept YAML config (.claude-flow/config.yaml) which
+      // Config check Ã¢â‚¬â€ verify config file exists.
+      // #1843: also accept YAML config (.cursor-flow/config.yaml) which
       // the rest of v3 treats as canonical; previous code only counted
       // .json variants and reported `degraded` when YAML was used.
       {
@@ -360,11 +360,11 @@ export const systemTools: MCPTool[] = [
           name: 'config',
           status: configExists ? 'healthy' : 'degraded',
           latency: Math.round(elapsed * 100) / 100,
-          message: configExists ? undefined : 'Config file not found — run init',
+          message: configExists ? undefined : 'Config file not found Ã¢â‚¬â€ run init',
         });
       }
 
-      // MCP check — this process is the MCP server if stdin is piped
+      // MCP check Ã¢â‚¬â€ this process is the MCP server if stdin is piped
       {
         const isStdio = !process.stdin.isTTY;
         checks.push({
@@ -374,14 +374,14 @@ export const systemTools: MCPTool[] = [
         });
       }
 
-      // Swarm — cannot verify real connectivity, report unknown
+      // Swarm Ã¢â‚¬â€ cannot verify real connectivity, report unknown
       checks.push({
         name: 'swarm',
         status: 'unknown',
-        message: 'Swarm connectivity not monitored — check coordination store manually',
+        message: 'Swarm connectivity not monitored Ã¢â‚¬â€ check coordination store manually',
       });
 
-      // Neural — cannot verify, report unknown
+      // Neural Ã¢â‚¬â€ cannot verify, report unknown
       checks.push({
         name: 'neural',
         status: 'unknown',
@@ -389,7 +389,7 @@ export const systemTools: MCPTool[] = [
       });
 
       if (input.deep) {
-        // Disk check — real free space via statfsSync (Node 18.15+)
+        // Disk check Ã¢â‚¬â€ real free space via statfsSync (Node 18.15+)
         {
           const t0 = performance.now();
           try {
@@ -412,12 +412,12 @@ export const systemTools: MCPTool[] = [
               name: 'disk',
               status: 'unknown',
               latency: Math.round(elapsed * 100) / 100,
-              message: 'Disk space check failed — statfsSync unavailable',
+              message: 'Disk space check failed Ã¢â‚¬â€ statfsSync unavailable',
             });
           }
         }
 
-        // Network — DNS resolution check with timeout
+        // Network Ã¢â‚¬â€ DNS resolution check with timeout
         {
           const t0 = performance.now();
           try {
@@ -438,12 +438,12 @@ export const systemTools: MCPTool[] = [
               name: 'network',
               status: 'warning',
               latency: Math.round(elapsed * 100) / 100,
-              message: 'DNS resolution failed — check network',
+              message: 'DNS resolution failed Ã¢â‚¬â€ check network',
             });
           }
         }
 
-        // Database — check if coordination store exists
+        // Database Ã¢â‚¬â€ check if coordination store exists
         {
           const t0 = performance.now();
           const coordPath = join(projectCwd, '.claude-flow', 'coordination', 'store.json');
@@ -491,7 +491,7 @@ export const systemTools: MCPTool[] = [
   },
   {
     name: 'system_info',
-    description: 'Get system information Use when native Bash is wrong because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) — those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
+    description: 'Get system information Use when you need a persistent terminal session because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) Ã¢â‚¬â€ those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
     category: 'system',
     inputSchema: {
       type: 'object',
@@ -537,7 +537,7 @@ export const systemTools: MCPTool[] = [
   },
   {
     name: 'system_reset',
-    description: 'Reset system state Use when native Bash is wrong because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) — those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
+    description: 'Reset system state Use when you need a persistent terminal session because you need Ruflo runtime metrics (HNSW index size, ReasoningBank state, swarm health, breaker status) Ã¢â‚¬â€ those are not in /proc, only in the running daemon. For OS-level info (uptime, disk, mem), native Bash + standard tools are fine.',
     category: 'system',
     inputSchema: {
       type: 'object',
@@ -580,7 +580,7 @@ export const systemTools: MCPTool[] = [
   },
   {
     name: 'mcp_status',
-    description: 'Get MCP server status, including stdio mode detection Use when native Claude Code MCP status is wrong because you need Ruflo-side server detail — tool counts per namespace, transport stats, MCP handshake errors. For just "is MCP up?", `claude mcp list` is fine.',
+    description: 'Get MCP server status, including stdio mode detection Use when you need ruflo-side MCP server detail because you need Ruflo-side server detail Ã¢â‚¬â€ tool counts per namespace, transport stats, MCP handshake errors. For just "is MCP up?", `claude mcp list` is fine.',
     category: 'system',
     inputSchema: {
       type: 'object',
@@ -588,7 +588,7 @@ export const systemTools: MCPTool[] = [
     },
     handler: async () => {
       // Detect if we are running inside an MCP stdio session.
-      // When Claude Code launches us via `claude mcp add`, stdin is piped (not a TTY)
+      // When Cursor launches us via .cursor/mcp.json, stdin is piped (not a TTY)
       // and the process IS the MCP server, so it is running.
       const isStdio = !process.stdin.isTTY;
       const transport = process.env.CLAUDE_FLOW_MCP_TRANSPORT || (isStdio ? 'stdio' : 'http');
@@ -670,19 +670,19 @@ export const systemTools: MCPTool[] = [
   },
   {
     // #1916: `ruflo start` referenced an unregistered `mcp_start` tool. MCP
-    // tools run *in-process* via the CLI's TOOL_REGISTRY — there is no
+    // tools run *in-process* via the CLI's TOOL_REGISTRY Ã¢â‚¬â€ there is no
     // separate server process to spawn from inside an MCP call. If this tool
     // responds, MCP is already up. (`ruflo mcp start` runs a standalone
     // stdio/HTTP server; that's a process command, not an MCP tool.)
     name: 'mcp_start',
-    description: 'Report that the in-process MCP toolset is available (no-op "start" — if this tool responds, MCP is up). Use when native `claude mcp list` is wrong because you want Ruflo-side confirmation that the in-process registry loaded. For a standalone stdio/HTTP MCP server, run `ruflo mcp start` (a process command, not this tool). Pair with mcp_status for detail.',
+    description: 'Report that the in-process MCP toolset is available (no-op "start" Ã¢â‚¬â€ if this tool responds, MCP is up). Use when native `claude mcp list` is wrong because you want Ruflo-side confirmation that the in-process registry loaded. For a standalone stdio/HTTP MCP server, run `ruflo mcp start` (a process command, not this tool). Pair with mcp_status for detail.',
     category: 'system',
     inputSchema: {
       type: 'object',
       properties: {
-        port: { type: 'number', description: 'Port (advisory — in-process MCP has no port)' },
+        port: { type: 'number', description: 'Port (advisory Ã¢â‚¬â€ in-process MCP has no port)' },
         transport: { type: 'string', description: 'Transport (advisory)' },
-        tools: { type: 'array', items: { type: 'string' }, description: 'Tool namespaces (advisory — all are loaded)' },
+        tools: { type: 'array', items: { type: 'string' }, description: 'Tool namespaces (advisory Ã¢â‚¬â€ all are loaded)' },
       },
     },
     handler: async (input) => {
@@ -698,9 +698,9 @@ export const systemTools: MCPTool[] = [
   },
   {
     // #1916: `ruflo stop` referenced an unregistered `mcp_stop` tool. Same
-    // story as mcp_start — nothing to stop for the in-process registry.
+    // story as mcp_start Ã¢â‚¬â€ nothing to stop for the in-process registry.
     name: 'mcp_stop',
-    description: 'No-op "stop" for the in-process MCP toolset (there is no separate server process to stop from inside an MCP call). Use when native process-kill is wrong because you mistakenly think Ruflo runs a daemon — it does not, the tools live in the CLI process. To stop a standalone server run `ruflo mcp stop` or terminate that process. Pair with mcp_status.',
+    description: 'No-op "stop" for the in-process MCP toolset (there is no separate server process to stop from inside an MCP call). Use when native process-kill is wrong because you mistakenly think Ruflo runs a daemon Ã¢â‚¬â€ it does not, the tools live in the CLI process. To stop a standalone server run `ruflo mcp stop` or terminate that process. Pair with mcp_status.',
     category: 'system',
     inputSchema: {
       type: 'object',

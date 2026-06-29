@@ -1,15 +1,15 @@
 {
   "name": "claude-flow",
   "version": "3.14.4",
-  "description": "Ruflo - Enterprise AI agent orchestration for Claude Code. Deploy 60+ specialized agents in coordinated swarms with self-learning, fault-tolerant consensus, vector memory, and MCP integration",
+  "description": "Ruflo - Enterprise AI agent orchestration for Cursor. Deploy 60+ specialized agents in coordinated swarms with self-learning, fault-tolerant consensus, vector memory, and MCP integration",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
     "claude-flow": "./bin/cli.js"
   },
-  "homepage": "https://github.com/ruvnet/claude-flow#readme",
+  "homepage": "https://github.com/pwnapplehat/ruflo#readme",
   "bugs": {
-    "url": "https://github.com/ruvnet/claude-flow/issues",
+    "url": "https://github.com/pwnapplehat/ruflo/issues",
     "email": "support@ruv.io"
   },
   "funding": {
@@ -62,6 +62,7 @@
     "@claude-flow/mcp": "3.0.0-alpha.9",
     "@claude-flow/neural": "3.0.0-alpha.9",
     "@claude-flow/shared": "3.0.0-alpha.8",
+    "@cursor/sdk": "^1.0.22",
     "@noble/ed25519": "2.3.0",
     "@ruvector/rabitq-wasm": "0.1.0",
     "semver": "7.7.3",
@@ -123,12 +124,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ruvnet/claude-flow.git"
+    "url": "https://github.com/pwnapplehat/ruflo.git"
   },
   "keywords": [
     "ruvflow",
     "claude",
-    "claude-code",
+    "cursor",
     "anthropic",
     "ai",
     "ai-agents",

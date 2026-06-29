@@ -45,23 +45,23 @@ function getProcessMemoryUsage(): number {
 
 // Check if project is initialized
 //
-// #2120 — the old check required `.claude-flow/config.yaml`, which
+// #2120 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â the old check required `.cursor-flow/config.yaml`, which
 // missed projects that were initialized via `ruflo memory init` (writes
 // `.swarm/memory.db` but no config.yaml) or via the auto-memory bridge.
 // Reporter @alexandrelealbess on WSL2 had a 251-entry `.swarm/memory.db`
 // and a running MCP, yet `ruflo status` reported "not initialized".
 //
 // Now: any of these signals counts as initialized:
-//   - `.claude-flow/config.yaml`   (the canonical `ruflo init` output)
-//   - `.claude-flow/config.json`   (same, alt format)
+//   - `.cursor-flow/config.yaml`   (the canonical `ruflo init` output)
+//   - `.cursor-flow/config.json`   (same, alt format)
 //   - `.swarm/memory.db`           (the `ruflo memory init` output)
-//   - `.claude/settings.json`      (the Claude Code hook surface)
+//   - `.cursor/hooks.json`      (the Claude Code hook surface)
 function isInitialized(cwd: string): boolean {
   const candidates = [
     path.join(cwd, '.claude-flow', 'config.yaml'),
     path.join(cwd, '.claude-flow', 'config.json'),
     path.join(cwd, '.swarm', 'memory.db'),
-    path.join(cwd, '.claude', 'settings.json'),
+    path.join(cwd, '.cursor', 'hooks.json'),
   ];
   return candidates.some((p) => fs.existsSync(p));
 }
@@ -744,14 +744,14 @@ export const statusCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow status', description: 'Show current system status' },
-    { command: 'claude-flow status --watch', description: 'Watch mode with live updates' },
-    { command: 'claude-flow status --watch -i 5', description: 'Watch mode updating every 5 seconds' },
-    { command: 'claude-flow status --health-check', description: 'Run health checks' },
-    { command: 'claude-flow status --json', description: 'Output status as JSON' },
-    { command: 'claude-flow status agents', description: 'Show detailed agent status' },
-    { command: 'claude-flow status tasks', description: 'Show detailed task status' },
-    { command: 'claude-flow status memory', description: 'Show detailed memory status' }
+    { command: 'ruflo status', description: 'Show current system status' },
+    { command: 'ruflo status --watch', description: 'Watch mode with live updates' },
+    { command: 'ruflo status --watch -i 5', description: 'Watch mode updating every 5 seconds' },
+    { command: 'ruflo status --health-check', description: 'Run health checks' },
+    { command: 'ruflo status --json', description: 'Output status as JSON' },
+    { command: 'ruflo status agents', description: 'Show detailed agent status' },
+    { command: 'ruflo status tasks', description: 'Show detailed task status' },
+    { command: 'ruflo status memory', description: 'Show detailed memory status' }
   ],
   action: statusAction
 };

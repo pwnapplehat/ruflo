@@ -11,8 +11,8 @@ import { existsSync, statSync, rmSync, readdirSync, readFileSync, writeFileSync 
 import { join } from 'path';
 
 /**
- * Ruflo-owned subdirectories within .claude/ that are safe to delete.
- * Everything else in .claude/ (agents, skills, commands, settings.local.json,
+ * Ruflo-owned subdirectories within .cursor/ that are safe to delete.
+ * Everything else in .cursor/ (agents, skills, commands, settings.local.json,
  * memory.db, worktrees, launch.json) belongs to Claude Code and must be preserved.
  * See: https://github.com/ruvnet/ruflo/issues/1557
  */
@@ -103,7 +103,7 @@ export const cleanupCommand: Command = {
     {
       name: 'keep-config',
       short: 'k',
-      description: 'Preserve claude-flow.config.json and .claude/settings.json',
+      description: 'Preserve claude-flow.config.json and .cursor/hooks.json',
       type: 'boolean',
       default: false,
     },
@@ -115,7 +115,7 @@ export const cleanupCommand: Command = {
     },
     {
       command: 'cleanup --force',
-      description: 'Remove all claude-flow artifacts',
+      description: 'Remove all ruflo artifacts',
     },
     {
       command: 'cleanup --force --keep-config',
@@ -138,7 +138,7 @@ export const cleanupCommand: Command = {
     const found: { path: string; description: string; size: number; type: 'dir' | 'file'; skipped?: boolean }[] = [];
     let totalSize = 0;
 
-    // Scan ruflo-owned subdirs within .claude/ (surgical — preserves Claude Code files)
+    // Scan ruflo-owned subdirs within .cursor/ (surgical ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â preserves Cursor files)
     for (const artifact of CLAUDE_OWNED_SUBDIRS) {
       const fullPath = join(cwd, artifact.path);
       if (existsSync(fullPath)) {
@@ -148,7 +148,7 @@ export const cleanupCommand: Command = {
       }
     }
 
-    // Check if .claude/settings.json has ruflo hooks/claudeFlow blocks to clean
+    // Check if .cursor/hooks.json has ruflo hooks/claudeFlow blocks to clean
     const settingsPath = join(cwd, '.claude', 'settings.json');
     if (existsSync(settingsPath)) {
       found.push({ path: join('.claude', 'settings.json'), description: 'Remove ruflo hooks/claudeFlow blocks (preserves rest)', size: 0, type: 'file' });
@@ -175,7 +175,7 @@ export const cleanupCommand: Command = {
     }
 
     if (found.length === 0) {
-      output.writeln(output.info('No claude-flow artifacts found in the current directory.'));
+      output.writeln(output.info('No ruflo artifacts found in the current directory.'));
       return { success: true, message: 'Nothing to clean' };
     }
 

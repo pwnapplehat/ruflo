@@ -1,5 +1,5 @@
 /**
- * neural-router.ts — Optional cost-optimal neural routing path (ADR-148).
+ * neural-router.ts â€” Optional cost-optimal neural routing path (ADR-148).
  *
  * Wires `@metaharness/router` (pure-TS k-NN/KRR + optional FastGRNN via
  * `@ruvector/tiny-dancer`) into the model-routing path as a graceful, gated
@@ -14,14 +14,14 @@
  * Otherwise `tryCostOptimalRoute(...)` returns `null` and the caller falls
  * back to the bandit path with `routedBy: 'bandit-fallback'`.
  *
- * Observability — `routedBy` is returned on every result and must never be
+ * Observability â€” `routedBy` is returned on every result and must never be
  * inferred from "did the import resolve?" (ADR-074, ADR-086). It carries
  * exactly one of:
  *   - 'metaharness-knn'  pure-TS k-NN, no training (uses raw seed examples)
- *   - 'metaharness-krr'  pure-TS KRR with LOO-CV λ (TrainedRouter JSON)
+ *   - 'metaharness-krr'  pure-TS KRR with LOO-CV Î» (TrainedRouter JSON)
  *   - 'fastgrnn'         native FastGRNN via tiny-dancer (NativeRouter)
  *
- * Performance — module-level caches resolve the backend, seed corpus and
+ * Performance â€” module-level caches resolve the backend, seed corpus and
  * router once per process. Hot path is a single `route(embedding)` call.
  *
  * @module neural-router
@@ -45,7 +45,7 @@ export interface NeuralRouteResult {
   /** Chosen Claude tier label (back-compat). Derived from `modelId`. */
   model: ClaudeModel;
   /**
-   * Concrete picked model id — ADR-149. May be an Anthropic SDK id or an
+   * Concrete picked model id â€” ADR-149. May be an Anthropic SDK id or an
    * OpenRouter slug. Always a string; the closest tier label is in `model`
    * for back-compat with consumers that still expect ClaudeModel.
    */
@@ -61,7 +61,7 @@ export interface NeuralRouteResult {
   /** Inference latency in microseconds. */
   inferenceTimeUs: number;
   /**
-   * ADR-149 iter 45 — ensemble disagreement diagnostic. Absolute difference
+   * ADR-149 iter 45 â€” ensemble disagreement diagnostic. Absolute difference
    * in predicted quality for the PICKED model between the unified KRR and
    * the bucket specialist (iter 16). Set only when both are loaded AND a
    * complexityBucket was supplied. Operators tuning iter 44's
@@ -82,20 +82,20 @@ interface NeuralRouterConfig {
   /** k for k-NN backend (default 5). */
   k: number;
   /**
-   * ADR-149 iter 12 — optional latency budget in ms. When > 0, candidates
+   * ADR-149 iter 12 â€” optional latency budget in ms. When > 0, candidates
    * whose measured p50 latency exceeds the budget are filtered OUT before
    * the cost-optimal selector runs. Default 0 (unbounded, cost-only).
    * For interactive flows that need sub-second responses, set 1000.
    */
   latencyBudgetMs: number;
   /**
-   * ADR-149 iter 22+24 — post-hoc isotonic calibration. When the bundled
+   * ADR-149 iter 22+24 â€” post-hoc isotonic calibration. When the bundled
    * calibrator JSON is present, KRR predict() outputs are piped through
    * IsotonicCalibrator.transform() before cost-optimal selection.
    *
    * DEFAULT ON (iter 24, ADR-149). Iter 23's out-of-sample LOO validation
    * showed ECE drops from 0.1604 (POORLY-CALIBRATED) to 0.0335
-   * (WELL-CALIBRATED) — a 79% reduction with only a 0.0144 train/test gap,
+   * (WELL-CALIBRATED) â€” a 79% reduction with only a 0.0144 train/test gap,
    * confirming the calibrator generalizes. Set
    * `CLAUDE_FLOW_ROUTER_CALIBRATE=0` to opt out and recover iter 0-21 raw
    * KRR behavior.
@@ -104,24 +104,24 @@ interface NeuralRouterConfig {
   /** Path to the bundled calibrator JSON (iter 22). */
   calibratorPath: string;
   /**
-   * ADR-149 iter 29 — orthogonal selector mode: when > 0, filter candidates
-   * by blended price ≤ ceiling, then pick the HIGHEST predicted quality
+   * ADR-149 iter 29 â€” orthogonal selector mode: when > 0, filter candidates
+   * by blended price â‰¤ ceiling, then pick the HIGHEST predicted quality
    * (not cheapest-above-bar). Lets ops with a hard budget cap ask "best
    * model under $X" instead of "cheapest above quality threshold". Default
    * 0 (disabled) preserves iter 0-28 cost-optimal-above-bar semantics.
    */
   costCeilingPerMTok: number;
   /**
-   * ADR-149 iter 44 — ensemble-uncertainty-aware fallback. When > 0, the
+   * ADR-149 iter 44 â€” ensemble-uncertainty-aware fallback. When > 0, the
    * selector queries BOTH the unified KRR and the bucket specialist for
    * the same query, then computes |unified_q - specialist_q| for the
    * picked model. If the disagreement exceeds this threshold, returns null
-   * so the caller falls back to the bandit — same path as a 429/5xx API
+   * so the caller falls back to the bandit â€” same path as a 429/5xx API
    * error today, but triggered by prediction uncertainty instead.
    *
-   * Typical values: 0.10 (mild — only the most uncertain predictions
-   * fall back), 0.20 (aggressive — any meaningful ensemble disagreement
-   * triggers fallback). 0 disables (default — preserves iter 0-43 behavior).
+   * Typical values: 0.10 (mild â€” only the most uncertain predictions
+   * fall back), 0.20 (aggressive â€” any meaningful ensemble disagreement
+   * triggers fallback). 0 disables (default â€” preserves iter 0-43 behavior).
    */
   ensembleUncertaintyThreshold: number;
 }
@@ -138,7 +138,7 @@ interface ResolvedBackend {
   /** Unified-corpus router (fallback). null when no corpus / artifact was loadable. */
   router: PureRouter | null;
   /**
-   * ADR-149 iter 16 — per-bucket specialist KRR routers. When the caller
+   * ADR-149 iter 16 â€” per-bucket specialist KRR routers. When the caller
    * supplies a complexity bucket AND the matching artifact is present,
    * the specialist is preferred over the unified `router`. Each specialist
    * was trained only on rows from its tier so it predicts more accurately
@@ -148,7 +148,7 @@ interface ResolvedBackend {
   /**
    * For the FastGRNN/native path: the loaded `NativeRouter` instance and the
    * pre-built per-candidate embeddings. Loaded ONCE at resolve time and
-   * reused on every route() call — avoids the load/build overhead per call.
+   * reused on every route() call â€” avoids the load/build overhead per call.
    */
   native?: {
     router: { route: (e: number[], cands: Array<{ id: string; embedding: number[]; costPerMTok?: number; successRate?: number }>) => Promise<{ id: string; confidence: number; uncertainty: number; useLightweight: boolean; costPerMTok?: number; inferenceTimeUs: number }> };
@@ -168,7 +168,7 @@ const PRICES: Record<ClaudeModel, number> = {
   haiku: 1, sonnet: 3, opus: 15, inherit: 3,
 };
 
-// ADR-149 iter 12 — lazy load measured per-model latency (mean ms) from the
+// ADR-149 iter 12 â€” lazy load measured per-model latency (mean ms) from the
 // most-recent FULL seed-corpus measurement file. Cached per-process.
 // Returns an empty map if no measurement is available.
 let _latencyMapPromise: Promise<Record<string, number>> | null = null;
@@ -209,14 +209,14 @@ function loadLatencyMap(): Promise<Record<string, number>> {
 }
 
 /**
- * ADR-149 — map a concrete OpenRouter / Anthropic model id back to the
+ * ADR-149 â€” map a concrete OpenRouter / Anthropic model id back to the
  * closest ClaudeModel tier label for back-compat. Used to populate the
  * `model: ClaudeModel` field when the actual picked `modelId` is e.g.
  * `openai/gpt-4.1` or `inclusionai/ling-2.6-flash`.
  *
  * Mapping rule: substring-based. Anthropic ids carry the tier name;
  * other providers map to the tier whose role they play (cheap, mid, strong).
- * The map is intentionally non-exhaustive — unknown ids default to 'sonnet'
+ * The map is intentionally non-exhaustive â€” unknown ids default to 'sonnet'
  * (the safest middle ground for an unrecognised candidate).
  */
 function tierLabelForModelId(modelId: string): ClaudeModel {
@@ -239,15 +239,15 @@ function getConfig(): NeuralRouterConfig {
   if (_config !== null) return _config;
   // Default seed-corpus path: bundled with the package. We resolve relative to
   // this file's location so it works both in src (tsc dev) and in the dist.
-  // dist layout:  dist/src/ruvector/neural-router.js → assets at dist/assets/...
-  // src layout:   src/ruvector/neural-router.ts     → assets at assets/...
+  // dist layout:  dist/src/ruvector/neural-router.js â†’ assets at dist/assets/...
+  // src layout:   src/ruvector/neural-router.ts     â†’ assets at assets/...
   // We probe both candidate locations.
   let assetsDir: string;
   try {
     const here = dirname(fileURLToPath(import.meta.url));
     const candidates = [
-      resolvePath(here, '..', '..', 'assets', 'model-router'),       // src/ruvector → src/assets/...
-      resolvePath(here, '..', '..', '..', 'assets', 'model-router'), // dist/src/ruvector → dist/assets/...
+      resolvePath(here, '..', '..', 'assets', 'model-router'),       // src/ruvector â†’ src/assets/...
+      resolvePath(here, '..', '..', '..', 'assets', 'model-router'), // dist/src/ruvector â†’ dist/assets/...
       resolvePath(here, '..', '..', '..', '..', 'assets', 'model-router'), // safety net
     ];
     assetsDir = candidates.find(existsSync) ?? candidates[0];
@@ -259,7 +259,7 @@ function getConfig(): NeuralRouterConfig {
     enabled: process.env.CLAUDE_FLOW_ROUTER_NEURAL === '1',
     modelPath: process.env.CLAUDE_FLOW_ROUTER_MODEL_PATH || undefined,
     bundledKrrPath: join(assetsDir, 'seed-router.krr.json'),
-    // ADR-149 v2 — measured against the richer code-context corpus
+    // ADR-149 v2 â€” measured against the richer code-context corpus
     // (gen-seed-corpus-v2.mjs). On that corpus, cheap models (Ling 2.6
     // Flash) deliver 75-93% on cheap/mid tasks and ~54% on strong tasks;
     // expensive models deliver 56-89% across tiers. Bar=0.50 lets cheap
@@ -271,16 +271,16 @@ function getConfig(): NeuralRouterConfig {
       ?? join(assetsDir, 'seed-rows.json'),
     k: parseInt(process.env.CLAUDE_FLOW_ROUTER_KNN_K ?? '5', 10) || 5,
     latencyBudgetMs: Math.max(0, parseInt(process.env.CLAUDE_FLOW_ROUTER_LATENCY_BUDGET_MS ?? '0', 10) || 0),
-    // ADR-149 iter 24 — DEFAULT ON. Opt out with `=0`. Iter 23 OOS
-    // validation: ECE 0.1604 → 0.0335 (-79%), well-calibrated.
+    // ADR-149 iter 24 â€” DEFAULT ON. Opt out with `=0`. Iter 23 OOS
+    // validation: ECE 0.1604 â†’ 0.0335 (-79%), well-calibrated.
     calibrateEnabled: process.env.CLAUDE_FLOW_ROUTER_CALIBRATE !== '0',
-    // ADR-149 iter 29 — orthogonal selector mode. Blended $/Mtok ceiling;
+    // ADR-149 iter 29 â€” orthogonal selector mode. Blended $/Mtok ceiling;
     // 0 disables (preserves cost-optimal-above-bar). Typical values:
-    //   $5    → cheap+mid tier only (Ling 2.6, Gemini Flash Lite, Llama 3.3, GPT-4.1)
-    //   $20   → exclude Sonnet ($48 blended) and Opus ($240)
-    //   $50   → exclude Opus only
+    //   $5    â†’ cheap+mid tier only (Ling 2.6, Gemini Flash Lite, Llama 3.3, GPT-4.1)
+    //   $20   â†’ exclude Sonnet ($48 blended) and Opus ($240)
+    //   $50   â†’ exclude Opus only
     costCeilingPerMTok: Math.max(0, parseFloat(process.env.CLAUDE_FLOW_ROUTER_COST_CEILING_USD_PER_MTOK ?? '0') || 0),
-    // iter 44 — ensemble disagreement threshold; 0 disables.
+    // iter 44 â€” ensemble disagreement threshold; 0 disables.
     ensembleUncertaintyThreshold: Math.max(0, parseFloat(process.env.CLAUDE_FLOW_ROUTER_ENSEMBLE_UNCERTAINTY_THRESHOLD ?? '0') || 0),
     calibratorPath: process.env.CLAUDE_FLOW_ROUTER_CALIBRATOR_PATH
       ?? join(assetsDir, 'seed-router.calibrator.json'),
@@ -292,7 +292,7 @@ function getConfig(): NeuralRouterConfig {
 // Backend resolution (single-init, lazy)
 // ============================================================================
 
-/** DRACO row — the shape both pure-TS and FastGRNN backends consume. */
+/** DRACO row â€” the shape both pure-TS and FastGRNN backends consume. */
 interface DracoRow {
   embedding: number[];
   scores: Record<string, number>;
@@ -305,7 +305,7 @@ function loadSeedCorpus(path: string): DracoRow[] | null {
     const data = JSON.parse(raw);
     if (!Array.isArray(data)) return null;
     // Light-touch validation: each row must have a numeric-array embedding and
-    // a non-empty scores map. We do not coerce types — bad data should be
+    // a non-empty scores map. We do not coerce types â€” bad data should be
     // visible as a config bug, not silently routed around.
     for (const row of data) {
       if (!row || !Array.isArray(row.embedding) || row.embedding.length === 0) return null;
@@ -383,17 +383,17 @@ async function resolveBackend(cfg: NeuralRouterConfig): Promise<ResolvedBackend>
     }
   }
 
-  // 3.5. No user artifact → try the bundled pre-trained KRR (~96kB, ~0.020 ms/route).
+  // 3.5. No user artifact â†’ try the bundled pre-trained KRR (~96kB, ~0.020 ms/route).
   if (existsSync(cfg.bundledKrrPath)) {
     try {
-      // ADR-149 iter 22+24+25 — load isotonic calibrator(s) if the gate
+      // ADR-149 iter 22+24+25 â€” load isotonic calibrator(s) if the gate
       // isn't explicitly closed. Calibration is ON by default (iter 24);
       // iter 23's out-of-sample LOO validation showed ECE drops 79% with
       // calibration enabled. Iter 25 adds per-tier calibrators: when a
       // matching `seed-router.calibrator.{low,med,high}.json` exists,
       // bucket-specialist KRR routers are wrapped with the bucket-matched
       // calibrator (closes mid-tier residual ECE; mid in-sample MAE drops
-      // 0.36 → 0.17 with tier-specific fit). Set
+      // 0.36 â†’ 0.17 with tier-specific fit). Set
       // `CLAUDE_FLOW_ROUTER_CALIBRATE=0` to opt out of all calibration.
       type Cal = { transform: (x: number) => number };
       let unifiedCalibrator: Cal | null = null;
@@ -409,7 +409,7 @@ async function resolveBackend(cfg: NeuralRouterConfig): Promise<ResolvedBackend>
         };
         unifiedCalibrator = loadCal(cfg.calibratorPath);
         if (unifiedCalibrator) loadedCalibrators.push('unified');
-        // Per-tier — paths follow the iter 16 KRR specialist convention.
+        // Per-tier â€” paths follow the iter 16 KRR specialist convention.
         const calDir = cfg.calibratorPath.replace(/seed-router\.calibrator\.json$/, '');
         for (const bucket of ['low', 'med', 'high'] as const) {
           const c = loadCal(`${calDir}seed-router.calibrator.${bucket}.json`);
@@ -453,9 +453,9 @@ async function resolveBackend(cfg: NeuralRouterConfig): Promise<ResolvedBackend>
       if (!unifiedRaw) throw new Error('failed to load unified KRR');
       const unified = wrapWithCalibrator(unifiedRaw, unifiedCalibrator);
 
-      // ADR-149 iter 16 — load per-bucket specialists if present. Each is a
-      // KRR fit only to its tier's rows (cheap → low.json, mid → med.json,
-      // strong → high.json). When tryCostOptimalRoute is called with a
+      // ADR-149 iter 16 â€” load per-bucket specialists if present. Each is a
+      // KRR fit only to its tier's rows (cheap â†’ low.json, mid â†’ med.json,
+      // strong â†’ high.json). When tryCostOptimalRoute is called with a
       // complexityBucket, the matching specialist is preferred over the
       // unified router.
       const bucketDir = cfg.bundledKrrPath.replace(/seed-router\.krr\.json$/, '');
@@ -464,7 +464,7 @@ async function resolveBackend(cfg: NeuralRouterConfig): Promise<ResolvedBackend>
       for (const bucket of ['low', 'med', 'high'] as const) {
         const r = loadKrr(`${bucketDir}seed-router.krr.${bucket}.json`);
         if (r) {
-          // iter 25 — prefer tier-specific calibrator for this bucket;
+          // iter 25 â€” prefer tier-specific calibrator for this bucket;
           // fall back to the unified calibrator when no specialist exists.
           routerByBucket[bucket] = wrapWithCalibrator(r, calibratorByBucket[bucket] ?? unifiedCalibrator);
           loadedBuckets.push(bucket);
@@ -578,11 +578,11 @@ export async function tryCostOptimalRoute(
       };
     }
 
-    // Pure-TS paths (k-NN or KRR) — ADR-149: ids are arbitrary strings,
+    // Pure-TS paths (k-NN or KRR) â€” ADR-149: ids are arbitrary strings,
     // not ClaudeModel tier names. `tierLabelForModelId` derives the
     // back-compat tier; `modelId` carries the concrete pick.
     //
-    // ADR-149 iter 16 — when the caller supplies a complexity bucket AND a
+    // ADR-149 iter 16 â€” when the caller supplies a complexity bucket AND a
     // per-bucket specialist KRR was loaded at backend resolution, prefer
     // the specialist over the unified router. Each specialist is trained
     // only on its tier's rows (looQuality 0.94 for cheap vs 0.71 unified)
@@ -592,14 +592,14 @@ export async function tryCostOptimalRoute(
     if (!activeRouter) return null;
     const allRaw = activeRouter.predictAll(embedding);
 
-    // ADR-149 iter 14 — per-modelId Thompson sampling. When
+    // ADR-149 iter 14 â€” per-modelId Thompson sampling. When
     // CLAUDE_FLOW_ROUTER_BANDIT_PER_MODEL=1, perturb each candidate's
     // predicted quality by a Beta sample from its persisted per-modelId
     // prior. Lets the bandit learn "Ling outperforms Haiku-4.5 within
     // the cheap tier" without changing the neural backend's prediction.
     //
-    // Density guard: only apply the perturbation when (α+β) > 4 for that
-    // modelId (≥2 outcomes accumulated; cold-start Beta(1,1) gives α+β=2).
+    // Density guard: only apply the perturbation when (Î±+Î²) > 4 for that
+    // modelId (â‰¥2 outcomes accumulated; cold-start Beta(1,1) gives Î±+Î²=2).
     // Otherwise the bandit's signal is uninformative noise and we'd
     // sabotage the well-trained neural prediction.
     let all = allRaw;
@@ -609,11 +609,11 @@ export async function tryCostOptimalRoute(
         const priorsById = getModelRouterPriorsById();
         const bucket = opts?.complexityBucket;   // ADR-149 iter 15
         if (priorsById) {
-          // Cross-bucket shrinkage configuration (iter 57). When λ > 0,
+          // Cross-bucket shrinkage configuration (iter 57). When Î» > 0,
           // bucket-specific priors with few samples blend toward the
           // marginal-across-buckets prior. Classic James-Stein-style
           // shrinkage: rich cells trust themselves, thin cells borrow
-          // strength from neighbors. Default λ = 4 (set =0 to disable).
+          // strength from neighbors. Default Î» = 4 (set =0 to disable).
           const shrinkageLambda = Math.max(0, parseFloat(process.env.CLAUDE_FLOW_ROUTER_BANDIT_SHRINKAGE_LAMBDA ?? '4') || 0);
           all = allRaw.map(a => {
             // Compute marginal-across-buckets prior for this modelId ONCE
@@ -631,11 +631,11 @@ export async function tryCostOptimalRoute(
 
             let alpha: number, beta: number;
             if (bucket && priorsById[bucket]?.[a.id]) {
-              // Bucket-specific prior exists — use it as the primary signal
+              // Bucket-specific prior exists â€” use it as the primary signal
               // (iter 15 sharpness). Iter 57: when shrinkage is enabled,
               // blend toward the marginal anchor based on specific-cell
-              // sample richness. w_s = (n_s + 1) / (n_s + 1 + λ). At n_s=0
-              // → mostly marginal; at n_s=large → mostly specific.
+              // sample richness. w_s = (n_s + 1) / (n_s + 1 + Î»). At n_s=0
+              // â†’ mostly marginal; at n_s=large â†’ mostly specific.
               const p = priorsById[bucket][a.id];
               const nSpecific = p.alpha + p.beta - 2;
               if (shrinkageLambda > 0 && marginalFound) {
@@ -647,22 +647,22 @@ export async function tryCostOptimalRoute(
                 beta = p.beta;
               }
             } else if (marginalFound) {
-              // Marginal fallback (iter 14) — no bucket-specific prior at all.
+              // Marginal fallback (iter 14) â€” no bucket-specific prior at all.
               alpha = alphaMarginal;
               beta = betaMarginal;
             } else {
               return a;
             }
             const samples = alpha + beta;
-            if (samples <= 2) return a;  // hard floor — uniform prior has no signal
-            // iter 52 — continuous warmup curve. Replaces iter 14's binary
+            if (samples <= 2) return a;  // hard floor â€” uniform prior has no signal
+            // iter 52 â€” continuous warmup curve. Replaces iter 14's binary
             // density guard. Two curves available:
             //   default (iter 52):  blendFactor = 0.5 * min(1, (s-2)/WARMUP)
-            //                       Capped at 0.5 → matches iter 14's
+            //                       Capped at 0.5 â†’ matches iter 14's
             //                       50/50 baseline at saturation.
             //   iter 53 opt-in:     blendFactor = (s-2) / (s + WARMUP)
-            //                       Asymptotes to 1.0 as samples → ∞.
-            //                       At s=1000 → bandit ~99% influence.
+            //                       Asymptotes to 1.0 as samples â†’ âˆž.
+            //                       At s=1000 â†’ bandit ~99% influence.
             //                       Use when you have lots of bandit data
             //                       and want it to dominate the neural prior.
             //                       Gate: CLAUDE_FLOW_ROUTER_BANDIT_FULL_INFLUENCE=1.
@@ -678,10 +678,10 @@ export async function tryCostOptimalRoute(
       } catch { /* best-effort */ }
     }
 
-    // ADR-149 iter 12 — latency-aware filtering. When CLAUDE_FLOW_ROUTER_
+    // ADR-149 iter 12 â€” latency-aware filtering. When CLAUDE_FLOW_ROUTER_
     // LATENCY_BUDGET_MS is set, drop candidates whose measured latency
     // exceeds the budget BEFORE the cost-optimal pick. The unfiltered
-    // alternatives stay on the result for observability — only the chosen
+    // alternatives stay on the result for observability â€” only the chosen
     // `modelId` is constrained.
     let main = activeRouter.route(embedding);
     // Re-derive `main` from the post-Thompson `all` list when per-modelId
@@ -707,20 +707,20 @@ export async function tryCostOptimalRoute(
         const pick = clearing[0] ?? [...eligible].sort((a, b) => b.predictedQuality - a.predictedQuality)[0];
         main = { id: pick.id, predictedQuality: pick.predictedQuality, costPerMTok: pick.costPerMTok, metBar: pick.predictedQuality >= cfg.qualityBar };
       }
-      // else: every candidate exceeds the budget → fall back to the original pick
+      // else: every candidate exceeds the budget â†’ fall back to the original pick
       //   (better to return a slow answer than no answer)
     }
 
-    // ADR-149 iter 29 — quality-best-under-budget mode. When the cost
+    // ADR-149 iter 29 â€” quality-best-under-budget mode. When the cost
     // ceiling is set, OVERRIDE the cost-optimal-above-bar pick:
-    //   1. filter candidates by costPerMTok ≤ ceiling
+    //   1. filter candidates by costPerMTok â‰¤ ceiling
     //   2. sort by predictedQuality DESC
     //   3. pick the top one
     // qualityBar still informs `metBar` on the result for observability,
-    // but does NOT filter the selection — the operator's hard constraint
+    // but does NOT filter the selection â€” the operator's hard constraint
     // is cost, and they want the best quality they can get under it.
     // If no candidate fits the ceiling, fall through to the existing pick
-    // (better to return something than nothing — same policy as the
+    // (better to return something than nothing â€” same policy as the
     // latency-budget fallback above).
     if (cfg.costCeilingPerMTok > 0) {
       const affordable = all.filter(a => a.costPerMTok <= cfg.costCeilingPerMTok);
@@ -735,14 +735,14 @@ export async function tryCostOptimalRoute(
       }
     }
 
-    // ADR-149 iter 44+45 — ensemble disagreement diagnostic + uncertainty-
+    // ADR-149 iter 44+45 â€” ensemble disagreement diagnostic + uncertainty-
     // aware fallback. When both the unified router and a bucket specialist
     // are loaded AND a bucket was supplied, compute the picked model's
     // prediction disagreement across both backends. ALWAYS surface it on
-    // the result (iter 45 — observable signal for tuning the threshold).
+    // the result (iter 45 â€” observable signal for tuning the threshold).
     // If iter 44's threshold is > 0 AND the disagreement exceeds it, return
     // null so the caller falls back to the pure bandit path (same as 429/5xx
-    // — uncertainty is a kind of soft failure).
+    // â€” uncertainty is a kind of soft failure).
     let ensembleDisagreement: number | undefined;
     if (
       opts?.complexityBucket
@@ -776,7 +776,7 @@ export async function tryCostOptimalRoute(
       ...(ensembleDisagreement !== undefined ? { ensembleDisagreement } : {}),
     };
   } catch {
-    // Any runtime failure is silently swallowed → caller's bandit-fallback engages.
+    // Any runtime failure is silently swallowed â†’ caller's bandit-fallback engages.
     return null;
   }
 }
@@ -789,11 +789,11 @@ export async function tryCostOptimalRoute(
  * tiny-dancer's Router.route).
  *
  * Order of the output array matches the input order. Each slot is either
- * a NeuralRouteResult or null (gate closed, backend unavailable, etc. —
+ * a NeuralRouteResult or null (gate closed, backend unavailable, etc. â€”
  * mirrors the single-call contract).
  *
  * For harness-style callers (batch evals, GAIA runs, parallel agent
- * dispatch) this amortizes backend init across N queries — first-call
+ * dispatch) this amortizes backend init across N queries â€” first-call
  * cold-load (~10 ms) becomes a fixed cost regardless of batch size.
  */
 export async function tryCostOptimalRouteBatch(embeddings: number[][]): Promise<Array<NeuralRouteResult | null>> {
@@ -874,8 +874,8 @@ export async function tryCostOptimalRouteBatch(embeddings: number[][]): Promise<
 }
 
 /**
- * Diagnostic surface — returns the active backend without performing a route.
- * Used by the bench and by `claude-flow neural router status` (future CLI).
+ * Diagnostic surface â€” returns the active backend without performing a route.
+ * Used by the bench and by `ruflo neural router status` (future CLI).
  */
 export async function neuralRouterStatus(): Promise<{ enabled: boolean; available: boolean; routedBy: NeuralRoutedBy | null; reason: string; config: NeuralRouterConfig }> {
   const cfg = getConfig();
@@ -885,7 +885,7 @@ export async function neuralRouterStatus(): Promise<{ enabled: boolean; availabl
 }
 
 /**
- * ADR-149 iter 7 — fallback selector for retry-on-failure. Returns the
+ * ADR-149 iter 7 â€” fallback selector for retry-on-failure. Returns the
  * cheapest candidate predicted to clear the quality bar (or the best-
  * predicted if none do) that is NOT in `excludeModelIds`. Used by
  * `executeAgentTask` to retry with a different model after a 429/5xx.
@@ -912,7 +912,7 @@ export async function nextCostOptimalAlternative(
   const exclude = new Set<string>(excludeModelIds);
   const t0 = Number(process.hrtime.bigint() / 1000n);
 
-  // Pure-TS path only — fallback retries are too rare to be worth threading
+  // Pure-TS path only â€” fallback retries are too rare to be worth threading
   // through the FastGRNN candidate-embedding rebuild dance.
   try {
     const all = backend.router.predictAll(embedding);
@@ -946,7 +946,7 @@ export async function nextCostOptimalAlternative(
 }
 
 /**
- * Test seam — reset module-level caches so unit tests can simulate cold init.
+ * Test seam â€” reset module-level caches so unit tests can simulate cold init.
  * Not exported from the package's barrel.
  */
 export function __resetNeuralRouterForTests(): void {

@@ -2,7 +2,7 @@
  * V3 CLI Performance Command
  * Performance profiling, benchmarking, optimization, metrics
  *
- * Created with ❤️ by ruv.io
+ * Created with â¤ï¸ by ruv.io
  */
 
 import * as os from 'node:os';
@@ -22,8 +22,8 @@ const benchmarkCommand: Command = {
     { name: 'output', short: 'o', type: 'string', description: 'Output format: text, json, csv', default: 'text' },
   ],
   examples: [
-    { command: 'claude-flow performance benchmark -s neural', description: 'Benchmark neural operations' },
-    { command: 'claude-flow performance benchmark -i 1000', description: 'Run with 1000 iterations' },
+    { command: 'ruflo performance benchmark -s neural', description: 'Benchmark neural operations' },
+    { command: 'ruflo performance benchmark -i 1000', description: 'Run with 1000 iterations' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const suite = ctx.flags.suite as string || 'all';
@@ -33,7 +33,7 @@ const benchmarkCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Performance Benchmark (Real Measurements)'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('â”€'.repeat(60)));
 
     const spinner = output.createSpinner({ text: `Running ${suite} benchmarks...`, spinner: 'dots' });
     spinner.start();
@@ -111,7 +111,7 @@ const benchmarkCommand: Command = {
       }
 
       const mean = flashTimes.reduce((a, b) => a + b, 0) / flashTimes.length;
-      // Compare to baseline (single-vector comparison takes ~0.5μs, so 100 vectors baseline ~0.05ms)
+      // Compare to baseline (single-vector comparison takes ~0.5Î¼s, so 100 vectors baseline ~0.05ms)
       const baselineMs = 0.05;
       const speedup = baselineMs / mean;
       results.push({
@@ -126,7 +126,7 @@ const benchmarkCommand: Command = {
     // 3. HNSW Search Benchmark
     if (suite === 'all' || suite === 'search') {
       spinner.setText('Benchmarking HNSW search...');
-      // Trigger lazy initialization before reading status (#1698) — without
+      // Trigger lazy initialization before reading status (#1698) â€” without
       // this the singleton stays null and we report "No index" even when
       // @ruvector/core is loadable and the index has data on disk.
       await getHNSWIndex().catch(() => null);
@@ -156,7 +156,7 @@ const benchmarkCommand: Command = {
         }
 
         const mean = searchTimes.reduce((a, b) => a + b, 0) / searchTimes.length;
-        // Brute force baseline: ~0.5μs per vector comparison, 1000 vectors = 0.5ms
+        // Brute force baseline: ~0.5Î¼s per vector comparison, 1000 vectors = 0.5ms
         // HNSW should be O(log n) ~150x faster
         const baselineBruteForce = hnswStatus.entryCount * 0.0005;
         const speedup = baselineBruteForce / (mean / 1000);
@@ -186,10 +186,10 @@ const benchmarkCommand: Command = {
 
       results.push({
         operation: 'SONA Adaptation',
-        mean: `${(sonaResult.avgMs * 1000).toFixed(2)}μs`,
-        p95: `${(sonaResult.maxMs * 1000).toFixed(2)}μs`,
-        p99: `${(sonaResult.maxMs * 1000).toFixed(2)}μs`,
-        improvement: sonaResult.targetMet ? output.success('<0.05ms ✓') : output.warning('Above target'),
+        mean: `${(sonaResult.avgMs * 1000).toFixed(2)}Î¼s`,
+        p95: `${(sonaResult.maxMs * 1000).toFixed(2)}Î¼s`,
+        p99: `${(sonaResult.maxMs * 1000).toFixed(2)}Î¼s`,
+        improvement: sonaResult.targetMet ? output.success('<0.05ms âœ“') : output.warning('Above target'),
       });
     }
 
@@ -264,8 +264,8 @@ const profileCommand: Command = {
     { name: 'output', short: 'o', type: 'string', description: 'Output file for profile data' },
   ],
   examples: [
-    { command: 'claude-flow performance profile -t cpu', description: 'Profile CPU usage' },
-    { command: 'claude-flow performance profile -d 60', description: 'Profile for 60 seconds' },
+    { command: 'ruflo performance profile -t cpu', description: 'Profile CPU usage' },
+    { command: 'ruflo performance profile -d 60', description: 'Profile for 60 seconds' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const type = ctx.flags.type as string || 'all';
@@ -273,7 +273,7 @@ const profileCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Performance Profiler'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Collecting profile data...', spinner: 'dots' });
     spinner.start();
@@ -346,8 +346,8 @@ const metricsCommand: Command = {
     { name: 'component', short: 'c', type: 'string', description: 'Component to filter' },
   ],
   examples: [
-    { command: 'claude-flow performance metrics -t 7d', description: 'Show 7-day metrics' },
-    { command: 'claude-flow performance metrics -f prometheus', description: 'Export as Prometheus format' },
+    { command: 'ruflo performance metrics -t 7d', description: 'Show 7-day metrics' },
+    { command: 'ruflo performance metrics -f prometheus', description: 'Export as Prometheus format' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const timeframe = ctx.flags.timeframe as string || '24h';
@@ -355,7 +355,7 @@ const metricsCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold(`Performance Metrics (${timeframe})`));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     // Real system metrics
     const memUsage = process.memoryUsage();
@@ -535,15 +535,15 @@ const optimizeCommand: Command = {
     { name: 'dry-run', short: 'd', type: 'boolean', description: 'Show changes without applying' },
   ],
   examples: [
-    { command: 'claude-flow performance optimize -t memory', description: 'Optimize memory usage' },
-    { command: 'claude-flow performance optimize --apply', description: 'Apply all optimizations' },
+    { command: 'ruflo performance optimize -t memory', description: 'Optimize memory usage' },
+    { command: 'ruflo performance optimize --apply', description: 'Apply all optimizations' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const target = ctx.flags.target as string || 'all';
 
     output.writeln();
     output.writeln(output.bold('Performance Optimization'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Analyzing performance...', spinner: 'dots' });
     spinner.start();
@@ -583,13 +583,13 @@ const bottleneckCommand: Command = {
     { name: 'depth', short: 'd', type: 'string', description: 'Analysis depth: quick, full', default: 'quick' },
   ],
   examples: [
-    { command: 'claude-flow performance bottleneck', description: 'Find bottlenecks' },
-    { command: 'claude-flow performance bottleneck -d full', description: 'Full analysis' },
+    { command: 'ruflo performance bottleneck', description: 'Find bottlenecks' },
+    { command: 'ruflo performance bottleneck -d full', description: 'Full analysis' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
     output.writeln(output.bold('Bottleneck Analysis'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('â”€'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Analyzing system...', spinner: 'dots' });
     spinner.start();
@@ -622,9 +622,9 @@ export const performanceCommand: Command = {
   aliases: ['perf'],
   subcommands: [benchmarkCommand, profileCommand, metricsCommand, optimizeCommand, bottleneckCommand],
   examples: [
-    { command: 'claude-flow performance benchmark', description: 'Run benchmarks' },
-    { command: 'claude-flow performance profile', description: 'Profile application' },
-    { command: 'claude-flow perf metrics', description: 'View metrics (alias)' },
+    { command: 'ruflo performance benchmark', description: 'Run benchmarks' },
+    { command: 'ruflo performance profile', description: 'Profile application' },
+    { command: 'ruflo perf metrics', description: 'View metrics (alias)' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
@@ -647,7 +647,7 @@ export const performanceCommand: Command = {
       'Memory: 50-75% reduction with quantization',
     ]);
     output.writeln();
-    output.writeln(output.dim('Created with ❤️ by ruv.io'));
+    output.writeln(output.dim('Created with â¤ï¸ by ruv.io'));
     return { success: true };
   },
 };

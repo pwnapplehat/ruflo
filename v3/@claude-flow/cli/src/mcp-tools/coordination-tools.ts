@@ -3,7 +3,7 @@
  *
  * V2 Compatibility - Swarm coordination and orchestration tools
  *
- * ⚠️ IMPORTANT: These tools provide LOCAL STATE MANAGEMENT.
+ * âš ï¸ IMPORTANT: These tools provide LOCAL STATE MANAGEMENT.
  * - Topology/consensus state is tracked locally
  * - No actual distributed coordination
  * - Useful for single-machine workflow orchestration
@@ -132,7 +132,7 @@ function saveCoordStore(store: CoordinationStore): void {
 export const coordinationTools: MCPTool[] = [
   {
     name: 'coordination_topology',
-    description: 'Configure swarm topology Use when native Task is wrong because the work crosses multiple agents that need to vote/sync/load-balance — TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
+    description: 'Configure swarm topology Use when you need a specialized agent because the work crosses multiple agents that need to vote/sync/load-balance â€” TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
     category: 'coordination',
     inputSchema: {
       type: 'object',
@@ -203,7 +203,7 @@ export const coordinationTools: MCPTool[] = [
   },
   {
     name: 'coordination_load_balance',
-    description: 'Configure load balancing Use when native Task is wrong because the work crosses multiple agents that need to vote/sync/load-balance — TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
+    description: 'Configure load balancing Use when you need a specialized agent because the work crosses multiple agents that need to vote/sync/load-balance â€” TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
     category: 'coordination',
     inputSchema: {
       type: 'object',
@@ -291,7 +291,7 @@ export const coordinationTools: MCPTool[] = [
   },
   {
     name: 'coordination_sync',
-    description: 'Synchronize state across nodes Use when native Task is wrong because the work crosses multiple agents that need to vote/sync/load-balance — TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
+    description: 'Synchronize state across nodes Use when you need a specialized agent because the work crosses multiple agents that need to vote/sync/load-balance â€” TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
     category: 'coordination',
     inputSchema: {
       type: 'object',
@@ -363,7 +363,7 @@ export const coordinationTools: MCPTool[] = [
   },
   {
     name: 'coordination_node',
-    description: 'Manage coordination nodes Use when native Task is wrong because the work crosses multiple agents that need to vote/sync/load-balance — TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
+    description: 'Manage coordination nodes Use when you need a specialized agent because the work crosses multiple agents that need to vote/sync/load-balance â€” TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
     category: 'coordination',
     inputSchema: {
       type: 'object',
@@ -454,7 +454,7 @@ export const coordinationTools: MCPTool[] = [
   },
   {
     name: 'coordination_consensus',
-    description: 'Manage consensus protocol with BFT, Raft, or Quorum strategies Use when native Task is wrong because the work crosses multiple agents that need to vote/sync/load-balance — TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
+    description: 'Manage consensus protocol with BFT, Raft, or Quorum strategies Use when you need a specialized agent because the work crosses multiple agents that need to vote/sync/load-balance â€” TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
     category: 'coordination',
     inputSchema: {
       type: 'object',
@@ -699,7 +699,7 @@ export const coordinationTools: MCPTool[] = [
   },
   {
     name: 'coordination_orchestrate',
-    description: 'Orchestrate multi-agent coordination Use when native Task is wrong because the work crosses multiple agents that need to vote/sync/load-balance — TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
+    description: 'Orchestrate multi-agent coordination Use when you need a specialized agent because the work crosses multiple agents that need to vote/sync/load-balance â€” TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
     category: 'coordination',
     inputSchema: {
       type: 'object',
@@ -724,7 +724,7 @@ export const coordinationTools: MCPTool[] = [
 
       const orchestrationId = `orch-${Date.now()}`;
 
-      // ADR-093 F7: this tool only schedules an orchestration record — it
+      // ADR-093 F7: this tool only schedules an orchestration record â€” it
       // does not actually execute. Previously it returned a hardcoded
       // `estimatedCompletion: "50ms"` which was misleading. Now we return
       // an honest stub-status with a note pointing callers at agent_spawn
@@ -739,7 +739,7 @@ export const coordinationTools: MCPTool[] = [
         scheduledAt: new Date().toISOString(),
         topology: store.topology.type,
       };
-      // Best-effort persist — keep last 100 scheduled orchestrations.
+      // Best-effort persist â€” keep last 100 scheduled orchestrations.
       type CoordStoreShape = ReturnType<typeof loadCoordStore> & {
         orchestrations?: Array<typeof orchestration>;
       };
@@ -767,7 +767,7 @@ export const coordinationTools: MCPTool[] = [
   },
   {
     name: 'coordination_metrics',
-    description: 'Get coordination metrics Use when native Task is wrong because the work crosses multiple agents that need to vote/sync/load-balance — TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
+    description: 'Get coordination metrics Use when you need a specialized agent because the work crosses multiple agents that need to vote/sync/load-balance â€” TodoWrite + a single Task cannot orchestrate consensus. For one-off subtask dispatch, native Task is fine.',
     category: 'coordination',
     inputSchema: {
       type: 'object',
@@ -790,18 +790,18 @@ export const coordinationTools: MCPTool[] = [
           p95: null,
           p99: null,
           unit: 'ms',
-          _note: 'Real-time latency metrics not available — coordination is state-tracking only',
+          _note: 'Real-time latency metrics not available â€” coordination is state-tracking only',
         },
         throughput: {
           current: null,
           peak: null,
           avg: null,
           unit: 'ops/s',
-          _note: 'Real-time throughput metrics not available — coordination is state-tracking only',
+          _note: 'Real-time throughput metrics not available â€” coordination is state-tracking only',
         },
         availability: {
           uptime: null,
-          _note: 'Uptime not tracked — coordination store has no persistent start time',
+          _note: 'Uptime not tracked â€” coordination store has no persistent start time',
           activeNodes: activeNodes.length,
           totalNodes: nodes.length,
           syncCount: store.sync.syncCount,

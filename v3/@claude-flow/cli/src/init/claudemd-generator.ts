@@ -14,12 +14,12 @@ function behavioralRules(): string {
   return `## Rules
 
 - Do what has been asked; nothing more, nothing less
-- NEVER create files unless absolutely necessary — prefer editing existing files
+- NEVER create files unless absolutely necessary â€” prefer editing existing files
 - NEVER create documentation files unless explicitly requested
-- NEVER save working files or tests to root — use \`/src\`, \`/tests\`, \`/docs\`, \`/config\`, \`/scripts\`
+- NEVER save working files or tests to root â€” use \`/src\`, \`/tests\`, \`/docs\`, \`/config\`, \`/scripts\`
 - ALWAYS read a file before editing it
 - NEVER commit secrets, credentials, or .env files
-- NEVER add a \`Co-Authored-By\` trailer to user commits unless this project's \`.claude/settings.json\` has \`attribution.commit\` set (#2078). The Claude Code Bash tool may suggest one in its default commit-message template — ignore it. \`Co-Authored-By\` is semantic authorship attribution under git/GitHub convention; the tool is the facilitator, not a co-author.
+- NEVER add a \`Co-Authored-By\` trailer to user commits unless this project's \`.claude/settings.json\` has \`attribution.commit\` set (#2078). The Claude Code Bash tool may suggest one in its default commit-message template â€” ignore it. \`Co-Authored-By\` is semantic authorship attribution under git/GitHub convention; the tool is the facilitator, not a co-author.
 - Keep files under 500 lines
 - Validate input at system boundaries`;
 }
@@ -30,7 +30,7 @@ function agentComms(): string {
 Named agents coordinate via \`SendMessage\`, not polling or shared state.
 
 \`\`\`
-Lead (you) ←→ architect ←→ developer ←→ tester ←→ reviewer
+Lead (you) â†â†’ architect â†â†’ developer â†â†’ tester â†â†’ reviewer
               (named agents message each other directly)
 \`\`\`
 
@@ -57,17 +57,17 @@ SendMessage({ to: "researcher", summary: "Start", message: "[task context]" })
 
 | Pattern | Flow | Use When |
 |---------|------|----------|
-| **Pipeline** | A → B → C → D | Sequential dependencies (feature dev) |
-| **Fan-out** | Lead → A, B, C → Lead | Independent parallel work (research) |
-| **Supervisor** | Lead ↔ workers | Ongoing coordination (complex refactor) |
+| **Pipeline** | A â†’ B â†’ C â†’ D | Sequential dependencies (feature dev) |
+| **Fan-out** | Lead â†’ A, B, C â†’ Lead | Independent parallel work (research) |
+| **Supervisor** | Lead â†” workers | Ongoing coordination (complex refactor) |
 
 ### Rules
 
-- ALWAYS name agents — \`name: "role"\` makes them addressable
-- ALWAYS include comms instructions in prompts — who to message, what to send
+- ALWAYS name agents â€” \`name: "role"\` makes them addressable
+- ALWAYS include comms instructions in prompts â€” who to message, what to send
 - Spawn ALL agents in ONE message with \`run_in_background: true\`
 - After spawning: STOP, tell user what's running, wait for results
-- NEVER poll status — agents message back or complete automatically`;
+- NEVER poll status â€” agents message back or complete automatically`;
 }
 
 function swarmConfig(options: InitOptions): string {
@@ -102,7 +102,7 @@ npx @claude-flow/cli@latest swarm init --topology hierarchical --max-agents 8 --
 
 | Tier | Handler | Use Cases |
 |------|---------|-----------|
-| 1 | Agent Booster (WASM) | Simple transforms — skip LLM, use Edit directly |
+| 1 | Agent Booster (WASM) | Simple transforms â€” skip LLM, use Edit directly |
 | 2 | Haiku | Simple tasks, low complexity |
 | 3 | Sonnet/Opus | Architecture, security, complex reasoning |`;
 }
@@ -182,7 +182,7 @@ function setupAndBoundary(): string {
   return `## Setup
 
 \`\`\`bash
-claude mcp add claude-flow -- npx -y ruflo@latest mcp start
+# MCP server registered in .cursor/mcp.json (written by npx ruflo init)
 npx ruflo@latest doctor --fix
 \`\`\`
 
@@ -208,7 +208,7 @@ npm run build && npm test
 function securitySection(): string {
   return `## Security
 
-- NEVER hardcode secrets in source — use environment variables
+- NEVER hardcode secrets in source â€” use environment variables
 - Always validate input at boundaries (Zod schemas)
 - Always sanitize file paths (prevent traversal)
 - Always use parameterized queries (prevent injection)
@@ -225,7 +225,7 @@ function performanceSection(): string {
   return `## Performance
 
 - Always benchmark before AND after optimization
-- Always profile before optimizing — never guess bottlenecks
+- Always profile before optimizing â€” never guess bottlenecks
 - Use HNSW/DiskANN for vector search, Int8 quantization for memory reduction
 
 \`\`\`bash
@@ -260,7 +260,7 @@ npx @claude-flow/cli@latest hooks worker dispatch --trigger audit
 function intelligenceSystem(): string {
   return `## Intelligence (SONA + HNSW)
 
-Pipeline: **RETRIEVE** (vector search) → **JUDGE** (success/failure) → **DISTILL** (extract patterns) → **CONSOLIDATE** (persist)
+Pipeline: **RETRIEVE** (vector search) â†’ **JUDGE** (success/failure) â†’ **DISTILL** (extract patterns) â†’ **CONSOLIDATE** (persist)
 
 - **ONNX Embeddings**: all-MiniLM-L6-v2, 384-dim
 - **HNSW/DiskANN**: 150x-12,500x faster search
@@ -280,7 +280,7 @@ npx @claude-flow/cli@latest federation send --to peer --type task-request --mess
 npx @claude-flow/cli@latest federation status
 \`\`\`
 
-- 5-tier trust: UNTRUSTED → VERIFIED → ATTESTED → TRUSTED → PRIVILEGED
+- 5-tier trust: UNTRUSTED â†’ VERIFIED â†’ ATTESTED â†’ TRUSTED â†’ PRIVILEGED
 - PII pipeline: 14 types auto-stripped before data leaves your node
 - mTLS + ed25519 handshake, HMAC-signed envelopes
 - Compliance: HIPAA, SOC2, GDPR audit modes`;
@@ -371,7 +371,7 @@ export function generateClaudeMd(options: InitOptions, template?: ClaudeMdTempla
   const tmpl = template ?? options.runtime.claudeMdTemplate ?? 'standard';
   const sections = TEMPLATE_SECTIONS[tmpl] ?? TEMPLATE_SECTIONS.standard;
 
-  const header = `# Ruflo — Claude Code Configuration\n`;
+  const header = `# Ruflo â€” Claude Code Configuration\n`;
   const body = sections.map(fn => fn(options)).join('\n\n');
 
   return `${header}\n${body}\n`;
@@ -382,12 +382,12 @@ export function generateMinimalClaudeMd(options: InitOptions): string {
 }
 
 export const CLAUDE_MD_TEMPLATES: Array<{ name: ClaudeMdTemplate; description: string }> = [
-  { name: 'minimal', description: 'Lean start — rules, agent comms, swarm config, CLI ref (~80 lines)' },
-  { name: 'standard', description: 'Recommended — adds memory, learning, agent types (~140 lines)' },
-  { name: 'full', description: 'Everything — hooks, intelligence, federation (~220 lines)' },
-  { name: 'security', description: 'Security-focused — adds scanning, audit, threat agents' },
-  { name: 'performance', description: 'Performance-focused — adds benchmarking, profiling, SONA' },
-  { name: 'solo', description: 'Solo developer — comms, memory, no swarm (~90 lines)' },
+  { name: 'minimal', description: 'Lean start â€” rules, agent comms, swarm config, CLI ref (~80 lines)' },
+  { name: 'standard', description: 'Recommended â€” adds memory, learning, agent types (~140 lines)' },
+  { name: 'full', description: 'Everything â€” hooks, intelligence, federation (~220 lines)' },
+  { name: 'security', description: 'Security-focused â€” adds scanning, audit, threat agents' },
+  { name: 'performance', description: 'Performance-focused â€” adds benchmarking, profiling, SONA' },
+  { name: 'solo', description: 'Solo developer â€” comms, memory, no swarm (~90 lines)' },
 ];
 
 export default generateClaudeMd;

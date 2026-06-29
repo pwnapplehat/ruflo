@@ -13,10 +13,10 @@ import * as path from 'path';
 // Get dynamic swarm status from memory/session files
 function getSwarmStatus(swarmId?: string) {
   const swarmDir = path.join(process.cwd(), '.swarm');
-  const sessionDir = path.join(process.cwd(), '.claude', 'sessions');
+  const sessionDir = path.join(process.cwd(), '.cursor-flow', 'sessions');
   const memoryPaths = [
     path.join(process.cwd(), '.swarm', 'memory.db'),
-    path.join(process.cwd(), '.claude', 'memory.db'),
+    path.join(process.cwd(), '.cursor-flow', 'memory.db'),
   ];
 
   // Check for active swarm state file
@@ -438,8 +438,8 @@ const startCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow swarm start -o "Build REST API" -s development', description: 'Start development swarm' },
-    { command: 'claude-flow swarm start -o "Analyze codebase" --parallel', description: 'Parallel analysis' }
+    { command: 'ruflo swarm start -o "Build REST API" -s development', description: 'Start development swarm' },
+    { command: 'ruflo swarm start -o "Analyze codebase" --parallel', description: 'Parallel analysis' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const objective = ctx.args[0] || ctx.flags.objective as string;
@@ -509,13 +509,13 @@ const startCommand: Command = {
       });
       spinner.succeed('Swarm initialized via MCP');
     } catch (err) {
-      spinner.fail('MCP swarm_init failed — swarm metadata saved locally only');
+      spinner.fail('MCP swarm_init failed ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â swarm metadata saved locally only');
       output.writeln(output.dim(`  Error: ${err instanceof Error ? err.message : String(err)}`));
       // #2370: the old hint referenced the deprecated `claude-flow@v3alpha`
       // dist-tag which now resolves to a pre-rename package. Use the current
       // `ruflo@latest` and force a fresh fetch with `-y` so npx doesn't pick
       // a stale local install.
-      output.writeln(output.dim('  The MCP server may not be running. Start it with: claude mcp add claude-flow -- npx -y ruflo@latest mcp start'));
+      output.writeln(output.dim('  The MCP server may not be running. Start it with: Add ruflo to .cursor/mcp.json (run: ruflo init)'));
     }
 
     // Persist swarm state to disk so `swarm status` can read it
@@ -541,10 +541,10 @@ const startCommand: Command = {
     output.writeln();
     output.printSuccess(`Swarm ${swarmId} initialized with ${totalAgents} agent slots`);
     output.writeln(output.dim('  This CLI coordinates agent state. Execution happens via:'));
-    output.writeln(output.dim('  - Claude Code Agent tool (interactive)'));
-    output.writeln(output.dim('  - claude -p (headless background)'));
-    output.writeln(output.dim('  - hive-mind spawn --claude (autonomous)'));
-    output.writeln(output.dim(`  Monitor: claude-flow swarm status ${swarmId}`));
+    output.writeln(output.dim('  - Cursor Task tool (interactive)'));
+    output.writeln(output.dim('  - @cursor/sdk headless (background)'));
+    output.writeln(output.dim('  - hive-mind spawn (autonomous)'));
+    output.writeln(output.dim(`  Monitor: ruflo swarm status ${swarmId}`));
 
     return { success: true, data: executionState };
   }
@@ -572,8 +572,8 @@ const statusCommand: Command = {
       output.writeln(output.warning('No active swarm'));
       output.writeln();
       output.writeln(output.dim('Start a swarm with:'));
-      output.writeln(output.dim('  npx @claude-flow/cli@latest swarm init'));
-      output.writeln(output.dim('  npx @claude-flow/cli@latest swarm start'));
+      output.writeln(output.dim('  npx ruflo@latest swarm init'));
+      output.writeln(output.dim('  npx ruflo@latest swarm start'));
       output.writeln();
       return { success: true, data: status };
     }
@@ -748,7 +748,7 @@ const scaleCommand: Command = {
 
     output.printInfo(`Scaling swarm ${swarmId} to ${targetAgents} agents...`);
 
-    // Calculate scaling delta — fetch actual count instead of hardcoded 8 (#1425)
+    // Calculate scaling delta ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â fetch actual count instead of hardcoded 8 (#1425)
     const { callMCPTool } = await import('../mcp-client.js');
     let currentAgents = 0;
     try {
@@ -843,11 +843,11 @@ const coordinateCommand: Command = {
       });
       output.printSuccess(`Swarm coordination initialized with ${agentCount} agent slots via MCP`);
     } catch {
-      output.printWarning('MCP unavailable — showing agent plan only (no active coordination)');
+      output.printWarning('MCP unavailable ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â showing agent plan only (no active coordination)');
     }
 
     output.writeln();
-    output.writeln(output.dim('Note: Use Claude Code Task tool or hive-mind spawn --claude to'));
+    output.writeln(output.dim('Note: Use Cursor Task tool or hive-mind spawn to'));
     output.writeln(output.dim('drive actual agent execution. This command sets up the topology.'));
 
     return { success: true, data: { agents: v3Agents, count: agentCount } };
@@ -861,15 +861,15 @@ export const swarmCommand: Command = {
   subcommands: [initCommand, startCommand, statusCommand, stopCommand, scaleCommand, coordinateCommand],
   options: [],
   examples: [
-    { command: 'claude-flow swarm init --v3-mode', description: 'Initialize V3 swarm' },
-    { command: 'claude-flow swarm start -o "Build API" -s development', description: 'Start development swarm' },
-    { command: 'claude-flow swarm coordinate --agents 15', description: 'V3 coordination' }
+    { command: 'ruflo swarm init --v3-mode', description: 'Initialize V3 swarm' },
+    { command: 'ruflo swarm start -o "Build API" -s development', description: 'Start development swarm' },
+    { command: 'ruflo swarm coordinate --agents 15', description: 'V3 coordination' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
     output.writeln(output.bold('Swarm Coordination Commands'));
     output.writeln();
-    output.writeln('Usage: claude-flow swarm <subcommand> [options]');
+    output.writeln('Usage: ruflo swarm <subcommand> [options]');
     output.writeln();
     output.writeln('Subcommands:');
     output.printList([

@@ -6,11 +6,11 @@
  * - Multiple providers: OpenAI, Transformers.js, Agentic-Flow, Mock
  * - Document chunking with overlap
  * - L2/L1/minmax/zscore normalization
- * - Hyperbolic embeddings (Poincaré ball)
+ * - Hyperbolic embeddings (PoincarÃƒÂ© ball)
  * - Neural substrate integration
  * - Persistent SQLite cache
  *
- * Created with ❤️ by ruv.io
+ * Created with Ã¢ÂÂ¤Ã¯Â¸Â by ruv.io
  */
 
 import type { Command, CommandContext, CommandResult } from '../types.js';
@@ -36,8 +36,8 @@ const generateCommand: Command = {
     { name: 'output', short: 'o', type: 'string', description: 'Output format: json, array, preview', default: 'preview' },
   ],
   examples: [
-    { command: 'claude-flow embeddings generate -t "Hello world"', description: 'Generate embedding' },
-    { command: 'claude-flow embeddings generate -t "Test" -o json', description: 'Output as JSON' },
+    { command: 'ruflo embeddings generate -t "Hello world"', description: 'Generate embedding' },
+    { command: 'ruflo embeddings generate -t "Test" -o json', description: 'Output as JSON' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const text = ctx.flags.text as string;
@@ -51,7 +51,7 @@ const generateCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Generate Embedding'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     const spinner = output.createSpinner({ text: `Generating with ${provider}...`, spinner: 'dots' });
     spinner.start();
@@ -119,8 +119,8 @@ const searchCommand: Command = {
     { name: 'db-path', type: 'string', description: 'Database path', default: '.swarm/memory.db' },
   ],
   examples: [
-    { command: 'claude-flow embeddings search -q "error handling"', description: 'Search for similar' },
-    { command: 'claude-flow embeddings search -q "test" -l 5', description: 'Limit results' },
+    { command: 'ruflo embeddings search -q "error handling"', description: 'Search for similar' },
+    { command: 'ruflo embeddings search -q "test" -l 5', description: 'Limit results' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const query = ctx.flags.query as string;
@@ -136,7 +136,7 @@ const searchCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Semantic Search'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(60)));
 
     const spinner = output.createSpinner({ text: 'Searching...', spinner: 'dots' });
     spinner.start();
@@ -150,7 +150,7 @@ const searchCommand: Command = {
       if (!fs.existsSync(fullDbPath)) {
         spinner.fail('Database not found');
         output.printWarning(`No database at ${fullDbPath}`);
-        output.printInfo('Run: claude-flow memory init');
+        output.printInfo('Run: ruflo memory init');
         return { success: false, exitCode: 1 };
       }
 
@@ -276,7 +276,7 @@ const searchCommand: Command = {
       if (topResults.length === 0) {
         output.writeln();
         output.printWarning('No matches found');
-        output.printInfo(`Try: claude-flow memory store -k "key" --value "your data"`);
+        output.printInfo(`Try: ruflo memory store -k "key" --value "your data"`);
         return { success: true, data: [] };
       }
 
@@ -310,7 +310,7 @@ const searchCommand: Command = {
 
 /**
  * Optimized cosine similarity
- * V8 JIT-friendly - ~0.5μs per 384-dim vector comparison
+ * V8 JIT-friendly - ~0.5ÃŽÂ¼s per 384-dim vector comparison
  */
 function cosineSimilarity(a: number[], b: number[]): number {
   const len = Math.min(a.length, b.length);
@@ -340,7 +340,7 @@ const compareCommand: Command = {
     { name: 'metric', short: 'm', type: 'string', description: 'Metric: cosine, euclidean, dot', default: 'cosine' },
   ],
   examples: [
-    { command: 'claude-flow embeddings compare --text1 "Hello" --text2 "Hi there"', description: 'Compare texts' },
+    { command: 'ruflo embeddings compare --text1 "Hello" --text2 "Hi there"', description: 'Compare texts' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const text1 = ctx.flags.text1 as string;
@@ -354,7 +354,7 @@ const compareCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Text Similarity (Real)'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Generating embeddings...', spinner: 'dots' });
     spinner.start();
@@ -436,8 +436,8 @@ const collectionsCommand: Command = {
     { name: 'db-path', type: 'string', description: 'Database path', default: '.swarm/memory.db' },
   ],
   examples: [
-    { command: 'claude-flow embeddings collections', description: 'List collections' },
-    { command: 'claude-flow embeddings collections -a stats', description: 'Show detailed stats' },
+    { command: 'ruflo embeddings collections', description: 'List collections' },
+    { command: 'ruflo embeddings collections -a stats', description: 'Show detailed stats' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const action = ctx.flags.action as string || 'list';
@@ -445,7 +445,7 @@ const collectionsCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Embedding Collections (Namespaces)'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(60)));
 
     try {
       const fs = await import('fs');
@@ -455,7 +455,7 @@ const collectionsCommand: Command = {
       // Check if database exists
       if (!fs.existsSync(fullDbPath)) {
         output.printWarning('No database found');
-        output.printInfo('Run: claude-flow memory init');
+        output.printInfo('Run: ruflo memory init');
         output.writeln();
         output.writeln(output.dim('No collections yet - initialize memory first'));
         return { success: true, data: [] };
@@ -508,7 +508,7 @@ const collectionsCommand: Command = {
         output.printWarning('No collections found');
         output.writeln();
         output.writeln(output.dim('Store some data first:'));
-        output.writeln(output.highlight('  claude-flow memory store -k "key" --value "data"'));
+        output.writeln(output.highlight('  ruflo memory store -k "key" --value "data"'));
         return { success: true, data: [] };
       }
 
@@ -555,9 +555,9 @@ const indexCommand: Command = {
     { name: 'm', type: 'number', description: 'HNSW M parameter', default: '16' },
   ],
   examples: [
-    { command: 'claude-flow embeddings index', description: 'Show index status' },
-    { command: 'claude-flow embeddings index -a build', description: 'Build index from all namespaces' },
-    { command: 'claude-flow embeddings index -a rebuild -c project', description: 'Rebuild (label as `project`)' },
+    { command: 'ruflo embeddings index', description: 'Show index status' },
+    { command: 'ruflo embeddings index -a build', description: 'Build index from all namespaces' },
+    { command: 'ruflo embeddings index -a rebuild -c project', description: 'Rebuild (label as `project`)' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const action = ctx.flags.action as string || 'status';
@@ -567,7 +567,7 @@ const indexCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold(`HNSW Index: ${action}`));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     try {
       const { getHNSWStatus, getHNSWIndex, searchHNSWIndex, generateEmbedding } = await import('../memory/memory-initializer.js');
@@ -612,7 +612,7 @@ const indexCommand: Command = {
           const results = await searchHNSWIndex(testQuery.embedding, { k: 10 });
           const searchTime = performance.now() - start;
 
-          // Estimate brute force time (0.5μs per comparison)
+          // Estimate brute force time (0.5ÃŽÂ¼s per comparison)
           const bruteForceEstimate = status.entryCount * 0.0005;
           const speedup = bruteForceEstimate / (searchTime / 1000);
 
@@ -632,11 +632,11 @@ const indexCommand: Command = {
           output.writeln();
           output.printWarning('HNSW index not initialized (but @ruvector/core is installed)');
           output.printInfo('This usually means no embeddings have been stored yet.');
-          output.printInfo('Run: claude-flow memory store -k "key" --value "text"');
+          output.printInfo('Run: ruflo memory store -k "key" --value "text"');
         } else {
           output.writeln();
           output.printInfo('Index is empty. Store some entries to populate it.');
-          output.printInfo('Run: claude-flow memory store -k "key" --value "text"');
+          output.printInfo('Run: ruflo memory store -k "key" --value "text"');
         }
 
         return { success: true, data: status };
@@ -644,7 +644,7 @@ const indexCommand: Command = {
 
       // Build/Rebuild action
       if (action === 'build' || action === 'rebuild') {
-        // #1947 RC #2: `-c` is informational — the HNSW index is global
+        // #1947 RC #2: `-c` is informational Ã¢â‚¬â€ the HNSW index is global
         // and indexes every namespace's embeddings in one structure. The
         // earlier code REQUIRED `-c` for build/rebuild AND its examples
         // suggested `-c default`, which silently produced 0 vectors when a
@@ -681,7 +681,7 @@ const indexCommand: Command = {
         if (!collection && newStatus.entryCount === 0) {
           output.writeln();
           output.printInfo('No vectors indexed. Store some entries first:');
-          output.printInfo('  claude-flow memory store -k "key" --value "text" --namespace <ns>');
+          output.printInfo('  ruflo memory store -k "key" --value "text" --namespace <ns>');
         }
 
         return { success: true, data: newStatus };
@@ -709,18 +709,18 @@ const initCommand: Command = {
   description: 'Initialize embedding subsystem with ONNX model and hyperbolic config',
   options: [
     { name: 'model', short: 'm', type: 'string', description: 'ONNX model ID', default: 'all-MiniLM-L6-v2' },
-    { name: 'hyperbolic', type: 'boolean', description: 'Enable hyperbolic (Poincaré ball) embeddings', default: 'true' },
-    { name: 'curvature', short: 'c', type: 'string', description: 'Poincaré ball curvature (use --curvature=-1 for negative)', default: '-1' },
+    { name: 'hyperbolic', type: 'boolean', description: 'Enable hyperbolic (PoincarÃƒÂ© ball) embeddings', default: 'true' },
+    { name: 'curvature', short: 'c', type: 'string', description: 'PoincarÃƒÂ© ball curvature (use --curvature=-1 for negative)', default: '-1' },
     { name: 'download', short: 'd', type: 'boolean', description: 'Download model during init', default: 'true' },
     { name: 'cache-size', type: 'string', description: 'LRU cache entries', default: '256' },
     { name: 'force', short: 'f', type: 'boolean', description: 'Overwrite existing configuration', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow embeddings init', description: 'Initialize with defaults' },
-    { command: 'claude-flow embeddings init --model all-mpnet-base-v2', description: 'Use higher quality model' },
-    { command: 'claude-flow embeddings init --no-hyperbolic', description: 'Euclidean only' },
-    { command: 'claude-flow embeddings init --curvature=-0.5', description: 'Custom curvature (use = for negative)' },
-    { command: 'claude-flow embeddings init --force', description: 'Overwrite existing config' },
+    { command: 'ruflo embeddings init', description: 'Initialize with defaults' },
+    { command: 'ruflo embeddings init --model all-mpnet-base-v2', description: 'Use higher quality model' },
+    { command: 'ruflo embeddings init --no-hyperbolic', description: 'Euclidean only' },
+    { command: 'ruflo embeddings init --curvature=-0.5', description: 'Custom curvature (use = for negative)' },
+    { command: 'ruflo embeddings init --force', description: 'Overwrite existing config' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const model = ctx.flags.model as string || 'all-MiniLM-L6-v2';
@@ -738,7 +738,7 @@ const initCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Initialize Embedding Subsystem'));
-    output.writeln(output.dim('─'.repeat(55)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(55)));
 
     try {
       const fs = await import('fs');
@@ -778,9 +778,9 @@ const initCommand: Command = {
             spinner.setText(`Downloading ${model}... ${p.percent.toFixed(0)}%`);
           });
         } else {
-          // Embeddings package not available — skip download
+          // Embeddings package not available Ã¢â‚¬â€ skip download
           await new Promise(r => setTimeout(r, 500));
-          output.writeln(output.dim('  (Skipped — @claude-flow/embeddings not installed)'));
+          output.writeln(output.dim('  (Skipped Ã¢â‚¬â€ @claude-flow/embeddings not installed)'));
         }
       }
 
@@ -830,10 +830,10 @@ const initCommand: Command = {
       output.writeln();
       if (hyperbolic) {
         output.printBox([
-          'Hyperbolic Embeddings (Poincaré Ball):',
-          '• Better for hierarchical data (trees, taxonomies)',
-          '• Exponential capacity in low dimensions',
-          '• Distance preserves hierarchy structure',
+          'Hyperbolic Embeddings (PoincarÃƒÂ© Ball):',
+          'Ã¢â‚¬Â¢ Better for hierarchical data (trees, taxonomies)',
+          'Ã¢â‚¬Â¢ Exponential capacity in low dimensions',
+          'Ã¢â‚¬Â¢ Distance preserves hierarchy structure',
           '',
           'Use: embeddings hyperbolic -a convert',
         ].join('\n'), 'Hyperbolic Space');
@@ -861,12 +861,12 @@ const providersCommand: Command = {
   description: 'List available embedding providers',
   options: [],
   examples: [
-    { command: 'claude-flow embeddings providers', description: 'List providers' },
+    { command: 'ruflo embeddings providers', description: 'List providers' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
     output.writeln(output.bold('Embedding Providers'));
-    output.writeln(output.dim('─'.repeat(70)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(70)));
 
     output.printTable({
       columns: [
@@ -904,8 +904,8 @@ const chunkCommand: Command = {
     { name: 'file', short: 'f', type: 'string', description: 'File to chunk (instead of text)' },
   ],
   examples: [
-    { command: 'claude-flow embeddings chunk -t "Long text..." -s 256', description: 'Chunk with 256 char limit' },
-    { command: 'claude-flow embeddings chunk -f doc.txt --strategy paragraph', description: 'Chunk file by paragraph' },
+    { command: 'ruflo embeddings chunk -t "Long text..." -s 256', description: 'Chunk with 256 char limit' },
+    { command: 'ruflo embeddings chunk -f doc.txt --strategy paragraph', description: 'Chunk file by paragraph' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const embeddings = await getEmbeddings();
@@ -916,7 +916,7 @@ const chunkCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Document Chunking'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     if (!embeddings) {
       output.printWarning('@claude-flow/embeddings not installed, showing preview');
@@ -966,8 +966,8 @@ const normalizeCommand: Command = {
     { name: 'check', short: 'c', type: 'boolean', description: 'Check if already normalized' },
   ],
   examples: [
-    { command: 'claude-flow embeddings normalize -i "[0.5, 0.3, 0.8]" -t l2', description: 'L2 normalize' },
-    { command: 'claude-flow embeddings normalize --check -i "[...]"', description: 'Check if normalized' },
+    { command: 'ruflo embeddings normalize -i "[0.5, 0.3, 0.8]" -t l2', description: 'L2 normalize' },
+    { command: 'ruflo embeddings normalize --check -i "[...]"', description: 'Check if normalized' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const type = ctx.flags.type as string || 'l2';
@@ -975,7 +975,7 @@ const normalizeCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Embedding Normalization'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     output.printTable({
       columns: [
@@ -984,10 +984,10 @@ const normalizeCommand: Command = {
         { key: 'use', header: 'Best For', width: 25 },
       ],
       data: [
-        { type: output.success('L2'), formula: 'v / ||v||₂', use: 'Cosine similarity' },
-        { type: 'L1', formula: 'v / ||v||₁', use: 'Sparse vectors' },
+        { type: output.success('L2'), formula: 'v / ||v||Ã¢â€šâ€š', use: 'Cosine similarity' },
+        { type: 'L1', formula: 'v / ||v||Ã¢â€šÂ', use: 'Sparse vectors' },
         { type: 'Min-Max', formula: '(v - min) / (max - min)', use: 'Bounded range [0,1]' },
-        { type: 'Z-Score', formula: '(v - μ) / σ', use: 'Statistical analysis' },
+        { type: 'Z-Score', formula: '(v - ÃŽÂ¼) / ÃÆ’', use: 'Statistical analysis' },
       ],
     });
 
@@ -1002,15 +1002,15 @@ const normalizeCommand: Command = {
 // Hyperbolic subcommand
 const hyperbolicCommand: Command = {
   name: 'hyperbolic',
-  description: 'Hyperbolic embedding operations (Poincaré ball)',
+  description: 'Hyperbolic embedding operations (PoincarÃƒÂ© ball)',
   options: [
     { name: 'action', short: 'a', type: 'string', description: 'Action: convert, distance, centroid', default: 'convert' },
     { name: 'curvature', short: 'c', type: 'number', description: 'Hyperbolic curvature', default: '-1' },
     { name: 'input', short: 'i', type: 'string', description: 'Input embedding(s) JSON' },
   ],
   examples: [
-    { command: 'claude-flow embeddings hyperbolic -a convert -i "[0.5, 0.3]"', description: 'Convert to Poincaré' },
-    { command: 'claude-flow embeddings hyperbolic -a distance', description: 'Compute hyperbolic distance' },
+    { command: 'ruflo embeddings hyperbolic -a convert -i "[0.5, 0.3]"', description: 'Convert to PoincarÃƒÂ©' },
+    { command: 'ruflo embeddings hyperbolic -a distance', description: 'Compute hyperbolic distance' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const action = ctx.flags.action as string || 'convert';
@@ -1019,8 +1019,8 @@ const hyperbolicCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Hyperbolic Embeddings'));
-    output.writeln(output.dim('Poincaré Ball Model'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('PoincarÃƒÂ© Ball Model'));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     // Try to import hyperbolic functions from embeddings package
     try {
@@ -1036,9 +1036,9 @@ const hyperbolicCommand: Command = {
         // Show help if no input
         output.printBox([
           'Hyperbolic embeddings excel at:',
-          '• Hierarchical data representation',
-          '• Tree-like structure preservation',
-          '• Low-dimensional hierarchy encoding',
+          'Ã¢â‚¬Â¢ Hierarchical data representation',
+          'Ã¢â‚¬Â¢ Tree-like structure preservation',
+          'Ã¢â‚¬Â¢ Low-dimensional hierarchy encoding',
           '',
           'Actions: convert, distance, centroid',
           '',
@@ -1063,10 +1063,10 @@ const hyperbolicCommand: Command = {
           const vec = Array.isArray(input[0]) ? input[0] as number[] : input as number[];
           const rawResult = hyperbolic.euclideanToPoincare(vec, { curvature });
           const result = Array.from(rawResult) as number[];
-          output.writeln(output.success('Euclidean → Poincaré conversion:'));
+          output.writeln(output.success('Euclidean Ã¢â€ â€™ PoincarÃƒÂ© conversion:'));
           output.writeln();
           output.writeln(`Input (Euclidean):  [${vec.slice(0, 6).map(v => v.toFixed(4)).join(', ')}${vec.length > 6 ? ', ...' : ''}]`);
-          output.writeln(`Output (Poincaré):  [${result.slice(0, 6).map(v => v.toFixed(4)).join(', ')}${result.length > 6 ? ', ...' : ''}]`);
+          output.writeln(`Output (PoincarÃƒÂ©):  [${result.slice(0, 6).map(v => v.toFixed(4)).join(', ')}${result.length > 6 ? ', ...' : ''}]`);
           output.writeln(`Curvature: ${curvature}`);
           output.writeln(`Norm: ${Math.sqrt(result.reduce((s, v) => s + v * v, 0)).toFixed(6)} (must be < 1)`);
           return { success: true, data: { result } };
@@ -1095,7 +1095,7 @@ const hyperbolicCommand: Command = {
           const vectors = input as number[][];
           const rawCentroid = hyperbolic.hyperbolicCentroid(vectors, { curvature });
           const centroid = Array.from(rawCentroid) as number[];
-          output.writeln(output.success('Hyperbolic centroid (Fréchet mean):'));
+          output.writeln(output.success('Hyperbolic centroid (FrÃƒÂ©chet mean):'));
           output.writeln();
           output.writeln(`Input vectors: ${vectors.length}`);
           output.writeln(`Centroid: [${centroid.slice(0, 6).map(v => v.toFixed(4)).join(', ')}${centroid.length > 6 ? ', ...' : ''}]`);
@@ -1125,11 +1125,11 @@ const neuralCommand: Command = {
     { name: 'consolidation-interval', type: 'string', description: 'Memory consolidation interval (ms)', default: '60000' },
   ],
   examples: [
-    { command: 'claude-flow embeddings neural --init', description: 'Initialize RuVector substrate' },
-    { command: 'claude-flow embeddings neural -f drift', description: 'Semantic drift detection' },
-    { command: 'claude-flow embeddings neural -f memory', description: 'Memory physics (hippocampal)' },
-    { command: 'claude-flow embeddings neural -f coherence', description: 'Safety & alignment monitoring' },
-    { command: 'claude-flow embeddings neural --drift-threshold=0.2', description: 'Custom drift threshold' },
+    { command: 'ruflo embeddings neural --init', description: 'Initialize RuVector substrate' },
+    { command: 'ruflo embeddings neural -f drift', description: 'Semantic drift detection' },
+    { command: 'ruflo embeddings neural -f memory', description: 'Memory physics (hippocampal)' },
+    { command: 'ruflo embeddings neural -f coherence', description: 'Safety & alignment monitoring' },
+    { command: 'ruflo embeddings neural --drift-threshold=0.2', description: 'Custom drift threshold' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const feature = ctx.flags.feature as string || 'all';
@@ -1141,7 +1141,7 @@ const neuralCommand: Command = {
     output.writeln();
     output.writeln(output.bold('Neural Embedding Substrate (RuVector)'));
     output.writeln(output.dim('Treating embeddings as a synthetic nervous system'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(60)));
 
     // Check if embeddings config exists
     const fs = await import('fs');
@@ -1255,7 +1255,7 @@ const neuralCommand: Command = {
         },
         {
           component: 'Hyperbolic Space',
-          description: 'Poincaré ball for hierarchy preservation',
+          description: 'PoincarÃƒÂ© ball for hierarchy preservation',
           status: config.hyperbolic ? output.success('Enabled') : output.dim('Disabled')
         },
       ],
@@ -1266,7 +1266,7 @@ const neuralCommand: Command = {
     if (!neuralConfig.enabled) {
       output.printInfo('Run with --init to enable neural substrate');
     } else {
-      output.writeln(output.dim('Configuration: .claude-flow/embeddings.json'));
+      output.writeln(output.dim('Configuration: .cursor-flow/embeddings.json'));
       output.writeln(output.dim('Next: Use "hooks pretrain" to train patterns'));
     }
 
@@ -1283,8 +1283,8 @@ const modelsCommand: Command = {
     { name: 'list', short: 'l', type: 'boolean', description: 'List available models', default: 'true' },
   ],
   examples: [
-    { command: 'claude-flow embeddings models', description: 'List models' },
-    { command: 'claude-flow embeddings models -d all-MiniLM-L6-v2', description: 'Download model' },
+    { command: 'ruflo embeddings models', description: 'List models' },
+    { command: 'ruflo embeddings models -d all-MiniLM-L6-v2', description: 'Download model' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const download = ctx.flags.download as string;
@@ -1292,7 +1292,7 @@ const modelsCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Embedding Models'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(60)));
 
     if (download) {
       const spinner = output.createSpinner({ text: `Downloading ${download}...`, spinner: 'dots' });
@@ -1310,7 +1310,7 @@ const modelsCommand: Command = {
         }
       } else {
         await new Promise(r => setTimeout(r, 500));
-        spinner.succeed(`Download skipped — @claude-flow/embeddings not installed`);
+        spinner.succeed(`Download skipped Ã¢â‚¬â€ @claude-flow/embeddings not installed`);
       }
       return { success: true };
     }
@@ -1358,8 +1358,8 @@ const cacheCommand: Command = {
     { name: 'db-path', type: 'string', description: 'SQLite database path', default: '.cache/embeddings.db' },
   ],
   examples: [
-    { command: 'claude-flow embeddings cache', description: 'Show cache stats' },
-    { command: 'claude-flow embeddings cache -a clear', description: 'Clear cache' },
+    { command: 'ruflo embeddings cache', description: 'Show cache stats' },
+    { command: 'ruflo embeddings cache -a clear', description: 'Clear cache' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const action = ctx.flags.action as string || 'stats';
@@ -1367,7 +1367,7 @@ const cacheCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Embedding Cache'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     const fs = await import('fs');
     const path = await import('path');
@@ -1490,8 +1490,8 @@ const warmupCommand: Command = {
     { name: 'test', short: 't', type: 'boolean', description: 'Run test embedding after warmup', default: 'true' },
   ],
   examples: [
-    { command: 'claude-flow embeddings warmup', description: 'Preload model with test' },
-    { command: 'claude-flow embeddings warmup -b', description: 'Background warmup' },
+    { command: 'ruflo embeddings warmup', description: 'Preload model with test' },
+    { command: 'ruflo embeddings warmup -b', description: 'Background warmup' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const runTest = ctx.flags.test !== false;
@@ -1499,7 +1499,7 @@ const warmupCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Embedding Model Warmup'));
-    output.writeln(output.dim('─'.repeat(50)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(50)));
 
     const spinner = output.createSpinner({ text: 'Loading embedding model...', spinner: 'dots' });
     spinner.start();
@@ -1578,8 +1578,8 @@ const benchmarkCommand: Command = {
     { name: 'full', short: 'f', type: 'boolean', description: 'Run full benchmark suite', default: 'false' },
   ],
   examples: [
-    { command: 'claude-flow embeddings benchmark', description: 'Quick benchmark' },
-    { command: 'claude-flow embeddings benchmark -n 50 -f', description: 'Full benchmark' },
+    { command: 'ruflo embeddings benchmark', description: 'Quick benchmark' },
+    { command: 'ruflo embeddings benchmark -n 50 -f', description: 'Full benchmark' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const iterations = parseInt(ctx.flags.iterations as string || '10', 10);
@@ -1588,7 +1588,7 @@ const benchmarkCommand: Command = {
 
     output.writeln();
     output.writeln(output.bold('Embedding Performance Benchmark'));
-    output.writeln(output.dim('─'.repeat(60)));
+    output.writeln(output.dim('Ã¢â€â‚¬'.repeat(60)));
 
     const results: { test: string; time: string; opsPerSec: string }[] = [];
 
@@ -1693,7 +1693,7 @@ const benchmarkCommand: Command = {
         const avgSim = simTimes.reduce((a, b) => a + b, 0) / simTimes.length;
         results.push({
           test: 'Cosine Similarity',
-          time: `${(avgSim * 1000).toFixed(2)}μs`,
+          time: `${(avgSim * 1000).toFixed(2)}ÃŽÂ¼s`,
           opsPerSec: `${(1000000 / (avgSim * 1000)).toFixed(0)}`
         });
       }
@@ -1746,13 +1746,13 @@ export const embeddingsCommand: Command = {
     benchmarkCommand,
   ],
   examples: [
-    { command: 'claude-flow embeddings init', description: 'Initialize ONNX embedding system' },
-    { command: 'claude-flow embeddings init --model all-mpnet-base-v2', description: 'Init with larger model' },
-    { command: 'claude-flow embeddings generate -t "Hello"', description: 'Generate embedding' },
-    { command: 'claude-flow embeddings search -q "error handling"', description: 'Semantic search' },
-    { command: 'claude-flow embeddings chunk -t "Long doc..."', description: 'Chunk document' },
-    { command: 'claude-flow embeddings hyperbolic -a convert', description: 'Hyperbolic space' },
-    { command: 'claude-flow embed neural -f drift', description: 'Neural substrate' },
+    { command: 'ruflo embeddings init', description: 'Initialize ONNX embedding system' },
+    { command: 'ruflo embeddings init --model all-mpnet-base-v2', description: 'Init with larger model' },
+    { command: 'ruflo embeddings generate -t "Hello"', description: 'Generate embedding' },
+    { command: 'ruflo embeddings search -q "error handling"', description: 'Semantic search' },
+    { command: 'ruflo embeddings chunk -t "Long doc..."', description: 'Chunk document' },
+    { command: 'ruflo embeddings hyperbolic -a convert', description: 'Hyperbolic space' },
+    { command: 'ruflo embed neural -f drift', description: 'Neural substrate' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
@@ -1774,7 +1774,7 @@ export const embeddingsCommand: Command = {
     output.printList([
       'chunk       - Document chunking with overlap',
       'normalize   - L2/L1/minmax/zscore normalization',
-      'hyperbolic  - Poincaré ball embeddings',
+      'hyperbolic  - PoincarÃƒÂ© ball embeddings',
       'neural      - Neural substrate (drift, memory, swarm)',
       'models      - List/download ONNX models',
       'cache       - Manage persistent SQLite cache',
@@ -1788,7 +1788,7 @@ export const embeddingsCommand: Command = {
       'Hyperbolic: Better hierarchical representation',
     ]);
     output.writeln();
-    output.writeln(output.dim('Created with ❤️ by ruv.io'));
+    output.writeln(output.dim('Created with Ã¢ÂÂ¤Ã¯Â¸Â by ruv.io'));
     return { success: true };
   },
 };

@@ -3,9 +3,9 @@
  * Outputs Docker files and SQL for easy RuVector PostgreSQL setup
  *
  * Usage:
- *   npx claude-flow ruvector setup              # Output to ./ruvector-postgres/
- *   npx claude-flow ruvector setup --output /path/to/dir
- *   npx claude-flow ruvector setup --print      # Print to stdout only
+ *   npx ruflo ruvector setup              # Output to ./ruvector-postgres/
+ *   npx ruflo ruvector setup --output /path/to/dir
+ *   npx ruflo ruvector setup --print      # Print to stdout only
  *
  * Created with care by ruv.io
  */
@@ -24,11 +24,11 @@ const DOCKER_COMPOSE_TEMPLATE = `# RuVector PostgreSQL Testing Environment
 # Features:
 # - 77+ SQL functions for vector operations
 # - HNSW/IVFFlat indexing with SIMD acceleration
-# - Hyperbolic embeddings (Poincaré ball)
+# - Hyperbolic embeddings (PoincarÃ© ball)
 # - Graph operations and GNN support
 # - Agent routing and learning
 #
-# Performance: ~61µs latency, 16,400 QPS with HNSW
+# Performance: ~61Âµs latency, 16,400 QPS with HNSW
 
 services:
   postgres:
@@ -81,15 +81,15 @@ const INIT_SQL_TEMPLATE = `-- ============================================
 -- ============================================
 --
 -- This script initializes RuVector PostgreSQL extension
--- from ruvnet/ruvector-postgres with Claude-Flow V3 integration.
+-- from ruvnet/ruvector-postgres with ruflo V3 integration.
 --
 -- RuVector provides 77+ SQL functions including:
 -- - Vector similarity search (HNSW with SIMD)
--- - Hyperbolic embeddings (Poincaré/Lorentz)
+-- - Hyperbolic embeddings (PoincarÃ©/Lorentz)
 -- - Graph operations (Cypher queries)
 -- - Agent routing and learning
 --
--- Performance: ~61µs latency, 16,400 QPS
+-- Performance: ~61Âµs latency, 16,400 QPS
 
 -- ============================================
 -- PART 1: EXTENSION AND SCHEMA SETUP
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS claude_flow.trajectories (
     ended_at TIMESTAMPTZ
 );
 
--- Memory entries table (main storage for Claude-Flow memory)
+-- Memory entries table (main storage for ruflo memory)
 CREATE TABLE IF NOT EXISTS claude_flow.memory_entries (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     key VARCHAR(255) NOT NULL,
@@ -388,7 +388,7 @@ $$ LANGUAGE plpgsql STABLE;
 -- PART 5: HYPERBOLIC OPERATIONS
 -- ============================================
 
--- Convert Euclidean to Poincaré embedding
+-- Convert Euclidean to PoincarÃ© embedding
 CREATE OR REPLACE FUNCTION claude_flow.to_poincare(
     euclidean real[],
     curvature FLOAT DEFAULT -1.0
@@ -399,7 +399,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
--- Poincaré distance (geodesic)
+-- PoincarÃ© distance (geodesic)
 CREATE OR REPLACE FUNCTION claude_flow.poincare_distance(
     x real[],
     y real[],
@@ -411,7 +411,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
--- Hyperbolic search in Poincaré ball
+-- Hyperbolic search in PoincarÃ© ball
 CREATE OR REPLACE FUNCTION claude_flow.hyperbolic_search(
     query ruvector(384),
     limit_count INT DEFAULT 10,
@@ -429,7 +429,7 @@ DECLARE
     query_arr real[];
     query_poincare real[];
 BEGIN
-    -- Convert query to array and then to Poincaré
+    -- Convert query to array and then to PoincarÃ©
     SELECT array_agg(x::real ORDER BY ordinality) INTO query_arr
     FROM unnest(string_to_array(trim(both '[]' from query::text), ',')) WITH ORDINALITY AS t(x, ordinality);
 
@@ -559,7 +559,7 @@ END $$;
  */
 const README_TEMPLATE = `# RuVector PostgreSQL Setup
 
-This directory contains the Docker configuration for RuVector PostgreSQL with Claude-Flow V3.
+This directory contains the Docker configuration for RuVector PostgreSQL with ruflo V3.
 
 ## Quick Start
 
@@ -620,11 +620,11 @@ WITH (m = 16, ef_construction = 100);
 ## Import from sql.js/JSON
 
 \`\`\`bash
-# Export current Claude-Flow memory
-npx claude-flow memory list --format json > memory-export.json
+# Export current ruflo memory
+npx ruflo memory list --format json > memory-export.json
 
 # Import to RuVector PostgreSQL
-npx claude-flow ruvector import --input memory-export.json
+npx ruflo ruvector import --input memory-export.json
 \`\`\`
 
 ## pgAdmin (Optional)
@@ -651,7 +651,7 @@ docker-compose up -d
 
 ## Learn More
 - [RuVector Docker Hub](https://hub.docker.com/r/ruvnet/ruvector-postgres)
-- [Claude-Flow Documentation](https://github.com/ruvnet/claude-flow)
+- [ruflo Documentation](https://github.com/ruvnet/claude-flow)
 `;
 
 /**
@@ -685,10 +685,10 @@ export const setupCommand: Command = {
     },
   ],
   examples: [
-    { command: 'claude-flow ruvector setup', description: 'Output files to ./ruvector-postgres/' },
-    { command: 'claude-flow ruvector setup --output /path/to/dir', description: 'Output to custom directory' },
-    { command: 'claude-flow ruvector setup --print', description: 'Print files to stdout' },
-    { command: 'claude-flow ruvector setup --force', description: 'Overwrite existing files' },
+    { command: 'ruflo ruvector setup', description: 'Output files to ./ruvector-postgres/' },
+    { command: 'ruflo ruvector setup --output /path/to/dir', description: 'Output to custom directory' },
+    { command: 'ruflo ruvector setup --print', description: 'Print files to stdout' },
+    { command: 'ruflo ruvector setup --force', description: 'Overwrite existing files' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const outputDir = (ctx.flags.output as string) || './ruvector-postgres';
@@ -757,10 +757,10 @@ export const setupCommand: Command = {
         'Files created:',
         '',
         `  ${outputDir}/`,
-        '  ├── docker-compose.yml',
-        '  ├── README.md',
-        '  └── scripts/',
-        '      └── init-db.sql',
+        '  â”œâ”€â”€ docker-compose.yml',
+        '  â”œâ”€â”€ README.md',
+        '  â””â”€â”€ scripts/',
+        '      â””â”€â”€ init-db.sql',
         '',
         'Next steps:',
         '',

@@ -65,8 +65,8 @@ const listCommand: Command = {
     const rows = claims.map(c => ({
       issue: c.issueId,
       claimant: c.claimant.type === 'human'
-        ? `👤 ${c.claimant.name}`
-        : `🤖 ${c.claimant.agentType}`,
+        ? `ðŸ‘¤ ${c.claimant.name}`
+        : `ðŸ¤– ${c.claimant.agentType}`,
       status: formatStatus(c.status),
       progress: `${c.progress}%`,
       since: formatDuration(Date.now() - c.claimedAt.getTime()),
@@ -347,7 +347,7 @@ const stealableCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.bold('🎯 Stealable Issues'));
+    output.writeln(output.bold('ðŸŽ¯ Stealable Issues'));
     output.writeln();
 
     for (const c of stealable) {
@@ -390,7 +390,7 @@ const stealCommand: Command = {
     const result = await service.steal(issueId, stealer);
 
     if (result.success) {
-      output.printSuccess(`🎯 Stole issue ${issueId}`);
+      output.printSuccess(`ðŸŽ¯ Stole issue ${issueId}`);
       if (result.previousOwner) {
         output.printInfo(`Previous: ${formatClaimant(result.previousOwner)}`);
       }
@@ -420,7 +420,7 @@ const loadCommand: Command = {
     if (agentId) {
       const load = await service.getAgentLoad(agentId);
       output.writeln();
-      output.writeln(output.bold(`📊 Load: ${agentId}`));
+      output.writeln(output.bold(`ðŸ“Š Load: ${agentId}`));
       output.writeln();
       output.printList([
         `Claims: ${load.claimCount}/${load.maxClaims}`,
@@ -445,14 +445,14 @@ const loadCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.bold('📊 Agent Load Distribution'));
+    output.writeln(output.bold('ðŸ“Š Agent Load Distribution'));
     output.writeln();
 
     if (agentLoads.size === 0) {
       output.printInfo('No agent claims found');
     } else {
       for (const [id, data] of agentLoads) {
-        const bar = '█'.repeat(data.count) + '░'.repeat(Math.max(0, 5 - data.count));
+        const bar = 'â–ˆ'.repeat(data.count) + 'â–‘'.repeat(Math.max(0, 5 - data.count));
         output.writeln(`  ${id} (${data.type}): ${bar} ${data.count}`);
       }
     }
@@ -477,18 +477,18 @@ const rebalanceCommand: Command = {
     const result = await service.rebalance('default');
 
     if (result.suggested.length === 0) {
-      output.printSuccess('⚖️ Swarm is balanced');
+      output.printSuccess('âš–ï¸ Swarm is balanced');
       return { success: true, data: result };
     }
 
     output.writeln();
-    output.writeln(output.bold(apply ? '⚖️ Rebalancing' : '⚖️ Rebalance Preview'));
+    output.writeln(output.bold(apply ? 'âš–ï¸ Rebalancing' : 'âš–ï¸ Rebalance Preview'));
     output.writeln();
 
     for (const s of result.suggested) {
       const from = s.currentOwner.type === 'agent' ? s.currentOwner.agentId : s.currentOwner.name;
       const to = s.suggestedOwner.type === 'agent' ? s.suggestedOwner.agentId : (s.suggestedOwner as { name?: string }).name;
-      output.writeln(`  ${s.issueId}: ${from} → ${to}`);
+      output.writeln(`  ${s.issueId}: ${from} â†’ ${to}`);
     }
 
     if (!apply) {
@@ -523,15 +523,15 @@ const boardCommand: Command = {
     }
 
     output.writeln();
-    output.writeln(output.bold('📋 Issue Board (ADR-016)'));
+    output.writeln(output.bold('ðŸ“‹ Issue Board (ADR-016)'));
     output.writeln();
 
     const columns = ['active', 'blocked', 'review-requested', 'stealable', 'completed'];
-    const headers = ['🔵 Active', '🔴 Blocked', '🟡 Review', '🟢 Stealable', '✅ Done'];
+    const headers = ['ðŸ”µ Active', 'ðŸ”´ Blocked', 'ðŸŸ¡ Review', 'ðŸŸ¢ Stealable', 'âœ… Done'];
 
     // Print column headers
     output.writeln(headers.map(h => h.padEnd(18)).join(''));
-    output.writeln('─'.repeat(90));
+    output.writeln('â”€'.repeat(90));
 
     // Find max rows
     const maxRows = Math.max(...Object.values(byStatus).map(arr => arr.length), 1);
@@ -570,16 +570,16 @@ export const issuesCommand: Command = {
     boardCommand,
   ],
   examples: [
-    { command: 'claude-flow issues list', description: 'List all claims' },
-    { command: 'claude-flow issues claim 123 --agent coder:coder-1', description: 'Claim as agent' },
-    { command: 'claude-flow issues handoff 123 --to agent:tester:tester-1', description: 'Handoff to tester' },
-    { command: 'claude-flow issues stealable', description: 'List stealable' },
-    { command: 'claude-flow issues steal 123 --agent coder:coder-2', description: 'Steal issue' },
-    { command: 'claude-flow issues board', description: 'Visual board' },
+    { command: 'ruflo issues list', description: 'List all claims' },
+    { command: 'ruflo issues claim 123 --agent coder:coder-1', description: 'Claim as agent' },
+    { command: 'ruflo issues handoff 123 --to agent:tester:tester-1', description: 'Handoff to tester' },
+    { command: 'ruflo issues stealable', description: 'List stealable' },
+    { command: 'ruflo issues steal 123 --agent coder:coder-2', description: 'Steal issue' },
+    { command: 'ruflo issues board', description: 'Visual board' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
-    output.writeln(output.bold('📋 Issue Claims (ADR-016)'));
+    output.writeln(output.bold('ðŸ“‹ Issue Claims (ADR-016)'));
     output.writeln(output.dim('Collaborative human-agent issue management'));
     output.writeln();
     output.writeln('Commands:');
@@ -615,20 +615,20 @@ function parseClaimant(str: string): Claimant | null {
 }
 
 function formatClaimant(c: Claimant): string {
-  return c.type === 'human' ? `👤 ${c.name}` : `🤖 ${c.agentType}:${c.agentId}`;
+  return c.type === 'human' ? `ðŸ‘¤ ${c.name}` : `ðŸ¤– ${c.agentType}:${c.agentId}`;
 }
 
 function formatStatus(status: ClaimStatus): string {
   const icons: Record<ClaimStatus, string> = {
-    active: '🔵',
-    paused: '⏸️',
-    blocked: '🔴',
-    stealable: '🟢',
-    completed: '✅',
-    'handoff-pending': '🔄',
-    'review-requested': '🟡',
+    active: 'ðŸ”µ',
+    paused: 'â¸ï¸',
+    blocked: 'ðŸ”´',
+    stealable: 'ðŸŸ¢',
+    completed: 'âœ…',
+    'handoff-pending': 'ðŸ”„',
+    'review-requested': 'ðŸŸ¡',
   };
-  return `${icons[status] || '❓'} ${status}`;
+  return `${icons[status] || 'â“'} ${status}`;
 }
 
 function formatDuration(ms: number): string {

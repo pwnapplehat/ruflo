@@ -1,6 +1,6 @@
 /**
  * V3 CLI Autopilot Command
- * Persistent swarm completion — keeps agents working until ALL tasks are done.
+ * Persistent swarm completion â€” keeps agents working until ALL tasks are done.
  *
  * ADR-072: Autopilot Integration
  */
@@ -13,7 +13,7 @@ import {
   validateTaskSources, LOG_FILE,
 } from '../autopilot-state.js';
 
-// ── Check Handler (for Stop hook) ─────────────────────────────
+// â”€â”€ Check Handler (for Stop hook) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function autopilotCheck(): Promise<{ allowStop: boolean; reason: string; continueWith?: string }> {
   const state = loadState();
@@ -92,7 +92,7 @@ export async function autopilotCheck(): Promise<{ allowStop: boolean; reason: st
   return { allowStop: false, reason: `${progress.incomplete.length}/${progress.total} tasks remaining (iteration ${state.iterations}/${state.maxIterations})`, continueWith: continuePrompt };
 }
 
-// ── Subcommands ───────────────────────────────────────────────
+// â”€â”€ Subcommands â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const statusCommand: Command = {
   name: 'status',
@@ -114,7 +114,7 @@ const statusCommand: Command = {
       return { success: true };
     }
 
-    output.writeln(`Autopilot: ${state.enabled ? '✓ ENABLED' : '✗ DISABLED'}`);
+    output.writeln(`Autopilot: ${state.enabled ? 'âœ“ ENABLED' : 'âœ— DISABLED'}`);
     output.writeln(`Session: ${state.sessionId.slice(0, 8)}...`);
     output.writeln(`Iterations: ${state.iterations}/${state.maxIterations}`);
     output.writeln(`Timeout: ${state.timeoutMinutes} min`);
@@ -346,7 +346,7 @@ const predictCommand: Command = {
       output.printJson(result);
     } else {
       output.writeln(`Action: ${result.action}`);
-      output.writeln(`Confidence: ${result.confidence} (heuristic — learning not available)`);
+      output.writeln(`Confidence: ${result.confidence} (heuristic â€” learning not available)`);
       output.writeln(`Remaining: ${result.remaining} tasks`);
     }
     return { success: true };
@@ -368,34 +368,34 @@ const checkCommand: Command = {
   },
 };
 
-// ── Main Command ──────────────────────────────────────────────
+// â”€â”€ Main Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export const autopilotCommand: Command = {
   name: 'autopilot',
-  description: 'Persistent swarm completion — keeps agents working until ALL tasks are done',
+  description: 'Persistent swarm completion â€” keeps agents working until ALL tasks are done',
   aliases: ['ap'],
   subcommands: [statusCommand, enableCommand, disableCommand, configCommand, resetCommand, logCommand, learnCommand, historyCommand, predictCommand, checkCommand],
   examples: [
-    { command: 'claude-flow autopilot status', description: 'Show current state and progress' },
-    { command: 'claude-flow autopilot enable', description: 'Enable persistent completion' },
-    { command: 'claude-flow autopilot config --max-iterations 100 --timeout 180', description: 'Configure limits' },
-    { command: 'claude-flow autopilot predict', description: 'Get recommended next action' },
+    { command: 'ruflo autopilot status', description: 'Show current state and progress' },
+    { command: 'ruflo autopilot enable', description: 'Enable persistent completion' },
+    { command: 'ruflo autopilot config --max-iterations 100 --timeout 180', description: 'Configure limits' },
+    { command: 'ruflo autopilot predict', description: 'Get recommended next action' },
   ],
   action: async (): Promise<CommandResult> => {
-    output.writeln(output.bold('Autopilot — Persistent Swarm Completion'));
+    output.writeln(output.bold('Autopilot â€” Persistent Swarm Completion'));
     output.writeln(output.dim('Keeps agents working until ALL tasks are done'));
     output.writeln();
     output.printList([
-      'status    — Show state, iterations, and task progress',
-      'enable    — Enable persistent completion',
-      'disable   — Disable re-engagement loop',
-      'config    — Configure max iterations, timeout, sources',
-      'reset     — Reset iteration counter and timer',
-      'log       — View autopilot event log',
-      'learn     — Discover success patterns',
-      'history   — Search past completion episodes',
-      'predict   — Predict optimal next action',
-      'check     — Run completion check (stop hook)',
+      'status    â€” Show state, iterations, and task progress',
+      'enable    â€” Enable persistent completion',
+      'disable   â€” Disable re-engagement loop',
+      'config    â€” Configure max iterations, timeout, sources',
+      'reset     â€” Reset iteration counter and timer',
+      'log       â€” View autopilot event log',
+      'learn     â€” Discover success patterns',
+      'history   â€” Search past completion episodes',
+      'predict   â€” Predict optimal next action',
+      'check     â€” Run completion check (stop hook)',
     ]);
     return { success: true };
   },

@@ -97,10 +97,10 @@ const startCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow mcp start', description: 'Start with defaults (stdio)' },
-    { command: 'claude-flow mcp start -p 8080 -t http', description: 'Start HTTP server' },
-    { command: 'claude-flow mcp start -d', description: 'Start as daemon' },
-    { command: 'claude-flow mcp start -f', description: 'Force restart (kill existing)' }
+    { command: 'ruflo mcp start', description: 'Start with defaults (stdio)' },
+    { command: 'ruflo mcp start -p 8080 -t http', description: 'Start HTTP server' },
+    { command: 'ruflo mcp start -d', description: 'Start as daemon' },
+    { command: 'ruflo mcp start -f', description: 'Force restart (kill existing)' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const port = (ctx.flags.port as number) ?? 3000;
@@ -114,7 +114,7 @@ const startCommand: Command = {
     output.printInfo('Starting MCP Server...');
     output.writeln();
 
-    // Check if already running (skip self-detection for stdio — getStatus()
+    // Check if already running (skip self-detection for stdio â€” getStatus()
     // reports the current process as "running" when transport=stdio and no
     // PID file exists, which would cause us to SIGKILL ourselves)
     const existingStatus = await getMCPServerStatus();
@@ -131,7 +131,7 @@ const startCommand: Command = {
 
         if (health.healthy) {
           output.printWarning(`MCP Server already running (PID: ${existingStatus.pid})`);
-          output.writeln(output.dim('Use "claude-flow mcp stop" to stop the server first, or use --force'));
+          output.writeln(output.dim('Use "ruflo mcp stop" to stop the server first, or use --force'));
           return { success: false, exitCode: 1 };
         }
       }
@@ -186,7 +186,7 @@ const startCommand: Command = {
       // Start the server
       const status = await manager.start();
 
-      // #2234 — exit cleanly if Claude Code (our parent) exits and we get
+      // #2234 â€” exit cleanly if Claude Code (our parent) exits and we get
       // reparented to launchd/init (ppid === 1). Otherwise the node stdio
       // server lingers as an orphan, accumulating ~50 MB per restart, and an
       // arbitrary stale orphan can later win the stdio handshake and serve
@@ -335,7 +335,7 @@ const statusCommand: Command = {
         });
 
         output.writeln();
-        output.writeln(output.dim('Run "claude-flow mcp start" to start the server'));
+        output.writeln(output.dim('Run "ruflo mcp start" to start the server'));
         return { success: true, data: status };
       }
 
@@ -571,7 +571,7 @@ const execCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow mcp exec -t swarm_init -p \'{"topology":"mesh"}\'', description: 'Execute tool' }
+    { command: 'ruflo mcp exec -t swarm_init -p \'{"topology":"mesh"}\'', description: 'Execute tool' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const tool = ctx.flags.tool as string || ctx.args[0];
@@ -792,17 +792,17 @@ export const mcpCommand: Command = {
   ],
   options: [],
   examples: [
-    { command: 'claude-flow mcp start', description: 'Start MCP server' },
-    { command: 'claude-flow mcp start -t http -p 8080', description: 'Start HTTP server on port 8080' },
-    { command: 'claude-flow mcp status', description: 'Show server status' },
-    { command: 'claude-flow mcp tools', description: 'List tools' },
-    { command: 'claude-flow mcp stop', description: 'Stop the server' }
+    { command: 'ruflo mcp start', description: 'Start MCP server' },
+    { command: 'ruflo mcp start -t http -p 8080', description: 'Start HTTP server on port 8080' },
+    { command: 'ruflo mcp status', description: 'Show server status' },
+    { command: 'ruflo mcp tools', description: 'List tools' },
+    { command: 'ruflo mcp stop', description: 'Stop the server' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
     output.writeln(output.bold('MCP Server Management'));
     output.writeln();
-    output.writeln('Usage: claude-flow mcp <subcommand> [options]');
+    output.writeln('Usage: ruflo mcp <subcommand> [options]');
     output.writeln();
     output.writeln('Subcommands:');
     output.printList([

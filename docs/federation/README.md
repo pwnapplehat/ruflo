@@ -1,4 +1,4 @@
-# Ruflo Federation — User Guide
+# Ruflo Federation â€” User Guide
 
 > Cross-installation agent peering with built-in cost limits, circuit breaker, signed envelopes, and (as of alpha.14) opt-in WireGuard mesh layer governed by federation trust.
 
@@ -6,27 +6,27 @@ This guide walks through what federation is, when to use it, and how to set it u
 
 ## What federation does
 
-Federation lets two or more Ruflo installations — your mac, a server, a teammate's laptop — discover each other, exchange signed manifests, and send messages between them with bounded cost and per-peer trust gates. Key properties:
+Federation lets two or more Ruflo installations â€” your mac, a server, a teammate's laptop â€” discover each other, exchange signed manifests, and send messages between them with bounded cost and per-peer trust gates. Key properties:
 
-- **Ed25519 identity** — each node holds a private key; peers exchange Ed25519-signed manifests. No central directory.
-- **Five-level trust ladder** — `UNTRUSTED → VERIFIED → ATTESTED → TRUSTED → PRIVILEGED`. Each level unlocks a wider set of operations (`discovery`, `send`, `share-context`, `remote-spawn`, …).
-- **Per-peer budget + circuit breaker** — bounded tokens/USD per peer. Sustained failures auto-SUSPEND; further failures EVICT. ADR-097.
-- **PII pipeline + audit trail** — every cross-peer envelope passes through PII detection. Every state transition is auditable.
-- **Real wire transport** — WSS with permessage-deflate compression, optional cert pinning, stream multiplexing. ADR-104.
-- **Optional WG mesh layer** — opt-in opaque packet-layer reachability that follows federation trust changes. Compromised peer auto-isolated at L3 when the breaker fires. ADR-111.
+- **Ed25519 identity** â€” each node holds a private key; peers exchange Ed25519-signed manifests. No central directory.
+- **Five-level trust ladder** â€” `UNTRUSTED â†’ VERIFIED â†’ ATTESTED â†’ TRUSTED â†’ PRIVILEGED`. Each level unlocks a wider set of operations (`discovery`, `send`, `share-context`, `remote-spawn`, â€¦).
+- **Per-peer budget + circuit breaker** â€” bounded tokens/USD per peer. Sustained failures auto-SUSPEND; further failures EVICT. ADR-097.
+- **PII pipeline + audit trail** â€” every cross-peer envelope passes through PII detection. Every state transition is auditable.
+- **Real wire transport** â€” WSS with permessage-deflate compression, optional cert pinning, stream multiplexing. ADR-104.
+- **Optional WG mesh layer** â€” opt-in opaque packet-layer reachability that follows federation trust changes. Compromised peer auto-isolated at L3 when the breaker fires. ADR-111.
 
 ## When to use federation
 
 | Use case | Fit |
 |---|---|
-| Two laptops collaborating on a project, want bounded cost sharing + audit | ✅ |
-| Personal home server agent ↔ travel laptop | ✅ |
-| Team of 5 engineers sharing memory/skills across machines | ✅ |
-| Mobile / Windows / sub-50 peers with NAT issues | ✅ over Tailscale + federation |
-| Public-internet exposed agent endpoints | ✅ with TLS cert pinning (ADR-107) |
-| Internal HR/finance multi-agent workflow with strict access tiers | ✅ with PRIVILEGED gating + audit |
-| Replacing Slack/Discord — no | ❌ federation is for agent-to-agent, not human chat |
-| Untrusted-internet messaging without identity vetting | ❌ — trust ladder must be bootstrapped out-of-band |
+| Two laptops collaborating on a project, want bounded cost sharing + audit | âœ… |
+| Personal home server agent â†” travel laptop | âœ… |
+| Team of 5 engineers sharing memory/skills across machines | âœ… |
+| Mobile / Windows / sub-50 peers with NAT issues | âœ… over Tailscale + federation |
+| Public-internet exposed agent endpoints | âœ… with TLS cert pinning (ADR-107) |
+| Internal HR/finance multi-agent workflow with strict access tiers | âœ… with PRIVILEGED gating + audit |
+| Replacing Slack/Discord â€” no | âŒ federation is for agent-to-agent, not human chat |
+| Untrusted-internet messaging without identity vetting | âŒ â€” trust ladder must be bootstrapped out-of-band |
 
 ## Quick start
 
@@ -46,7 +46,7 @@ npm i @claude-flow/plugin-agent-federation@latest    # currently 1.0.0-alpha.14
 ### 2. Initialize a node
 
 ```bash
-npx claude-flow@v3alpha agent spawn -t federation --name fed-1
+npx ruflo@latest agent spawn -t federation --name fed-1
 ```
 
 Or via the MCP tool `federation_init`:
@@ -96,28 +96,28 @@ Budget and trust gates apply: if the peer is below `ATTESTED`, only `discovery`/
 
 | Tool | What it does | Trust gate |
 |---|---|---|
-| `federation_init` | Initialize this node | — |
-| `federation_join` | Join a peer by endpoint | — |
-| `federation_peers` | List discovered peers | — |
+| `federation_init` | Initialize this node | â€” |
+| `federation_join` | Join a peer by endpoint | â€” |
+| `federation_peers` | List discovered peers | â€” |
 | `federation_send` | Send a typed message to a peer | per-peer (varies) |
-| `federation_query` | Synchronous query → response | `ATTESTED+` |
-| `federation_status` | Current node + peer trust summary | — |
+| `federation_query` | Synchronous query â†’ response | `ATTESTED+` |
+| `federation_status` | Current node + peer trust summary | â€” |
 | `federation_trust` | View / adjust trust levels | operator |
 | `federation_audit` | Read audit log | operator |
-| `federation_breaker_status` | Per-peer state, when changed, why | — |
+| `federation_breaker_status` | Per-peer state, when changed, why | â€” |
 | `federation_evict` | Operator manual evict | operator |
 | `federation_reactivate` | Operator manual reactivate | operator |
 | `federation_report_spend` | Report cost of a completed call | integrator |
 | `federation_consensus` | Federated proposal across peers | varies |
-| **`federation_wg_status`** | (ADR-111) Per-peer mesh state | — |
+| **`federation_wg_status`** | (ADR-111) Per-peer mesh state | â€” |
 | **`federation_wg_attest`** | (ADR-111) Operator-signed witness entry | operator |
 | **`federation_wg_keyrotate`** | (ADR-111) Rotate WG keypair | operator + `confirm:true` |
 
-## Trust levels — what each unlocks
+## Trust levels â€” what each unlocks
 
 | Level | Capabilities (federation) | WG reachability (if ADR-111 active) |
 |---|---|---|
-| `UNTRUSTED` | `discovery` | Excluded from mesh — drop all |
+| `UNTRUSTED` | `discovery` | Excluded from mesh â€” drop all |
 | `VERIFIED` | `+ status, ping` | Discovery port (9100) only |
 | `ATTESTED` | `+ send, receive, query-redacted` | + federation messaging (9101-9199) |
 | `TRUSTED` | `+ share-context, collaborative-task` | + ssh (22), services (80/443) |
@@ -130,9 +130,9 @@ Trust is earned via repeated successful interactions (the `TrustEvaluator` track
 If a peer's failure ratio or cost spend exceeds the policy:
 
 ```
-ACTIVE → SUSPENDED → EVICTED
-   ↑          │
-   └─────────operator-only─────────┘
+ACTIVE â†’ SUSPENDED â†’ EVICTED
+   â†‘          â”‚
+   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€operator-onlyâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 - **SUSPEND**: peer's outbound sends short-circuit (`PEER_SUSPENDED`). Existing sessions continue; new sends rejected. Auto-eviction on continued failures.
@@ -141,30 +141,30 @@ ACTIVE → SUSPENDED → EVICTED
 
 Policy is tunable; defaults are conservative (50+ samples needed before suspend, high failure ratio threshold).
 
-## ADR-111 — WireGuard mesh (opt-in, since alpha.14)
+## ADR-111 â€” WireGuard mesh (opt-in, since alpha.14)
 
-Federation today treats network connectivity as the integrator's problem (Tailscale, LAN, wss://+pinning). That works but trust changes don't propagate to the L3 layer — a peer EVICTED in federation stays in the tailnet until an admin manually removes it.
+Federation today treats network connectivity as the integrator's problem (Tailscale, LAN, wss://+pinning). That works but trust changes don't propagate to the L3 layer â€” a peer EVICTED in federation stays in the tailnet until an admin manually removes it.
 
 ADR-111 closes that gap with an optional in-tree WG mesh:
 
 - WG keypair generated alongside the federation key
-- Mesh IP derived deterministically from `nodeId` (sha256 → `10.50.0.0/16` host portion, with collision-handling probe loop)
+- Mesh IP derived deterministically from `nodeId` (sha256 â†’ `10.50.0.0/16` host portion, with collision-handling probe loop)
 - WG identity published inside the same Ed25519-signed manifest
-- Federation breaker SUSPEND → `wg set ... allowed-ips ""` (soft-block at L3)
-- Federation breaker EVICT → `wg set ... remove` (terminal)
-- Operator reactivate → AllowedIPs restored
+- Federation breaker SUSPEND â†’ `wg set ... allowed-ips ""` (soft-block at L3)
+- Federation breaker EVICT â†’ `wg set ... remove` (terminal)
+- Operator reactivate â†’ AllowedIPs restored
 - Each mutation entered into an append-only Ed25519-signed witness chain
 
 **Phases shipped in alpha.14:**
-- Phase 1 — Manifest extension + key generation
-- Phase 2 — `WgMeshService` (no shell — emits configs + commands)
-- Phase 3 — Coordinator/breaker wiring
-- Phase 4 — Firewall projection (`nftables` / `pf`) — PR #1895
-- Phase 5 — Witness attestation chain — PR #1895
-- Phase 6 — Operator MCP tools — PR #1895
+- Phase 1 â€” Manifest extension + key generation
+- Phase 2 â€” `WgMeshService` (no shell â€” emits configs + commands)
+- Phase 3 â€” Coordinator/breaker wiring
+- Phase 4 â€” Firewall projection (`nftables` / `pf`) â€” PR #1895
+- Phase 5 â€” Witness attestation chain â€” PR #1895
+- Phase 6 â€” Operator MCP tools â€” PR #1895
 
-**Phase 7 — operator-mediated**:
-See [`docs/federation/phase7-mesh-bringup.md`](./phase7-mesh-bringup.md) for the cross-OS bringup procedure (mac ↔ ruvultra over Tailscale).
+**Phase 7 â€” operator-mediated**:
+See [`docs/federation/phase7-mesh-bringup.md`](./phase7-mesh-bringup.md) for the cross-OS bringup procedure (mac â†” ruvultra over Tailscale).
 
 ### Enabling ADR-111
 
@@ -176,7 +176,7 @@ node v3/@claude-flow/plugin-agent-federation/scripts/phase7-stage.mjs \
 ```
 
 The script generates `/tmp/adr-111-stage/`:
-- `wg-key-<nodeId>.json` (mode 0600 — your private WG key)
+- `wg-key-<nodeId>.json` (mode 0600 â€” your private WG key)
 - `ruflo-fed.conf` (the wg-quick interface config)
 - `ruflo-fed.nft` or `ruflo-fed.pf` (firewall projection)
 
@@ -193,22 +193,22 @@ sudo wg-quick up ruflo-fed
 
 ## Using `claude -p` headless mode
 
-`claude -p` (print/pipe mode) can drive federation MCP tools non-interactively. Each invocation processes its prompt and exits — for a persistent federation listener, run a long-lived MCP server instead.
+`claude -p` (print/pipe mode) can drive federation MCP tools non-interactively. Each invocation processes its prompt and exits â€” for a persistent federation listener, run a long-lived MCP server instead.
 
 **On the originating host** (mac mini):
 
 ```bash
 claude -p --model haiku --max-budget-usd 0.20 --output-format text \
   "Federation MCP tools to verify cross-machine peering health: name 3. One line."
-# → Three Federation MCP tools for peering health verification:
+# â†’ Three Federation MCP tools for peering health verification:
 #   federation-init (keypair generation), federation-status (peers/trust/metrics),
 #   federation-audit (compliance filtering).
 ```
 
-**On the peer host (ruvultra)** — requires interactive `/login` first since `claude -p` reads stored credentials:
+**On the peer host (ruvultra)** â€” requires interactive `/login` first since `claude -p` reads stored credentials:
 
 ```bash
-# First time only — operator-mediated:
+# First time only â€” operator-mediated:
 claude   # then /login
 
 # After that:
@@ -219,17 +219,17 @@ claude -p --model haiku --max-budget-usd 0.20 \
 **Workflow for cross-machine task handoff:**
 
 ```bash
-# Host A — kick off a federated task:
+# Host A â€” kick off a federated task:
 claude -p --model sonnet --output-format json --resume <session> \
   "Use federation_send to dispatch this task to ruvultra: analyze the failing test"
 
-# Host B (ruvultra) — receive + work:
+# Host B (ruvultra) â€” receive + work:
 claude -p --resume <session> "Continue handling the federated task"
 ```
 
-The federation plugin handles signing, PII gating, breaker, and audit on every send. The two `claude -p` invocations don't share state directly — they communicate exclusively through the federation envelope channel.
+The federation plugin handles signing, PII gating, breaker, and audit on every send. The two `claude -p` invocations don't share state directly â€” they communicate exclusively through the federation envelope channel.
 
-## Anti-goals — when **NOT** to use federation
+## Anti-goals â€” when **NOT** to use federation
 
 - **Replacement for Slack/Discord.** Federation moves agent envelopes, not human chat.
 - **Public internet without identity vetting.** Trust ladder bootstrapping is your responsibility.
@@ -250,23 +250,23 @@ The federation plugin handles signing, PII gating, breaker, and audit on every s
 
 | Version | What landed |
 |---|---|
-| `1.0.0-alpha.9` | First user-visible release — see [announcement gist](https://gist.github.com/ruvnet/3b5111a2ea7e450ff262ce96e88560bf) |
+| `1.0.0-alpha.9` | First user-visible release â€” see [announcement gist](https://gist.github.com/ruvnet/3b5111a2ea7e450ff262ce96e88560bf) |
 | `1.0.0-alpha.10` | ADR-097 Phases 2.a-4 + ADR-104 transport + ADR-109 inbound dispatcher |
 | `1.0.0-alpha.11-12` | ADR-109 sig verify, ADR-104 compression, ADR-107 TLS cert pinning |
 | `1.0.0-alpha.13` | ADR-104 stream multiplexing + ADR-110 MemorySpendReporter |
 | **`1.0.0-alpha.14`** | **ADR-111 Phases 1-3 (WG mesh foundation)** |
-| `1.0.0-alpha.15` (in flight) | ADR-111 Phases 4-6 (firewall + witness + MCP tools) — PR #1895 |
+| `1.0.0-alpha.15` (in flight) | ADR-111 Phases 4-6 (firewall + witness + MCP tools) â€” PR #1895 |
 
 ## Related ADRs
 
-- [ADR-097](../../v3/docs/adr/ADR-097-federation-budget-circuit-breaker.md) — budget + circuit breaker
-- [ADR-104](../../v3/docs/adr/ADR-104-federation-wire-transport.md) — WSS transport + multiplexing
-- [ADR-105](../../v3/docs/adr/ADR-105-federation-v1-state-snapshot.md) — state snapshot/replay
-- [ADR-106](../../v3/docs/adr/ADR-106-peer-discovery.md) — discovery mechanisms
-- [ADR-107](../../v3/docs/adr/ADR-107-federation-tls.md) — TLS + cert pinning
-- [ADR-109](../../v3/docs/adr/ADR-109-federation-inbound-dispatcher.md) — inbound dispatch + sig verify
-- [ADR-110](../../v3/docs/adr/ADR-110-federation-memory-spend-reporter.md) — production SpendReporter
-- [**ADR-111**](../../v3/docs/adr/ADR-111-federation-wg-mesh.md) — **WG mesh layer**
+- [ADR-097](../../v3/docs/adr/ADR-097-federation-budget-circuit-breaker.md) â€” budget + circuit breaker
+- [ADR-104](../../v3/docs/adr/ADR-104-federation-wire-transport.md) â€” WSS transport + multiplexing
+- [ADR-105](../../v3/docs/adr/ADR-105-federation-v1-state-snapshot.md) â€” state snapshot/replay
+- [ADR-106](../../v3/docs/adr/ADR-106-peer-discovery.md) â€” discovery mechanisms
+- [ADR-107](../../v3/docs/adr/ADR-107-federation-tls.md) â€” TLS + cert pinning
+- [ADR-109](../../v3/docs/adr/ADR-109-federation-inbound-dispatcher.md) â€” inbound dispatch + sig verify
+- [ADR-110](../../v3/docs/adr/ADR-110-federation-memory-spend-reporter.md) â€” production SpendReporter
+- [**ADR-111**](../../v3/docs/adr/ADR-111-federation-wg-mesh.md) â€” **WG mesh layer**
 
 ## Support
 

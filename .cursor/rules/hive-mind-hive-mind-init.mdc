@@ -1,0 +1,24 @@
+---
+description: hive-mind-init
+globs: 
+alwaysApply: false
+---
+# hive-mind-init
+
+Initialize the Hive Mind collective intelligence system.
+
+## Usage
+```bash
+npx ruflo hive-mind init [options]
+```
+
+## Options
+- `--force` - Force reinitialize
+- `--config <file>` - Configuration file
+
+## Examples
+```bash
+npx ruflo hive-mind init
+npx ruflo hive-mind init --force
+```
+

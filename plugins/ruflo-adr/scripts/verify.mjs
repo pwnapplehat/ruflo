@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// adr-verify — read the persisted adr-patterns + adr-edges namespaces, surface
+// adr-verify â€” read the persisted adr-patterns + adr-edges namespaces, surface
 // dangling refs, supersede cycles, and status mismatches.
 //
 // Companion to scripts/import.mjs. Run after import to validate graph integrity.
@@ -13,7 +13,7 @@
 
 import { spawnSync } from 'node:child_process';
 
-// ADR-100 / #1748 Issue 3 — CLI_CORE=1 routes to lite cli-core (~2s cold-cache).
+// ADR-100 / #1748 Issue 3 â€” CLI_CORE=1 routes to lite cli-core (~2s cold-cache).
 // verify only does list+retrieve across adr-patterns and adr-edges namespaces;
 // no semantic search needed. JSON backend is sufficient.
 const CLI_PKG = process.env.CLI_CORE === '1'
@@ -60,7 +60,7 @@ for (const e of edgeEntries) {
 const danglingRefs = edges.filter((e) => !adrIds.has(e.to));
 const danglingFroms = edges.filter((e) => !adrIds.has(e.from));
 
-// Cycle detection on supersedes (cycle = data corruption — ADR can't supersede itself transitively)
+// Cycle detection on supersedes (cycle = data corruption â€” ADR can't supersede itself transitively)
 const supersedesGraph = new Map();
 for (const e of edges.filter((e) => e.relation === 'supersedes')) {
   if (!supersedesGraph.has(e.from)) supersedesGraph.set(e.from, []);
@@ -69,7 +69,7 @@ for (const e of edges.filter((e) => e.relation === 'supersedes')) {
 const cycles = [];
 function findCycle(node, visited, stack) {
   if (stack.has(node)) {
-    cycles.push([...stack, node].join(' → '));
+    cycles.push([...stack, node].join(' â†’ '));
     return;
   }
   if (visited.has(node)) return;
@@ -108,10 +108,10 @@ if (process.env.VERIFY_FORMAT === 'json') {
   console.log(`| Supersede cycles | ${result.cycles.length} |`);
   if (result.danglingRefs.length) {
     console.log('\n### Sample dangling refs');
-    for (const d of result.danglingRefs.slice(0, 8)) console.log(`- ${d.relation} ${d.from} → ${d.to} (missing)`);
+    for (const d of result.danglingRefs.slice(0, 8)) console.log(`- ${d.relation} ${d.from} â†’ ${d.to} (missing)`);
   }
   if (result.cycles.length) {
-    console.log('\n### Cycles (DATA CORRUPTION — fix immediately)');
+    console.log('\n### Cycles (DATA CORRUPTION â€” fix immediately)');
     for (const c of result.cycles) console.log(`- ${c}`);
   }
 }

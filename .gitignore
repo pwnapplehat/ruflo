@@ -9,7 +9,7 @@
 # Claude-Flow specific
 # Dependencies
 # Development
-# Dot folders to ignore (except .claude, .claude-plugin, .git, .github, .githooks)
+# Dot folders to ignore (except .cursor, .git, .github)
 # Environment
 # Exclude @claude-flow module directories from ignore patterns
 # IDE
@@ -163,8 +163,13 @@ hive-mind-prompt-*.txt
 .claude-flow/data/
 .claude-flow/logs/
 
-# Environment variables — block ALL .env variants except .example templates
+# Environment variables â€” block ALL .env variants except .example templates
 .env
 .env.*
 !.env.example
 !.env.*.example
+
+.cursor/goals/
+
+# Cursor-native fork runtime
+.cursor-flow/

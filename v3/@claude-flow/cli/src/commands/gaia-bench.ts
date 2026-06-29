@@ -1,7 +1,7 @@
 /**
- * V3 CLI gaia-bench Command — ADR-133-PR8 + ADR-135 Tracks A/B/D/E/Q + ADR-136 Track Q
+ * V3 CLI gaia-bench Command â€” ADR-133-PR8 + ADR-135 Tracks A/B/D/E/Q + ADR-136 Track Q
  *
- * Runs GAIA benchmark questions through the claude-flow agent loop and
+ * Runs GAIA benchmark questions through the ruflo agent loop and
  * reports pass-rate, cost, and per-question results.
  *
  * Contract (matches gaia-benchmark.yml workflow expectations):
@@ -19,7 +19,7 @@
  *     results: [{ task_id, question, model, correct, answer, expected_output, error }]
  *   }
  *
- * Integration (iter 39 — ADR-135):
+ * Integration (iter 39 â€” ADR-135):
  *   Wires standalone track modules into the CLI so they are usable end-to-end.
  *   - Track A  (--voting-attempts N)   : multi-attempt self-consistency voting
  *   - Track B  (--planning-interval N) : periodic planning checkpoints in gaia-agent
@@ -189,7 +189,7 @@ const runCommand: Command = {
     {
       name: 'enable-critic',
       type: 'boolean',
-      description: 'ADR-135 Track D: enable adversarial critic review after agent answer (+3-5pp L1 lift expected). Skipped when --voting-attempts > 1 (cost containment — voting takes precedence).',
+      description: 'ADR-135 Track D: enable adversarial critic review after agent answer (+3-5pp L1 lift expected). Skipped when --voting-attempts > 1 (cost containment â€” voting takes precedence).',
       default: 'false',
     },
     {
@@ -201,47 +201,47 @@ const runCommand: Command = {
     {
       name: 'planning-interval',
       type: 'number',
-      description: 'ADR-135 Track B: inject a planning checkpoint every N tool_use turns (default: 4, set 0 to disable). Based on smolagents finding — prevents tunnel-vision on bad strategies.',
+      description: 'ADR-135 Track B: inject a planning checkpoint every N tool_use turns (default: 4, set 0 to disable). Based on smolagents finding â€” prevents tunnel-vision on bad strategies.',
       default: '4',
     },
     {
       name: 'enable-convergence',
       type: 'boolean',
-      description: 'iter 62: enable convergence layer — forces a final commit when max_turns, loop, or token_overflow is detected (default: true). Disabling is for ablation only.',
+      description: 'iter 62: enable convergence layer â€” forces a final commit when max_turns, loop, or token_overflow is detected (default: true). Disabling is for ablation only.',
       default: 'true',
     },
   ],
   examples: [
     {
-      command: 'claude-flow gaia-bench run --level 1 --limit 10 --models claude-haiku-4-5 --output json',
+      command: 'ruflo gaia-bench run --level 1 --limit 10 --models claude-haiku-4-5 --output json',
       description: 'Run 10 Level-1 questions with Haiku, JSON output',
     },
     {
-      command: 'claude-flow gaia-bench run --level 1 --limit 10 --models claude-haiku-4-5,claude-sonnet-4-6',
+      command: 'ruflo gaia-bench run --level 1 --limit 10 --models claude-haiku-4-5,claude-sonnet-4-6',
       description: 'Compare Haiku vs Sonnet on 10 Level-1 questions',
     },
     {
-      command: 'claude-flow gaia-bench run --smoke-only --output json',
+      command: 'ruflo gaia-bench run --smoke-only --output json',
       description: 'Quick smoke test (5 fixture questions, no HF token needed)',
     },
     {
-      command: 'claude-flow gaia-bench run --level 1 --limit 20 --models claude-haiku-4-5 --voting-attempts 3 --output json',
+      command: 'ruflo gaia-bench run --level 1 --limit 20 --models claude-haiku-4-5 --voting-attempts 3 --output json',
       description: 'Self-consistency voting: run each question 3x, majority-vote (ADR-135 Track A, +5-10pp expected)',
     },
     {
-      command: 'claude-flow gaia-bench run --level 1 --models claude-sonnet-4-6 --hardness-routing --output json',
+      command: 'ruflo gaia-bench run --level 1 --models claude-sonnet-4-6 --hardness-routing --output json',
       description: 'ADR-136 Track Q: auto-route questions to Haiku/Sonnet based on predicted difficulty',
     },
     {
-      command: 'claude-flow gaia-bench run --level 1 --models claude-sonnet-4-6 --enable-critic --output json',
+      command: 'ruflo gaia-bench run --level 1 --models claude-sonnet-4-6 --enable-critic --output json',
       description: 'ADR-135 Track D: adversarial critic reviews each answer before submission (+3-5pp expected)',
     },
     {
-      command: 'claude-flow gaia-bench run --level 1 --models claude-sonnet-4-6 --decompose --output json',
+      command: 'ruflo gaia-bench run --level 1 --models claude-sonnet-4-6 --decompose --output json',
       description: 'ADR-135 Track E: decompose complex questions into sub-questions (+5-10pp on multi-step Qs)',
     },
     {
-      command: 'claude-flow gaia-bench run --level 1 --models claude-sonnet-4-6 --hardness-routing --enable-critic --planning-interval 4',
+      command: 'ruflo gaia-bench run --level 1 --models claude-sonnet-4-6 --hardness-routing --enable-critic --planning-interval 4',
       description: 'Recommended config: hardness routing + critic + planning checkpoints (~$2/run est.)',
     },
   ],
@@ -277,7 +277,7 @@ const runCommand: Command = {
     const enableDecompose = ctx.flags['decompose'] === true || ctx.flags['decompose'] === 'true';
     // ADR-135 Track B: planning interval (passed through to runGaiaAgent via agentOpts).
     const planningInterval = parseInt(String(ctx.flags['planningInterval'] ?? ctx.flags['planning-interval'] ?? '4'), 10);
-    // iter 62: convergence layer — default ON, disable with --no-enable-convergence.
+    // iter 62: convergence layer â€” default ON, disable with --no-enable-convergence.
     // Note: boolean false is falsy, so we check for explicit false values only.
     const enableConvergence = !(
       ctx.flags['enableConvergence'] === false || ctx.flags['enableConvergence'] === 'false' ||
@@ -675,19 +675,19 @@ export const gaiaBenchCommand: Command = {
   subcommands: [runCommand],
   examples: [
     {
-      command: 'claude-flow gaia-bench run --level 1 --limit 10 --models claude-haiku-4-5 --output json',
+      command: 'ruflo gaia-bench run --level 1 --limit 10 --models claude-haiku-4-5 --output json',
       description: 'Mini Level-1 run with Haiku, JSON output',
     },
     {
-      command: 'claude-flow gaia-bench run --smoke-only',
+      command: 'ruflo gaia-bench run --smoke-only',
       description: 'Quick smoke test with built-in fixture (no HF token)',
     },
     {
-      command: 'claude-flow gaia-bench run --level 1 --models claude-sonnet-4-6 --hardness-routing --output json',
+      command: 'ruflo gaia-bench run --level 1 --models claude-sonnet-4-6 --hardness-routing --output json',
       description: 'ADR-136 Track Q: tiered compute routing by predicted question difficulty',
     },
     {
-      command: 'claude-flow gaia-bench run --level 1 --models claude-sonnet-4-6 --hardness-routing --enable-critic --planning-interval 4',
+      command: 'ruflo gaia-bench run --level 1 --models claude-sonnet-4-6 --hardness-routing --enable-critic --planning-interval 4',
       description: 'Recommended config: all tracks active, ~$2/run estimated',
     },
   ],

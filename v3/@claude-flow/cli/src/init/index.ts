@@ -60,4 +60,6 @@ export {
 
 // Main executor
 export { executeInit, executeUpgrade, executeUpgradeWithMissing, default } from './executor.js';
+export { executeCursorInit } from './cursor-executor.js';
+export { generateCursorHooksJson, generateCursorMcpJson, generateAgentsMd } from './cursor-settings-generator.js';
 export type { UpgradeResult } from './executor.js';

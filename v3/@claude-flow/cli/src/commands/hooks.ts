@@ -12,7 +12,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
- * #1686 — `?? 0` only defaults null/undefined; NaN slips through and
+ * #1686 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â `?? 0` only defaults null/undefined; NaN slips through and
  * surfaces as `"NaN"` (or earlier crashed `.toFixed`) in the metrics
  * dashboard and pretrain output. Coerce to a finite number, fall back
  * to `fallback` when the input is null/undefined/non-numeric/NaN/Infinity.
@@ -294,8 +294,8 @@ const preEditCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks pre-edit -f src/utils.ts', description: 'Get context before editing' },
-    { command: 'claude-flow hooks pre-edit -f src/api.ts -o refactor', description: 'Pre-edit with operation type' }
+    { command: 'ruflo hooks pre-edit -f src/utils.ts', description: 'Get context before editing' },
+    { command: 'ruflo hooks pre-edit -f src/api.ts -o refactor', description: 'Pre-edit with operation type' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     // Default file to 'unknown' for backward compatibility (env var may be empty)
@@ -375,7 +375,7 @@ const preEditCommand: Command = {
       if (result.recommendations.length > 0) {
         output.writeln();
         output.writeln(output.bold('Recommendations'));
-        output.printList(result.recommendations.map(r => output.success(`• ${r}`)));
+        output.printList(result.recommendations.map(r => output.success(`ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ${r}`)));
       }
 
       return { success: true, data: result };
@@ -423,8 +423,8 @@ const postEditCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks post-edit -f src/utils.ts --success true', description: 'Record successful edit' },
-    { command: 'claude-flow hooks post-edit -f src/api.ts --success false -o "Type error"', description: 'Record failed edit' }
+    { command: 'ruflo hooks post-edit -f src/utils.ts --success true', description: 'Record successful edit' },
+    { command: 'ruflo hooks post-edit -f src/api.ts --success false -o "Type error"', description: 'Record failed edit' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     // Default file to 'unknown' for backward compatibility (env var may be empty)
@@ -468,7 +468,7 @@ const postEditCommand: Command = {
 
       // #2352: the MCP handler returns `{success: false, error: "..."}` on
       // validation failure (e.g. unsupported path shape) without throwing.
-      // Surface that explicitly instead of always printing the success line —
+      // Surface that explicitly instead of always printing the success line ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â
       // Windows users were seeing `[OK]` while nothing reached the learning
       // pipeline because absolute paths were rejected upstream.
       const mcpFailed = result && (result as { success?: boolean }).success === false;
@@ -536,8 +536,8 @@ const preCommandCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks pre-command -c "rm -rf dist"', description: 'Assess command risk' },
-    { command: 'claude-flow hooks pre-command -c "npm install lodash"', description: 'Check package install' }
+    { command: 'ruflo hooks pre-command -c "rm -rf dist"', description: 'Assess command risk' },
+    { command: 'ruflo hooks pre-command -c "npm install lodash"', description: 'Check package install' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const command = (ctx.flags.command as string) || ctx.args[0];
@@ -665,8 +665,8 @@ const postCommandCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks post-command -c "npm test" --success true', description: 'Record successful test run' },
-    { command: 'claude-flow hooks post-command -c "npm build" --success false -e 1', description: 'Record failed build' }
+    { command: 'ruflo hooks post-command -c "npm test" --success true', description: 'Record successful test run' },
+    { command: 'ruflo hooks post-command -c "npm build" --success false -e 1', description: 'Record failed build' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const command = (ctx.flags.command as string) || ctx.args[0];
@@ -751,8 +751,8 @@ const routeCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks route -t "Fix authentication bug"', description: 'Route task to optimal agent' },
-    { command: 'claude-flow hooks route -t "Optimize database queries" -K 5', description: 'Get top 5 suggestions' }
+    { command: 'ruflo hooks route -t "Fix authentication bug"', description: 'Route task to optimal agent' },
+    { command: 'ruflo hooks route -t "Optimize database queries" -K 5', description: 'Get top 5 suggestions' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const task = (ctx.flags.task as string) || ctx.args[0];
@@ -903,8 +903,8 @@ const explainCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks explain -t "Fix authentication bug"', description: 'Explain routing decision' },
-    { command: 'claude-flow hooks explain -t "Optimize queries" -a coder --verbose', description: 'Verbose explanation for specific agent' }
+    { command: 'ruflo hooks explain -t "Fix authentication bug"', description: 'Explain routing decision' },
+    { command: 'ruflo hooks explain -t "Optimize queries" -a coder --verbose', description: 'Verbose explanation for specific agent' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const task = (ctx.flags.task as string) || ctx.args[0];
@@ -1053,10 +1053,10 @@ const pretrainCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks pretrain', description: 'Pretrain with embeddings indexing' },
-    { command: 'claude-flow hooks pretrain -p ../my-project --depth deep', description: 'Deep analysis of specific project' },
-    { command: 'claude-flow hooks pretrain --no-with-embeddings', description: 'Skip embedding indexing' },
-    { command: 'claude-flow hooks pretrain --file-types ts,tsx,js', description: 'Index only TypeScript/JS files' }
+    { command: 'ruflo hooks pretrain', description: 'Pretrain with embeddings indexing' },
+    { command: 'ruflo hooks pretrain -p ../my-project --depth deep', description: 'Deep analysis of specific project' },
+    { command: 'ruflo hooks pretrain --no-with-embeddings', description: 'Skip embedding indexing' },
+    { command: 'ruflo hooks pretrain --file-types ts,tsx,js', description: 'Index only TypeScript/JS files' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const repoPath = ctx.flags.path as string || '.';
@@ -1080,7 +1080,7 @@ const pretrainCommand: Command = {
     if (withEmbeddings) {
       steps.push(
         { name: 'EMBED', desc: `Index documents with ${embeddingModel} (ONNX)` },
-        { name: 'HYPERBOLIC', desc: 'Project to Poincaré ball for hierarchy preservation' }
+        { name: 'HYPERBOLIC', desc: 'Project to PoincarÃƒÆ’Ã‚Â© ball for hierarchy preservation' }
       );
     }
 
@@ -1137,7 +1137,7 @@ const pretrainCommand: Command = {
       spinner.succeed('Pretraining completed');
 
       // Normalize shape: prefer `statistics`, fall back to `stats` for older tools.
-      // #1686 — coerce duration through safeNum so a NaN from the underlying
+      // #1686 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â coerce duration through safeNum so a NaN from the underlying
       // pretrain pipeline surfaces as `0.0s` rather than `NaNs`.
       const stats = (rawResult.statistics ?? rawResult.stats ?? {}) as Record<string, number | undefined>;
       const durationMs = safeNum(rawResult.duration ?? rawResult.statistics?.executionTime);
@@ -1150,7 +1150,7 @@ const pretrainCommand: Command = {
 
       output.writeln();
 
-      // Base stats — use ?? 0 fallbacks to keep the table readable even when
+      // Base stats ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â use ?? 0 fallbacks to keep the table readable even when
       // the tool omits a counter rather than crashing on undefined.
       const tableData: Array<{ metric: string; value: string | number }> = [
         { metric: 'Files Analyzed', value: stats.filesAnalyzed ?? 0 },
@@ -1184,7 +1184,7 @@ const pretrainCommand: Command = {
       if (withEmbeddings) {
         output.writeln(output.dim('  Semantic search enabled: Use "embeddings search -q <query>" to search'));
       }
-      output.writeln(output.dim('  Next step: Run "claude-flow hooks build-agents" to generate optimized configs'));
+      output.writeln(output.dim('  Next step: Run "ruflo hooks build-agents" to generate optimized configs'));
 
       return { success: true, data: result };
     } catch (error) {
@@ -1227,8 +1227,8 @@ const buildAgentsCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks build-agents', description: 'Build all agent configs' },
-    { command: 'claude-flow hooks build-agents --focus security -o ./config/agents', description: 'Build security-focused configs' }
+    { command: 'ruflo hooks build-agents', description: 'Build all agent configs' },
+    { command: 'ruflo hooks build-agents --focus security -o ./config/agents', description: 'Build security-focused configs' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const output_dir = ctx.flags.output as string || './agents';
@@ -1337,8 +1337,8 @@ const metricsCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks metrics', description: 'View 24h metrics' },
-    { command: 'claude-flow hooks metrics --period 7d --v3-dashboard', description: 'V3 metrics for 7 days' }
+    { command: 'ruflo hooks metrics', description: 'View 24h metrics' },
+    { command: 'ruflo hooks metrics --period 7d --v3-dashboard', description: 'V3 metrics for 7 days' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const period = ctx.flags.period as string || '24h';
@@ -1352,7 +1352,7 @@ const metricsCommand: Command = {
       // Call MCP tool for metrics. The tool returns `{ summary, routing,
       // edits, commands }` (see MetricsResult in v3/mcp/tools/hooks-tools.ts)
       // but earlier CLI versions expected `{ patterns, agents, commands.avgRiskScore }`.
-      // Accept the union and normalize below — without the `?? 0` guards the
+      // Accept the union and normalize below ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â without the `?? 0` guards the
       // dashboard crashed with "Cannot read properties of null (reading 'toFixed')"
       // whenever a counter was missing (#1686).
       const rawMetrics = await callMCPTool<{
@@ -1401,7 +1401,7 @@ const metricsCommand: Command = {
       });
 
       // Normalize across both shapes; default every numeric to 0 so toFixed
-      // never sees null/undefined. #1686 — also coerce NaN through `safeNum`
+      // never sees null/undefined. #1686 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â also coerce NaN through `safeNum`
       // because `?? 0` only catches null/undefined; an upstream NaN would
       // still land in `.toFixed(...)` and surface as `"NaN"`.
       const totalPatterns = safeNum(rawMetrics.patterns?.total ?? rawMetrics.summary?.patternsLearned);
@@ -1430,7 +1430,7 @@ const metricsCommand: Command = {
       }
 
       // Patterns section
-      output.writeln(output.bold('📊 Pattern Learning'));
+      output.writeln(output.bold('ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  Pattern Learning'));
       output.printTable({
         columns: [
           { key: 'metric', header: 'Metric', width: 25 },
@@ -1447,7 +1447,7 @@ const metricsCommand: Command = {
       output.writeln();
 
       // Agent routing section
-      output.writeln(output.bold('🤖 Agent Routing'));
+      output.writeln(output.bold('ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ Agent Routing'));
       output.printTable({
         columns: [
           { key: 'metric', header: 'Metric', width: 25 },
@@ -1463,7 +1463,7 @@ const metricsCommand: Command = {
       output.writeln();
 
       // Command execution section
-      output.writeln(output.bold('⚡ Command Execution'));
+      output.writeln(output.bold('ÃƒÂ¢Ã…Â¡Ã‚Â¡ Command Execution'));
       output.printTable({
         columns: [
           { key: 'metric', header: 'Metric', width: 25 },
@@ -1479,7 +1479,7 @@ const metricsCommand: Command = {
       if (v3Dashboard && result.performance) {
         const p = result.performance;
         output.writeln();
-        output.writeln(output.bold('🚀 V3 Performance Gains'));
+        output.writeln(output.bold('ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ V3 Performance Gains'));
         output.printList([
           `Flash Attention: ${output.success(p.flashAttention ?? 'N/A')}`,
           `Memory Reduction: ${output.success(p.memoryReduction ?? 'N/A')}`,
@@ -1531,8 +1531,8 @@ const transferFromProjectCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks transfer from-project -s ../old-project', description: 'Transfer all patterns' },
-    { command: 'claude-flow hooks transfer from-project -s ../prod --filter security -m 0.9', description: 'Transfer high-confidence security patterns' }
+    { command: 'ruflo hooks transfer from-project -s ../old-project', description: 'Transfer all patterns' },
+    { command: 'ruflo hooks transfer from-project -s ../prod --filter security -m 0.9', description: 'Transfer high-confidence security patterns' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const sourcePath = (ctx.flags.source as string) || ctx.args[0];
@@ -1632,11 +1632,11 @@ const transferCommand: Command = {
   description: 'Transfer patterns and plugins via IPFS-based decentralized registry',
   subcommands: [storeCommand, transferFromProjectCommand],
   examples: [
-    { command: 'claude-flow hooks transfer store list', description: 'List patterns from registry' },
-    { command: 'claude-flow hooks transfer store search -q routing', description: 'Search patterns' },
-    { command: 'claude-flow hooks transfer store download -p seraphine-genesis', description: 'Download pattern' },
-    { command: 'claude-flow hooks transfer store publish', description: 'Publish pattern to registry' },
-    { command: 'claude-flow hooks transfer from-project -s ../other-project', description: 'Transfer from project' },
+    { command: 'ruflo hooks transfer store list', description: 'List patterns from registry' },
+    { command: 'ruflo hooks transfer store search -q routing', description: 'Search patterns' },
+    { command: 'ruflo hooks transfer store download -p seraphine-genesis', description: 'Download pattern' },
+    { command: 'ruflo hooks transfer store publish', description: 'Publish pattern to registry' },
+    { command: 'ruflo hooks transfer from-project -s ../other-project', description: 'Transfer from project' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
@@ -1658,7 +1658,7 @@ const transferCommand: Command = {
       'Trust levels: unverified, community, verified, official',
     ]);
     output.writeln();
-    output.writeln('Run "claude-flow hooks transfer <subcommand> --help" for details');
+    output.writeln('Run "ruflo hooks transfer <subcommand> --help" for details');
     return { success: true };
   }
 };
@@ -1769,8 +1769,8 @@ const preTaskCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks pre-task -i task-123 -d "Fix auth bug"', description: 'Record task start' },
-    { command: 'claude-flow hooks pre-task -i task-456 -d "Implement feature" --auto-spawn', description: 'With auto-spawn' }
+    { command: 'ruflo hooks pre-task -i task-123 -d "Fix auth bug"', description: 'Record task start' },
+    { command: 'ruflo hooks pre-task -i task-456 -d "Implement feature" --auto-spawn', description: 'With auto-spawn' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const taskId = (ctx.flags.taskId as string) || `task-${Date.now().toString(36)}`;
@@ -1860,10 +1860,10 @@ const preTaskCommand: Command = {
           output.writeln(output.dim(`  Intent: ${intent?.type}`));
           output.writeln(output.dim(`  Latency: ~1ms | Cost: $0 | No LLM`));
           output.writeln();
-          output.writeln(output.dim('─'.repeat(60)));
-          output.writeln(output.bold(output.success(`[CODEMOD_AVAILABLE] Skip LLM — call hooks_codemod with intent="${intent?.type}" (deterministic, $0)`)));
+          output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(60)));
+          output.writeln(output.bold(output.success(`[CODEMOD_AVAILABLE] Skip LLM ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â call hooks_codemod with intent="${intent?.type}" (deterministic, $0)`)));
           output.writeln(output.dim(`Confidence: ${(routeResult.confidence * 100).toFixed(0)}% | Intent: ${intent?.description}`));
-          output.writeln(output.dim('─'.repeat(60)));
+          output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(60)));
         } else {
           // LLM required - show tier and model recommendation
           output.writeln(`  Tier ${routeResult.tier}: ${routeResult.handler.toUpperCase()}`);
@@ -1872,10 +1872,10 @@ const preTaskCommand: Command = {
           output.writeln();
 
           // Clear instruction for Claude
-          output.writeln(output.dim('─'.repeat(60)));
+          output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(60)));
           output.writeln(output.bold(output.success(`[TASK_MODEL_RECOMMENDATION] Use model="${routeResult.model}" for this task`)));
           output.writeln(output.dim(`Complexity: ${((routeResult.complexity || 0) * 100).toFixed(0)}% | Confidence: ${(routeResult.confidence * 100).toFixed(0)}%`));
-          output.writeln(output.dim('─'.repeat(60)));
+          output.writeln(output.dim('ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬'.repeat(60)));
         }
 
         // Add routing result for programmatic use
@@ -1954,8 +1954,8 @@ const postTaskCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks post-task -i task-123 --success true', description: 'Record successful completion' },
-    { command: 'claude-flow hooks post-task -i task-456 --success false -q 0.3', description: 'Record failed task' }
+    { command: 'ruflo hooks post-task -i task-123 --success true', description: 'Record successful completion' },
+    { command: 'ruflo hooks post-task -i task-456 --success false -q 0.3', description: 'Record failed task' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     // Auto-generate task ID if not provided
@@ -2035,8 +2035,8 @@ const sessionEndCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks session-end', description: 'End and save session' },
-    { command: 'claude-flow hooks session-end --save-state false', description: 'End without saving' }
+    { command: 'ruflo hooks session-end', description: 'End and save session' },
+    { command: 'ruflo hooks session-end --save-state false', description: 'End without saving' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.printInfo('Ending session...');
@@ -2130,8 +2130,8 @@ const sessionRestoreCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks session-restore', description: 'Restore latest session' },
-    { command: 'claude-flow hooks session-restore -i session-12345', description: 'Restore specific session' }
+    { command: 'ruflo hooks session-restore', description: 'Restore latest session' },
+    { command: 'ruflo hooks session-restore -i session-12345', description: 'Restore specific session' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const sessionId = (ctx.flags.sessionId as string) || ctx.args[0] || 'latest';
@@ -2257,9 +2257,9 @@ const intelligenceCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks intelligence --status', description: 'Show intelligence status' },
-    { command: 'claude-flow hooks intelligence -m real-time', description: 'Enable real-time mode' },
-    { command: 'claude-flow hooks intelligence --train', description: 'Force training cycle' }
+    { command: 'ruflo hooks intelligence --status', description: 'Show intelligence status' },
+    { command: 'ruflo hooks intelligence -m real-time', description: 'Enable real-time mode' },
+    { command: 'ruflo hooks intelligence --train', description: 'Force training cycle' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const mode = ctx.flags.mode as string || 'balanced';
@@ -2605,8 +2605,8 @@ const workerListCommand: Command = {
     { name: 'active', short: 'a', type: 'boolean', description: 'Show active worker instances' },
   ],
   examples: [
-    { command: 'claude-flow hooks worker list', description: 'List all workers' },
-    { command: 'claude-flow hooks worker list --active', description: 'Show active instances' },
+    { command: 'ruflo hooks worker list', description: 'List all workers' },
+    { command: 'ruflo hooks worker list --active', description: 'Show active instances' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const spinner = output.createSpinner({ text: 'Loading workers...', spinner: 'dots' });
@@ -2711,9 +2711,9 @@ const workerDispatchCommand: Command = {
     { name: 'sync', short: 's', type: 'boolean', description: 'Wait for completion (synchronous)' },
   ],
   examples: [
-    { command: 'claude-flow hooks worker dispatch -t optimize -c src/', description: 'Dispatch optimize worker' },
-    { command: 'claude-flow hooks worker dispatch -t audit -p critical', description: 'Security audit with critical priority' },
-    { command: 'claude-flow hooks worker dispatch -t testgaps --sync', description: 'Test coverage analysis (sync)' },
+    { command: 'ruflo hooks worker dispatch -t optimize -c src/', description: 'Dispatch optimize worker' },
+    { command: 'ruflo hooks worker dispatch -t audit -p critical', description: 'Security audit with critical priority' },
+    { command: 'ruflo hooks worker dispatch -t testgaps --sync', description: 'Test coverage analysis (sync)' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const trigger = ctx.flags['trigger'] as string;
@@ -2779,7 +2779,7 @@ const workerDispatchCommand: Command = {
 
       if (background) {
         output.writeln();
-        output.writeln(output.dim(`Check status: claude-flow hooks worker status --id ${result.workerId}`));
+        output.writeln(output.dim(`Check status: ruflo hooks worker status --id ${result.workerId}`));
       }
 
       return { success: true, data: result };
@@ -2801,9 +2801,9 @@ const workerStatusCommand: Command = {
     { name: 'all', short: 'a', type: 'boolean', description: 'Include completed workers' },
   ],
   examples: [
-    { command: 'claude-flow hooks worker status', description: 'Show running workers' },
-    { command: 'claude-flow hooks worker status --id worker_audit_1', description: 'Check specific worker' },
-    { command: 'claude-flow hooks worker status --all', description: 'Include completed workers' },
+    { command: 'ruflo hooks worker status', description: 'Show running workers' },
+    { command: 'ruflo hooks worker status --id worker_audit_1', description: 'Check specific worker' },
+    { command: 'ruflo hooks worker status --all', description: 'Include completed workers' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const workerId = ctx.flags['id'] as string;
@@ -2917,8 +2917,8 @@ const workerDetectCommand: Command = {
     { name: 'min-confidence', short: 'm', type: 'string', description: 'Minimum confidence threshold (0-1)' },
   ],
   examples: [
-    { command: 'claude-flow hooks worker detect -p "optimize performance"', description: 'Detect triggers in prompt' },
-    { command: 'claude-flow hooks worker detect -p "security audit" --auto-dispatch', description: 'Detect and dispatch' },
+    { command: 'ruflo hooks worker detect -p "optimize performance"', description: 'Detect triggers in prompt' },
+    { command: 'ruflo hooks worker detect -p "security audit" --auto-dispatch', description: 'Detect and dispatch' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const prompt = ctx.flags['prompt'] as string;
@@ -3009,7 +3009,7 @@ const workerCancelCommand: Command = {
     { name: 'id', type: 'string', description: 'Worker ID to cancel', required: true },
   ],
   examples: [
-    { command: 'claude-flow hooks worker cancel --id worker_audit_1', description: 'Cancel specific worker' },
+    { command: 'ruflo hooks worker cancel --id worker_audit_1', description: 'Cancel specific worker' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const workerId = ctx.flags['id'] as string;
@@ -3092,8 +3092,8 @@ const coverageRouteCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks coverage-route -t "fix bug in auth"', description: 'Route with coverage awareness' },
-    { command: 'claude-flow hooks coverage-route -t "add tests" --threshold 90', description: 'Route with custom threshold' }
+    { command: 'ruflo hooks coverage-route -t "fix bug in auth"', description: 'Route with coverage awareness' },
+    { command: 'ruflo hooks coverage-route -t "add tests" --threshold 90', description: 'Route with custom threshold' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const task = (ctx.flags.task as string) || ctx.args[0];
@@ -3364,8 +3364,8 @@ const coverageSuggestCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks coverage-suggest -p src/', description: 'Suggest improvements for src/' },
-    { command: 'claude-flow hooks coverage-suggest -p src/services --threshold 90', description: 'Stricter threshold' }
+    { command: 'ruflo hooks coverage-suggest -p src/', description: 'Suggest improvements for src/' },
+    { command: 'ruflo hooks coverage-suggest -p src/services --threshold 90', description: 'Stricter threshold' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const targetPath = (ctx.flags.path as string) || ctx.args[0];
@@ -3597,9 +3597,9 @@ const coverageGapsCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks coverage-gaps', description: 'List all coverage gaps' },
-    { command: 'claude-flow hooks coverage-gaps --critical-only', description: 'Only critical gaps' },
-    { command: 'claude-flow hooks coverage-gaps --threshold 90', description: 'Stricter threshold' }
+    { command: 'ruflo hooks coverage-gaps', description: 'List all coverage gaps' },
+    { command: 'ruflo hooks coverage-gaps --critical-only', description: 'Only critical gaps' },
+    { command: 'ruflo hooks coverage-gaps --threshold 90', description: 'Stricter threshold' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const threshold = ctx.flags.threshold as number || 80;
@@ -3858,10 +3858,10 @@ const progressHookCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks progress', description: 'Check current progress' },
-    { command: 'claude-flow hooks progress -d', description: 'Detailed breakdown' },
-    { command: 'claude-flow hooks progress --sync', description: 'Sync progress to file' },
-    { command: 'claude-flow hooks progress --summary', description: 'Human-readable summary' }
+    { command: 'ruflo hooks progress', description: 'Check current progress' },
+    { command: 'ruflo hooks progress -d', description: 'Detailed breakdown' },
+    { command: 'ruflo hooks progress --sync', description: 'Sync progress to file' },
+    { command: 'ruflo hooks progress --summary', description: 'Human-readable summary' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const detailed = ctx.flags.detailed as boolean;
@@ -3903,7 +3903,7 @@ const progressHookCommand: Command = {
 
         output.writeln();
         output.printSuccess(`Progress synced: ${result.progress}%`);
-        output.writeln(output.dim(`  Persisted to .claude-flow/metrics/v3-progress.json`));
+        output.writeln(output.dim(`  Persisted to .cursor-flow/metrics/v3-progress.json`));
         output.writeln(output.dim(`  Last updated: ${result.lastUpdated}`));
         return { success: true, data: result };
       }
@@ -3938,7 +3938,7 @@ const progressHookCommand: Command = {
       const barWidth = 30;
       const filled = Math.round((progressValue / 100) * barWidth);
       const empty = barWidth - filled;
-      const bar = output.success('█'.repeat(filled)) + output.dim('░'.repeat(empty));
+      const bar = output.success('ÃƒÂ¢Ã¢â‚¬â€œÃ‹â€ '.repeat(filled)) + output.dim('ÃƒÂ¢Ã¢â‚¬â€œÃ¢â‚¬Ëœ'.repeat(empty));
 
       output.writeln(output.bold('V3 Implementation Progress'));
       output.writeln();
@@ -3991,9 +3991,9 @@ const workerCommand: Command = {
   ],
   options: [],
   examples: [
-    { command: 'claude-flow hooks worker list', description: 'List all workers' },
-    { command: 'claude-flow hooks worker dispatch -t optimize', description: 'Dispatch optimizer' },
-    { command: 'claude-flow hooks worker detect -p "test coverage"', description: 'Detect from prompt' },
+    { command: 'ruflo hooks worker list', description: 'List all workers' },
+    { command: 'ruflo hooks worker dispatch -t optimize', description: 'Dispatch optimizer' },
+    { command: 'ruflo hooks worker detect -p "test coverage"', description: 'Detect from prompt' },
   ],
   action: async (): Promise<CommandResult> => {
     output.writeln();
@@ -4026,7 +4026,7 @@ const workerCommand: Command = {
       `${output.highlight('cancel')}   - Cancel a running worker`,
     ]);
     output.writeln();
-    output.writeln('Run "claude-flow hooks worker <subcommand> --help" for details');
+    output.writeln('Run "ruflo hooks worker <subcommand> --help" for details');
 
     return { success: true };
   }
@@ -4063,9 +4063,9 @@ const statuslineCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks statusline', description: 'Display full statusline' },
-    { command: 'claude-flow hooks statusline --json', description: 'JSON output for hooks' },
-    { command: 'claude-flow hooks statusline --compact', description: 'Single-line status' }
+    { command: 'ruflo hooks statusline', description: 'Display full statusline' },
+    { command: 'ruflo hooks statusline --json', description: 'JSON output for hooks' },
+    { command: 'ruflo hooks statusline --compact', description: 'Single-line status' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const fs = await import('fs');
@@ -4171,7 +4171,7 @@ const statuslineCommand: Command = {
         activeAgents = Math.max(0, parseInt(ps.trim()) - 1);
         coordinationActive = activeAgents > 0;
       } catch {
-        // ps/tasklist unavailable or timed out — report zero
+        // ps/tasklist unavailable or timed out ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â report zero
       }
 
       return { activeAgents, maxAgents, coordinationActive };
@@ -4223,7 +4223,7 @@ const statuslineCommand: Command = {
         // Check for key project files/dirs
         if (fs.existsSync(path.join(process.cwd(), '.claude'))) maturityScore += 15;
         if (fs.existsSync(path.join(process.cwd(), '.claude-flow'))) maturityScore += 15;
-        if (fs.existsSync(path.join(process.cwd(), 'CLAUDE.md'))) maturityScore += 10;
+        if (fs.existsSync(path.join(process.cwd(), 'AGENTS.md')) || fs.existsSync(path.join(process.cwd(), 'CLAUDE.md'))) maturityScore += 10;
         if (fs.existsSync(path.join(process.cwd(), 'claude-flow.config.json'))) maturityScore += 10;
         if (fs.existsSync(path.join(process.cwd(), '.swarm'))) maturityScore += 10;
         // Check for test files
@@ -4292,9 +4292,9 @@ const statuslineCommand: Command = {
 
     // #1153: auto-collapse to compact on narrow terminals so the full
     // 6+ line statusline doesn't dominate the screen. Honors:
-    //   - explicit --compact → compact
-    //   - explicit --full    → full (overrides auto-detection)
-    //   - else                → compact when terminal < 100 cols (full multi-line
+    //   - explicit --compact ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ compact
+    //   - explicit --full    ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ full (overrides auto-detection)
+    //   - else                ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ compact when terminal < 100 cols (full multi-line
     //                            output expects ~100 cols of horizontal space)
     const COMPACT_WIDTH_THRESHOLD = 100;
     const terminalCols = process.stdout.columns ?? 80;
@@ -4323,18 +4323,18 @@ const statuslineCommand: Command = {
     const progressBar = (current: number, total: number) => {
       const filled = Math.round((current / total) * 5);
       const empty = 5 - filled;
-      return '[' + '●'.repeat(filled) + '○'.repeat(empty) + ']';
+      return '[' + 'ÃƒÂ¢Ã¢â‚¬â€Ã‚Â'.repeat(filled) + 'ÃƒÂ¢Ã¢â‚¬â€Ã¢â‚¬Â¹'.repeat(empty) + ']';
     };
 
     // Generate lines
-    let header = `${c.bold}${c.brightPurple}▊ RuFlo V3 ${c.reset}`;
-    header += `${swarm.coordinationActive ? c.brightCyan : c.dim}● ${c.brightCyan}${user.name}${c.reset}`;
+    let header = `${c.bold}${c.brightPurple}ÃƒÂ¢Ã¢â‚¬â€œÃ…Â  RuFlo V3 ${c.reset}`;
+    header += `${swarm.coordinationActive ? c.brightCyan : c.dim}ÃƒÂ¢Ã¢â‚¬â€Ã‚Â ${c.brightCyan}${user.name}${c.reset}`;
     if (user.gitBranch) {
-      header += `  ${c.dim}│${c.reset}  ${c.brightBlue}⎇ ${user.gitBranch}${c.reset}`;
+      header += `  ${c.dim}ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡${c.reset}  ${c.brightBlue}ÃƒÂ¢Ã…Â½Ã¢â‚¬Â¡ ${user.gitBranch}${c.reset}`;
     }
-    header += `  ${c.dim}│${c.reset}  ${c.purple}${user.modelName}${c.reset}`;
+    header += `  ${c.dim}ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡${c.reset}  ${c.purple}${user.modelName}${c.reset}`;
 
-    const separator = `${c.dim}─────────────────────────────────────────────────────${c.reset}`;
+    const separator = `${c.dim}ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬${c.reset}`;
 
     // Get hooks stats
     const hooksStats = { enabled: 0, total: 17 };
@@ -4464,49 +4464,49 @@ const statuslineCommand: Command = {
 
     const domainsColor = progress.domainsCompleted >= 3 ? c.brightGreen : progress.domainsCompleted > 0 ? c.yellow : c.red;
     // Dynamic perf indicator based on patterns/HNSW
-    let perfIndicator = `${c.dim}⚡ target: 150x-12500x${c.reset}`;
+    let perfIndicator = `${c.dim}ÃƒÂ¢Ã…Â¡Ã‚Â¡ target: 150x-12500x${c.reset}`;
     if (agentdbStats.hasHnsw && agentdbStats.vectorCount > 0) {
       const speedup = agentdbStats.vectorCount > 10000 ? '12500x' : agentdbStats.vectorCount > 1000 ? '150x' : '10x';
-      perfIndicator = `${c.brightGreen}⚡ HNSW ${speedup}${c.reset}`;
+      perfIndicator = `${c.brightGreen}ÃƒÂ¢Ã…Â¡Ã‚Â¡ HNSW ${speedup}${c.reset}`;
     } else if (progress.patternsLearned > 0) {
       const patternsK = progress.patternsLearned >= 1000 ? `${(progress.patternsLearned / 1000).toFixed(1)}k` : String(progress.patternsLearned);
-      perfIndicator = `${c.brightYellow}📚 ${patternsK} patterns${c.reset}`;
+      perfIndicator = `${c.brightYellow}ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â¡ ${patternsK} patterns${c.reset}`;
     }
 
-    const line1 = `${c.brightCyan}🏗️  DDD Domains${c.reset}    ${progressBar(progress.domainsCompleted, progress.totalDomains)}  ` +
+    const line1 = `${c.brightCyan}ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬â€ÃƒÂ¯Ã‚Â¸Ã‚Â  DDD Domains${c.reset}    ${progressBar(progress.domainsCompleted, progress.totalDomains)}  ` +
       `${domainsColor}${progress.domainsCompleted}${c.reset}/${c.brightWhite}${progress.totalDomains}${c.reset}    ` +
       perfIndicator;
 
-    const swarmIndicator = swarm.coordinationActive ? `${c.brightGreen}◉${c.reset}` : `${c.dim}○${c.reset}`;
+    const swarmIndicator = swarm.coordinationActive ? `${c.brightGreen}ÃƒÂ¢Ã¢â‚¬â€Ã¢â‚¬Â°${c.reset}` : `${c.dim}ÃƒÂ¢Ã¢â‚¬â€Ã¢â‚¬Â¹${c.reset}`;
     const agentsColor = swarm.activeAgents > 0 ? c.brightGreen : c.red;
-    const securityIcon = security.status === 'CLEAN' ? '🟢' : security.status === 'IN_PROGRESS' ? '🟡' : '🔴';
+    const securityIcon = security.status === 'CLEAN' ? 'ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢' : security.status === 'IN_PROGRESS' ? 'ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¡' : 'ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´';
     const securityColor = security.status === 'CLEAN' ? c.brightGreen : security.status === 'IN_PROGRESS' ? c.brightYellow : c.brightRed;
     const hooksColor = hooksStats.enabled > 0 ? c.brightGreen : c.dim;
 
-    const line2 = `${c.brightYellow}🤖 Swarm${c.reset}  ${swarmIndicator} [${agentsColor}${String(swarm.activeAgents).padStart(2)}${c.reset}/${c.brightWhite}${swarm.maxAgents}${c.reset}]  ` +
-      `${c.brightPurple}👥 ${system.subAgents}${c.reset}    ` +
-      `${c.brightBlue}🪝 ${hooksColor}${hooksStats.enabled}${c.reset}/${c.brightWhite}${hooksStats.total}${c.reset}    ` +
+    const line2 = `${c.brightYellow}ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ Swarm${c.reset}  ${swarmIndicator} [${agentsColor}${String(swarm.activeAgents).padStart(2)}${c.reset}/${c.brightWhite}${swarm.maxAgents}${c.reset}]  ` +
+      `${c.brightPurple}ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¥ ${system.subAgents}${c.reset}    ` +
+      `${c.brightBlue}ÃƒÂ°Ã…Â¸Ã‚ÂªÃ‚Â ${hooksColor}${hooksStats.enabled}${c.reset}/${c.brightWhite}${hooksStats.total}${c.reset}    ` +
       `${securityIcon} ${securityColor}CVE ${security.cvesFixed}${c.reset}/${c.brightWhite}${security.totalCves}${c.reset}    ` +
-      `${c.brightCyan}💾 ${system.memoryMB}MB${c.reset}    ` +
-      `${c.brightPurple}🧠 ${String(system.intelligencePct).padStart(3)}%${c.reset}`;
+      `${c.brightCyan}ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ ${system.memoryMB}MB${c.reset}    ` +
+      `${c.brightPurple}ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  ${String(system.intelligencePct).padStart(3)}%${c.reset}`;
 
     const dddColor = progress.dddProgress >= 50 ? c.brightGreen : progress.dddProgress > 0 ? c.yellow : c.red;
-    const line3 = `${c.brightPurple}🔧 Architecture${c.reset}    ` +
-      `${c.cyan}ADRs${c.reset} ${c.dim}●0/0${c.reset}  ${c.dim}│${c.reset}  ` +
-      `${c.cyan}DDD${c.reset} ${dddColor}●${String(progress.dddProgress).padStart(3)}%${c.reset}  ${c.dim}│${c.reset}  ` +
-      `${c.cyan}Security${c.reset} ${securityColor}●${security.status}${c.reset}`;
+    const line3 = `${c.brightPurple}ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§ Architecture${c.reset}    ` +
+      `${c.cyan}ADRs${c.reset} ${c.dim}ÃƒÂ¢Ã¢â‚¬â€Ã‚Â0/0${c.reset}  ${c.dim}ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡${c.reset}  ` +
+      `${c.cyan}DDD${c.reset} ${dddColor}ÃƒÂ¢Ã¢â‚¬â€Ã‚Â${String(progress.dddProgress).padStart(3)}%${c.reset}  ${c.dim}ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡${c.reset}  ` +
+      `${c.cyan}Security${c.reset} ${securityColor}ÃƒÂ¢Ã¢â‚¬â€Ã‚Â${security.status}${c.reset}`;
 
     const vectorColor = agentdbStats.vectorCount > 0 ? c.brightGreen : c.dim;
     const testColor = testStats.testFiles > 0 ? c.brightGreen : c.dim;
     const mcpColor = mcpStats.enabled > 0 ? c.brightGreen : c.dim;
     const sizeDisplay = agentdbStats.dbSizeKB >= 1024 ? `${(agentdbStats.dbSizeKB / 1024).toFixed(1)}MB` : `${agentdbStats.dbSizeKB}KB`;
-    const hnswIndicator = agentdbStats.hasHnsw ? `${c.brightGreen}⚡${c.reset}` : '';
+    const hnswIndicator = agentdbStats.hasHnsw ? `${c.brightGreen}ÃƒÂ¢Ã…Â¡Ã‚Â¡${c.reset}` : '';
 
-    const line4 = `${c.brightCyan}📊 AgentDB${c.reset}    ` +
-      `${c.cyan}Vectors${c.reset} ${vectorColor}●${agentdbStats.vectorCount}${hnswIndicator}${c.reset}  ${c.dim}│${c.reset}  ` +
-      `${c.cyan}Size${c.reset} ${c.brightWhite}${sizeDisplay}${c.reset}  ${c.dim}│${c.reset}  ` +
-      `${c.cyan}Tests${c.reset} ${testColor}●${testStats.testFiles}${c.reset} ${c.dim}(${testStats.testCases} cases)${c.reset}  ${c.dim}│${c.reset}  ` +
-      `${c.cyan}MCP${c.reset} ${mcpColor}●${mcpStats.enabled}/${mcpStats.total}${c.reset}`;
+    const line4 = `${c.brightCyan}ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  AgentDB${c.reset}    ` +
+      `${c.cyan}Vectors${c.reset} ${vectorColor}ÃƒÂ¢Ã¢â‚¬â€Ã‚Â${agentdbStats.vectorCount}${hnswIndicator}${c.reset}  ${c.dim}ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡${c.reset}  ` +
+      `${c.cyan}Size${c.reset} ${c.brightWhite}${sizeDisplay}${c.reset}  ${c.dim}ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡${c.reset}  ` +
+      `${c.cyan}Tests${c.reset} ${testColor}ÃƒÂ¢Ã¢â‚¬â€Ã‚Â${testStats.testFiles}${c.reset} ${c.dim}(${testStats.testCases} cases)${c.reset}  ${c.dim}ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡${c.reset}  ` +
+      `${c.cyan}MCP${c.reset} ${mcpColor}ÃƒÂ¢Ã¢â‚¬â€Ã‚Â${mcpStats.enabled}/${mcpStats.total}${c.reset}`;
 
     output.writeln(header);
     output.writeln(separator);
@@ -4526,7 +4526,7 @@ const routeTaskCommand: Command = {
   description: '(DEPRECATED: Use "route" instead) Route task to optimal agent',
   options: routeCommand.options,
   examples: [
-    { command: 'claude-flow hooks route-task --auto-swarm true', description: 'Route with auto-swarm (v2 compat)' },
+    { command: 'ruflo hooks route-task --auto-swarm true', description: 'Route with auto-swarm (v2 compat)' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     // Silently handle v2-specific flags that don't exist in v3
@@ -4559,7 +4559,7 @@ const sessionStartCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks session-start --auto-configure true', description: 'Start session (v2 compat)' },
+    { command: 'ruflo hooks session-start --auto-configure true', description: 'Start session (v2 compat)' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     // Map to session-restore for backward compatibility
@@ -4600,9 +4600,9 @@ const tokenOptimizeCommand: Command = {
     { name: 'stats', short: 's', type: 'boolean', description: 'Show token savings statistics' },
   ],
   examples: [
-    { command: 'claude-flow hooks token-optimize --stats', description: 'Show token savings stats' },
-    { command: 'claude-flow hooks token-optimize -q "auth patterns"', description: 'Get compact context' },
-    { command: 'claude-flow hooks token-optimize -A 8 --report', description: 'Config for 8 agents + report' },
+    { command: 'ruflo hooks token-optimize --stats', description: 'Show token savings stats' },
+    { command: 'ruflo hooks token-optimize -q "auth patterns"', description: 'Get compact context' },
+    { command: 'ruflo hooks token-optimize -A 8 --report', description: 'Config for 8 agents + report' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const query = ctx.flags['query'] as string;
@@ -4630,7 +4630,7 @@ const tokenOptimizeCommand: Command = {
       if (rb) {
         agenticFlowAvailable = true;
         if (typeof rb.retrieveMemories === 'function') {
-          reasoningBank = rb;
+          reasoningBank = rb as any;
         }
       } else {
         // Legacy check for older agentic-flow
@@ -4702,7 +4702,7 @@ const tokenOptimizeCommand: Command = {
             { metric: 'Cache Hit Rate', value: `${hitRate}%` },
             { metric: 'Memories Retrieved', value: String(stats.memoriesRetrieved) },
             { metric: 'Est. Monthly Savings', value: `$${savings}` },
-            { metric: 'Agentic-Flow Active', value: agenticFlowAvailable ? '✓' : '✗' },
+            { metric: 'Agentic-Flow Active', value: agenticFlowAvailable ? 'ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“' : 'ÃƒÂ¢Ã…â€œÃ¢â‚¬â€' },
           ],
         });
       }
@@ -4722,7 +4722,7 @@ const tokenOptimizeCommand: Command = {
 | Cache Hit Rate | ${hitRate}% |
 | Memories Retrieved | ${stats.memoriesRetrieved} |
 | Est. Monthly Savings | $${savings} |
-| Agentic-Flow Active | ${agenticFlowAvailable ? '✓' : '✗'} |`);
+| Agentic-Flow Active | ${agenticFlowAvailable ? 'ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“' : 'ÃƒÂ¢Ã…â€œÃ¢â‚¬â€'} |`);
       }
 
       return { success: true, data: { config, stats: { ...stats, agenticFlowAvailable } } };
@@ -4755,8 +4755,8 @@ const modelRouteCommand: Command = {
     { name: 'prefer-quality', type: 'boolean', description: 'Prefer higher quality models' },
   ],
   examples: [
-    { command: 'claude-flow hooks model-route -t "fix typo"', description: 'Route simple task (likely haiku)' },
-    { command: 'claude-flow hooks model-route -t "architect auth system"', description: 'Route complex task (likely opus)' },
+    { command: 'ruflo hooks model-route -t "fix typo"', description: 'Route simple task (likely haiku)' },
+    { command: 'ruflo hooks model-route -t "architect auth system"', description: 'Route complex task (likely opus)' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const task = (ctx.flags.task as string) || ctx.args[0];
@@ -4791,12 +4791,12 @@ const modelRouteCommand: Command = {
 
       // Model icon based on selection
       const modelIcons: Record<string, string> = {
-        haiku: '🌸',
-        sonnet: '📜',
-        opus: '🎭',
+        haiku: 'ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â¸',
+        sonnet: 'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…â€œ',
+        opus: 'ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â­',
       };
       const model = result.model || 'sonnet';
-      const icon = modelIcons[model] || '🤖';
+      const icon = modelIcons[model] || 'ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€œ';
 
       // Calculate cost savings compared to opus
       const costMultipliers: Record<string, number> = { haiku: 0.04, sonnet: 0.2, opus: 1.0 };
@@ -4850,8 +4850,8 @@ const modelOutcomeCommand: Command = {
     { name: 'quality', short: 'q', type: 'number', description: 'Quality score 0-1' },
   ],
   examples: [
-    { command: 'claude-flow hooks model-outcome -t "fix typo" -m haiku -o success', description: 'Record successful haiku task' },
-    { command: 'claude-flow hooks model-outcome -t "auth system" -m sonnet -o escalated', description: 'Record escalation to opus' },
+    { command: 'ruflo hooks model-outcome -t "fix typo" -m haiku -o success', description: 'Record successful haiku task' },
+    { command: 'ruflo hooks model-outcome -t "auth system" -m sonnet -o escalated', description: 'Record escalation to opus' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const task = ctx.flags.task as string;
@@ -4892,8 +4892,8 @@ const modelStatsCommand: Command = {
     { name: 'detailed', short: 'd', type: 'boolean', description: 'Show detailed breakdown' },
   ],
   examples: [
-    { command: 'claude-flow hooks model-stats', description: 'View routing stats' },
-    { command: 'claude-flow hooks model-stats --detailed', description: 'Show detailed breakdown' },
+    { command: 'ruflo hooks model-stats', description: 'View routing stats' },
+    { command: 'ruflo hooks model-stats --detailed', description: 'Show detailed breakdown' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     try {
@@ -5006,8 +5006,8 @@ const teammateIdleCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks teammate-idle --auto-assign true', description: 'Auto-assign tasks to idle teammate' },
-    { command: 'claude-flow hooks teammate-idle -t worker-1 --check-task-list', description: 'Check tasks for specific teammate' }
+    { command: 'ruflo hooks teammate-idle --auto-assign true', description: 'Auto-assign tasks to idle teammate' },
+    { command: 'ruflo hooks teammate-idle -t worker-1 --check-task-list', description: 'Check tasks for specific teammate' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const autoAssign = ctx.flags.autoAssign !== false;
@@ -5118,8 +5118,8 @@ const taskCompletedCommand: Command = {
     }
   ],
   examples: [
-    { command: 'claude-flow hooks task-completed -i task-123 --train-patterns', description: 'Complete task and train patterns' },
-    { command: 'claude-flow hooks task-completed -i task-456 --notify-lead --quality 0.95', description: 'Complete with quality score' }
+    { command: 'ruflo hooks task-completed -i task-123 --train-patterns', description: 'Complete task and train patterns' },
+    { command: 'ruflo hooks task-completed -i task-456 --notify-lead --quality 0.95', description: 'Complete with quality score' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const taskId = (ctx.flags.taskId as string) || ctx.args[0];
@@ -5217,8 +5217,8 @@ const notifyCommand: Command = {
     { name: 'channel', short: 'c', type: 'string', description: 'Notification channel', default: 'console' },
   ],
   examples: [
-    { command: 'claude-flow hooks notify -m "Build complete"', description: 'Send info notification' },
-    { command: 'claude-flow hooks notify -m "Test failed" -l error', description: 'Send error notification' },
+    { command: 'ruflo hooks notify -m "Build complete"', description: 'Send info notification' },
+    { command: 'ruflo hooks notify -m "Test failed" -l error', description: 'Send error notification' },
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     const message = (ctx.flags.message as string) || ctx.args[0];
@@ -5295,10 +5295,10 @@ export const hooksCommand: Command = {
   ],
   options: [],
   examples: [
-    { command: 'claude-flow hooks pre-edit -f src/utils.ts', description: 'Get context before editing' },
-    { command: 'claude-flow hooks route -t "Fix authentication bug"', description: 'Route task to optimal agent' },
-    { command: 'claude-flow hooks pretrain', description: 'Bootstrap intelligence from repository' },
-    { command: 'claude-flow hooks metrics --v3-dashboard', description: 'View V3 performance metrics' }
+    { command: 'ruflo hooks pre-edit -f src/utils.ts', description: 'Get context before editing' },
+    { command: 'ruflo hooks route -t "Fix authentication bug"', description: 'Route task to optimal agent' },
+    { command: 'ruflo hooks pretrain', description: 'Bootstrap intelligence from repository' },
+    { command: 'ruflo hooks metrics --v3-dashboard', description: 'View V3 performance metrics' }
   ],
   action: async (ctx: CommandContext): Promise<CommandResult> => {
     output.writeln();
@@ -5306,7 +5306,7 @@ export const hooksCommand: Command = {
     output.writeln();
     output.writeln('Intelligent workflow automation with pattern learning and adaptive routing');
     output.writeln();
-    output.writeln('Usage: claude-flow hooks <subcommand> [options]');
+    output.writeln('Usage: ruflo hooks <subcommand> [options]');
     output.writeln();
     output.writeln('Subcommands:');
     output.printList([
@@ -5341,17 +5341,17 @@ export const hooksCommand: Command = {
       `${output.highlight('task-completed')} - Handle task completion (train patterns)`
     ]);
     output.writeln();
-    output.writeln('Run "claude-flow hooks <subcommand> --help" for subcommand help');
+    output.writeln('Run "ruflo hooks <subcommand> --help" for subcommand help');
     output.writeln();
     output.writeln(output.bold('V3 Features:'));
     output.printList([
-      '🧠 ReasoningBank adaptive learning',
-      '⚡ Flash Attention (2.49x-7.47x speedup)',
-      '🔍 AgentDB integration (150x faster search)',
-      '📊 84.8% SWE-Bench solve rate',
-      '🎯 32.3% token reduction',
-      '🚀 2.8-4.4x speed improvement',
-      '👥 Agent Teams integration (auto task assignment)'
+      'ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  ReasoningBank adaptive learning',
+      'ÃƒÂ¢Ã…Â¡Ã‚Â¡ Flash Attention (2.49x-7.47x speedup)',
+      'ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â AgentDB integration (150x faster search)',
+      'ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  84.8% SWE-Bench solve rate',
+      'ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ 32.3% token reduction',
+      'ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ 2.8-4.4x speed improvement',
+      'ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¥ Agent Teams integration (auto task assignment)'
     ]);
 
     return { success: true };

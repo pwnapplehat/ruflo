@@ -1,0 +1,33 @@
+---
+description: hive-mind
+globs: 
+alwaysApply: false
+---
+# hive-mind
+
+Hive Mind collective intelligence system for advanced swarm coordination.
+
+## Usage
+```bash
+npx ruflo hive-mind [subcommand] [options]
+```
+
+## Subcommands
+- `init` - Initialize hive mind system
+- `spawn` - Spawn hive mind swarm
+- `status` - Show hive mind status
+- `resume` - Resume paused session
+- `stop` - Stop running session
+
+## Examples
+```bash
+# Initialize hive mind
+npx ruflo hive-mind init
+
+# Spawn swarm
+npx ruflo hive-mind spawn "Build microservices"
+
+# Check status
+npx ruflo hive-mind status
+```
+

@@ -1,14 +1,14 @@
 ---
 layout: default
 title: RuFlo Marketplace
-description: Claude Code native agents, swarms, workers, and MCP tools for continuous software engineering
+description: Cursor-native agents, swarms, workers, and MCP tools for continuous software engineering
 ---
 
 # RuFlo Marketplace
 
-**Installable agentic workflows for Claude Code -- not just commands.**
+**Installable agentic workflows for Cursor -- not just commands.**
 
-RuFlo provides native Claude Code plugins for multi-agent orchestration, /loop workers, security auditing, memory-powered RAG, and test generation.
+Ruflo provides native Cursor plugins for multi-agent orchestration, /loop workers, security auditing, memory-powered RAG, and test generation.
 
 ## Quick Install
 
@@ -48,17 +48,17 @@ RuFlo provides native Claude Code plugins for multi-agent orchestration, /loop w
 
 ## How It Works
 
-RuFlo plugins extend Claude Code with:
+Ruflo plugins extend Cursor with:
 - **Skills** -- Teach Claude Code new workflows (swarm init, /loop workers, security scans)
 - **Commands** -- Slash commands for common operations (/status, /audit, /memory)
 - **Agents** -- Specialized agent definitions (coder, reviewer, architect, security-auditor)
 - **MCP Server** -- 314 tools for coordination, memory, neural learning, and more
 
-## Claude Code Native Integration
+## Cursor Native Integration
 
 RuFlo plugins use Claude Code's native capabilities when available:
 
-| Feature | Plugin | Claude Code Native |
+| Feature | Plugin | Cursor Native |
 |---------|--------|--------------------|
 | Periodic workers | ruflo-loop-workers | `/loop` + `ScheduleWakeup` |
 | Live monitoring | ruflo-swarm | `Monitor` tool |

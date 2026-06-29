@@ -11,7 +11,7 @@ import { type MCPTool, getProjectCwd } from './types.js';
 import { validateIdentifier } from './validate-input.js';
 
 // Swarm state persistence
-const SWARM_DIR = '.claude-flow/swarm';
+const SWARM_DIR = '.cursor-flow/swarm';
 const SWARM_STATE_FILE = 'swarm-state.json';
 
 interface SwarmState {
@@ -25,7 +25,7 @@ interface SwarmState {
   createdAt: string;
   updatedAt: string;
   /**
-   * #1799 — process that initialized this swarm. Used by reconciliation
+   * #1799 Ã¢â‚¬â€ process that initialized this swarm. Used by reconciliation
    * on `loadSwarmStore()` to detect orphan entries whose host process has
    * already exited (common on Windows where backgrounded daemons don't
    * always survive shell exit). Optional for backward compat with
@@ -57,9 +57,9 @@ function ensureSwarmDir(): void {
 }
 
 /**
- * #1799 — return true when `pid` belongs to a live process. process.kill(pid, 0)
- * with signal 0 is the documented liveness probe: ESRCH ⇒ dead, EPERM ⇒ alive
- * but owned by another user (still alive — don't reap), success ⇒ alive.
+ * #1799 Ã¢â‚¬â€ return true when `pid` belongs to a live process. process.kill(pid, 0)
+ * with signal 0 is the documented liveness probe: ESRCH Ã¢â€¡â€™ dead, EPERM Ã¢â€¡â€™ alive
+ * but owned by another user (still alive Ã¢â‚¬â€ don't reap), success Ã¢â€¡â€™ alive.
  */
 function isPidAlive(pid: number): boolean {
   try {
@@ -71,12 +71,12 @@ function isPidAlive(pid: number): boolean {
 }
 
 /**
- * #1799 — Walk swarms with status='running' and mark orphans as 'terminated':
+ * #1799 Ã¢â‚¬â€ Walk swarms with status='running' and mark orphans as 'terminated':
  *
  *   - PID-based: if `pid` is set and the process is dead, the swarm is an
  *     orphan (host crashed / shell exited / daemon backgrounded poorly).
  *   - TTL fallback: pre-#1799 entries have no `pid`; reap them when their
- *     `updatedAt` is older than 24h. This is conservative — long-idle but
+ *     `updatedAt` is older than 24h. This is conservative Ã¢â‚¬â€ long-idle but
  *     legitimately running swarms can recover by writing a heartbeat.
  *
  * Mutates `store` in place; returns the count for the caller to decide
@@ -110,7 +110,7 @@ function reconcileOrphanSwarms(store: SwarmStore): number {
   return reconciled;
 }
 
-// #2085 — exported so `agent-tools.ts agent_spawn` can push into
+// #2085 Ã¢â‚¬â€ exported so `agent-tools.ts agent_spawn` can push into
 // `swarm.agents` (the field `swarm_status` reads).
 export function loadSwarmStore(): SwarmStore {
   let store: SwarmStore = { swarms: {}, version: '3.0.0' };
@@ -121,7 +121,7 @@ export function loadSwarmStore(): SwarmStore {
     }
   } catch { /* fall through with default */ }
 
-  // #1799 — reconcile orphans on every load and persist if anything changed.
+  // #1799 Ã¢â‚¬â€ reconcile orphans on every load and persist if anything changed.
   // Cheap (process.kill(pid, 0) is sub-millisecond) and means
   // `swarm_status`/`swarm_health` never see ghost "running" entries.
   const reconciled = reconcileOrphanSwarms(store);
@@ -144,7 +144,7 @@ const VALID_TOPOLOGIES = new Set([
 export const swarmTools: MCPTool[] = [
   {
     name: 'swarm_init',
-    description: 'Initialize a swarm with persistent state tracking Use when native Task tool is wrong because you need multi-agent coordination — topology (hierarchical/mesh/star), consensus (raft/byzantine/gossip/crdt/quorum), shared memory namespace, or anti-drift gates. For independent one-shot subagents, native Task is fine; spawn each separately.',
+    description: 'Initialize a swarm with persistent state tracking Use when you need multi-agent coordination because you need multi-agent coordination Ã¢â‚¬â€ topology (hierarchical/mesh/star), consensus (raft/byzantine/gossip/crdt/quorum), shared memory namespace, or anti-drift gates. For independent one-shot subagents, native Task is fine; spawn each separately.',
     category: 'swarm',
     inputSchema: {
       type: 'object',
@@ -198,7 +198,7 @@ export const swarmTools: MCPTool[] = [
         },
         createdAt: now,
         updatedAt: now,
-        // #1799 — record host PID so subsequent loads can detect orphans
+        // #1799 Ã¢â‚¬â€ record host PID so subsequent loads can detect orphans
         // when this process exits without a graceful swarm_shutdown.
         pid: process.pid,
       };
@@ -221,7 +221,7 @@ export const swarmTools: MCPTool[] = [
   },
   {
     name: 'swarm_status',
-    description: 'Get swarm status from persistent state Use when native Task tool is wrong because you need multi-agent coordination — topology (hierarchical/mesh/star), consensus (raft/byzantine/gossip/crdt/quorum), shared memory namespace, or anti-drift gates. For independent one-shot subagents, native Task is fine; spawn each separately.',
+    description: 'Get swarm status from persistent state Use when you need multi-agent coordination because you need multi-agent coordination Ã¢â‚¬â€ topology (hierarchical/mesh/star), consensus (raft/byzantine/gossip/crdt/quorum), shared memory namespace, or anti-drift gates. For independent one-shot subagents, native Task is fine; spawn each separately.',
     category: 'swarm',
     inputSchema: {
       type: 'object',
@@ -284,7 +284,7 @@ export const swarmTools: MCPTool[] = [
   },
   {
     name: 'swarm_shutdown',
-    description: 'Shutdown a swarm and update persistent state Use when native Task tool is wrong because you need multi-agent coordination — topology (hierarchical/mesh/star), consensus (raft/byzantine/gossip/crdt/quorum), shared memory namespace, or anti-drift gates. For independent one-shot subagents, native Task is fine; spawn each separately.',
+    description: 'Shutdown a swarm and update persistent state Use when you need multi-agent coordination because you need multi-agent coordination Ã¢â‚¬â€ topology (hierarchical/mesh/star), consensus (raft/byzantine/gossip/crdt/quorum), shared memory namespace, or anti-drift gates. For independent one-shot subagents, native Task is fine; spawn each separately.',
     category: 'swarm',
     inputSchema: {
       type: 'object',
@@ -346,7 +346,7 @@ export const swarmTools: MCPTool[] = [
   },
   {
     name: 'swarm_health',
-    description: 'Check swarm health status with real state inspection Use when native Task tool is wrong because you need multi-agent coordination — topology (hierarchical/mesh/star), consensus (raft/byzantine/gossip/crdt/quorum), shared memory namespace, or anti-drift gates. For independent one-shot subagents, native Task is fine; spawn each separately.',
+    description: 'Check swarm health status with real state inspection Use when you need multi-agent coordination because you need multi-agent coordination Ã¢â‚¬â€ topology (hierarchical/mesh/star), consensus (raft/byzantine/gossip/crdt/quorum), shared memory namespace, or anti-drift gates. For independent one-shot subagents, native Task is fine; spawn each separately.',
     category: 'swarm',
     inputSchema: {
       type: 'object',

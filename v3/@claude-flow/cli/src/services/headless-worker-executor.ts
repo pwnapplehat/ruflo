@@ -24,6 +24,7 @@ import { EventEmitter } from 'events';
 import { existsSync, readFileSync, readdirSync, mkdirSync, writeFileSync } from 'fs';
 import { join, relative } from 'path';
 import type { WorkerType } from './worker-daemon.js';
+import { executeCursorSdk as runCursorSdk, type CursorSdkExecResult } from './cursor-sdk-executor.js';
 
 // ============================================
 // Type Definitions
@@ -271,7 +272,7 @@ export const LOCAL_WORKER_TYPES: LocalWorkerType[] = [
  * Model ID mapping
  */
 /**
- * Model ID mapping — use short aliases so they auto-resolve to the latest
+ * Model ID mapping â€” use short aliases so they auto-resolve to the latest
  * snapshot. Hardcoded dated IDs (e.g. claude-sonnet-4-5-20250929) go stale
  * when Anthropic retires them, causing 100% worker failure (#1431).
  *
@@ -491,7 +492,7 @@ Provide preload suggestions as JSON:
       sandbox: 'strict',
       model: 'haiku',
       outputFormat: 'json',
-      contextPatterns: ['.claude-flow/metrics/*.json'],
+      contextPatterns: ['.cursor-flow/metrics/*.json'],
       timeoutMs: 2 * 60 * 1000,
     },
   },
@@ -631,7 +632,7 @@ export class HeadlessWorkerExecutor extends EventEmitter {
   /**
    * Check if Claude Code CLI is available.
    *
-   * #2110 fix — three issues addressed:
+   * #2110 fix â€” three issues addressed:
    *   1. Cache only `true`, never `false`. A transient failure (WSL2 cold
    *      start, AV scanner, slow shell init) used to set
    *      `claudeCodeAvailable = false` for the rest of the daemon
@@ -645,7 +646,33 @@ export class HeadlessWorkerExecutor extends EventEmitter {
    *      systems where `claude --version` can take >5s on first invoke.
    */
   async isAvailable(): Promise<boolean> {
-    // Only the `true` result is cached — `false` is re-probed every call
+    // Cursor-native path: if RUFLO_HOST=cursor, availability is determined by
+    // @cursor/sdk being importable + CURSOR_API_KEY being set â€” NOT by a
+    // `claude` binary on PATH. This lets the Cursor fork run headless workers
+    // on machines that never had Claude Code installed.
+    if (process.env.RUFLO_HOST === 'cursor' || process.env.RUFLO_HEADLESS_BACKEND === 'cursor') {
+      if (this.claudeCodeAvailable === true) return true;
+      try {
+        const mod = await import('./cursor-sdk-executor.js');
+        const avail = await mod.checkCursorSdkAvailability();
+        if (avail.available) {
+          this.claudeCodeAvailable = true;
+          this.claudeCodeVersion = '@cursor/sdk (Cursor-native)';
+          this.emit('status', { available: true, version: this.claudeCodeVersion });
+          return true;
+        }
+        this.claudeCodeAvailable = null;
+        this.emit('status', { available: false, reason: avail.reason });
+        return false;
+      } catch (e) {
+        this.claudeCodeAvailable = null;
+        this.emit('status', { available: false, reason: (e as Error).message });
+        return false;
+      }
+    }
+
+    // Legacy path: probe the `claude` CLI binary (Claude Code install).
+    // Only the `true` result is cached â€” `false` is re-probed every call
     // so a transient failure doesn't poison the rest of the daemon's life.
     if (this.claudeCodeAvailable === true) {
       return true;
@@ -664,7 +691,7 @@ export class HeadlessWorkerExecutor extends EventEmitter {
       this.emit('status', { available: true, version: this.claudeCodeVersion });
       return true;
     } catch (err) {
-      // Don't cache false — let the next call retry. Surface the actual
+      // Don't cache false â€” let the next call retry. Surface the actual
       // error via emit so operators can diagnose timeout / ENOENT / auth.
       this.claudeCodeAvailable = null;
       const reason =
@@ -895,14 +922,28 @@ export class HeadlessWorkerExecutor extends EventEmitter {
       // Log prompt for debugging
       this.logExecution(executionId, 'prompt', fullPrompt);
 
-      // Execute Claude Code headlessly
-      const result = await this.executeClaudeCode(fullPrompt, {
-        sandbox: headless.sandbox,
-        model: headless.model || 'sonnet',
-        timeoutMs: headless.timeoutMs || this.config.defaultTimeoutMs,
-        executionId,
-        workerType,
-      });
+      // Execute headlessly. When RUFLO_HOST=cursor (or CURSOR_API_KEY is set
+      // and the `claude` binary is unavailable), route through @cursor/sdk
+      // instead of spawning `claude --print`. This is the Cursor-native path
+      // (Phase 4 of the Cursor fork): headless workers call Agent.prompt().
+      const useCursorSdk =
+        process.env.RUFLO_HOST === 'cursor' ||
+        (!!process.env.CURSOR_API_KEY && process.env.RUFLO_HEADLESS_BACKEND !== 'claude');
+      const result = useCursorSdk
+        ? await this.executeCursorSdk(fullPrompt, {
+            sandbox: headless.sandbox,
+            model: headless.model || 'sonnet',
+            timeoutMs: headless.timeoutMs || this.config.defaultTimeoutMs,
+            executionId,
+            workerType,
+          })
+        : await this.executeClaudeCode(fullPrompt, {
+            sandbox: headless.sandbox,
+            model: headless.model || 'sonnet',
+            timeoutMs: headless.timeoutMs || this.config.defaultTimeoutMs,
+            executionId,
+            workerType,
+          });
 
       // Parse output based on format
       let parsedOutput: unknown;
@@ -1147,6 +1188,48 @@ Analyze the above codebase context and provide your response following the forma
   }
 
   /**
+   * Execute a headless worker prompt via @cursor/sdk (Cursor-native path).
+   * Drop-in replacement for executeClaudeCode() with the same return shape.
+   * Delegates to cursor-sdk-executor.ts which dynamically imports @cursor/sdk.
+   */
+  private async executeCursorSdk(
+    prompt: string,
+    options: {
+      sandbox: SandboxMode;
+      model: ModelType;
+      timeoutMs: number;
+      executionId: string;
+      workerType: HeadlessWorkerType;
+    }
+  ): Promise<{ success: boolean; output: string; tokensUsed?: number; error?: string }> {
+    this.logExecution(options.executionId, 'prompt', JSON.stringify({
+      backend: 'cursor-sdk',
+      model: options.model,
+      timeoutMs: options.timeoutMs,
+      workerType: options.workerType,
+    }));
+    try {
+      const result: CursorSdkExecResult = await runCursorSdk({
+        prompt,
+        sandbox: options.sandbox,
+        model: String(options.model),
+        timeoutMs: options.timeoutMs,
+        executionId: options.executionId,
+        cwd: this.projectRoot,
+      });
+      this.logExecution(options.executionId, 'result', JSON.stringify({
+        success: result.success,
+        error: result.error,
+      }));
+      return result;
+    } catch (e) {
+      const msg = (e as Error).message;
+      this.logExecution(options.executionId, 'error', `Cursor SDK executor error: ${msg}`);
+      return { success: false, output: '', error: `Cursor SDK executor error: ${msg}` };
+    }
+  }
+
+  /**
    * Execute Claude Code in headless mode
    */
   private executeClaudeCode(
@@ -1181,21 +1264,21 @@ Analyze the above codebase context and provide your response following the forma
       // Spawn claude CLI process. #1852: previously the prompt was passed
       // as a positional CLI arg. On Windows `claude` resolves to
       // `claude.cmd`, which Node refuses to exec directly (CVE-2024-27980
-      // mitigation) — it routes through `cmd.exe /d /s /c`, which then
+      // mitigation) â€” it routes through `cmd.exe /d /s /c`, which then
       // re-tokenizes the entire command line including the prompt.
       // Source-code prompts contain `>` `<` `&` `|` (arrow functions,
-      // comparisons, redirections) — cmd.exe parses those as redirects
+      // comparisons, redirections) â€” cmd.exe parses those as redirects
       // and creates zero-byte files in cwd named after the next token
       // (`controller.abort()`, `{const`, `0`, `HTTP`, etc.).
       //
       // Fix: pipe the prompt via stdin instead. `child.stdin.end(prompt)`
-      // writes the prompt and closes stdin atomically — the EOF still
+      // writes the prompt and closes stdin atomically â€” the EOF still
       // unblocks `claude --print` (the original concern in #1395) but no
       // shell tokenization touches the prompt.
-      // #2098B / #2093 — `claude --print` can spawn grandchildren (MCP
+      // #2098B / #2093 â€” `claude --print` can spawn grandchildren (MCP
       // server stdio bridges, plugin tools). When the head times out a
       // plain `child.kill()` only signals the head; grandchildren get
-      // reparented to init and survive — the symptom @maxstefanakis1114
+      // reparented to init and survive â€” the symptom @maxstefanakis1114
       // diagnosed as a 5-second redispatch + subprocess-table growth.
       // `detached: true` puts the child in its own process group so we
       // can signal the whole tree with `process.kill(-pid, sig)`.
@@ -1209,7 +1292,7 @@ Analyze the above codebase context and provide your response following the forma
       try {
         child.stdin?.end(prompt);
       } catch {
-        // stdin already closed (e.g. spawn failed) — `error` handler below
+        // stdin already closed (e.g. spawn failed) â€” `error` handler below
         // will surface the real cause.
       }
 
